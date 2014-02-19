@@ -17,7 +17,7 @@
 
   campaignControllers.controller('CampaignListCtrl', ['$scope', 'Campaign',
   	function($scope, Campaign) {
-  		$scope.campaigns = Campaign.query();
+  		$scope.campaigns = [];
   	}]);
 
   /*
@@ -26,6 +26,6 @@
 
    campaignControllers.controller('CampaignCtrl', ['$scope', 'Campaign',
    	function($scope, Campaign) {
-   		$scope.campaign = Campaign.get({campaignId:$routeParams.campaignId})
+   		$scope.campaign = {};
    	}]);
 
