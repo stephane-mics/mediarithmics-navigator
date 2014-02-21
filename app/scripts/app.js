@@ -12,7 +12,8 @@ var navigatorApp = angular.module('navigatorApp', [
   'restangular',
 
   'directoryServices',
-  'loginControllers'
+  'loginControllers',
+  'displayCampaignControllers'
 ]);
 
 // configure the application
@@ -30,6 +31,12 @@ navigatorApp.config(function ($routeProvider) {
       }) 
       .when('/display-ads', {
         templateUrl: 'views/display-ad-list.html'
+      })
+      .when('/home', {
+        redirectTo: '/display-campaigns'
+      })      
+      .when('/route-not-found', {
+        templateUrl: 'views/route-not-found.html'
       })
       .otherwise({
         redirectTo: '/route-not-found'

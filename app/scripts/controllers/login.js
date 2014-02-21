@@ -9,6 +9,11 @@ loginControllers.controller('LoginController', ['$scope', '$location', 'Authenti
 
 		$scope.submit = function() {
 
+			// check that email & password are not empty
+			if  ( (typeof($scope.user.email) == "undefined") || ((typeof($scope.user.password) == "undefined")) ) {
+
+			}
+
 			if ($scope.rememberMe) {
 
 				AuthenticationService.createRefreshToken($scope.user.email, $scope.user.password).then(function() {

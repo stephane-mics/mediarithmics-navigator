@@ -1,13 +1,13 @@
+<!-- navigation bar -->
+<div ng-include src="'views/public-top-navbar.html'"></div>
 
+<!-- login form -->
 <div ng-controller="LoginController" class="container">
   
-  <form ng-submit="submit()" role="form">
-  	<div style="text-align:center">
-  		<img src="images/logo-small.png" >
-  	</div>	
+  <form class="mcs-form-signin" ng-submit="submit()" role="form">
   	<div class="form-group">  	
   		<label for="loginEmail" >Email address</label>
-    	<input ng-model="user.email" type="email" class="form-control" id="loginEmail" placeholder="Enter email" />
+    	<input ng-model="user.email" type="text" class="form-control" id="loginEmail" placeholder="Enter email" />
     </div>
     <div>
   		<label for="loginPassword" >Password</label>
