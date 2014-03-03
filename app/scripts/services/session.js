@@ -1,11 +1,11 @@
 'use strict';
 
 /* Services */
-var directoryServices = angular.module('directoryServices', ['restangular']);
+var sessionServices = angular.module('sessionServices', ['restangular']);
 
 
 /* define the Authentication service */
-directoryServices.factory('AuthenticationService', ['$q', '$document', 'Restangular', 
+sessionServices.factory('AuthenticationService', ['$q', '$document', 'Restangular', 
 
   function($q, $document, Restangular) {
 
@@ -15,7 +15,7 @@ directoryServices.factory('AuthenticationService', ['$q', '$document', 'Restangu
       /* access token */
       service.setAccessToken = function(accessToken) {
         // set the token for REST API calls
-        $.cookie("access_token", accessToken)
+        $.cookie("access_token", accessToken);
       };
 
       service.getAccessToken = function() {
@@ -59,6 +59,10 @@ directoryServices.factory('AuthenticationService', ['$q', '$document', 'Restangu
       };
 
       /* pending path */
+      service.resetPendingPath = function(pendingPath) {
+        this.pendingPath = '/home' ;
+      };
+
       service.pushPendingPath = function(pendingPath) {
         this.pendingPath = pendingPath;
       };
@@ -69,7 +73,7 @@ directoryServices.factory('AuthenticationService', ['$q', '$document', 'Restangu
         return result;
       }
 
-      var deferred = $q.defer();
+
 
       /* returns a promise on access token creation */
       service.createAccessToken = function(email, password) {
@@ -89,6 +93,7 @@ directoryServices.factory('AuthenticationService', ['$q', '$document', 'Restangu
         
         console.debug("createAccessToken : ", post);
         
+        var deferred = $q.defer();
 
         Restangular.all("authentication/access_tokens").post(post)
           .then(function (data) {
@@ -153,3 +158,32 @@ directoryServices.factory('AuthenticationService', ['$q', '$document', 'Restangu
 
   }]);
 
+/* define the Authentication service */
+sessionServices.factory('Session', ['$q', '$document', 'Restangular', 
+
+  function($q, Restangular) {
+
+      var service = {};
+
+      service.init = function {
+
+        var defered = $q.defer();
+
+        
+        
+      }
+
+      service.getUser = function() {
+        return this.user;
+      }
+
+      service.getCurrentWorkspace = function() {
+        return this.getCurrentWorkspace;
+      }
+
+      service.setCurrentWorkspace = function() {
+
+      }
+
+      return service;
+  }]);

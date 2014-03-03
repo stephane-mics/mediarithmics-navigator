@@ -11,9 +11,12 @@ var navigatorApp = angular.module('navigatorApp', [
   'ngRoute',
   'restangular',
 
-  'directoryServices',
+  'utilServices',
+  'SessionServices',
   'loginControllers',
-  'displayCampaignControllers'
+  'displayCampaignService',
+  'displayCampaignControllers',
+  'expertDisplayCampaignTemplate'
 ]);
 
 // configure the application
@@ -24,11 +27,17 @@ navigatorApp.config(function ($routeProvider) {
         templateUrl: 'views/login.html'        
       })
       .when('/display-campaigns', {
-        templateUrl: 'views/display-campaign-list.html'
+        templateUrl: 'views/display-campaigns/list.html'
       })
-      .when('/display-campaigns/:campaignId', {
-        templateUrl: 'views/display-campaign.html'
-      }) 
+      .when('/display-campaigns/new-campaign', {
+        templateUrl: 'views/display-campaigns/new-campaign.html'
+      })
+      .when('/display-campaigns/new-expert/:campaign_id', {
+        templateUrl:'views/display-campaigns/templates/expert/edit-expert.html'
+      })
+      .when('/display-campaigns/edit-expert/:campaign_id', {
+        templateUrl:'views/display-campaigns/templates/expert/edit-expert.html'
+      })      
       .when('/display-ads', {
         templateUrl: 'views/display-ad-list.html'
       })
@@ -128,6 +137,7 @@ navigatorApp.config(['$httpProvider', function ($httpProvider) {
 
 navigatorApp.run(['$rootScope', '$location', 'AuthenticationService', function ($rootScope, $location, AuthenticationService) {
 
+
   // enumerate routes that don't need authentication
   var routesThatDontRequireAuth = ['/login', '/remember-me'];
 
@@ -147,13 +157,13 @@ navigatorApp.run(['$rootScope', '$location', 'AuthenticationService', function (
 
     if ($location.url() == "/logout") {
 
+      AuthenticationService.resetPendingPath();
       AuthenticationService.resetAccessToken();
       AuthenticationService.resetRefreshToken();
       $location.path('/login');
 
     } else if (isSecured($location.url())) {
 
-      AuthenticationService.pushPendingPath($location.url());
 
       if (AuthenticationService.hasAccessToken()) {
 
@@ -161,10 +171,14 @@ navigatorApp.run(['$rootScope', '$location', 'AuthenticationService', function (
 
       } else if (AuthenticationService.hasRefreshToken()) {
 
+        // keep the current path in memory
+        AuthenticationService.pushPendingPath($location.url());
+
         // redirect to the remember-me page
-        $location.path('/remember-me')
+        $location.path('/remember-me');
 
       } else {
+
         // redirect to login
         $location.path('/login');
 

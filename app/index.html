@@ -50,17 +50,20 @@
 
 
 
-    <!-- services -->
-    <script src="scripts/services/directory.js"></script>
+    <!-- common services -->
+    <script src="scripts/services/util.js"></script> 
+    <script src="scripts/services/session.js"></script>
 
     <!-- login -->
-    <script src="scripts/controllers/login.js"></script>
-     
-    <!-- campaign features -->
-    <script src="scripts/controllers/display-campaign.js"></script>
+    <script src="scripts/controllers/login.js"></script>    
+
+    <!-- display campaign -->
+    <script src="scripts/services/display-campaign.js"></script> 
+    <script src="scripts/controllers/display-campaign/display-campaign.js"></script>
+    <script src="scripts/controllers/display-campaign/templates/expert/controllers.js"></script>    
 
     <!-- creative features-->
-    <script src="scripts/controllers/display-ad.js"></script>
+    <!-- <script src="scripts/controllers/display-ad.js"></script> -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>

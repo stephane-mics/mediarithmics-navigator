@@ -6,7 +6,7 @@
     <div class="col-md-10">
       <h1>Campaigns</h1>
       <div class="btn-group">
-        <button class="btn btn-default" ng-click="create()"><span class="glyphicon glyphicon-plus"></span> New Campaign</button>        
+        <button class="btn btn-default" ng-click="newCampaign()"><span class="glyphicon glyphicon-plus"></span> New Campaign</button>        
       </div>
       <p></p>
       <div>
@@ -16,8 +16,8 @@
             <th>Name</th>
           </tr>
           <tr ng-repeat="campaign in campaigns " >
-              <td><a href="#/display_campaigns/{{campaign.id}}">{{campaign.id}}</a><td/>
-              <td><a href="#/display_campaigns/{{campaign.id}}">{{campaign.name}}</a></td>
+              <td><a href="#/display-campaigns/{{campaign.id}}">{{campaign.id}}</a><td/>
+              <td><a href="#/display-campaigns/{{campaign.id}}">{{campaign.name}}</a></td>
           </tr>
         </table>
       </div>
