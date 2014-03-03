@@ -159,29 +159,42 @@ sessionServices.factory('AuthenticationService', ['$q', '$document', 'Restangula
   }]);
 
 /* define the Authentication service */
-sessionServices.factory('Session', ['$q', '$document', 'Restangular', 
+sessionServices.factory('Session', ['$q', 'Restangular', 
 
   function($q, Restangular) {
 
       var service = {};
+      service.initialized = false;
 
-      service.init = function {
-
-        var defered = $q.defer();
-
-        
-        
+      service.isInitialized = function () {
+        return this.initialized;
       }
 
-      service.getUser = function() {
+      service.init = function() {
+
+        var defered = $q.defer();
+        var self = this;
+
+        Restangular.one('connected_user').get().then(function(userProfile){
+          self.userProfile = userProfile;
+          self.currentWorkspace = userProfile.default_workspace;
+          self.initialized = true;
+          defered.resolve();          
+          console.debug("User Profile :", userProfile);
+        });
+
+        return defered.promise;
+      }
+
+      service.getUserProfile = function() {
         return this.user;
       }
 
       service.getCurrentWorkspace = function() {
-        return this.getCurrentWorkspace;
+        return this.userProfile.workspaces[this.currentWorkspace];
       }
 
-      service.setCurrentWorkspace = function() {
+      service.switchWorkspace = function(workspaceIndex) {
 
       }
 

@@ -17,17 +17,17 @@ var AdGroupContainer = function AdGroupContainer($q, Restangular, IdGenerator)  
 
 AdGroupContainer.prototype.load = function load(campaignId, adGroupId) {
 
-	var root = Restangular.one('campaigns', campaignId).one('ad_groups',adGroupId);
+	var root = this.Restangular.one('display_campaigns', campaignId).one('ad_groups',adGroupId);
 
-	pValue = root.get();
-	pAds = root.getList('ads');
-	pUserGroups = root.getList('user_groups');
-	pKeywords = root.getList('keyword_lists');
-	pPlacements = root.getList('placement_lists');
+	var pValue = root.get();
+	var pAds = root.getList('ads');
+	var pUserGroups = root.getList('user_groups');
+	var pKeywords = root.getList('keyword_lists');
+	var pPlacements = root.getList('placement_lists');
 
 	var self = this;
 
- 	var deferred = $q.defer();
+ 	var defered = $this.q.defer();
 
 	$q.all([pValue, pAds, pUserGroups, pKeywords, pPlacements])
         .then( function (result) {        	
@@ -47,7 +47,7 @@ AdGroupContainer.prototype.load = function load(campaignId, adGroupId) {
         });	
 
     // return the promise 
-    return deferred.promise;
+    return defered.promise;
 
 }
 
@@ -92,7 +92,7 @@ AdGroupContainer.prototype.persist = function persist(campaignId) {
 
 	var self = this;
 
-	Restangular.one('campaigns',campaignId).post('ad_groups',this.value)
+	this.Restangular.one('display_campaigns', campaignId).post('ad_groups', this.value)
 		.then(function(adGroup) {
 
 			self.id = adGroup.id;
@@ -100,7 +100,7 @@ AdGroupContainer.prototype.persist = function persist(campaignId) {
 			// persist ads
 			var pAds = [];
 			for(var i=0; i < self.ads.length; i++) {
-				var pAd = Restangular.one('campaigns', campaignId).one('ad_groups', adGroup.id).post('ads', self.ads[i].value);
+				var pAd = this.Restangular.one('display_campaigns', campaignId).one('ad_groups', adGroup.id).post('ads', self.ads[i].value);
 				pAds.push(pAd);
 			}
 
@@ -125,7 +125,7 @@ AdGroupContainer.prototype.update = function update(campaignId) {
 
 	var self = this;
 
-	Restangular.one('campaigns',campaignId).one('ad_groups',this.id).put(this.value)
+	this.value.put(this.value)
 		.then(function(adGroup) {
 
 			self.id = adGroup.id;
@@ -185,15 +185,15 @@ var CampaignContainer = function CampaignContainer($q, Restangular, IdGenerator)
 
 CampaignContainer.prototype.load = function (campaignId) {
 
-	var root = this.Restangular.one('campaigns', campaignId);
+	var root = this.Restangular.one('display_campaigns', campaignId);
  	// send requests to get the value and the list of
  	// ad group ids
-	pValue = root.get();
-	pAdGroups = root.getList('ad_groups');
+	var pValue = root.get();
+	var pAdGroups = root.getList('ad_groups');
 
 	var self = this;
 
- 	var deferred = this.$q.defer();
+ 	var defered = this.$q.defer();
 
 
 	this.$q.all([pValue, pAdGroups])
@@ -207,11 +207,11 @@ CampaignContainer.prototype.load = function (campaignId) {
 
 				for(var i=0; i < adGroups.length; i++) {
 					// load the ad group container corresponding to the id list in ad groups
-					var AdGroupCtn = new AdGroupContainer(this.$q, this.Restangular, this.IdGenerator);
+					var adGroupCtn = new AdGroupContainer(self.$q, self.Restangular, self.IdGenerator);
 					pArray.push(adGroupCtn.load(self.id, adGroups[i].id));
 				}
 
-				this.$q.all(pArray).then(function(result) {
+				self.$q.all(pArray).then(function(result) {
 
 					for(var i=0; i < result.length; i++) {
 						self.adGroups.push(result[i]);
@@ -237,12 +237,12 @@ CampaignContainer.prototype.load = function (campaignId) {
         });	
 
     // return the promise 
-    return deferred.promise;
+    return defered.promise;
 };
 
 CampaignContainer.prototype.addAdGroup = function addAdGroup() {
-	var adGroupCtn = new AdGroupContainer();
-	adGroupCtn.id = IdGenerator.getId();
+	var adGroupCtn = new AdGroupContainer(this.$q, this.Restangular, this.IdGenerator);
+	adGroupCtn.id = this.IdGenerator.getId();
 	this.adGroups.push(adGroupCtn);
 	return adGroupCtn.id;
 };
@@ -251,9 +251,22 @@ CampaignContainer.prototype.addAdGroup = function addAdGroup() {
 CampaignContainer.prototype.getAdGroup = function getAdGroup(id) {
 
 	for(var i=0; i < this.adGroups.length; i++){
-		if (this.adGroups[i].id == id) return this.adGroups[i].value;
+		if (this.adGroups[i].id == id) return this.adGroups[i];
 	}
 	return null;	
+};
+
+
+CampaignContainer.prototype.removeAdGroup = function removeAdGroup(id) {
+
+	for(var i=0; i < this.adGroups.length; i++){
+		if (this.adGroups[i].id == id) {
+			this.adGroups.splice(i, 1);				
+			if (id.indexOf("T") == -1) removedAdGroups.push(id);				
+			return;
+		}
+	}
+	
 };
 
 CampaignContainer.prototype.persist = function persist() {
@@ -262,7 +275,7 @@ CampaignContainer.prototype.persist = function persist() {
 
 	var self = this;
 
-	this.Restangular.all('campaigns').post(this.value)
+	this.Restangular.all('campaigns').post(this.value, {organisation_id: this.organisationId})
 		.then(function(campaign) {
 
 			self.id = campaign.id;
@@ -302,11 +315,12 @@ CampaignContainer.prototype.update = function update() {
 
 	var self = this;
 
-	this.Restangular.one('campaigns', this.id).put(this.value)
+	this.value.put()
 		.then(function(campaign) {			
 
 			var pArray = [];
-			if (self.adGroups.length > 0) {
+			var adGroups = self.adGroups
+			if (adGroups.length > 0) {
 
 				for(var i=0; i < adGroups.length; i++) {
 					var adGroup = adGroups[i];
@@ -319,7 +333,7 @@ CampaignContainer.prototype.update = function update() {
 					}
 				}
 
-				this.$q.all(pArray).then(function(result) {
+				self.$q.all(pArray).then(function(result) {
 
 					defered.resolve(self);
 
@@ -389,24 +403,18 @@ displayCampaignService.factory('DisplayCampaignService', ['$q', 'Restangular', '
   		 */
 
   		service.getCampaignValue = function() {
-
-  			var defered = $q.defer();
+  			
   			console.debug("> getCampaignValue, campaignCtn=", this.campaignCtn);
-
-  			if (this.campaignCtn.id.indexOf('T') == -1 ) {
-
-  				this.campaignCtn.load().then(function(campaignCtn) {
-  					defered.resolve(campaignCtn.value)
-  				});
-
-  			} else defered.resolve(service.campaignCtn.value);
-
-  			return defered.promise;
+  			return this.campaignCtn.value;
 
   		};
 
   		service.setCampaignValue = function(campaign) {
   			this.campaignCtn.value = campaign;
+  		};
+
+  		service.getCampaignId = function() {
+  			return this.campaignCtn.id;
   		};
 
   		/*
@@ -421,10 +429,10 @@ displayCampaignService.factory('DisplayCampaignService', ['$q', 'Restangular', '
 
   		service.getAdGroupValue = function(id) {
   			
-  			return this.campaignCtn.getAdGroup(id).value;
+  			return Restangular.copy(this.campaignCtn.getAdGroup(id).value);
   		};
 
-  		service.setAdGroupValue = function(adGroup) {
+  		service.setAdGroupValue = function(id, adGroup) {
   			var adGroupContainer = this.campaignCtn.getAdGroup(id);
   			adGroupContainer.value = adGroup;
   		};
@@ -432,6 +440,19 @@ displayCampaignService.factory('DisplayCampaignService', ['$q', 'Restangular', '
   		service.removeAdGroup = function(id) {
   			this.campaignCtn.removeAdGroup(id);
   		};
+
+  		service.getAdGroupValues = function() {
+  			var values = [];
+  			for(var i=0; i < this.campaignCtn.adGroups.length; i++) {
+  				values.push(this.campaignCtn.adGroups[i].value);
+  			}
+  			return values;
+  		};
+
+  		service.resetAdGroup = function(id) {
+  			if (id.indexOf('T') != -1) this.campaignCtn.removeAdGroup(id);
+  		};
+
 
   		/*
   		 * Ad methods
@@ -468,7 +489,7 @@ displayCampaignService.factory('DisplayCampaignService', ['$q', 'Restangular', '
   		// reset method
   		service.reset = function () {
 
-  			campaignCtn = null;
+  			this.campaignCtn = null;
   		};
 
 

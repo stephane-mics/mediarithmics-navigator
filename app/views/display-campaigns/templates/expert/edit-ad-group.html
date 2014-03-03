@@ -1,0 +1,32 @@
+
+<div class="container-fluid" ng-Controller="Expert.EditAdGroupController">
+
+  <!-- Ad Group edition form -->
+  <h3>Editing Ad Group</h3>
+  <h4>for {{campaignName}} Campaign</h4>
+
+  <div class="" >
+    <div class="row-fluid">
+      <div class="col-md-8">
+
+        <form  role="form">
+          
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Ad Group Name</label>
+            <input  ng-model="adGroup.name" type="text" class="form-control" id="name">
+          </div>
+
+          <!-- saver or cancel -->
+          <div class="btn-group">
+            <button class="btn btn-default" ng-click="done()">Done</button>  
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>

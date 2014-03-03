@@ -1,7 +1,7 @@
 'use strict';
 
 
-var loginControllers = angular.module('loginControllers', ['directoryServices', 'restangular']);
+var loginControllers = angular.module('loginControllers', ['sessionServices', 'restangular']);
 
 
 loginControllers.controller('LoginController', ['$scope', '$location', 'AuthenticationService', 'Session',
@@ -80,6 +80,29 @@ loginControllers.controller('RememberMeController', ['$location', 'Authenticatio
 
 			}, function() {
 				// failure : redirect to the login page
-				$location.paht('/login');
+				$location.path('/login');
 			});		
+}]);
+
+
+loginControllers.controller('InitSessionController', ['$location', 'Session', 'AuthenticationService', 
+
+	function($location, Session, AuthenticationService) {		
+
+		console.debug("InitSessionController called !");
+
+		Session.init().then(function() {
+			
+			var path = 	AuthenticationService.popPendingPath();
+			console.debug("redirect to :", path);
+			// success : redirect to the pending path
+			$location.path(path);
+							
+		},function() {
+
+			// failure : go back to login page
+			$location.path('/login');
+			
+		});
+		
 }]);

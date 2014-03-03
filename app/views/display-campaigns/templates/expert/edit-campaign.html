@@ -4,7 +4,7 @@
   <!-- campaign edition form -->
   <h3>Campaign</h3>
 
-  <div class="" ng-Controller="EditExpertController">
+  <div class="" ng-Controller="Expert.EditCampaignController">
     <div class="row-fluid">
       <div class="col-md-8">
 
@@ -48,8 +48,12 @@
 
           <!-- Ad Groups -->          
           <div ng-repeat="adGroup in adGroups">
-               <div ng-include src="views/display-campaign/ad-group.html"></div>
+               <div ng-include src="'views/display-campaigns/templates/expert/view-ad-group.html'"></div>
           </div>            
+
+          <div class="btn-group">
+            <button class="btn btn-default" ng-click="newAdGroup()">Create new Ad Group</button>
+          </div>
           
 
           <!-- Display Networks -->
