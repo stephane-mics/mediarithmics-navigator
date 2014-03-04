@@ -46,13 +46,15 @@
           </div>
 
 
-          <!-- Ad Groups -->          
-          <div ng-repeat="adGroup in adGroups">
-               <div ng-include src="'views/display-campaigns/templates/expert/view-ad-group.html'"></div>
-          </div>            
+          <!-- Ad Groups -->      
+          <div class="form-group">
+            <div ng-repeat="adGroup in adGroups">
+                 <div ng-include src="'views/display-campaigns/templates/expert/view-ad-group.html'"></div>
+            </div>            
 
-          <div class="btn-group">
-            <button class="btn btn-default" ng-click="newAdGroup()">Create new Ad Group</button>
+            <div class="btn-group">
+              <button class="btn btn-default" ng-click="newAdGroup()">Create new Ad Group</button>
+            </div>
           </div>
           
 

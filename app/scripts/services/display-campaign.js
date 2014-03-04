@@ -4,7 +4,7 @@
  * Ad Group Container
  */
 
-var AdGroupContainer = function AdGroupContainer($q, Restangular, IdGenerator)  {
+var AdGroupContainer = function AdGroupContainer($q, Restangular, IdGenerator) {
 
 	this.$q = $q;
 	this.IdGenerator = IdGenerator;
@@ -21,22 +21,25 @@ AdGroupContainer.prototype.load = function load(campaignId, adGroupId) {
 
 	var pValue = root.get();
 	var pAds = root.getList('ads');
-	var pUserGroups = root.getList('user_groups');
-	var pKeywords = root.getList('keyword_lists');
-	var pPlacements = root.getList('placement_lists');
+	//var pUserGroups = root.getList('user_groups');
+	//var pKeywords = root.getList('keyword_lists');
+	//var pPlacements = root.getList('placement_lists');
 
 	var self = this;
 
- 	var defered = $this.q.defer();
+ 	var defered = this.$q.defer();
+ 	//var list = [pValue, pAds, pUserGroups, pKeywords, pPlacements];
+ 	var list = [pValue, pAds];
 
-	$q.all([pValue, pAds, pUserGroups, pKeywords, pPlacements])
+	this.$q.all(list)
         .then( function (result) {        	
 			self.value = result[0];
 			self.id = self.value.id;
 			self.ads = result[1];
-			self.userGroups = result[2];
-			self.keywords =  result[3];
-			self.placements = result[4];
+
+			//self.userGroups = result[2];
+			//self.keywords =  result[3];
+			//self.placements = result[4];
 
 			// return the loaded container
 			defered.resolve(self);
@@ -125,7 +128,7 @@ AdGroupContainer.prototype.update = function update(campaignId) {
 
 	var self = this;
 
-	this.value.put(this.value)
+	this.value.put()
 		.then(function(adGroup) {
 
 			self.id = adGroup.id;
@@ -133,6 +136,7 @@ AdGroupContainer.prototype.update = function update(campaignId) {
 			// update ads
 			var pAds = [];
 			for(var i=0; i < self.ads.length; i++) {
+
 				var ad = self.ads[i];
 				if  ( (ad.id.indexOf('T') == -1) || (typeof(ad.modified) != "undefined") ) {
 					// update the ad
@@ -210,7 +214,7 @@ CampaignContainer.prototype.load = function (campaignId) {
 					var adGroupCtn = new AdGroupContainer(self.$q, self.Restangular, self.IdGenerator);
 					pArray.push(adGroupCtn.load(self.id, adGroups[i].id));
 				}
-
+				
 				self.$q.all(pArray).then(function(result) {
 
 					for(var i=0; i < result.length; i++) {
@@ -315,40 +319,39 @@ CampaignContainer.prototype.update = function update() {
 
 	var self = this;
 
-	this.value.put()
-		.then(function(campaign) {			
+	this.value.put().then(function(campaign) {			
 
-			var pArray = [];
 			var adGroups = self.adGroups
-			if (adGroups.length > 0) {
 
-				for(var i=0; i < adGroups.length; i++) {
-					var adGroup = adGroups[i];
-					if (adGroup.id.indexOf('T') == -1) {
-						pArray.push(adGroup.update(self.id));
+			async.mapSeries(adGroups, function(adGroup, callback) {
+
+				if (adGroup.id.indexOf('T') == -1) {
+						// update the ad group
+						adGroup.update(self.id).then(function(result) {
+							callback(null, result);
+						}, function(reason) {
+							callback(new Error(reason))
+						});
 
 					} else {
 						// persist the ad group container 
-						pArray.push(adGroup.persist(self.id));
-					}
+						adGroup.persist(self.id).then(function(result) {
+							callback(null, result);
+						}, function(reason) {
+							callback(new Error(reason));
+						});
 				}
 
-				self.$q.all(pArray).then(function(result) {
+			}, function(err, results){
 
-					defered.resolve(self);
+				if (err) defered.reject(err);
+				else defered.resolve(results);
+			});
 
-				}, function(reason) {
-					defered.reject(reason);
-				})
 
-			} else {
-				// return the loaded container
-				defered.resolve(self);				
-			}
-
-		}, function(reason) {
+	}, function(reason) {
 			defered.reject(reason);
-		});
+	});
 
 	return defered.promise
 };

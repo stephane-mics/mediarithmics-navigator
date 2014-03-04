@@ -11,6 +11,7 @@ var navigatorApp = angular.module('navigatorApp', [
   'ngRoute',
   'restangular',
 
+  'plupload',
   'utilServices',
   'sessionServices',
   'loginControllers',
@@ -20,7 +21,7 @@ var navigatorApp = angular.module('navigatorApp', [
 ]);
 
 // configure the application
-navigatorApp.config(function ($routeProvider) {
+navigatorApp.config(function ($routeProvider, $logProvider) {
 
     $routeProvider
       .when('/login', {
@@ -64,6 +65,9 @@ navigatorApp.config(function ($routeProvider) {
         redirectTo: '/route-not-found'
       });
     */
+      $logProvider.debugEnabled(true);
+      
+
   });
 
 
