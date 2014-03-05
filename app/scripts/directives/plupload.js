@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('plupload', [])
-	.directive('micsPlUpload', ['$log', function ($log) {
+angular.module('plupload', ["sessionServices"])
+	.directive('micsPlUpload', ['$log', 'Session', 'AuthenticationService', function ($log, Session, AuthenticationService) {
 		return {
 			restrict: 'A',
 			scope: {
@@ -13,20 +13,25 @@ angular.module('plupload', [])
 				$('#'+iAttrs.id+' .browse-button').attr("id", iAttrs.id+"-browse-button");
 				$('#'+iAttrs.id+' .drop-target').attr("id", iAttrs.id+"-drop-target");
 
+				var uploadUrl = "http://127.0.01:9004/public/"+ "v1/asset_files?organisation_id="+Session.getCurrentWorkspace().organisation_id;
+
 				var options = {
 						runtimes : 'html5,flash,html4',
 						browse_button : iAttrs.id+"-browse-button",
 						drop_element : iAttrs.id+"-drop-target",
 						multi_selection: true,						
 						max_file_size : "200kb",
-						url : "/upload",
+						url : uploadUrl,
 						flash_swf_url : 'bower_components/plupload/Moxie.swf',
 						filters : {
 				          mime_types: [
 				            {title : "Image files", extensions : "jpg,png"},
 				            {title : "Flash files", extensions : "swf"}
 				          ]
-				        }
+				        },
+				        headers: {
+            				Authorization: AuthenticationService.getAccessToken()
+        				}
 				}
 
 				$log.debug('plupload options :', options);
@@ -74,14 +79,22 @@ angular.module('plupload', [])
 			          
 			      });
 
+				uploader.init();
+
+				// post init binding
+
 			    uploader.bind('FilesAdded', function(up, files) {
-			        for (var i in files) {
-			        	console.debug("file :", files[i]);
-			          $('#'+ rootId+' .upload-debug').html('<div id="' + files[i].id + '">' + files[i].name + ' (' + plupload.formatSize(files[i].size) + ') (' + files[i].type+ ')</div>');
-			        }
+
+		        	console.debug("files :", files);
+		        	up.start();
 			    });
 
- 				uploader.init();
+
+				uploader.bind('FileUploaded', function(up, file, response) {
+
+					var responseObj = $.parseJSON(response.response);
+					console.debug("response :", responseObj);
+				}); 			
 			}
 		};
 	}])
