@@ -1,100 +1,103 @@
 'use strict';
 
 angular.module('plupload', ["sessionServices"])
-	.directive('micsPlUpload', ['$log', 'Session', 'AuthenticationService', function ($log, Session, AuthenticationService) {
-		return {
-			restrict: 'A',
-			scope: {
+.directive('micsPlUpload', [
+  '$log', 'Session', 'AuthenticationService', "jquery", "plupload",
+  function ($log, Session, AuthenticationService, $, plupload) {
+    return {
+      restrict: 'A',
+      scope: {
 
-			},
-			link: function (scope, iElement, iAttrs) {
-
-
-				$('#'+iAttrs.id+' .browse-button').attr("id", iAttrs.id+"-browse-button");
-				$('#'+iAttrs.id+' .drop-target').attr("id", iAttrs.id+"-drop-target");
-
-				var uploadUrl = "http://127.0.0.1:9004/public/"+ "v1/asset_files?organisation_id="+Session.getCurrentWorkspace().organisation_id;
-
-				var options = {
-						runtimes : 'html5,flash,html4',
-						browse_button : iAttrs.id+"-browse-button",
-						drop_element : iAttrs.id+"-drop-target",
-						multi_selection: true,						
-						max_file_size : "200kb",
-						url : uploadUrl,
-						flash_swf_url : 'bower_components/plupload/Moxie.swf',
-						filters : {
-				          mime_types: [
-				            {title : "Image files", extensions : "jpg,png"},
-				            {title : "Flash files", extensions : "swf"}
-				          ]
-				        },
-				        headers: {
-            				Authorization: AuthenticationService.getAccessToken()
-        				}
-				}
-
-				$log.debug('plupload options :', options);
-				console.log('plupload options :', options);
-
-				var uploader = new plupload.Uploader(options);
-				var rootId = iAttrs.id;
-
-				uploader.bind('Error', function(up, err) {
-					$log.info('Error :', err);					
- 				});
+      },
+      link: function (scope, iElement, iAttrs) {
 
 
-				uploader.bind('PostInit', function(up, params) {
-					$log.info('Post init called, params :', params);
- 				});
+        $('#'+iAttrs.id+' .browse-button').attr("id", iAttrs.id+"-browse-button");
+        $('#'+iAttrs.id+' .drop-target').attr("id", iAttrs.id+"-drop-target");
 
-				uploader.bind('Init', function(up, params) {
+        var uploadUrl = "http://127.0.0.1:9004/public/"+ "v1/asset_files?organisation_id="+Session.getCurrentWorkspace().organisation_id;
 
-					if (uploader.features.dragdrop) {
+        var options = {
+          runtimes : 'html5,flash,html4',
+          browse_button : iAttrs.id+"-browse-button",
+          drop_element : iAttrs.id+"-drop-target",
+          multi_selection: true,
+          max_file_size : "200kb",
+          url : uploadUrl,
+          flash_swf_url : 'bower_components/plupload/Moxie.swf',
+          filters : {
+            mime_types: [
+              {title : "Image files", extensions : "jpg,png"},
+              {title : "Flash files", extensions : "swf"}
+            ]
+          },
+          headers: {
+            Authorization: AuthenticationService.getAccessToken()
+          }
+        };
 
-						console.log("dragdrop ok !");
-						console.log("rootId =", rootId);
+        $log.debug('plupload options :', options);
+        console.log('plupload options :', options);
 
-			          $('#'+rootId+' .upload-debug').html("");
-			          
-			          var target = $('#'+iAttrs.id+' .drop-target');
-			          
-			          target.ondragover = function(event) {
-			            event.dataTransfer.dropEffect = "copy";
-			          };
-			          
-			          target.ondragenter = function() {
-			            this.className = "dragover";
-			          };
-			          
-			          target.ondragleave = function() {
-			            this.className = "";
-			          };
-			          
-			          target.ondrop = function() {
-			            this.className = "";
-			          };
-			        } 
-			          
-			      });
+        var uploader = new plupload.Uploader(options);
+        var rootId = iAttrs.id;
 
-				uploader.init();
-
-				// post init binding
-
-			    uploader.bind('FilesAdded', function(up, files) {
-
-		        	console.debug("files :", files);
-		        	up.start();
-			    });
+        uploader.bind('Error', function(up, err) {
+          $log.info('Error :', err);
+        });
 
 
-				uploader.bind('FileUploaded', function(up, file, response) {
+        uploader.bind('PostInit', function(up, params) {
+          $log.info('Post init called, params :', params);
+        });
 
-					var responseObj = $.parseJSON(response.response);
-					console.debug("response :", responseObj);
-				}); 			
-			}
-		};
-	}])
+        uploader.bind('Init', function(up, params) {
+
+          if (uploader.features.dragdrop) {
+
+            console.log("dragdrop ok !");
+            console.log("rootId =", rootId);
+
+            $('#'+rootId+' .upload-debug').html("");
+
+            var target = $('#'+iAttrs.id+' .drop-target');
+
+            target.ondragover = function(event) {
+              event.dataTransfer.dropEffect = "copy";
+            };
+
+            target.ondragenter = function() {
+              this.className = "dragover";
+            };
+
+            target.ondragleave = function() {
+              this.className = "";
+            };
+
+            target.ondrop = function() {
+              this.className = "";
+            };
+          }
+
+        });
+
+        uploader.init();
+
+        // post init binding
+
+        uploader.bind('FilesAdded', function(up, files) {
+
+          console.debug("files :", files);
+          up.start();
+        });
+
+
+        uploader.bind('FileUploaded', function(up, file, response) {
+
+          var responseObj = $.parseJSON(response.response);
+          console.debug("response :", responseObj);
+        });
+      }
+    };
+  }
+]);

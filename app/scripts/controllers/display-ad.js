@@ -1,14 +1,14 @@
 'use strict';
 
+var displayAdControllers = angular.module('displayAdControllers', []);
 
+/*
+ * displayAd list controller
+ */
 
- var displayAdControllers = angular.module('displayAdControllers', []);
+displayAdControllers.controller('displayAdListCtrl', [
+  '$scope',
+  function($scope) {
 
- /*
-  * displayAd list controller
-  */
-
-  displayAdControllers.controller('displayAdListCtrl', ['$scope',
-  	function($scope) {
-  		
-  	}]);
+  }
+]);
