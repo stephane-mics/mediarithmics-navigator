@@ -1,12 +1,12 @@
 <!-- navigation bar -->
-<<div ng-include src="'views/top-navbar.html'"></div>
+<div ng-include src="'views/top-navbar.html'"></div>
 
 <div class="container-fluid mcs-content" ng-Controller="DisplayCampaignListController">
   <div class="row-fluid">
     <div class="col-md-10">
       <h1>Campaigns</h1>
       <div class="btn-group">
-        <button class="btn btn-default" ng-click="newCampaign()"><span class="glyphicon glyphicon-plus"></span> New Campaign</button>        
+        <button class="btn btn-default" ng-click="newCampaign()"><span class="glyphicon glyphicon-plus"></span> New Campaign</button>
       </div>
       <p></p>
       <div>
@@ -16,10 +16,11 @@
             <th>Name</th>
           </tr>
           <tr ng-repeat="campaign in campaigns " >
-              <td ng-click="editCampaign(campaign)">{{campaign.id}}<td/>
-              <td><a ng-click="editCampaign(campaign)">{{campaign.name}}</a></td>
+            <td ng-click="editCampaign(campaign)">{{campaign.id}}</td>
+            <td><a ng-click="editCampaign(campaign)">{{campaign.name}}</a></td>
           </tr>
         </table>
       </div>
     </div>
+  </div>
 </div>
