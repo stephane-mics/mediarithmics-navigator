@@ -13,7 +13,7 @@ angular.module('plupload', ["sessionServices"])
 				$('#'+iAttrs.id+' .browse-button').attr("id", iAttrs.id+"-browse-button");
 				$('#'+iAttrs.id+' .drop-target').attr("id", iAttrs.id+"-drop-target");
 
-				var uploadUrl = "http://127.0.01:9004/public/"+ "v1/asset_files?organisation_id="+Session.getCurrentWorkspace().organisation_id;
+				var uploadUrl = "http://127.0.0.1:9004/public/"+ "v1/asset_files?organisation_id="+Session.getCurrentWorkspace().organisation_id;
 
 				var options = {
 						runtimes : 'html5,flash,html4',

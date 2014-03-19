@@ -75,7 +75,7 @@ navigatorApp.config(function ($routeProvider, $logProvider) {
 navigatorApp.config(['RestangularProvider', function (RestangularProvider) {
 
   // set the api entry point
-  RestangularProvider.setBaseUrl('http://127.0.01:9004/public/v1');
+  RestangularProvider.setBaseUrl('http://127.0.0.1:9004/public/v1');
 
   // configure the response extractor
   RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
