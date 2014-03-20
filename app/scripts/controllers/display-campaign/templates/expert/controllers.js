@@ -8,7 +8,7 @@
  *  
  */
 
-var expertTemplate = angular.module('expertDisplayCampaignTemplate', ['displayCampaignService', 'ui.bootstrap']);
+var expertTemplate = angular.module('expertDisplayCampaignTemplate', ['displayCampaignService', 'ui.bootstrap', "keywords"]);
 
 expertTemplate.controller('Expert.EditCampaignController', ['$scope', '$location', '$routeParams', 'DisplayCampaignService',
 

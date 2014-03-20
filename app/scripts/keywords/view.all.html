@@ -1,0 +1,9 @@
+<div ng-controller="keywords/controller/edit.all">
+  <div ng-repeat="kw in keywordsLists" class="col-md-12">
+    <div ng-include="view.one.html"></div>
+    <div class="pull-right">
+      <a ng-click="removeKeywordsList(kw)">remove keywords list</a>
+    </div>
+    <a ng-click="addKeywordsList()">add a new keywords list</a>
+  </div>
+</div>
