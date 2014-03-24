@@ -1,0 +1,49 @@
+
+<div class="container-fluid" ng-Controller="core/campaigns/expert/EditAdGroupController">
+
+  <!-- Ad Group edition form -->
+  <h3>Editing Ad Group</h3>
+  <h4>for {{campaignName}} Campaign</h4>
+
+  <div class="" >
+    <div class="row-fluid">
+      <div class="col-md-8">
+
+        <form  role="form">
+
+          <!-- Name -->
+          <div class="form-group">
+            <label for="name">Ad Group Name</label>
+            <input  ng-model="adGroup.name" type="text" class="form-control" id="name">
+          </div>
+
+          <!-- Ads -->
+          <div class="form-group">
+            <label>Ads</label>
+            <div ng-repeat="ad in ads">
+                 <div ng-include src="'src/core/campaigns/expert/view-ad.html'"></div>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-default" ng-click="selectExistingAd()">Select Existing Ad</button>
+              <button class="btn btn-default" ng-click="uploadNewAd()">Upload New Ad</button>
+            </div>
+
+
+          </div>
+
+          <h4>Keywords lists</h4>
+          <div ng-include="'src/core/keywords/view.one.html'"></div>
+
+          <!-- save or cancel -->
+          <div class="btn-group">
+            <button class="btn btn-default" ng-click="done()">Done</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</div>
