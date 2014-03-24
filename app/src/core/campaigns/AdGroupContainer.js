@@ -5,7 +5,7 @@
 
   module.factory("core/campaigns/AdGroupContainer", [
     "$q", "Restangular", "jquery", "core/common/IdGenerator",
-    function($q, Restangular, $) {
+    function($q, Restangular, $, IdGenerator) {
       /*
        * Ad Group Container
        */
