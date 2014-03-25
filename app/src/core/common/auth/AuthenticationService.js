@@ -160,6 +160,15 @@
 
       };
 
+      /**
+       * Logout the user and reset the cookies.
+       */
+      service.logout = function () {
+        service.resetPendingPath();
+        service.resetAccessToken();
+        service.resetRefreshToken();
+      };
+
       return service;
 
     }

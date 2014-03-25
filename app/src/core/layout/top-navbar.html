@@ -1,5 +1,4 @@
-<!-- application navbar for logged-in users -->
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<div class="navbar navbar-default" role="navigation" ng-controller="core/layout/HeaderController">
   <div class="container-fluid mcs-top-navbar">
 
     <div class="navbar-header">
@@ -12,7 +11,7 @@
       <a class="navbar-brand" href="#"><img src="images/mediarithmics-small-white.png" /></a>
     </div>
 
-    <div class="navbar-collapse collapse">
+    <div class="navbar-collapse collapse" ng-if="isLoggued">
 
       <ul class="nav navbar-nav">
         <li><a href="#audience">Audience</a></li>
@@ -36,6 +35,6 @@
 
         <li><a href="#logout">Logout</a></li>
       </ul>
-    </div><!--/.nav-collapse -->
+    </div>
   </div>
 </div>

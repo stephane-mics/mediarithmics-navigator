@@ -12,6 +12,7 @@
     'ngRoute',
     'restangular',
 
+    'core/layout',
     'core/keywords',
     'core/campaigns',
     'core/login',
@@ -177,8 +178,8 @@ redirectTo: '/route-not-found'
   // secured part of the app
 
   navigatorApp.run([
-    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash",
-    function ($rootScope, $location, $log, AuthenticationService, Session, _) {
+    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
+    function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
 
 
       // enumerate routes that don't need authentication
@@ -199,9 +200,9 @@ redirectTo: '/route-not-found'
 
         if ($location.url() === "/logout") {
 
-          AuthenticationService.resetPendingPath();
-          AuthenticationService.resetAccessToken();
-          AuthenticationService.resetRefreshToken();
+          AuthenticationService.logout();
+          Session.logout();
+          $rootScope.$broadcast(LoginConstants.LOGOUT);
           $location.path('/login');
 
         } else if (isSecured($location.url())) {

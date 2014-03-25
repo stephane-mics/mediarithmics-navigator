@@ -43,6 +43,15 @@
 
       };
 
+      /**
+       * Logout the user and reset the session.
+       */
+      service.logout = function () {
+        this.initialized = false;
+        this.currentWorkspace = null;
+        this.userProfile = null;
+      };
+
       return service;
     }
   ]);

@@ -4,8 +4,27 @@
   var module = angular.module('core/login');
 
   module.controller('core/login/MainController', [
-    '$scope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session',
-    function($scope, $location, $log, AuthenticationService, Session) {
+    '$scope', '$location', '$log', '$rootScope', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
+    function($scope, $location, $log, $rootScope, AuthenticationService, Session, LoginConstants) {
+
+      function showSimpleError() {
+        // failure : display an error message
+        $scope.message = "Authentication error";
+      }
+
+      function initSession () {
+        Session.init().then(function() {
+          $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
+          var newPath = AuthenticationService.popPendingPath();
+          $log.debug("redirect to : "+newPath);
+          // success : redirect to the pending path
+          $location.path(newPath);
+
+        }, function () {
+          $rootScope.$broadcast(LoginConstants.LOGIN_FAILURE);
+          showSimpleError();
+        });
+      }
 
       $scope.submit = function() {
 
@@ -19,52 +38,16 @@
           AuthenticationService.createRefreshToken($scope.user.email, $scope.user.password).then(function() {
 
             // success : create an access token
-            AuthenticationService.createAccessToken().then(function() {
-
-              Session.init().then(function() {
-                // success : redirect to the pending path
-                $location.path(AuthenticationService.popPendingPath());
-
-              },function() {
-                // failure : display an error message
-                $scope.message = "Authentication error";
-              });
-
-
-            }, function() {
-              // failure : display an error message
-              $scope.message = "Authentication error";
-            });
-          },
-
-          function() {
-            // failure : display an error message
-            $scope.message = "Authentication error";
-          }
-
-                                                                                                );
+            AuthenticationService.createAccessToken().then(initSession, showSimpleError);
+          }, showSimpleError);
 
         } else {
 
           // authentication without creation of refresh token
           AuthenticationService.createAccessToken($scope.user.email, $scope.user.password).then(function(){
 
-            Session.init().then(function() {
-              var newPath = AuthenticationService.popPendingPath();
-              $log.debug("redirect to : "+newPath);
-              // success : redirect to the pending path
-              $location.path(AuthenticationService.popPendingPath());
-
-            },function() {
-              // failure : display an error message
-              $scope.message = "Authentication error";
-            });
-
-          }, function() {
-            // failure : redirect to the login page
-            $scope.message = "Authentication error";
-          });
-
+            Session.init().then(initSession, showSimpleError);
+          }, showSimpleError);
         }
       };
     }

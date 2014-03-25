@@ -23,9 +23,9 @@ $mcs-red : #fe5858;
     background-color: $dark-blue;
  }
 
-.mcs-top-navbar li {
+.mcs-top-navbar li a:hover {
 
-    color: $dark-blue-not;
+    color: $dark-blue-not !important;
 }
 
 .mcs-content {
