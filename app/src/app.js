@@ -48,51 +48,62 @@
   ]);
 
   // configure the application
-  navigatorApp.config(function ($routeProvider, $logProvider) {
+  navigatorApp.config([
+    "$routeProvider", "$logProvider",
+    function ($routeProvider, $logProvider) {
 
-    $routeProvider
-    .when('/login', {
-      templateUrl: 'src/core/login/main.html'
-    })
-    .when('/remember-me', {
-      templateUrl: 'src/core/login/remember-me.html'
-    })
-    .when('/init-session', {
-      templateUrl: 'src/core/login/init-session.html'
-    });
+      $routeProvider
+      .when('/', {
+        redirectTo: '/home',
+        publicUrl : true
+      })
+      .when('/login', {
+        templateUrl: 'src/core/login/main.html',
+        publicUrl : true
+      })
+      .when('/logout', {
+        templateUrl: 'src/core/login/logout.html',
+        publicUrl : true
+      })
+      .when('/remember-me', {
+        templateUrl: 'src/core/login/remember-me.html',
+        publicUrl : true
+      })
+      .when('/init-session', {
+        templateUrl: 'src/core/login/init-session.html',
+        publicUrl : true
+      });
 
-    $routeProvider
-    .when('/display-campaigns', {
-      templateUrl: 'src/core/campaigns/list.html'
-    })
-    .when('/display-campaigns/select-campaign-template', {
-      templateUrl: 'src/core/campaigns/create.html'
-    })
-    .when('/display-campaigns/expert/edit-campaign/:campaign_id', {
-      templateUrl:'src/core/campaigns/expert/edit-campaign.html'
-    })
-    .when('/display-campaigns/expert/edit-ad-group/:ad_group_id', {
-      templateUrl:'src/core/campaigns/expert/edit-ad-group.html'
-    })
-    .when('/display-campaigns/edit-expert/:campaign_id', {
-      templateUrl:'src/core/campaigns/expert/edit-campaign.html'
-    })
-    .when('/home', {
-      redirectTo: '/display-campaigns'
-    })
-    .when('/route-not-found', {
-      templateUrl: 'src/core/layout/route-not-found.html'
-    });
+      $routeProvider
+      .when('/home', {
+        redirectTo: '/display-campaigns'
+      })
+      .when('/display-campaigns', {
+        templateUrl: 'src/core/campaigns/list.html'
+      })
+      .when('/display-campaigns/select-campaign-template', {
+        templateUrl: 'src/core/campaigns/create.html'
+      })
+      .when('/display-campaigns/expert/edit-campaign/:campaign_id', {
+        templateUrl:'src/core/campaigns/expert/edit-campaign.html'
+      })
+      .when('/display-campaigns/expert/edit-ad-group/:ad_group_id', {
+        templateUrl:'src/core/campaigns/expert/edit-ad-group.html'
+      })
+      .when('/display-campaigns/edit-expert/:campaign_id', {
+        templateUrl:'src/core/campaigns/expert/edit-campaign.html'
+      })
+      .when('/route-not-found', {
+      });
 
-    /*
-       .otherwise({
-redirectTo: '/route-not-found'
-});
-*/
-    $logProvider.debugEnabled(true);
-
-
-  });
+      $routeProvider
+      .otherwise({
+        publicUrl: true,
+        templateUrl: 'src/core/layout/route-not-found.html'
+      });
+      $logProvider.debugEnabled(true);
+    }
+  ]);
 
 
   // configure the Restangular Service
@@ -181,32 +192,11 @@ redirectTo: '/route-not-found'
     '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
     function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
 
-
-      // enumerate routes that don't need authentication
-      var routesThatDontRequireAuth = ['/login', '/remember-me', '/init-session'];
-
-      // check if current location requires authentication
-      var isSecured = function (route) {
-        return !(_.find(routesThatDontRequireAuth, function (noAuthRoute) {
-          // return true if route starts with noAuthRole
-          return route.indexOf(noAuthRoute) === 0;
-        }));
-      };
-
-
       $rootScope.$on('$routeChangeStart', function (event, next, current) {
 
         $log.debug("$routeChangeStart  next : ", next);
 
-        if ($location.url() === "/logout") {
-
-          AuthenticationService.logout();
-          Session.logout();
-          $rootScope.$broadcast(LoginConstants.LOGOUT);
-          $location.path('/login');
-
-        } else if (isSecured($location.url())) {
-
+        if (!next.publicUrl) {
 
           if (AuthenticationService.hasAccessToken()) {
 
