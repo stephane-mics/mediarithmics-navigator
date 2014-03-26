@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="navigatorApp">
+  <body ng-app="navigatorApp" class="mcs-app">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -27,8 +27,7 @@
     <div ng-include src="'src/core/layout/top-navbar.html'"></div>
 
     <!-- Add your site or application content here -->
-    <div ng-view=""></div>
-
+    <div ng-view="" class="container-fluid"></div>
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -90,6 +89,13 @@
     <script src="src/core/common/auth/AuthenticationService.js"></script>
     <script src="src/core/common/IdGenerator.js"></script>
     <script src="src/core/common/plupload.js"></script>
+
+    <script src="src/core/campaigns/keywords/index.js"></script>
+    <script src="src/core/campaigns/keywords/MainController.js"></script>
+    <script src="src/core/campaigns/keywords/Step1Controller.js"></script>
+    <script src="src/core/campaigns/keywords/Step2Controller.js"></script>
+    <script src="src/core/campaigns/keywords/Step3Controller.js"></script>
+    <script src="src/core/campaigns/keywords/Step4Controller.js"></script>
 
     <script src="src/app.js"></script>
 

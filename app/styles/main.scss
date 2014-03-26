@@ -55,3 +55,25 @@ $mcs-red : #fe5858;
 	padding-left: 20px;
 	padding-right: 20px;
 }
+
+.mcs-app .breadcrumb > li + li:before {
+  content: " > ";
+}
+
+.mcs-app .breadcrumb {
+  color : #888;
+}
+.mcs-app .breadcrumb > .active {
+  color : #000;
+  font-weight : bold;
+}
+
+form.mcs-limit-input-length {
+  input, select {
+    max-width: 400px;
+  }
+}
+
+input.mcs-amount {
+  max-width: 200px;
+}
