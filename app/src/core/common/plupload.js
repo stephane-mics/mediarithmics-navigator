@@ -4,8 +4,8 @@
 
   angular.module('core/common')
   .directive('micsPlUpload', [
-    '$log', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', "jquery", "plupload",
-    function ($log, Session, AuthenticationService, $, plupload) {
+    '$log', 'core/configuration', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', "jquery", "plupload",
+    function ($log, configuration, Session, AuthenticationService, $, plupload) {
       return {
         restrict: 'A',
         scope: {
@@ -17,7 +17,7 @@
           $('#'+iAttrs.id+' .browse-button').attr("id", iAttrs.id+"-browse-button");
           $('#'+iAttrs.id+' .drop-target').attr("id", iAttrs.id+"-drop-target");
 
-          var uploadUrl = "http://127.0.0.1:9004/public/"+ "v1/asset_files?organisation_id="+Session.getCurrentWorkspace().organisation_id;
+          var uploadUrl = configuration.ADS_UPLOAD_URL + "?organisation_id="+Session.getCurrentWorkspace().organisation_id;
 
           var options = {
             runtimes : 'html5,flash,html4',

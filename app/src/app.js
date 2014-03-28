@@ -12,6 +12,7 @@
     'ngRoute',
     'restangular',
 
+    'core/configuration',
     'core/layout',
     'core/keywords',
     'core/campaigns',
@@ -107,122 +108,124 @@
 
 
   // configure the Restangular Service
-  navigatorApp.config(['RestangularProvider', function (RestangularProvider) {
+  navigatorApp.config([
+    'RestangularProvider', 'core/configuration',
+    function (RestangularProvider, configuration) {
 
-    // set the api entry point
-    RestangularProvider.setBaseUrl('http://127.0.0.1:9004/public/v1');
+      // set the api entry point
+      RestangularProvider.setBaseUrl(configuration.WS_URL);
 
-    // configure the response extractor
-    RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
+      // configure the response extractor
+      RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
 
-      // This is a get for a list
-      var newResponse;
-      if (operation === "getList") {
+        // This is a get for a list
+        var newResponse;
+        if (operation === "getList") {
 
-        // this is an array
-        newResponse = response.data;
-        // metadata ..
-        // newResponse.metadata = response.data.meta;
+          // this is an array
+          newResponse = response.data;
+          // metadata ..
+          // newResponse.metadata = response.data.meta;
 
-      } else {
+        } else {
 
-        // This is an element
-        newResponse = response.data;
+          // This is an element
+          newResponse = response.data;
 
-      }
-      return newResponse;
-    });
-
-
-  }]);
-
-
-  navigatorApp.config(['$httpProvider', function ($httpProvider) {
-
-    $httpProvider.interceptors.push(['$q', function ($q){
-
-      return {
-        'response' : function(response) {
-          return response;
-        },
-
-        'responseError': function(rejection) {
-          return rejection;
-
-          /*
-
-             if (rejection.status == 401) {
-
-          // check if the error is an AccesTokenCreationError or a RefreshTokenCreationError
-
-          // check if the AuthenticationService is already trying to reconnect
-
-          AuthenticationService.createAccessToken().then(function() {
-          // success
-          console.log("http interceptor : acces token renewed successfully");
-
-          // resend the queue requests
-
-          },
-          function() {
-          // failure : redirect to login page
-
-          // flush the queue requests
-
-          // redirect
-          $location.path('/login');
-          });
-
-
-          }
-
-*/
         }
-      };
+        return newResponse;
+      });
+
+
     }]);
-  }]);
 
 
-  /* work to be performed after module loading */
+    navigatorApp.config(['$httpProvider', function ($httpProvider) {
 
-  // add an event listener on $routeChangeStart to restrict access to
-  // secured part of the app
+      $httpProvider.interceptors.push(['$q', function ($q){
 
-  navigatorApp.run([
-    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
-    function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
+        return {
+          'response' : function(response) {
+            return response;
+          },
 
-      $rootScope.$on('$routeChangeStart', function (event, next, current) {
+          'responseError': function(rejection) {
+            return rejection;
 
-        $log.debug("$routeChangeStart  next : ", next);
+            /*
 
-        if (!next.publicUrl) {
+               if (rejection.status == 401) {
 
-          if (AuthenticationService.hasAccessToken()) {
+            // check if the error is an AccesTokenCreationError or a RefreshTokenCreationError
 
-            if (!Session.isInitialized()) {
+            // check if the AuthenticationService is already trying to reconnect
 
-              AuthenticationService.pushPendingPath($location.url());
-              $location.path('/init-session');
+            AuthenticationService.createAccessToken().then(function() {
+            // success
+            console.log("http interceptor : acces token renewed successfully");
+
+            // resend the queue requests
+
+            },
+            function() {
+            // failure : redirect to login page
+
+            // flush the queue requests
+
+            // redirect
+            $location.path('/login');
+            });
+
+
             }
 
-
-          } else if (AuthenticationService.hasRefreshToken()) {
-
-            // keep the current path in memory
-            AuthenticationService.pushPendingPath($location.url());
-
-            // redirect to the remember-me page
-            $location.path('/remember-me');
-
-          } else {
-
-            // redirect to login
-            $location.path('/login');
-
+*/
           }
-        }
-      });
-    }
-  ]);
+        };
+      }]);
+    }]);
+
+
+    /* work to be performed after module loading */
+
+    // add an event listener on $routeChangeStart to restrict access to
+    // secured part of the app
+
+    navigatorApp.run([
+      '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
+      function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
+
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+
+          $log.debug("$routeChangeStart  next : ", next);
+
+          if (!next.publicUrl) {
+
+            if (AuthenticationService.hasAccessToken()) {
+
+              if (!Session.isInitialized()) {
+
+                AuthenticationService.pushPendingPath($location.url());
+                $location.path('/init-session');
+              }
+
+
+            } else if (AuthenticationService.hasRefreshToken()) {
+
+              // keep the current path in memory
+              AuthenticationService.pushPendingPath($location.url());
+
+              // redirect to the remember-me page
+              $location.path('/remember-me');
+
+            } else {
+
+              // redirect to login
+              $location.path('/login');
+
+            }
+          }
+        });
+      }
+    ]);
 })();
