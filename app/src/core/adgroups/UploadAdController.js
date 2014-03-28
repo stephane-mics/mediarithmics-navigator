@@ -9,9 +9,9 @@
    *
    */
 
-  var module = angular.module('core/campaigns/expert');
+  var module = angular.module('core/adgroups');
 
-  module.controller('core/campaigns/expert/UploadAdController', [
+  module.controller('core/adgroups/UploadAdController', [
     '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService',
     function($scope, $modalInstance, $document, $log, DisplayCampaignService) {
 

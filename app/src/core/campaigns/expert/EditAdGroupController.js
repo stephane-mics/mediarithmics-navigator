@@ -25,30 +25,6 @@
       // fo the keywords controller
       // $scope.keywordsList =
 
-      // upload new Ad
-      $scope.uploadNewAd = function(adGroup) {
-
-        // display pop-up
-        var uploadModal = $modal.open({
-          templateUrl: 'src/core/campaigns/expert/upload-ad.html',
-          scope : $scope,
-          controller: 'core/campaigns/expert/UploadAdController'
-        });
-
-        uploadModal.result.then(function () {
-
-        }, function () {
-          $log.info('Modal dismissed at: ' + new Date());
-        });
-      };
-
-
-      // select exisiting Ads
-      $scope.selectExistingAd = function(adGroup) {
-        // display pop-up
-      };
-
-
       // save button
       $scope.done = function() {
 

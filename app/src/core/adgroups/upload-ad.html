@@ -1,0 +1,15 @@
+<div class="modal-body">
+  <div mics-pl-upload id="ad-upload">
+    <h3>Upload Ad</h3>
+
+    <button  class="btn btn-default browse-button" >Select files</button>
+
+    <div class="drop-target" style="position: relative; z-index: 0;">Drop your files here</div>
+
+    <div class="upload-debug">No runtime found, your browser doesn't support HTML5 drag &amp; drop upload.</div>
+
+    <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
+
+    <button ng-click="done()" class="btn btn-default" >Done</button>
+  </div>
+</div>

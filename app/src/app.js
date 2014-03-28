@@ -15,6 +15,7 @@
     'core/configuration',
     'core/layout',
     'core/keywords',
+    'core/adgroups',
     'core/campaigns',
     'core/login',
     'core/common',
@@ -137,95 +138,96 @@
       });
 
 
-    }]);
+    }
+  ]);
 
 
-    navigatorApp.config(['$httpProvider', function ($httpProvider) {
+  navigatorApp.config(['$httpProvider', function ($httpProvider) {
 
-      $httpProvider.interceptors.push(['$q', function ($q){
+    $httpProvider.interceptors.push(['$q', function ($q){
 
-        return {
-          'response' : function(response) {
-            return response;
+      return {
+        'response' : function(response) {
+          return response;
+        },
+
+        'responseError': function(rejection) {
+          return rejection;
+
+          /*
+
+             if (rejection.status == 401) {
+
+          // check if the error is an AccesTokenCreationError or a RefreshTokenCreationError
+
+          // check if the AuthenticationService is already trying to reconnect
+
+          AuthenticationService.createAccessToken().then(function() {
+          // success
+          console.log("http interceptor : acces token renewed successfully");
+
+          // resend the queue requests
+
           },
+          function() {
+          // failure : redirect to login page
 
-          'responseError': function(rejection) {
-            return rejection;
+          // flush the queue requests
 
-            /*
-
-               if (rejection.status == 401) {
-
-            // check if the error is an AccesTokenCreationError or a RefreshTokenCreationError
-
-            // check if the AuthenticationService is already trying to reconnect
-
-            AuthenticationService.createAccessToken().then(function() {
-            // success
-            console.log("http interceptor : acces token renewed successfully");
-
-            // resend the queue requests
-
-            },
-            function() {
-            // failure : redirect to login page
-
-            // flush the queue requests
-
-            // redirect
-            $location.path('/login');
-            });
+          // redirect
+          $location.path('/login');
+          });
 
 
-            }
+          }
 
 */
-          }
-        };
-      }]);
+        }
+      };
     }]);
+  }]);
 
 
-    /* work to be performed after module loading */
+  /* work to be performed after module loading */
 
-    // add an event listener on $routeChangeStart to restrict access to
-    // secured part of the app
+  // add an event listener on $routeChangeStart to restrict access to
+  // secured part of the app
 
-    navigatorApp.run([
-      '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
-      function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
+  navigatorApp.run([
+    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
+    function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
 
-        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+      $rootScope.$on('$routeChangeStart', function (event, next, current) {
 
-          $log.debug("$routeChangeStart  next : ", next);
+        $log.debug("$routeChangeStart  next : ", next);
 
-          if (!next.publicUrl) {
+        if (!next.publicUrl) {
 
-            if (AuthenticationService.hasAccessToken()) {
+          if (AuthenticationService.hasAccessToken()) {
 
-              if (!Session.isInitialized()) {
+            if (!Session.isInitialized()) {
 
-                AuthenticationService.pushPendingPath($location.url());
-                $location.path('/init-session');
-              }
-
-
-            } else if (AuthenticationService.hasRefreshToken()) {
-
-              // keep the current path in memory
               AuthenticationService.pushPendingPath($location.url());
-
-              // redirect to the remember-me page
-              $location.path('/remember-me');
-
-            } else {
-
-              // redirect to login
-              $location.path('/login');
-
+              $location.path('/init-session');
             }
+
+
+          } else if (AuthenticationService.hasRefreshToken()) {
+
+            // keep the current path in memory
+            AuthenticationService.pushPendingPath($location.url());
+
+            // redirect to the remember-me page
+            $location.path('/remember-me');
+
+          } else {
+
+            // redirect to login
+            $location.path('/login');
+
           }
-        });
-      }
-    ]);
+        }
+      });
+    }
+  ]);
 })();

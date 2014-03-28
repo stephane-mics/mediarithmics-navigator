@@ -17,16 +17,7 @@
             <input  ng-model="adGroup.name" type="text" class="form-control" id="name">
           </div>
 
-          <!-- Ads -->
-          <div class="form-group">
-            <label>Ads</label>
-            <div ng-repeat="ad in ads">
-                 <div ng-include src="'src/core/campaigns/expert/view-ad.html'"></div>
-            </div>
-            <div class="btn-group">
-              <button class="btn btn-default" ng-click="selectExistingAd()">Select Existing Ad</button>
-              <button class="btn btn-default" ng-click="uploadNewAd()">Upload New Ad</button>
-            </div>
+          <div ng-include="'src/core/adgroups/choose-ads.html'"></div>
 
 
           </div>
