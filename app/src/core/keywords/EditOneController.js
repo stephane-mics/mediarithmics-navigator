@@ -38,8 +38,16 @@
           return;
         }
 
-        var idx = kw.expressionList.indexOf(newKeywordExpression.content);
-        if(idx === -1) {
+        var found = false, current;
+        for (var i = 0; i < kw.expressionList.length; i++) {
+          current = kw.expressionList[i];
+          if (current.content === newKeywordExpression.content) {
+            found = true;
+            break;
+          }
+        }
+
+        if(!found) {
           kw.expressionList.push({
             content : newKeywordExpression.content,
             type : newKeywordExpression.type
