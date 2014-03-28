@@ -8,6 +8,11 @@
     "$scope",
     function ($scope) {
 
+      if (!$scope.campaign.keywordsLists.length) {
+        $scope.campaign.keywordsLists.push({expressionList:[]});
+      }
+      $scope.keywordsList = $scope.campaign.keywordsLists[0];
+
       $scope.previous = function () {
         $scope.container.step = "step1";
       };

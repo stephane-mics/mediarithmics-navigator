@@ -77,3 +77,21 @@ form.mcs-limit-input-length {
 input.mcs-amount {
   max-width: 200px;
 }
+
+.keywords-expressions {
+
+  min-height: 100px;
+  > div {
+    display: inline-block;
+    border: 1px solid #888;
+    border-radius: 4px;
+    padding: 4px;
+    margin: 4px;
+  }
+
+  > div button {
+    margin-left: 5px;
+    line-height: 0.8;
+  }
+
+}

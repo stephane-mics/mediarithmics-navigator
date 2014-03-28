@@ -14,6 +14,9 @@
 
         this.adGroups = [];
         this.removedAdGroups = [];
+
+        this.keywordsLists = [];
+
         this.value = {type:"DISPLAY"};
       };
 

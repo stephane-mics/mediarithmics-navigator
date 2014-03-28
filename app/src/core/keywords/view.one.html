@@ -1,32 +1,42 @@
 <div ng-controller="core/keywords/EditOneController" class="col-md-12">
-  <div class="col-md-12">
-    <form novalidate name="addKeywordExpressionForm" ng-submit="addKeywordExpression(keywordsList, newKeywordExpression)" class="form-inline">
+  <div class="col-md-6">
+    <form novalidate name="addKeywordExpressionForm" ng-submit="addKeywordExpression(keywordsList, newKeywordExpression)">
+
       <div class="form-group">
-
-        <!-- <label> -->
-        <!-- Name : -->
-        <!-- <input type="text" ng-model="keywordsList.name" placeholder="add new keywords" /> -->
-        <!-- </label> -->
-        <!-- <br /> -->
-
         <select ng-model="newKeywordExpression.type" class="form-control">
-          <option value="include">include</option>
-          <option value="exclude">exclude</option>
+          <option value="include">Target pages which contain the keywords</option>
+          <option value="exclude">Target pages which don't contain the keywords</option>
         </select>
+      </div>
 
-        <input type="text" ng-model="newKeywordExpression.content" placeholder="add new keywords" />
+      <div class="form-group">
+        <input type="text" ng-model="newKeywordExpression.content" placeholder="add new keywords" class="form-control pull-left" />&nbsp;
         <button class="btn btn-default">add</button>
       </div>
       <hr>
     </form>
-    <p ng-repeat="keywordExpression in keywordsList.expressionList">
-      {{ keywordExpression.type }} : {{ keywordExpression.content }}
+    <div class="keywords-expressions well">
+    <div ng-repeat="keywordExpression in keywordsList.expressionList | filter : positiveExpressionsFilter">
+      {{ keywordExpression.content }}
       <button ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</button>
-    </p>
+    </div>
   </div>
-  <!--
+    <hr>
+    <div class="keywords-expressions well">
+    <div ng-repeat="keywordExpression in keywordsList.expressionList | filter : negativeExpressionsFilter">
+      {{ keywordExpression.content }}
+      <button ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</button>
+    </div>
+    </div>
+  </div>
   <div class="col-md-6">
-    here, stats !
+    <div class="jumbotron">
+      Volume d'audience <button class="btn btn-default" ng-click="refreshStats()">Refresh</button>
+      <h2>{{ '2.8 Millions' }} <small>pages/month</small></h2>
+      <dl class="dl-horizontal">
+        <dt>www.ebay.fr</dt> <dd>160 000</dd>
+        <dt>www.orange.fr</dt> <dd>300 000</dd>
+      </dl>
   </div>
-  -->
+  </div>
 </div>
