@@ -34,10 +34,10 @@
 
         scope.getElementTemplate = function() {
           if (scope.elementTemplate) {
-            return scope.elementTemplate
+            return scope.elementTemplate;
           } else {
             // default
-            return 'src/core/datamart/common/default-grid-element.template.html'
+            return 'src/core/datamart/common/default-grid-element.template.html';
           }
         };
 

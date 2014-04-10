@@ -21,9 +21,9 @@
 
       // attach watcher
       $scope.refreshUsers(0, 10);
-      $scope.$watch('searchTerms', function(){ 
+      $scope.$watch('searchTerms', function(){
         $scope.refreshUsers(0, 10);
-      })
+      });
 
     }
   ]);

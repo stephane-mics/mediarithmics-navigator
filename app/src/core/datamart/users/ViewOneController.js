@@ -16,8 +16,9 @@
       // fetch Account
       var userEndpoint = Restangular.one('datamarts', 8).one('users', $routeParams.userId);
       userEndpoint.get().then(function (user) {
-        if (user.account_creation_date)
-          user.account_creation_date = new Date(user.account_creation_date)
+        if (user.account_creation_date) {
+          user.account_creation_date = new Date(user.account_creation_date);
+        }
         $scope.user = user;
 
         // fetch Agents
