@@ -17,6 +17,7 @@
     'core/keywords',
     'core/adgroups',
     'core/campaigns',
+    'core/datamart',
     'core/login',
     'core/common',
   ]);
@@ -98,6 +99,37 @@
       .when('/route-not-found', {
       });
 
+      // TODO: move these to non-public and authenticate
+      $routeProvider
+      .when('/datamart', {
+        templateUrl: 'src/core/datamart/index.html',
+        publicUrl : true
+      })
+      .when('/datamart/items', {
+        templateUrl: 'src/core/datamart/items/view.all.html',
+        publicUrl : true
+      })
+      .when('/datamart/items/:itemId', {
+        templateUrl: 'src/core/datamart/items/view.one.html',
+        publicUrl : true
+      })
+      .when('/datamart/categories/', {
+        templateUrl: 'src/core/datamart/categories/browse.html',
+        publicUrl : true
+      })
+      .when('/datamart/categories/:categoryId', {
+        templateUrl: 'src/core/datamart/categories/browse.html',
+        publicUrl : true
+      })
+      .when('/datamart/users', {
+        templateUrl: 'src/core/datamart/users/view.all.html',
+        publicUrl : true
+      })
+      .when('/datamart/users/:userId', {
+        templateUrl: 'src/core/datamart/users/view.one.html',
+        publicUrl : true
+      });
+
       $routeProvider
       .otherwise({
         publicUrl: true,
@@ -127,11 +159,19 @@
           newResponse = response.data;
           // metadata ..
           // newResponse.metadata = response.data.meta;
-
         } else {
 
           // This is an element
           newResponse = response.data;
+
+          // add paging to metadata (datamart)
+          newResponse.metadata = {
+            paging: {
+              count: response.count,
+              offset: response.offset,
+              limit: response.limit
+            }
+          };
 
         }
         return newResponse;

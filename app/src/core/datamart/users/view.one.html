@@ -1,0 +1,53 @@
+<div ng-include src="'src/core/datamart/nav.html'" class="row-fluid"></div>
+<div ng-controller="core/datamart/users/ViewOneController" class="row-fluid">
+	<div class="vertically-spaced clearfix">
+
+		<!-- Account details -->
+		<div class="pull-left">
+	  	<table class="table table-hover">
+				<tr ng-hide="user.first_name == null">
+					<td>First name</td>
+					<td><strong>{{ user.first_name }}</strong></td>
+				</tr>
+				<tr ng-hide="user.last_name == null">
+					<td>Last name</td>
+					<td><strong>{{ user.last_name }}</strong></td>
+				</tr>
+				<tr ng-hide="user.email == null">
+					<td>Email</td>
+					<td>{{ user.email }}</td>
+				</tr>
+				<tr ng-hide="user.account_id == null">
+					<td>Account ID</td>
+					<td><code>{{ user.account_id }}</code></td>
+				</tr>
+				<tr ng-hide="user.gender == null">
+					<td>Gender</td>
+					<td>{{ user.gender }}</td>
+				</tr>
+				</tr>
+				<tr ng-hide="user.account_creation_date == null">
+					<td>Account created on</td>
+					<td>{{ user.account_creation_date }}</td>
+				</tr>
+			</table>
+		</div>
+
+	</div>
+
+	<!-- Agents Grid -->
+	<div class="list-group">
+		<div class="list-group-item" ng-repeat="agent in agents">
+			<div class="clearfix">
+		    <!-- image -->
+		    <img src="http://placehold.it/40x40" alt="" class="pull-left" style="margin-right:10px">
+
+		    <!-- some properties -->
+		    <div class="pull-left">
+		      <p><strong>{{ agent.device_type }}</strong> with <strong>{{ agent.user_agent_type }}</strong> on <strong>{{ agent.operating_system }}</strong></p>
+		    </div>
+	  	</div>
+		</div>
+	</div>
+
+</div>

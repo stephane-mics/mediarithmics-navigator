@@ -112,3 +112,47 @@ input.mcs-amount {
   background: rgba(255, 255, 255, 0.4);
   border-color: green;
 }
+
+
+/*
+ * Datamart
+ */
+
+ .inlined {
+  display: inline;
+}
+
+.top-spaced {
+  margin-top: 20px;
+}
+
+.bottom-spaced {
+  margin-bottom: 20px;
+}
+
+.vertically-spaced {
+  @extend .top-spaced;
+  @extend .bottom-spaced;
+}
+
+.current-category {
+  padding: 10px 15px;
+  border-radius: 4px;
+  background: #428BCA;
+  color: white;
+  width: 300px;
+}
+
+.parent-category-list {
+  padding: 10px 15px;
+
+  .parent-category {
+
+    &:after {
+      content: ",";
+    }
+    &:last-child:after {
+      content: '';
+    }
+  }
+}

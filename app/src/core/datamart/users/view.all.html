@@ -1,0 +1,21 @@
+<!-- Nav -->
+<div ng-include src="'src/core/datamart/nav.html'" class="row-fluid"></div>
+
+<!-- Row -->
+<div ng-controller="core/datamart/users/ViewAllController" class="row-fluid">
+
+
+  <!-- Search form -->
+  <div class="well">
+    <form class="form-inline" role="form">
+      <div class="form-group">
+        <label class="sr-only" for="searchTermInput">Search</label>
+        <input type="search" class="form-control" id="searchTermInput" placeholder="Search" ng-model="searchTerms">
+      </div>
+    </form>
+  </div>  
+
+  <!-- Accounts Grid -->
+  <div mics-datamart-grid element-template="'src/core/datamart/users/user-grid-element.template.html'" data="users" refresh="refreshUsers" url-prefix="baseUrl"></div>
+
+</div>
