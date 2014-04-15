@@ -28,7 +28,7 @@
 				</tr>
 				<tr ng-hide="user.account_creation_date == null">
 					<td>Account created on</td>
-					<td>{{ user.account_creation_date }}</td>
+					<td>{{ user.account_creation_date | date}}</td>
 				</tr>
 			</table>
 		</div>
@@ -37,17 +37,22 @@
 
 	<!-- Agents Grid -->
 	<div class="list-group">
-		<div class="list-group-item" ng-repeat="agent in agents">
+		<a href class="list-group-item" ng-repeat="agent in agents" ng-click="expandAgent($event)">
 			<div class="clearfix">
-		    <!-- image -->
-		    <img src="http://placehold.it/40x40" alt="" class="pull-left" style="margin-right:10px">
+			    <!-- image -->
+			    <img src="http://placehold.it/40x40" alt="" class="pull-left" style="margin-right:10px" valign="middle">
 
-		    <!-- some properties -->
-		    <div class="pull-left">
-		      <p><strong>{{ agent.device_type }}</strong> with <strong>{{ agent.user_agent_type }}</strong> on <strong>{{ agent.operating_system }}</strong></p>
-		    </div>
-	  	</div>
-		</div>
+			    <!-- some properties -->
+			    <div class="pull-left">
+			      <p ng-show="agent.device_type">Device: <strong>{{ agent.device_type }}</strong></p>
+			      <p ng-show="agent/user_agent_type">User-Agent: <strong>{{ agent.user_agent_type }}</strong></p>
+			      <p ng-show="agent.operating_system">OS: <strong>{{ agent.operating_system }}</strong></p>
+			      <div ng-show="agent.expanded">
+			      	<p>Visits: <strong ng-repeat="visit in agent.visits">{{ visit.end_date | date }};</strong></p>
+			      </div>
+			    </div>
+	  		</div>
+		</a>
 	</div>
 
 </div>
