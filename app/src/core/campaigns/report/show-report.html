@@ -1,0 +1,110 @@
+<div class="campaign-report" ng-Controller="core/campaigns/report/BasicReportCampaignController">
+    <div class="report-sidebar">
+
+        <ul>
+            <li class="active"><a >Overview</a></li>
+            <li><a >Reports</a></li>
+            <li><a >Analytics</a></li>
+            <li><a >Export</a></li>
+        </ul>
+
+    </div>
+    <div class="report">
+        <div class="information">
+
+            <div class="campaign">
+                <h1>Campaign {{campaign.name}}</h1>
+                <div class="col-md-4">
+                    <span class="label label-warning"><span class="glyphicon glyphicon-stop"></span> {{campaign.status}}</span>
+
+
+                </div>
+                <div class="chart-controller">
+                    <input type="daterange" ng-model="reportDateRange" class="form-control" format="L">
+                </div>
+            </div>
+        </div>
+        <div class="chart-area">
+            <div class="big-chart">
+                <div class="chart with-3d-shadow "
+                    nvd3-double-line-chart
+                    interpolate="linear"
+                    clipEdge="true"
+                    data="data1"
+                    id="exampleId2"
+                    xAxisTickFormat="xAxisTickFormat()"
+                    >
+                    <svg></svg>
+                </div>
+            </div>
+            </div>
+
+
+        <div class="breakdown-area">
+            <div class="panel">
+                <div class="panel-body">
+                    <tabset class="breakdown">
+                    <tab heading="Creative">
+
+                     <table class="table table-striped">
+                        <thead>
+                            <tr >
+                                <th ng-repeat="header in creativePerformance.columns_headers">{{header}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in creativePerformance.rows" >
+                            <td ng-repeat="col in row track by $index">{{col}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                    </tab>
+
+                    <tab heading="Ad group">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr >
+                                <th ng-repeat="header in adGroupPerformance.columns_headers">{{header}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in adGroupPerformance.rows" >
+                            <td ng-repeat="col in row track by $index">{{col}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+
+
+                    </tab>
+                    
+                    <tab heading="Ad">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr >
+                                <th ng-repeat="header in adPerformance.columns_headers">{{header}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in adPerformance.rows" >
+                            <td ng-repeat="col in row track by $index">{{col}}</td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+
+
+                    </tab>
+
+                    </tabset>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

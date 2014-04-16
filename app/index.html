@@ -49,17 +49,27 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/lodash/dist/lodash.compat.js"></script>
     <script src="bower_components/restangular/dist/restangular.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/nv.d3.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/momentjs/moment.js"></script>
+    <script src="bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>
     <script src="bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker.js"></script>
+    <script src="bower_components/autofill-event/src/autofill-event.js"></script>
+    <!-- endbower -->
     <script src="bower_components/async/lib/async.js"></script>
     <script src="bower_components/plupload/js/moxie.js"></script>
     <script src="bower_components/plupload/js/plupload.dev.js"></script>
-    <!-- endbower -->
+
+    <script type="text/javascript" src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="bower_components/ng-bs-daterangepicker/dist/ng-bs-daterangepicker.min.js"></script>
     <!-- endbuild -->
 
+
     <script src="conf/app-configuration.js"></script>
+    <script src="src/nvd3-templates/doubleLineChart.js"></script>
 
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -69,6 +79,7 @@
     <script src="src/core/layout/index.js"></script>
     <script src="src/core/keywords/index.js"></script>
     <script src="src/core/campaigns/expert/index.js"></script>
+    <script src="src/core/campaigns/report/index.js"></script>
     <script src="src/core/campaigns/index.js"></script>
     <script src="src/core/adgroups/index.js"></script>
     <script src="src/core/datamart/index.js"></script>
@@ -107,6 +118,7 @@
     <script src="src/core/common/auth/AuthenticationService.js"></script>
     <script src="src/core/common/IdGenerator.js"></script>
     <script src="src/core/common/plupload.js"></script>
+    <script src="src/core/common/charts.js"></script>
 
     <script src="src/core/campaigns/keywords/index.js"></script>
     <script src="src/core/campaigns/keywords/MainController.js"></script>
@@ -114,6 +126,10 @@
     <script src="src/core/campaigns/keywords/Step2Controller.js"></script>
     <script src="src/core/campaigns/keywords/Step3Controller.js"></script>
     <script src="src/core/campaigns/keywords/Step4Controller.js"></script>
+
+    <script src="src/core/campaigns/report/index.js"></script>
+    <script src="src/core/campaigns/report/BasicReportCampaignController.js"></script>
+    <script src="src/core/campaigns/report/CampaignAnalyticsReportService.js"></script>
 
     <script src="src/app.js"></script>
 

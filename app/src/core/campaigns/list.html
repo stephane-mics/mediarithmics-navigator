@@ -1,4 +1,4 @@
-<div class="container-fluid mcs-content" ng-Controller="core/campaigns/ListController">
+<div class="container-fluid mcs-content campaign-list" ng-Controller="core/campaigns/ListController">
   <div class="row">
     <div class="col-md-10">
       <h1>Campaigns</h1>
@@ -11,10 +11,12 @@
           <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Actions</th>
           </tr>
           <tr ng-repeat="campaign in campaigns " >
             <td ng-click="editCampaign(campaign)">{{campaign.id}}</td>
-            <td><a ng-click="editCampaign(campaign)">{{campaign.name}}</a></td>
+            <td><a ng-click="showCampaign(campaign)">{{campaign.name}}</a></td>
+            <td><button type="button" class="edit btn btn-primary" ng-click="editCampaign(campaign)"><span class="glyphicon glyphicon-edit"></span></button></td>
           </tr>
         </table>
       </div>

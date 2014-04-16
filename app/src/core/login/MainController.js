@@ -6,7 +6,10 @@
   module.controller('core/login/MainController', [
     '$scope', '$location', '$log', '$rootScope', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
     function($scope, $location, $log, $rootScope, AuthenticationService, Session, LoginConstants) {
-
+      $scope.user = {email:"", password:""};
+      setTimeout(function() {
+        $("#loginEmail").checkAndTriggerAutoFillEvent();
+      } ,0);
       function showSimpleError() {
         // failure : display an error message
         $scope.message = "Authentication error";
@@ -27,10 +30,10 @@
       }
 
       $scope.submit = function() {
-
+        
         // check that email & password are not empty
         if  ( !$scope.user.email || !$scope.user.password ) {
-
+          
         }
 
         if ($scope.rememberMe) {

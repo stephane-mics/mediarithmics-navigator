@@ -18,6 +18,12 @@
         $location.path('/display-campaigns/select-campaign-template');
       };
 
+      $scope.showCampaign = function(campaign) {
+        $log.debug("> showCampaign for campaignId=", campaign.id);
+        $location.path("/display-campaigns/report/"+campaign.id+"/basic");
+
+      };
+
       $scope.editCampaign = function(campaign) {
 
         $log.debug("> editCampaign for campaignId=", campaign.id);

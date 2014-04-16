@@ -11,6 +11,8 @@
     'ngSanitize',
     'ngRoute',
     'restangular',
+    'nvd3ChartDirectives',
+    'ngBootstrap',
 
     'core/configuration',
     'core/layout',
@@ -93,9 +95,10 @@
       .when('/display-campaigns/expert/edit-ad-group/:ad_group_id', {
         templateUrl:'src/core/campaigns/expert/edit-ad-group.html'
       })
-      .when('/display-campaigns/edit-expert/:campaign_id', {
+       .when('/display-campaigns/edit-expert/:campaign_id', {
         templateUrl:'src/core/campaigns/expert/edit-campaign.html'
       })
+
       .when('/route-not-found', {
       });
 
