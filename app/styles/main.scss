@@ -1,10 +1,8 @@
 /*
  * Mediarithmics navigator style sheet
  */
-
-
-
-$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+$icon-font-path: "/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/";
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
 
 
 // override bootstrap variables
@@ -155,4 +153,80 @@ input.mcs-amount {
       content: '';
     }
   }
+}
+/**
+* campaign list
+*/
+
+.campaign-list {
+  
+}
+
+.campaign-report {
+    @extend .mcs-content;
+    @include make-row();
+    .report-sidebar {
+        @extend .sidebar;
+        @include make-md-column(4);
+        @include make-md-column-push(8);
+
+        ul {
+            @extend .nav;
+            @extend .nav-pills;
+            @extend .nav-stacked;
+
+        }
+
+    }
+    .report {
+        @include make-md-column-pull(4);
+        @include make-md-column(8);
+        .information {
+            @include make-row();
+            .campaign {
+                @include make-md-column(12);
+            }
+
+            .chart-controller {
+                @include make-md-column(8);
+                @extend .text-right;
+            }
+        }
+        .chart-area {
+            @include    make-row();
+            .medium-chart {
+                @include make-md-column(6);
+                .chart {
+                    height: 250px;
+                    position: static;
+                }
+            }
+            .big-chart {
+                @include make-md-column(12);
+                .chart {
+                    height: 250px;
+                    position: static;
+                }
+            }
+        }
+        .breakdown-area {
+            @include    make-row();
+            .panel{
+
+                @extend .panel;
+                @extend .panel-default;
+                @include  make-md-column(12);
+
+                .panel-body {
+                    @extend .panel-body;
+                }
+                .breakdown {
+                    @extend .nav;
+                    @extend .nav-tabs ;
+                    @extend .nav-justified;
+                }
+            }
+
+        }
+    }
 }
