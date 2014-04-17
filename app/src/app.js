@@ -52,6 +52,20 @@
     }
   ]);
 
+  navigatorApp.factory('d3', [
+    '$window',
+    function($window) {
+      return $window.d3;
+    }
+  ]);
+
+  navigatorApp.factory('moment', [
+    '$window',
+    function($window) {
+      return $window.moment;
+    }
+  ]);
+
   // configure the application
   navigatorApp.config([
     "$routeProvider", "$logProvider",

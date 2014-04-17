@@ -42,8 +42,8 @@
             agent.visits = visits;
           });
         }
-        
-      }
+
+      };
     }
   ]);
 

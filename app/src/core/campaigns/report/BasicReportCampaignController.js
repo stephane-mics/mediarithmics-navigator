@@ -7,8 +7,8 @@
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'core/campaigns/DisplayCampaignService','CampaignAnalyticsReportService',
-    function($scope, $location, $log, $routeParams,   Restangular, DisplayCampaignService, CampaignAnalyticsReportService) {
+    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService','CampaignAnalyticsReportService',
+    function($scope, $location, $log, $routeParams,   Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService) {
       $scope.valTo = 10;
       $log.debug("fetching "+$routeParams.campaign_id);
       DisplayCampaignService.initEditCampaign($routeParams.campaign_id).then(function() {
@@ -58,24 +58,24 @@
       $scope.xAxisTickFormat = function(){
         return function(d){
           return d3.time.format('%d %b')(new Date(d));
-        }
+        };
       };
 
       $scope.xAxisTickFormat = function(){
         return function(d){
           return d3.time.format('%d %b')(new Date(d)); //uncomment for date format
-        }
-      }
+        };
+      };
       $scope.yAxisTickFormat = function(){
         return function(d){
           return d3.format(',f');
-        }
-      }
+        };
+      };
       $scope.y2AxisTickFormat = function(){
         return function(d){
           return '$' + d3.format(',.2f')(d);
-        }
-      }
+        };
+      };
 
 
       $scope.editCampaign = function(campaign) {

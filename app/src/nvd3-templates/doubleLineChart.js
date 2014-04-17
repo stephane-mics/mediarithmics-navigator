@@ -211,10 +211,10 @@ nv.models.doubleLineChart = function() {
       var boundsRight = findMinMax(dataRight);
       var range = d3.merge([boundsLeft.xRange , boundsRight.xRange]);
       if(dataLeft.length === 0) {
-        range = boundsRight.xRange
+        range = boundsRight.xRange;
       } else if(dataRight === 0) {
       
-        range = boundsLeft.xRange
+        range = boundsLeft.xRange;
       }
       lines1.xDomain([d3.min(range), d3.max(range)]);
 
@@ -336,7 +336,7 @@ nv.models.doubleLineChart = function() {
         
         if(numberOfDays < availableWidth / 100 ) {
           xAxis.ticks(d3.time.day,1);
-        } else { 
+        } else {
           xAxis.ticks(Math.floor(availableWidth / 100));
         }
         

@@ -2,7 +2,7 @@
 
   'use strict';
 
-var module = angular.module('core/campaigns/report', [
+  var module = angular.module('core/campaigns/report', [
     'restangular',
     'ngResource',
     // TODO : circular deps ?
@@ -12,7 +12,7 @@ var module = angular.module('core/campaigns/report', [
   ]);
 
 
-    module.config([
+  module.config([
     "$routeProvider",
     function ($routeProvider) {
       $routeProvider

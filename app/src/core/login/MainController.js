@@ -4,8 +4,8 @@
   var module = angular.module('core/login');
 
   module.controller('core/login/MainController', [
-    '$scope', '$location', '$log', '$rootScope', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
-    function($scope, $location, $log, $rootScope, AuthenticationService, Session, LoginConstants) {
+    '$scope', '$location', '$log', '$rootScope', 'jquery', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
+    function($scope, $location, $log, $rootScope, $, AuthenticationService, Session, LoginConstants) {
       $scope.user = {email:"", password:""};
       setTimeout(function() {
         $("#loginEmail").checkAndTriggerAutoFillEvent();
