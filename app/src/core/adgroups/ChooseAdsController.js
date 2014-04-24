@@ -14,6 +14,7 @@
         var uploadModal = $modal.open({
           templateUrl: 'src/core/adgroups/upload-ad.html',
           scope : $scope,
+          backdrop : 'static',
           controller: 'core/adgroups/UploadAdController'
         });
 

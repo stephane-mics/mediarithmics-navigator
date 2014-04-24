@@ -4,7 +4,7 @@
       <th>Size</th>
       <th>Ad Name</th>
       <th>Url</th>
-      <th>Delete</th>
+      <th ng-if="showDelete">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +21,7 @@
     <td>
       <input ng-model="creative.url_target">
     </td>
-    <td class="delete-action">
+    <td ng-if="showDelete" class="delete-action">
       <a ng-click="onDelete(creative)">x</a>
     </td>
   </tr>

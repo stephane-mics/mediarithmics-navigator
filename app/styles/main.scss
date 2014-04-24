@@ -370,6 +370,9 @@ input.mcs-amount {
 }
 
 table.fragment-list-creatives {
+
+  width : 100%;
+
   thead th {
     @extend .text-center;
   }

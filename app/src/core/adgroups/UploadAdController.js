@@ -41,6 +41,10 @@
         $modalInstance.close();
       };
 
+      $scope.cancel = function() {
+        $modalInstance.close();
+      };
+
       $modalInstance.opened.then(function(){
 
 

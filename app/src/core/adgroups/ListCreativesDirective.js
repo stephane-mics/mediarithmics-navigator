@@ -11,7 +11,8 @@
         // restrict: 'E',
         scope: {
           creatives: '=',
-          externalOnDelete: '=onDelete'
+          externalOnDelete: '=onDelete',
+          showDelete: "="
         },
         templateUrl: 'src/core/adgroups/ListCreatives.html',
         link: function (scope, iElement, iAttrs) {
