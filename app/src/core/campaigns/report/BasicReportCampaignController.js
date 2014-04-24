@@ -3,88 +3,140 @@
 
   var module = angular.module('core/campaigns/report');
 
+  var getDataForRow = function (id, stats) {
+    if (stats === undefined) {
+      return;
+    }
+    var statRow = _.filter(stats.rows, function (row) {
+      return row[0] == id;
+    })[0];
+
+    var isMetrics = function (e) {
+      return !/name|id/.test(e);
+    };
+    var notMetrics = function (e) {
+      return /name|id/.test(e);
+    };
+
+    if (statRow === undefined) {
+      return _.map(_.range(_.filter(stats.columns_headers, isMetrics).length), function () {
+        return "-";
+      });
+    }
+
+
+    return _.rest(statRow, _.findLastIndex(stats.columns_headers, notMetrics) + 1);
+  };
+
+  var updateStatistics = function ($scope, CampaignAnalyticsReportService, $routeParams) {
+
+    var startDate = $scope.reportDateRange.startDate;
+    var endDate = $scope.reportDateRange.endDate;
+    var campaignId = $routeParams.campaign_id;
+
+    $scope.xaxisdomain = [startDate.toDate().getTime(),
+      endDate.toDate().getTime()
+    ];
+
+    CampaignAnalyticsReportService.dayPerformance(
+      startDate,
+      endDate,
+      campaignId,
+      "clicks", "impressions"
+    ).then(function (data) {
+        $scope.data1 = data;
+      });
+    CampaignAnalyticsReportService.adGroupPerformance(
+      startDate,
+      endDate,
+      campaignId
+    ).then(function (data) {
+        $scope.adGroupPerformance = data;
+      });
+    CampaignAnalyticsReportService.creativePerformance(
+      startDate,
+      endDate,
+      campaignId
+    ).then(function (data) {
+        $scope.creativePerformance = data;
+      });
+    CampaignAnalyticsReportService.adPerformance(
+      startDate,
+      endDate,
+      campaignId
+    ).then(function (data) {
+        $scope.adPerformance = data;
+      });
+    CampaignAnalyticsReportService.kpi(
+      startDate,
+      endDate,
+      campaignId
+    ).then(function (data) {
+        $scope.kpis = data;
+      });
+
+
+  };
+
   /*
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService','CampaignAnalyticsReportService',
-    function($scope, $location, $log, $routeParams,   Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService) {
+    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService',
+    function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService) {
       $scope.valTo = 10;
-      $log.debug("fetching "+$routeParams.campaign_id);
-      DisplayCampaignService.initEditCampaign($routeParams.campaign_id).then(function() {
-        $scope.campaign =  DisplayCampaignService.getCampaignValue();
+      $log.debug("fetching " + $routeParams.campaign_id);
+      DisplayCampaignService.getDeepCampaignView($routeParams.campaign_id).then(function (campaign) {
+        $scope.campaign = campaign;
+        $scope.adgroups = campaign.ad_groups;
+        $scope.ads = _.unique(_.flatten(_.map(campaign.ad_groups, "ads")), "creative_id");
+
+
+        $scope.reportDateRange = {startDate: moment().subtract('days', 20), endDate: moment()};
+
+
+        $scope.$watch('reportDateRange', function () {
+          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams)
+        });
+        $scope.refresh = function () {
+          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams)
+        };
+
       });
 
-      $scope.reportDateRange = {startDate: moment().subtract('days', 7 ), endDate:moment()};
 
-      $scope.$watch('reportDateRange', function() {
+      $scope.getDataForRow = getDataForRow
 
-        $scope.xaxisdomain = [$scope.reportDateRange.startDate.toDate().getTime(),
-          $scope.reportDateRange.endDate.toDate().getTime()
-        ];
-        CampaignAnalyticsReportService.dayPerformance(
-          $scope.reportDateRange.startDate,
-          $scope.reportDateRange.endDate,
-          $routeParams.campaign_id,
-          "impressions","cpm"
-        ).then(function (data) {
-          $scope.data1 = data;
-        });
-        CampaignAnalyticsReportService.adGroupPerformance(
-          $scope.reportDateRange.startDate,
-          $scope.reportDateRange.endDate,
-          $routeParams.campaign_id
-        ).then(function(data) {
-          $scope.adGroupPerformance = data;
-        });
-        CampaignAnalyticsReportService.creativePerformance(
-          $scope.reportDateRange.startDate,
-          $scope.reportDateRange.endDate,
-          $routeParams.campaign_id
-        ).then(function(data) {
-          $scope.creativePerformance = data;
-        });
-        CampaignAnalyticsReportService.adPerformance(
-          $scope.reportDateRange.startDate,
-          $scope.reportDateRange.endDate,
-          $routeParams.campaign_id
-        ).then(function(data) {
-          $scope.adPerformance = data;
-        });
-
-
-
-      });
-      $scope.xAxisTickFormat = function(){
-        return function(d){
+      $scope.xAxisTickFormat = function () {
+        return function (d) {
           return d3.time.format('%d %b')(new Date(d));
-        };
+        }
       };
 
-      $scope.xAxisTickFormat = function(){
-        return function(d){
+      $scope.xAxisTickFormat = function () {
+        return function (d) {
           return d3.time.format('%d %b')(new Date(d)); //uncomment for date format
-        };
+        }
       };
-      $scope.yAxisTickFormat = function(){
-        return function(d){
+      $scope.yAxisTickFormat = function () {
+        return function (d) {
           return d3.format(',f');
-        };
+        }
       };
-      $scope.y2AxisTickFormat = function(){
-        return function(d){
+      $scope.y2AxisTickFormat = function () {
+        return function (d) {
           return '$' + d3.format(',.2f')(d);
-        };
+        }
       };
 
 
-      $scope.editCampaign = function(campaign) {
+      $scope.editCampaign = function (campaign) {
 
         $log.debug("> editCampaign for campaignId=", campaign.id);
 
         // get campaign edit template
         var editTemplateView = '/display-campaigns/expert/edit-campaign/';
-        DisplayCampaignService.initEditCampaign(campaign.id).then(function(){
+        DisplayCampaignService.initEditCampaign(campaign.id).then(function () {
           $location.path(editTemplateView + campaign.id);
         });
 

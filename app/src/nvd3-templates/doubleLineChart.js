@@ -16,7 +16,7 @@ nv.models.doubleLineChart = function() {
   legend = nv.models.legend(),
   interactiveLayer = nv.interactiveGuideline();
 
-  var margin = {top: 30, right: 60, bottom: 50, left: 60},
+  var margin = {top: 10, right: 60, bottom: 20, left: 60},
   color = nv.utils.defaultColor(),
   width = null,
   height = null,
@@ -119,8 +119,8 @@ nv.models.doubleLineChart = function() {
     var min = bounds.min === 0 ? 0 :  comprehensibleValues.filter(function(elem) { return elem * Math.pow(10, scaleMin) <= neg ? -bounds.min: bounds.min; })[0] * Math.pow(10, scaleMin);
 
 
-    bounds.min =  neg ? -min : min;
-    bounds.max = max;
+//    bounds.min =  neg ? -min : min;
+//    bounds.max = max;
     return bounds;
 
   }

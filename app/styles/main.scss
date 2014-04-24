@@ -2,9 +2,6 @@
  * Mediarithmics navigator style sheet
  */
 $icon-font-path: "/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/";
-@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
-
-
 // override bootstrap variables
 $font-family-sans-serif: "Source Sans Pro", Helvetica, Arial, sans-serif;
 
@@ -12,23 +9,39 @@ $dark-blue: #092f56;
 $dark-blue-not : #ffffff;
 $mcs-red : #fe5858;
 
+//$brand-primary: #0BA3DE;
+$brand-success: #00AB67;
+$brand-info: #0BA3DE;
+
+$brand-warning: #FE8F10;
+$brand-danger:  $mcs-red;
+$border-radius-base: 0px;
+$border-radius-small: 0px;
+$border-radius-large: 0px;
+
+
+@import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
+
+
 /*
  * Common styles
  */
 
 .mcs-top-navbar {
 
+//    margin-bottom: 0px !important;
     background-color: $dark-blue;
  }
 
 .mcs-top-navbar li a:hover {
-
     color: $dark-blue-not !important;
 }
 
+.navbar {
+
+}
 .mcs-content {
 
-    margin-top:30px;
 }
 
 /*
@@ -158,6 +171,30 @@ input.mcs-amount {
 * campaign list
 */
 
+
+.nv-y1 {
+  .tick {
+    line {
+      stroke:white;
+    }
+  }
+}
+.nv-y2 {
+  .tick {
+    line {
+      stroke:white;
+    }
+  }
+}
+.nv-x {
+  .tick {
+    line {
+      stroke:white;
+    }
+  }
+}
+
+
 .campaign-list {
   
 }
@@ -165,10 +202,15 @@ input.mcs-amount {
 .campaign-report {
     @extend .mcs-content;
     @include make-row();
+    .report-top-tab {
+        .organisation-name {
+            @include make-md-column(12)
+        }
+    }
     .report-sidebar {
         @extend .sidebar;
-        @include make-md-column(4);
-        @include make-md-column-push(8);
+        @include make-md-column(2);
+        @include make-md-column-push(10);
 
         ul {
             @extend .nav;
@@ -179,23 +221,52 @@ input.mcs-amount {
 
     }
     .report {
-        @include make-md-column-pull(4);
-        @include make-md-column(8);
-        .information {
+        @include make-md-column-pull(2);
+        @include make-md-column(10);
+        .campaign-heading {
+            border-bottom: 1px solid #EEEEEE;
+            margin-bottom: 15px;
             @include make-row();
-            .campaign {
+            .campaign-name {
                 @include make-md-column(12);
             }
-
-            .chart-controller {
+            .campaign-status {
                 @include make-md-column(8);
+            }
+        }
+
+        .chart-controller {
+            @include make-row();
+            .report-type-controller {
+                @include make-md-column(8);
+
+            }
+            .report-date-controller {
+                @include make-md-column(4);
+                min-width: 270px;
+                input.range {
+                    width: 240px;
+                }
                 @extend .text-right;
             }
         }
         .chart-area {
             @include    make-row();
+            .kpi-area {
+                @include make-md-column(2);
+                @extend .text-right;
+                dt {
+                    font-weight: normal;
+
+                }
+                dd {
+                    font-size: $font-size-h3;
+                    font-weight: bold;
+                }
+            }
+
             .medium-chart {
-                @include make-md-column(6);
+                @include make-md-column(10);
                 .chart {
                     height: 250px;
                     position: static;
@@ -209,24 +280,32 @@ input.mcs-amount {
                 }
             }
         }
+        .chart-legend-area {
+            @include    make-row();
+            .kpi-legend {
+             @include make-md-column(2);
+             @extend .text-right;
+            }
+            .chart-legend {
+             @include make-md-column(10);
+                .y1-legend {
+                    @extend .label;
+                    @extend .label-default;
+                    background-color: #00AC67;
+                }
+                .y2-legend {
+                    @extend .label;
+                    background-color: #FE5858;
+                }
+            }
+        }
         .breakdown-area {
             @include    make-row();
-            .panel{
-
-                @extend .panel;
-                @extend .panel-default;
-                @include  make-md-column(12);
-
-                .panel-body {
-                    @extend .panel-body;
-                }
                 .breakdown {
                     @extend .nav;
                     @extend .nav-tabs ;
                     @extend .nav-justified;
                 }
-            }
-
         }
     }
 }

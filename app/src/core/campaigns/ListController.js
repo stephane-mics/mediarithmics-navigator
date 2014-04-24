@@ -7,10 +7,11 @@
    * Campaign list controller
    */
   module.controller('core/campaigns/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'core/campaigns/DisplayCampaignService',
-    function($scope, $location, $log, Restangular, DisplayCampaignService) {
+    '$scope', '$location', '$log', 'Restangular', 'core/campaigns/DisplayCampaignService','core/common/auth/Session',
+    function($scope, $location, $log, Restangular, DisplayCampaignService, Session) {
 
-      Restangular.all('campaigns').getList({organisation_id:2}).then(function (campaigns) {
+     
+      Restangular.all('campaigns').getList({organisation_id: Session.getCurrentWorkspace().organisation_id}).then(function (campaigns) {
         $scope.campaigns = campaigns;
       });
 
