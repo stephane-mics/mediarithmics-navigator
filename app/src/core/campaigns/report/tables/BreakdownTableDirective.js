@@ -21,8 +21,10 @@
         "ad_id": "Id",
         "adgroup_name": "Ad Group Name",
         "cost_impressions": "Spend",
+        "impressions": "Impressions",
         "cpc": "CPC",
         "clicks": "Clicks",
+        "ctr": "CTR",
         "cpm": "CPM"
 
     }

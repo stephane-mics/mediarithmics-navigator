@@ -194,45 +194,100 @@ input.mcs-amount {
   }
 }
 
-
-.campaign-list {
-  
+.mcs-default-container {
+  @extend .mcs-content;
+  @include make-row();
 }
 
+
+
+.mcs-default-sidebar {
+  @extend .sidebar;
+  @include make-md-column(2);
+  @include make-md-column-push(10);
+
+  ul {
+    @extend .nav;
+    @extend .nav-pills;
+    @extend .nav-stacked;
+
+  }
+}
+
+.mcs-default-content {
+
+        @include make-md-column-pull(2);
+        @include make-md-column(10);
+}
+
+.mcs-default-heading {
+  border-bottom: 1px solid #EEEEEE;
+  margin-bottom: 15px;
+  @include make-row();
+  > * {
+    @include make-md-column(12);
+  }
+}
+
+.campaign-list {
+     @extend .mcs-default-container;
+      .campaign-sidebar {
+        @extend .mcs-default-sidebar;
+    }
+  .campaign-list-content {
+    @extend .mcs-default-content;
+    .campaign-list-heading {
+      @extend .mcs-default-heading;
+    }
+    .campaign-list-controller {
+      @include make-row();
+      .campaign-list-actions {
+            @include make-md-column(8);
+      }
+      .campaign-list-date-controller {
+                @include make-md-column(4);
+                min-width: 270px;
+                input.range {
+                    width: 240px;
+                }
+                @extend .text-right;
+            }
+      margin-bottom: 20px;
+    }
+    .campaign-list-area {
+      @include make-row();
+      .test {
+        @include make-md-column(12);
+        .campaign-list-table {
+          @extend .table;
+          @extend .table-striped;
+          .metrics {
+            @extend .text-center;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+
 .campaign-report {
-    @extend .mcs-content;
-    @include make-row();
+    @extend .mcs-default-container;
     .report-top-tab {
         .organisation-name {
             @include make-md-column(12)
         }
     }
     .report-sidebar {
-        @extend .sidebar;
-        @include make-md-column(2);
-        @include make-md-column-push(10);
-
-        ul {
-            @extend .nav;
-            @extend .nav-pills;
-            @extend .nav-stacked;
-
-        }
-
+        @extend .mcs-default-sidebar;
     }
+
     .report {
-        @include make-md-column-pull(2);
-        @include make-md-column(10);
+        @extend .mcs-default-content;
         .campaign-heading {
-            border-bottom: 1px solid #EEEEEE;
-            margin-bottom: 15px;
-            @include make-row();
-            .campaign-name {
-                @include make-md-column(12);
-            }
-            .campaign-status {
-                @include make-md-column(8);
-            }
+          @extend .mcs-default-heading;
         }
 
         .chart-controller {

@@ -1,25 +1,64 @@
-<div class="container-fluid mcs-content campaign-list" ng-Controller="core/campaigns/ListController">
-  <div class="row">
-    <div class="col-md-10">
-      <h1>Campaigns</h1>
-      <div class="btn-group">
-        <button class="btn btn-default" ng-click="newCampaign()"><span class="glyphicon glyphicon-plus"></span> New Campaign</button>
-      </div>
-      <p></p>
-      <div>
-        <table class="table table-hover" >
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-          <tr ng-repeat="campaign in campaigns " >
-            <td ng-click="editCampaign(campaign)">{{campaign.id}}</td>
-            <td><a ng-click="showCampaign(campaign)">{{campaign.name}}</a></td>
-            <td><button type="button" class="edit btn btn-primary" ng-click="editCampaign(campaign)"><span class="glyphicon glyphicon-edit"></span></button></td>
-          </tr>
-        </table>
-      </div>
+<div class="campaign-list" ng-Controller="core/campaigns/ListController">
+    <div class="campaign-sidebar">
+
     </div>
-  </div>
+    <div class="campaign-list-content">
+        <div class="campaign-list-heading">
+            <h1>All Campaigns</h1>
+        </div>
+        <div class="campaign-list-controller">
+
+            <div class="campaign-list-actions">
+                <button class="btn btn-default" ng-click="newCampaign()"><span class="glyphicon glyphicon-plus"></span>
+                    New Campaign
+                </button>
+            </div>
+            <div class="campaign-list-date-controller">
+                <form class="form-inline" role="form">
+                    <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L">
+                    <button type="button" class="btn btn-default" ng-click="refresh()"><span class="glyphicon glyphicon-refresh"></span>
+                        Refresh
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="campaign-list-area">
+            <div class="test">
+                <table class="campaign-list-table ">
+                    <thead>
+                    <tr>
+                        <th>status</th>
+                        <th>Name</th>
+                        <th class="metrics" ng-repeat="metric in campaignsStatistics.getMetrics()">
+                            {{campaignsStatistics.getMetricName(metric) }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="campaign in campaigns " ng-click="showCampaign(campaign)">
+                        <td>{{campaign.status}}</td>
+                        <td>{{campaign.name}} </td>
+                        <td class="metrics" ng-repeat="metricValue in campaignsStatistics.getRow(campaign.id) track by $index">
+                            <span ng-if="metricValue.type == 'currency'">
+                                {{metricValue.value | number}} {{campaign.currency_code}}
+                            </span>
+                            <span ng-if="metricValue.type == 'percent'">
+                                {{metricValue.value | number}} %
+                            </span>
+                            <span ng-if="metricValue.type == 'number'">
+                                {{metricValue.value | number}}
+                            </span>
+                            <span ng-if="!metricValue.type">
+                                -
+                            </span>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
 </div>
