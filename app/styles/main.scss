@@ -27,6 +27,10 @@ $border-radius-large: 0px;
  * Common styles
  */
 
+a {
+  cursor : pointer;
+}
+
 .mcs-top-navbar {
 
 //    margin-bottom: 0px !important;
@@ -363,4 +367,33 @@ input.mcs-amount {
                 }
         }
     }
+}
+
+table.fragment-list-creatives {
+  thead th {
+    @extend .text-center;
+  }
+  td {
+    padding : 0 5px;
+  }
+  .thumbnail {
+    margin : 0;
+    border : none;
+    img {
+      max-width : 50px;
+      max-height : 50px;
+      padding-top : 10px;
+    }
+    .caption {
+      @extend .text-center;
+      font-size : $font-size-small;
+      padding : 0;
+    }
+  }
+  input {
+    @extend .form-control;
+  }
+  .delete-action {
+    @extend .text-center;
+  }
 }

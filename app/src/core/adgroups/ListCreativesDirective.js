@@ -15,6 +15,13 @@
         },
         templateUrl: 'src/core/adgroups/ListCreatives.html',
         link: function (scope, iElement, iAttrs) {
+          scope.showPreview = function (crea) {
+            if (crea.mime_type === "application/x-shockwave-flash") {
+              return "images/Adobe-swf_icon.png";
+            } else {
+              return configuration.ASSETS_URL + crea.file_path;
+            }
+          };
           scope.ASSETS_URL = configuration.ASSETS_URL;
           scope.onDelete = function (eltToDelete) {
             var idx = scope.creatives.indexOf(eltToDelete);

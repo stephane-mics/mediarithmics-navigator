@@ -1,4 +1,4 @@
-<table>
+<table class="fragment-list-creatives">
   <thead>
     <tr>
       <th>Size</th>
@@ -10,7 +10,7 @@
   <tbody>
   <tr ng-repeat="creative in creatives">
     <td class="thumbnail">
-      <img ng-src="{{ASSETS_URL}}/{{creative.file_path}}" ng-show="creative.file_path" />
+      <img ng-src="{{showPreview(creative)}}" ng-show="creative.file_path" />
       <div class="caption">
         {{creative.width}}x{{creative.height}}
       </div>
@@ -21,7 +21,7 @@
     <td>
       <input ng-model="creative.url_target">
     </td>
-    <td>
+    <td class="delete-action">
       <a ng-click="onDelete(creative)">x</a>
     </td>
   </tr>
