@@ -1,0 +1,29 @@
+<table>
+  <thead>
+    <tr>
+      <th>Size</th>
+      <th>Ad Name</th>
+      <th>Url</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="creative in creatives">
+    <td class="thumbnail">
+      <img ng-src="{{ASSETS_URL}}/{{creative.file_path}}" ng-show="creative.file_path" />
+      <div class="caption">
+        {{creative.width}}x{{creative.height}}
+      </div>
+    </td>
+    <td>
+      <input ng-model="creative.name">
+    </td>
+    <td>
+      <input ng-model="creative.url_target">
+    </td>
+    <td>
+      <a ng-click="onDelete(creative)">x</a>
+    </td>
+  </tr>
+  </tbody>
+</table>

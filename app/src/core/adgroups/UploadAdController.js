@@ -17,6 +17,26 @@
 
       $log.debug('Init UploadAdController');
 
+      // for the directive mics-pl-upload
+      $scope.uploadedFiles = [];
+
+      // for the page
+      $scope.uploadedAsset = [];
+
+
+      $scope.logAssetDeletion = function (elt) {
+        $log.debug("deleted asset", elt);
+      };
+
+      $scope.$watchCollection("uploadedFiles", function (newFiles) {
+        while(newFiles.length) {
+          var file = newFiles.pop();
+          $log.info("got new uploaded file, pushing as asset", file);
+          file.name = file.original_filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+          $scope.uploadedAsset.push(file);
+        }
+      });
+
       $scope.done = function() {
         $modalInstance.close();
       };

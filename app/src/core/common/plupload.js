@@ -7,7 +7,9 @@
     '$log', 'core/configuration', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', "jquery", "plupload",
     function ($log, configuration, Session, AuthenticationService, $, plupload) {
       return {
-        restrict: 'A',
+        scope: {
+          uploadedFiles: '='
+        },
         link: function (scope, iElement, iAttrs) {
 
           scope.uploadError = null;
@@ -27,7 +29,7 @@
             flash_swf_url : 'bower_components/plupload/Moxie.swf',
             filters : {
               mime_types: [
-                {title : "Image files", extensions : "jpg,jpeg,png"},
+                {title : "Image files", extensions : "jpg,jpeg,png,gif"},
                 {title : "Flash files", extensions : "swf"}
               ]
             },
@@ -44,7 +46,7 @@
           uploader.bind('Error', function(up, err) {
             scope.uploadError = err.message;
             scope.$apply();
-            $log.info('Error :', err);
+            $log.warn('Error :', err);
           });
 
 
@@ -96,9 +98,12 @@
 
 
           uploader.bind('FileUploaded', function(up, file, response) {
-
             var responseObj = $.parseJSON(response.response);
-            $log.debug("response :", responseObj);
+            if (responseObj.status === "ok" && responseObj.data && scope.uploadedFiles) {
+              scope.$apply(function () {
+                scope.uploadedFiles.push(responseObj.data);
+              });
+            }
           });
         }
       };

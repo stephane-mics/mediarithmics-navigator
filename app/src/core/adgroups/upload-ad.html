@@ -1,6 +1,11 @@
 <div class="modal-body">
-  <div mics-pl-upload id="ad-upload">
+  <div mics-pl-upload id="ad-upload" uploaded-files="uploadedFiles">
     <h3>Upload Ad</h3>
+
+    <div ng-show="uploadedAsset.length">
+      <div mics-list-creatives creatives="uploadedAsset" on-delete="logAssetDeletion"></div>
+      <hr />
+    </div>
 
     <button  class="btn btn-default browse-button" >Select files</button>
 
