@@ -12,25 +12,25 @@
     <div class="report">
         <div class="campaign-heading">
 
-                <h2 class="">{{campaign.name}}
-                    <div class="btn-group">
-                        <button class="btn btn-warning btn-xs" type="button"><span
-                                class="glyphicon glyphicon-stop"></span> {{campaign.status}}
-                        </button>
-                        <button data-toggle="dropdown" class="btn btn-warning dropdown-toggle btn-xs" type="button">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </div>
+            <h2 class="">{{campaign.name}}
+                <div class="btn-group">
+                    <button class="btn btn-warning btn-xs" type="button"><span
+                            class="glyphicon glyphicon-stop"></span> {{campaign.status}}
+                    </button>
+                    <button data-toggle="dropdown" class="btn btn-warning dropdown-toggle btn-xs" type="button">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </div>
 
-                </h2>
+            </h2>
 
 
         </div>
@@ -44,7 +44,8 @@
             <div class="report-date-controller">
                 <form class="form-inline" role="form">
                     <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L">
-                    <button type="button" class="btn btn-default" ng-click="refresh()"><span class="glyphicon glyphicon-refresh"></span>
+                    <button type="button" class="btn btn-default" ng-click="refresh()"><span
+                            class="glyphicon glyphicon-refresh"></span>
                         Refresh
                     </button>
                 </form>
@@ -55,13 +56,13 @@
             <div class="kpi-area">
                 <dl>
                     <dt>CPM</dt>
-                    <dd>{{kpis.cpm | number }} €</dd>
+                    <dd>{{kpis.cpm | number | currencyWithSymbol:campaign.currency_code }}</dd>
                     <dt>Spent</dt>
-                    <dd>{{kpis.cost_impressions | number }} €</dd>
+                    <dd>{{kpis.cost_impressions | number | currencyWithSymbol:campaign.currency_code}}</dd>
                     <dt>CTR</dt>
                     <dd>{{kpis.ctr | number }} %</dd>
                     <dt>CPC</dt>
-                    <dd>{{kpis.cpc | number }} €</dd>
+                    <dd>{{kpis.cpc | number | currencyWithSymbol:campaign.currency_code}}</dd>
                 </dl>
             </div>
             <div class="medium-chart">
@@ -102,8 +103,10 @@
 
                             <tr>
                                 <th>Status</th>
-                                <th>Adgroup name</th>
-                                <th ng-repeat="header in adGroupPerformance.columns_headers | filter:'!id' | filter:'!name'">{{header | tableHeader}}</th>
+                                <th>Ad name</th>
+                                <th ng-repeat="header in adPerformance.getMetrics()">
+                                    {{ adPerformance.getMetricName(header) }}
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -111,10 +114,20 @@
                             <tr ng-repeat="row in ads">
                                 <td>{{row.status}}</td>
                                 <td>{{row.name}}</td>
-                                <td ng-repeat="col in getDataForRow(row.id, adGroupPerformance) track by $index">
-
-                                    <span ng-if="!(col | number)">{{col}}</span>
-                                    {{col | number}}
+                                <td class="metrics"
+                                    ng-repeat="metricValue in adPerformance.getRow(row.id) track by $index">
+                            <span ng-if="metricValue.type == 'currency'">
+                                {{metricValue.value | number | currencyWithSymbol:campaign.currency_code}}
+                            </span>
+                            <span ng-if="metricValue.type == 'percent'">
+                                {{metricValue.value | number}} %
+                            </span>
+                            <span ng-if="metricValue.type == 'number'">
+                                {{metricValue.value | number}}
+                            </span>
+                            <span ng-if="!metricValue.type">
+                                -
+                            </span>
 
                                 </td>
                             </tr>
@@ -124,7 +137,7 @@
 
                         </table>
                         <!--<breakdown-table report="adPerformance" headers="['Ad']">-->
-                            <!--<td>{{elem.name}}</td>-->
+                        <!--<td>{{elem.name}}</td>-->
                         <!--</breakdown-table>-->
                     </tab>
 
@@ -135,7 +148,9 @@
                             <tr>
                                 <th>Status</th>
                                 <th>Adgroup name</th>
-                                <th ng-repeat="header in adGroupPerformance.columns_headers | filter:'!id' | filter:'!name'">{{header | tableHeader}}</th>
+                                <th ng-repeat="header in adGroupPerformance.getMetrics()">
+                                    {{ adPerformance.getMetricName(header) }}
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -143,10 +158,21 @@
                             <tr ng-repeat="row in adgroups">
                                 <td>{{row.status}}</td>
                                 <td>{{row.name}}</td>
-                                <td ng-repeat="col in getDataForRow(row.id, adGroupPerformance) track by $index">
+                                <td class="metrics"
+                                    ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index">
+                            <span ng-if="metricValue.type == 'currency'">
+                                {{metricValue.value | number | currencyWithSymbol:campaign.currency_code}}
+                            </span>
+                            <span ng-if="metricValue.type == 'percent'">
+                                {{metricValue.value | number}} %
+                            </span>
+                            <span ng-if="metricValue.type == 'number'">
+                                {{metricValue.value | number}}
+                            </span>
+                            <span ng-if="!metricValue.type">
+                                -
+                            </span>
 
-                                    <span ng-if="!(col | number)">{{col}}</span>
-                                    {{col | number}}
                                 </td>
                             </tr>
 

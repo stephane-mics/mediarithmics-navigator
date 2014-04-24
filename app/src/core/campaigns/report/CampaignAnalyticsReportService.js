@@ -2,6 +2,41 @@
 
   'use strict';
 
+  function ReportWrapper(report) {
+    this.getMetrics = function () {
+      return _.filter(report.columns_headers, isMetrics)
+    };
+    this.getRow = _.memoize(function (id) {
+      var row = _.select(report.rows, function(r) {return r[0] == id})[0]
+      if (row === undefined) {
+        return _.map(new Array(this.getMetrics().length), function () {return 0 });
+      } else {
+        var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1)
+        var type = _.map(this.getMetrics(), function(m) {return tableHeaders[m].type});
+        return _.map(_.zip([values, type]), function(t) { return {value: t[0], type:t[1]} });
+      }
+    });
+    this.getMetricName = _.memoize(function (input) {
+      input = input || '';
+      var out = tableHeaders[input].name || input;
+      return out;
+    });
+
+    this.getMetricType = _.memoize(function (index) {
+      return tableHeaders[this.getMetrics()[index]].type;
+    });
+  };
+
+  function Report(report) {
+    ReportWrapper.call(this, report)
+  };
+
+  Report.prototype = _.create(ReportWrapper.prototype, {'constructor': Report});
+
+
+
+
+
     var isMetrics = function (e) {
       return !/name|id/.test(e);
     };
@@ -73,7 +108,7 @@
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return response.report_view;
+                return new Report( response.report_view);
               });
 
           },
@@ -85,7 +120,7 @@
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return response.report_view;
+                return new Report( response.report_view);
               });
 
           },
@@ -97,7 +132,7 @@
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return response.report_view;
+                return new Report( response.report_view);
               });
 
           },
@@ -137,31 +172,7 @@
               filters: "organisation==" + organisation_id
             }).$promise.then(function (response) {
                 var report = response.report_view;
-
-                report.getMetrics = function () {
-                 return _.filter(report.columns_headers, isMetrics)
-                };
-                report.getRow = function (id) {
-                  var row = _.select(report.rows, function(r) {return r[0] == id})[0]
-                  if (row === undefined) {
-                    return _.map(new Array(report.getMetrics().length), function () {return 0 });
-                  } else {
-                    var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1)
-                    var type = _.map(report.getMetrics(), function(m) {return tableHeaders[m].type});
-                    return _.map(_.zip([values, type]), function(t) { return {value: t[0], type:t[1]} });
-                  }
-                };
-                report.getMetricName = function (input) {
-                  input = input || '';
-                  var out = tableHeaders[input].name || input;
-                  return out;
-                };
-
-                report.getMetricType = function (index) {
-                  return tableHeaders[report.getMetrics()[index]].type;
-                };
-
-                return report
+                return new Report(report)
               });
 
           },

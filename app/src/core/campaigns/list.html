@@ -40,7 +40,7 @@
                         <td>{{campaign.name}} </td>
                         <td class="metrics" ng-repeat="metricValue in campaignsStatistics.getRow(campaign.id) track by $index">
                             <span ng-if="metricValue.type == 'currency'">
-                                {{metricValue.value | number}} {{campaign.currency_code}}
+                                {{metricValue.value | number | currencyWithSymbol:campaign.currency_code}}
                             </span>
                             <span ng-if="metricValue.type == 'percent'">
                                 {{metricValue.value | number}} %
