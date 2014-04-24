@@ -105,6 +105,23 @@
               });
             }
           });
+
+          // XXX fixme
+          // the layout around the upload button can change : added rows in a table, a loaded image push the content, etc.
+          // I can think of a better way to keep the invisible <input type="file"> right above the upload button.
+          // Just binding it on the FileUploaded event is not enough : in my use case, the new file add an image and once
+          // the image is loaded it takes more space and pushes the browse button (but not the invisible input).
+          // A interval is a bit overkill but it works.
+          var refreshInterval = setInterval(function () {
+            $log.debug("refreshing plupload");
+            uploader.refresh();
+          }, 500);
+
+
+          scope.$on('$destroy', function() {
+            $log.debug("stopping plupload refresh");
+            clearInterval(refreshInterval);
+          });
         }
       };
     }
