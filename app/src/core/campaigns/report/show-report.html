@@ -104,6 +104,7 @@
                             <tr>
                                 <th>Status</th>
                                 <th>Ad name</th>
+                                <th>Format</th>
                                 <th class="metrics" ng-repeat="header in adPerformance.getMetrics()">
                                     {{ adPerformance.getMetricName(header) }}
                                 </th>
@@ -114,6 +115,7 @@
                             <tr ng-repeat="row in ads">
                                 <td>{{row.status}}</td>
                                 <td>{{row.name}}</td>
+                                <td>{{row.format}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adPerformance.getRow(row.id) track by $index" ng-class="metricValue.type">
                             <span ng-if="metricValue.type == 'currency'">
