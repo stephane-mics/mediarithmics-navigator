@@ -369,6 +369,21 @@ input.mcs-amount {
     }
 }
 
+
+.create-keywords-campaign {
+  .front-recommentation {
+    /* line-height: 40px; */
+    font-size : $font-size-large;
+    @extend .text-center;
+
+    span {
+      display:inline-block;
+      margin:10px;
+    }
+  }
+}
+
+
 table.fragment-list-creatives {
 
   width : 100%;

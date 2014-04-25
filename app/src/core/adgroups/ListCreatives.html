@@ -9,11 +9,7 @@
   </thead>
   <tbody>
   <tr ng-repeat="creative in creatives">
-    <td class="thumbnail">
-      <img ng-src="{{showPreview(creative)}}" ng-show="creative.file_path" />
-      <div class="caption">
-        {{creative.width}}x{{creative.height}}
-      </div>
+    <td mics-asset-thumbnail asset="creative">
     </td>
     <td>
       <input ng-model="creative.name">
