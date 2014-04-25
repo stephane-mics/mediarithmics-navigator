@@ -14,7 +14,6 @@
       if (row === undefined) {
         return _.map(new Array(this.getMetrics().length), function () {return 0; });
       } else {
-        console.log("report.columns_headers: ",report.columns_headers)
         var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
         var type = _.map(this.getMetrics(), function(m) {return tableHeaders[m].type;});
         return _.map(_.zip([values, type]), function(t) { return {value: t[0], type:t[1]}; });
@@ -206,7 +205,7 @@
                   y2.push({x: dateIter.valueOf(), y: row[0].value });
 
                 }
-                dateIter = dateIter.add(1, 'day')
+                dateIter = dateIter.add(1, 'day');
               }
 
 //              response.report_view.rows.forEach(function (row) {
