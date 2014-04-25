@@ -9,6 +9,7 @@
       return _.filter(report.columns_headers, isMetrics);
     };
     this.getRow = _.memoize(function (id) {
+      id = parseInt(id);
       var row = _.select(report.rows, function(r) {return r[0] === id;})[0];
       if (row === undefined) {
         return _.map(new Array(this.getMetrics().length), function () {return 0; });
