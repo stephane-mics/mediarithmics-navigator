@@ -24,10 +24,10 @@
        */
 
       service.getDeepCampaignView = function (campaignId) {
-          var root = Restangular.one('display_campaigns', campaignId);
+        var root = Restangular.one('display_campaigns', campaignId);
           // send requests to get the value and the list of
           // ad group ids
-          return root.get({view: "deep"});
+        return root.get({view: "deep"});
       };
 
 

@@ -1,3 +1,5 @@
+/* global _ */
+
 (function(){
   'use strict';
 
@@ -41,7 +43,7 @@
 
       service.getOrganisationName = function(id) {
         var w = _.select(this.userProfile.workspaces, function (w) {
-          return w.organisation_id == id;
+          return w.organisation_id === id;
         })[0];
 
         return w.organisation_name;
@@ -50,7 +52,7 @@
       service.getWorkspaces = function () {
         var result = [];
         for (var i = 0; i < this.userProfile.workspaces.length ; i++) {
-          result.push({idx: i, organisationName: this.userProfile.workspaces[i].organisation_name})
+          result.push({idx: i, organisationName: this.userProfile.workspaces[i].organisation_name});
         }
         return result;
 

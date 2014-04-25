@@ -9,10 +9,10 @@
     var report = CampaignAnalyticsReportService.allCampaigns(startDate, endDate, organisationId);
     report.then(function (stats) {
       $scope.campaignsStatistics = stats;
-    })
+    });
 
 
-  }
+  };
   /*
    * Campaign list controller
    */
@@ -21,18 +21,18 @@
     function ($scope, $location, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService) {
 
       $scope.reportDateRange = {startDate: moment().subtract('days', 20), endDate: moment()};
-      $scope.organisationName = function (id ){ return Session.getOrganisationName(id) }
+      $scope.organisationName = function (id ){ return Session.getOrganisationName(id);};
 
       $scope.administrator = Session.getCurrentWorkspace().administrator;
 
-      var params = { organisation_id: Session.getCurrentWorkspace().organisation_id }
+      var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
       if (Session.getCurrentWorkspace().administrator) {
-        params = { administration_id: Session.getCurrentWorkspace().organisation_id }
+        params = { administration_id: Session.getCurrentWorkspace().organisation_id };
       }
       Restangular.all('campaigns').getList(params).then(function (campaigns) {
         $scope.campaigns = campaigns;
         $scope.$watch('reportDateRange', function () {
-          updateStatistics($scope, CampaignAnalyticsReportService,  Session.getCurrentWorkspace().organisation_id)
+          updateStatistics($scope, CampaignAnalyticsReportService,  Session.getCurrentWorkspace().organisation_id);
         });
       });
 

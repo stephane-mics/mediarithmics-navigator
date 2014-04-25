@@ -1,3 +1,4 @@
+/* global _ */
 (function () {
   'use strict';
 
@@ -8,14 +9,14 @@
       return;
     }
     var statRow = _.filter(stats.rows, function (row) {
-      return row[0] == id;
+      return row[0] === id;
     })[0];
 
     var isMetrics = function (e) {
-      return !/name|id/.test(e);
+      return !(/name|id/).test(e);
     };
     var notMetrics = function (e) {
-      return /name|id/.test(e);
+      return (/name|id/).test(e);
     };
 
     if (statRow === undefined) {
@@ -96,37 +97,37 @@
 
 
         $scope.$watch('reportDateRange', function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams)
+          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams);
         });
         $scope.refresh = function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams)
+          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams);
         };
 
       });
 
 
-      $scope.getDataForRow = getDataForRow
+      $scope.getDataForRow = getDataForRow;
 
       $scope.xAxisTickFormat = function () {
         return function (d) {
           return d3.time.format('%d %b')(new Date(d));
-        }
+        };
       };
 
       $scope.xAxisTickFormat = function () {
         return function (d) {
           return d3.time.format('%d %b')(new Date(d)); //uncomment for date format
-        }
+        };
       };
       $scope.yAxisTickFormat = function () {
         return function (d) {
           return d3.format(',f');
-        }
+        };
       };
       $scope.y2AxisTickFormat = function () {
         return function (d) {
           return '$' + d3.format(',.2f')(d);
-        }
+        };
       };
 
 

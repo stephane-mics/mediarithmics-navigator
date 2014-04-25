@@ -1,19 +1,21 @@
+/* global _ */
+
 (function () {
 
   'use strict';
 
   function ReportWrapper(report) {
     this.getMetrics = function () {
-      return _.filter(report.columns_headers, isMetrics)
+      return _.filter(report.columns_headers, isMetrics);
     };
     this.getRow = _.memoize(function (id) {
-      var row = _.select(report.rows, function(r) {return r[0] == id})[0]
+      var row = _.select(report.rows, function(r) {return r[0] === id;})[0];
       if (row === undefined) {
-        return _.map(new Array(this.getMetrics().length), function () {return 0 });
+        return _.map(new Array(this.getMetrics().length), function () {return 0; });
       } else {
-        var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1)
-        var type = _.map(this.getMetrics(), function(m) {return tableHeaders[m].type});
-        return _.map(_.zip([values, type]), function(t) { return {value: t[0], type:t[1]} });
+        var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
+        var type = _.map(this.getMetrics(), function(m) {return tableHeaders[m].type;});
+        return _.map(_.zip([values, type]), function(t) { return {value: t[0], type:t[1]}; });
       }
     });
     this.getMetricName = _.memoize(function (input) {
@@ -25,7 +27,7 @@
     this.getMetricType = _.memoize(function (index) {
       return tableHeaders[this.getMetrics()[index]].type;
     });
-  };
+  }
 
 //  function Report(report) {
 //    ReportWrapper.call(this, report)
@@ -37,12 +39,12 @@
 
 
 
-    var isMetrics = function (e) {
-      return !/name|id/.test(e);
-    };
-    var notMetrics = function (e) {
-      return /name|id/.test(e);
-    };
+  var isMetrics = function (e) {
+    return !(/name|id/).test(e);
+  };
+  var notMetrics = function (e) {
+    return (/name|id/).test(e);
+  };
 
   var tableHeaders = {
     "creative_id": {name:"Id"},
@@ -56,15 +58,15 @@
     "ctr": {name:"CTR", type:"percent"},
     "cpm": {name:"CPM", type:"currency"}
 
-  }
+  };
 
 
   var module = angular.module('core/campaigns/report');
   module.factory('CampaignAnalyticsReportService',
-    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService',
-      function ($resource, Session, AuthenticationService) {
+    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService','core/configuration',
+      function ($resource, Session, AuthenticationService, configuration) {
         var displayCampaignResource = $resource(
-          "http://10.0.1.2:9113/public/v1/reports/display_campaign_performance_report",
+          configuration.WS_URL + "/reports/display_campaign_performance_report",
           {organisation_id: Session.getCurrentWorkspace().organisation_id},
           {get: {
             method: 'GET',
@@ -73,7 +75,7 @@
           }
         );
 
-        var adGroupResource = $resource("http://10.0.1.2:9113/public/v1/reports/adgroup_performance_report",
+        var adGroupResource = $resource(configuration.WS_URL + "/reports/adgroup_performance_report",
           {organisation_id: Session.getCurrentWorkspace().organisation_id},
           {get: {
             method: 'GET',
@@ -81,7 +83,7 @@
           }
           }
         );
-        var adResource = $resource("http://10.0.1.2:9113/public/v1/reports/ad_performance_report",
+        var adResource = $resource(configuration.WS_URL + "/reports/ad_performance_report",
           {organisation_id: Session.getCurrentWorkspace().organisation_id},
           {get: {
             method: 'GET',
@@ -89,7 +91,7 @@
           }
           }
         );
-        var creativeResource = $resource("http://10.0.1.2:9113/public/v1/reports/creative_performance_report",
+        var creativeResource = $resource(configuration.WS_URL + "/reports/creative_performance_report",
           {organisation_id: Session.getCurrentWorkspace().organisation_id},
           {get: {
             method: 'GET',
@@ -152,7 +154,7 @@
                     "cpm": 0,
                     "cost_impressions": 0,
                     "cpc": 0
-                  }
+                  };
                 }
                 return {
                   "ctr": firstLine[_.indexOf(report.columns_headers, "ctr")],
@@ -172,7 +174,7 @@
               filters: "organisation==" + organisation_id
             }).$promise.then(function (response) {
                 var report = response.report_view;
-                return new ReportWrapper(report)
+                return new ReportWrapper(report);
               });
 
           },

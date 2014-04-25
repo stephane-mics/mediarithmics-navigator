@@ -18,7 +18,7 @@
       $scope.switchWorkspace = function (idx) {
         Session.switchWorkspace(idx);
 
-      }
+      };
 
       function updateWorkspaces() {
         $scope.workspaces = Session.getWorkspaces();
