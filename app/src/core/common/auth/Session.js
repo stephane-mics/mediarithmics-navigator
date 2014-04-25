@@ -5,8 +5,8 @@
 
   /* define the Authentication service */
   authModule.factory('core/common/auth/Session', [
-    '$q', '$log', 'Restangular',
-    function($q, $log, Restangular) {
+    '$q', '$location', '$log', '$rootScope','Restangular', 'core/login/constants',
+    function($q,$location , $log, $rootScope, Restangular, LoginConstants) {
 
       var service = {};
       service.initialized = false;
@@ -39,8 +39,28 @@
         return this.userProfile.workspaces[this.currentWorkspace];
       };
 
-      service.switchWorkspace = function(workspaceIndex) {
+      service.getOrganisationName = function(id) {
+        var w = _.select(this.userProfile.workspaces, function (w) {
+          return w.organisation_id == id;
+        })[0];
 
+        return w.organisation_name;
+      };
+
+      service.getWorkspaces = function () {
+        var result = [];
+        for (var i = 0; i < this.userProfile.workspaces.length ; i++) {
+          result.push({idx: i, organisationName: this.userProfile.workspaces[i].organisation_name})
+        }
+        return result;
+
+      };
+
+
+      service.switchWorkspace = function(workspaceIndex) {
+        this.currentWorkspace = workspaceIndex;
+        $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
+        $location.path('/home');
       };
 
       /**

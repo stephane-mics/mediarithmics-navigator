@@ -27,12 +27,12 @@
     });
   };
 
-  function Report(report) {
-    ReportWrapper.call(this, report)
-  };
-
-  Report.prototype = _.create(ReportWrapper.prototype, {'constructor': Report});
-
+//  function Report(report) {
+//    ReportWrapper.call(this, report)
+//  };
+//
+//  Report.prototype = _.create(ReportWrapper.prototype, {'constructor': Report});
+//
 
 
 
@@ -108,7 +108,7 @@
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return new Report( response.report_view);
+                return new ReportWrapper( response.report_view);
               });
 
           },
@@ -120,7 +120,7 @@
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return new Report( response.report_view);
+                return new ReportWrapper( response.report_view);
               });
 
           },
@@ -132,7 +132,7 @@
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return new Report( response.report_view);
+                return new ReportWrapper( response.report_view);
               });
 
           },
@@ -172,7 +172,7 @@
               filters: "organisation==" + organisation_id
             }).$promise.then(function (response) {
                 var report = response.report_view;
-                return new Report(report)
+                return new ReportWrapper(report)
               });
 
           },

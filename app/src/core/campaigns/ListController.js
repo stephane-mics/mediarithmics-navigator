@@ -21,10 +21,15 @@
     function ($scope, $location, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService) {
 
       $scope.reportDateRange = {startDate: moment().subtract('days', 20), endDate: moment()};
+      $scope.organisationName = function (id ){ return Session.getOrganisationName(id) }
 
+      $scope.administrator = Session.getCurrentWorkspace().administrator;
 
-
-      Restangular.all('campaigns').getList({organisation_id: Session.getCurrentWorkspace().organisation_id}).then(function (campaigns) {
+      var params = { organisation_id: Session.getCurrentWorkspace().organisation_id }
+      if (Session.getCurrentWorkspace().administrator) {
+        params = { administration_id: Session.getCurrentWorkspace().organisation_id }
+      }
+      Restangular.all('campaigns').getList(params).then(function (campaigns) {
         $scope.campaigns = campaigns;
         $scope.$watch('reportDateRange', function () {
           updateStatistics($scope, CampaignAnalyticsReportService,  Session.getCurrentWorkspace().organisation_id)

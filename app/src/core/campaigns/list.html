@@ -27,8 +27,9 @@
                 <table class="campaign-list-table ">
                     <thead>
                     <tr>
-                        <th>status</th>
+                        <th>Status</th>
                         <th>Name</th>
+                        <th ng-if="administrator">Organisation</th>
                         <th class="metrics" ng-repeat="metric in campaignsStatistics.getMetrics()">
                             {{campaignsStatistics.getMetricName(metric) }}
                         </th>
@@ -38,6 +39,7 @@
                     <tr ng-repeat="campaign in campaigns " ng-click="showCampaign(campaign)">
                         <td>{{campaign.status}}</td>
                         <td>{{campaign.name}} </td>
+                        <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
                         <td class="metrics" ng-repeat="metricValue in campaignsStatistics.getRow(campaign.id) track by $index">
                             <span ng-if="metricValue.type == 'currency'">
                                 {{metricValue.value | number | currencyWithSymbol:campaign.currency_code}}
