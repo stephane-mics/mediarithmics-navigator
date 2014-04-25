@@ -56,13 +56,13 @@
             <div class="kpi-area">
                 <dl>
                     <dt>CPM</dt>
-                    <dd>{{kpis.cpm | number | currencyWithSymbol:campaign.currency_code }}</dd>
+                    <dd>{{kpis.cpm | number:2 | currencyWithSymbol:campaign.currency_code }}</dd>
                     <dt>Spent</dt>
-                    <dd>{{kpis.cost_impressions | number | currencyWithSymbol:campaign.currency_code}}</dd>
+                    <dd>{{kpis.cost_impressions | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
                     <dt>CTR</dt>
                     <dd>{{kpis.ctr | number }} %</dd>
                     <dt>CPC</dt>
-                    <dd>{{kpis.cpc | number | currencyWithSymbol:campaign.currency_code}}</dd>
+                    <dd>{{kpis.cpc | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
                 </dl>
             </div>
             <div class="medium-chart">
@@ -104,7 +104,7 @@
                             <tr>
                                 <th>Status</th>
                                 <th>Ad name</th>
-                                <th ng-repeat="header in adPerformance.getMetrics()">
+                                <th class="metrics" ng-repeat="header in adPerformance.getMetrics()">
                                     {{ adPerformance.getMetricName(header) }}
                                 </th>
                             </tr>
@@ -114,10 +114,10 @@
                             <tr ng-repeat="row in ads">
                                 <td>{{row.status}}</td>
                                 <td>{{row.name}}</td>
-                                <td class="metrics"
-                                    ng-repeat="metricValue in adPerformance.getRow(row.id) track by $index">
+                                <td class="metrics {{metricValue.type}}"
+                                    ng-repeat="metricValue in adPerformance.getRow(row.id) track by $index" ng-class="metricValue.type">
                             <span ng-if="metricValue.type == 'currency'">
-                                {{metricValue.value | number | currencyWithSymbol:campaign.currency_code}}
+                                {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                             </span>
                             <span ng-if="metricValue.type == 'percent'">
                                 {{metricValue.value | number}} %
@@ -148,7 +148,7 @@
                             <tr>
                                 <th>Status</th>
                                 <th>Adgroup name</th>
-                                <th ng-repeat="header in adGroupPerformance.getMetrics()">
+                                <th class="metrics" ng-repeat="header in adGroupPerformance.getMetrics()">
                                     {{ adPerformance.getMetricName(header) }}
                                 </th>
                             </tr>
@@ -158,10 +158,10 @@
                             <tr ng-repeat="row in adgroups">
                                 <td>{{row.status}}</td>
                                 <td>{{row.name}}</td>
-                                <td class="metrics"
-                                    ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index">
+                                <td class="metrics {{metricValue.type}}"
+                                    ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index" >
                             <span ng-if="metricValue.type == 'currency'">
-                                {{metricValue.value | number | currencyWithSymbol:campaign.currency_code}}
+                                {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                             </span>
                             <span ng-if="metricValue.type == 'percent'">
                                 {{metricValue.value | number}} %

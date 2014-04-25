@@ -198,6 +198,17 @@ input.mcs-amount {
   }
 }
 
+.metrics {
+  @extend .text-right;
+}
+.metrics.number {
+  @extend .text-right;
+}
+.metrics.currency {
+  @extend .text-right;
+}
+
+
 .mcs-default-container {
   @extend .mcs-content;
   @include make-row();
@@ -265,9 +276,7 @@ input.mcs-amount {
         .campaign-list-table {
           @extend .table;
           @extend .table-striped;
-          .metrics {
-            @extend .text-center;
-          }
+
         }
       }
     }
