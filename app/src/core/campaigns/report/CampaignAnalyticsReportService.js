@@ -14,20 +14,21 @@
       if (row === undefined) {
         return _.map(new Array(this.getMetrics().length), function () {return 0; });
       } else {
+        console.log("report.columns_headers: ",report.columns_headers)
         var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
         var type = _.map(this.getMetrics(), function(m) {return tableHeaders[m].type;});
         return _.map(_.zip([values, type]), function(t) { return {value: t[0], type:t[1]}; });
       }
     });
-    this.getMetricName = _.memoize(function (input) {
+    this.getMetricName = function (input) {
       input = input || '';
       var out = tableHeaders[input].name || input;
       return out;
-    });
+    };
 
-    this.getMetricType = _.memoize(function (index) {
+    this.getMetricType = function (index) {
       return tableHeaders[this.getMetrics()[index]].type;
-    });
+    };
   }
 
 //  function Report(report) {
@@ -41,10 +42,10 @@
 
 
   var isMetrics = function (e) {
-    return !(/name|id/).test(e);
+    return !(/name|id|day/).test(e);
   };
   var notMetrics = function (e) {
-    return (/name|id/).test(e);
+    return (/name|id|day/).test(e);
   };
 
   var tableHeaders = {
@@ -52,6 +53,7 @@
     "adgroup_id": {name:"Id"},
     "ad_id": {name:"Id"},
     "adgroup_name": {name:"Ad Group Name"},
+    "day": {name:"Date"},
     "cost_impressions": {name:"Spend", type:"currency"},
     "impressions": {name:"Impressions", type:"number"},
     "cpc": {name:"CPC", type:"currency"},
@@ -180,41 +182,52 @@
 
           },
           'dayPerformance': function (startDate, endDate, campaignId, leftMetric, rightMetric) {
+            startDate =  startDate.startOf('day');
+            endDate = endDate.add(1, 'day').startOf('day');
             var mapStatsToNvd3 = function (response) {
+              var report =new ReportWrapper(response.report_view);
+
+              var test = report.getRow(startDate.valueOf());
               var y1 = [], y2 = [];
 
-              var daysIdx, leftIdx, rightIdx, campaignIdx;
-              response.report_view.columns_headers.forEach(function (value, i) {
-                daysIdx = 0;
-                if (value === rightMetric) {
-                  rightIdx = i;
+
+
+              var dateIter = startDate;
+              while (dateIter.isBefore(endDate)) {
+                var row = report.getRow(dateIter.valueOf());
+                if(row[1] === 0) {
+                  y1.push({x: dateIter.valueOf(), y: 0 });
+                } else {
+                  y1.push({x: dateIter.valueOf(), y: row[1].value });
+                }
+                if(row[0] === 0) {
+                  y2.push({x: dateIter.valueOf(), y: 0 });
+                } else {
+                  y2.push({x: dateIter.valueOf(), y: row[0].value });
 
                 }
-                if (value === leftMetric) {
-                  leftIdx = i;
-                }
-                if (value === "campaign_id") {
-                  campaignIdx = i;
-                }
-              });
-              response.report_view.rows.forEach(function (row) {
-                var date = row[daysIdx];
-                y1.push({x: date, y: row[leftIdx] });
-                y2.push({x: date, y: row[rightIdx] });
-              });
+                dateIter = dateIter.add(1, 'day')
+              }
+
+//              response.report_view.rows.forEach(function (row) {
+//
+//                var date = row[daysIdx];
+//                y1.push({x: date, y: row[leftIdx] });
+//                y2.push({x: date, y: row[rightIdx] });
+//              });
               return [
                 {
                   area: true,
                   values: y1,
                   key: leftMetric,
-                  color: "#00AC67"
+                  color: "#FE5858"
                 },
                 {
                   values: y2,
                   area: true,
                   right: true,
                   key: rightMetric,
-                  color: "#FE5858"
+                  color: "#00AC67"
                 }
               ];
             };
