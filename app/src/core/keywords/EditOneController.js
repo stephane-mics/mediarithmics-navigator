@@ -31,6 +31,11 @@
 
       $scope.refreshStats = function () {
         $log.log("refreshStats has not been implemented yet");
+        return false;
+      };
+
+      $scope.doNothing = function ($event) {
+        $event.preventDefault();
       };
 
       $scope.addKeywordExpression = function (kw, newKeywordExpression) {

@@ -13,6 +13,7 @@
     'restangular',
     'nvd3ChartDirectives',
     'ngBootstrap',
+    'ui.keypress',
 
     'core/configuration',
     'core/layout',
