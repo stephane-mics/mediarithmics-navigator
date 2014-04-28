@@ -1,4 +1,4 @@
-<div>
+<form ng-submit="done()">
   <div class="modal-header">
     <h3>Upload Ad</h3>
   </div>
@@ -22,7 +22,7 @@
   </div>
 
   <div class="modal-footer">
-    <button ng-click="done()" class="btn btn-default" ng-show="uploadedAsset.length">Done</button>
-    <button ng-click="cancel()" class="btn btn-default">Cancel</button>
+    <button class="btn btn-default" ng-show="uploadedAsset.length">Done</button>
+    <a ng-click="cancel()" class="btn btn-default">Cancel</a>
   </div>
-</div>
+</form>

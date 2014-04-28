@@ -12,10 +12,10 @@
     <td mics-asset-thumbnail asset="creative">
     </td>
     <td>
-      <input ng-model="creative.name">
+      <input required ng-model="creative.name">
     </td>
     <td>
-      <input ng-model="creative.url_target">
+      <input required type="url" ng-model="creative.url_target">
     </td>
     <td ng-if="showDelete" class="delete-action">
       <a ng-click="onDelete(creative)">x</a>
