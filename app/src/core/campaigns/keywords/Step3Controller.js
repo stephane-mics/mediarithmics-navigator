@@ -8,22 +8,25 @@
     "$scope", "$log",
     function ($scope, $log) {
 
-      $scope.creatives = [];
+      if (!$scope.campaign.creatives) {
+        $scope.campaign.creatives = [];
+      }
 
       $scope.deleteCreative = function (eltToDelete) {
 
-        var idx = $scope.creatives.indexOf(eltToDelete);
+        var idx = $scope.campaign.creatives.indexOf(eltToDelete);
         if(idx === -1) {
           $log.warn("micsListCreatives: trying to delete an unknown elt", eltToDelete);
           return;
         }
 
-        $scope.creatives.splice(idx, 1);
+        $scope.campaign.creatives.splice(idx, 1);
       };
 
 
-      $scope.$on("mics-creative:new", function (creative) {
-        $scope.creatives.push(creative);
+      $scope.$on("mics-creative:new", function (event, params) {
+        // TODO
+        $scope.campaign.creatives.push(params.asset);
       });
 
       $scope.previous = function () {

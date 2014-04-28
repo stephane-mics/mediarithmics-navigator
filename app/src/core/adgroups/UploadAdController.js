@@ -38,6 +38,7 @@
       });
 
       function saveCreative(asset) {
+        $log.debug("creating creative", asset);
         return Restangular.all("creatives").post({
           name : asset.name,
           type : "DISPLAY_AD",
@@ -48,17 +49,24 @@
           // query params
           organisation_id : Session.getCurrentWorkspace().organisation_id
         }).then(function (creative) {
-          // /public/v1/display_ads/:id/renderer_properties/:propertyId
-          // TODO test this !
-          Restangular.one("display_ads", creative.id).one("renderer_properties").put([{
+          // the creative has been created but now we need to
+          // update the renderer properties : the target url and the asset.
+          Restangular.one("display_ads", creative.id).one("renderer_properties").customPUT([{
             "technical_name" : "destination_url",
             "value" : {"url":asset.url}
           },{
             "technical_name" : "image",
-            "value": {"assetId":asset.id}
+            "value": {"asset_id":asset.id}
           }]).then(function() {
-            $scope.emit("mics-creative:new", creative);
+            $scope.$emit("mics-creative:new", {
+              creative : creative,
+              asset : asset
+            });
+          }, function (reason) {
+            $log.error("creative, set renderer_properties : fail, ", reason);
           });
+        }, function (reason) {
+          $log.error("create a new creative : fail, ", reason);
         });
       }
 

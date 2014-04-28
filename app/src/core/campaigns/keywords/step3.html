@@ -7,13 +7,13 @@
     <div ng-include="'src/core/adgroups/choose-ads.html'"></div>
 
 
-    <div ng-show="!creatives.length" class="front-recommentation">
+    <div ng-show="!campaign.creatives.length" class="front-recommentation">
       We recommend using the following ad sizes :<br>
       <span>160x600</span>
       <span>728x90</span>
       <span>300x250</span>
     </div>
-    <div ng-show="creatives.length">
+    <div ng-show="campaign.creatives.length">
       <table class="fragment-list-creatives">
         <thead>
           <tr>
@@ -25,7 +25,7 @@
           </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="creative in creatives">
+        <tr ng-repeat="creative in campaign.creatives">
           <td mics-asset-thumbnail asset="creative"></td>
           <td>
             {{creative.name}}
@@ -36,7 +36,7 @@
           <td>
             {{creative.creation_date}}
           </td>
-          <td ng-if="showDelete" class="delete-action">
+          <td class="delete-action">
             <a ng-click="deleteCreative(creative)">x</a>
           </td>
         </tr>
