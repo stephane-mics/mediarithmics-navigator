@@ -15,6 +15,9 @@
 
         this.adGroups = [];
         this.removedAdGroups = [];
+        this.inventorySources = undefined;
+        this.addedInventorySources = [];
+
 
         this.keywordsLists = [];
 
@@ -85,8 +88,21 @@
       };
 
       CampaignContainer.prototype.getInventorySources = function () {
-        return this.value.getList('inventory_sources').$object;
+        if(this.inventorySources === undefined) {
+          this.inventorySources =  this.value.getList('inventory_sources');
+        }
+        return this.inventorySources.$object;
       };
+
+
+      CampaignContainer.prototype.addInventorySource = function (inventorySource) {
+        this.addedInventorySources.push(inventorySource);
+        this.inventorySources.$object.push(inventorySource);
+      };
+
+
+
+
 
       CampaignContainer.prototype.addAdGroup = function addAdGroup() {
         var adGroupCtn = new AdGroupContainer(IdGenerator.getId());
@@ -170,6 +186,16 @@
         this.value.put().then(function(campaign) {
 
           var adGroups = self.adGroups;
+
+          if (self.addedInventorySources.length !== 0) {
+            async.mapSeries(self.addedInventorySources, function(inventorySource, callback) {
+              self.inventorySources.$object.post(inventorySource).then(function(result) {
+                callback(null, result);
+              }, function(reason) {
+                callback(new Error(reason));
+              })
+            });
+          };
 
           async.mapSeries(adGroups, function(adGroup, callback) {
 

@@ -85,26 +85,31 @@
           <!-- Display Networks -->
             <div class="form-group">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h4>Display networks <small><a ng-click="editDisplayNetwork(adGroup)">Edit</a></small></h4></div>
+                    <div class="panel-heading">
+                        <h4>Display networks
+
+                        </h4>
+                    </div>
                     <div class="panel-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                    <th>Display network</th>
-                    <th>Weight</th>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="inventorySource in inventorySources">
-                        <td>{{inventorySource.display_network_name}}</td>
-                        <td>{{inventorySource.source_ratio}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div >
+                        <div class="form-inline" >
+                            <div class="form-group">
+                                <select ng-model="displayNetwork" ng-options="source.display_network_name for source in availableInventorySources|filter:isInInventorySources">
 
+                                </select>
+
+                            </div>
+                            <a class="btn btn-default" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
+                        </div>
+                        <div class="well">
+                            <span class="label label-default" ng-repeat="source in inventorySources">{{source.display_network_name}}</span>
+                        </div>
+
+
+
+
+
+                    </div>
                 </div>
-
-
-                    </div></div>
             </div>
 
 

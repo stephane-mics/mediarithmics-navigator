@@ -13,8 +13,8 @@
 
   /* define the Authentication service */
   module.factory('core/campaigns/DisplayCampaignService', [
-    '$q', 'Restangular', 'core/common/IdGenerator', 'core/campaigns/AdGroupContainer', 'core/campaigns/CampaignContainer', '$log',
-    function($q, Restangular, IdGenerator, AdGroupContainer, CampaignContainer, $log) {
+    '$q', 'Restangular', 'core/common/IdGenerator', 'core/campaigns/AdGroupContainer', 'core/campaigns/CampaignContainer', '$log', 'core/common/auth/Session',
+    function($q, Restangular, IdGenerator, AdGroupContainer, CampaignContainer, $log, Session) {
 
       var idCounter = 1;
       var service = {};
@@ -22,6 +22,11 @@
       /*
        *  Init methods
        */
+
+      service.getDisplayNetworkCampaign = function () {
+         var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
+         return Restangular.all('display_network_campaign').getList(params).$object;
+      }
 
       service.getDeepCampaignView = function (campaignId) {
         var root = Restangular.one('display_campaigns', campaignId);
@@ -151,6 +156,12 @@
       service.getInventorySources = function () {
         return this.campaignCtn.getInventorySources();
       };
+
+      service.addInventorySource = function (inventorySource) {
+        return this.campaignCtn.addInventorySource(inventorySource);
+      };
+
+
 
 
 

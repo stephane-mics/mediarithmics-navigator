@@ -13,7 +13,7 @@
 
   module.controller('core/campaigns/expert/EditCampaignController', [
     '$scope', '$log', '$location', '$routeParams', 'core/campaigns/DisplayCampaignService',
-    function ($scope, $log, $location, $routeParams, DisplayCampaignService) {
+    function ($scope, $log, $location, $routeParams, DisplayCampaignService ) {
 
       $log.debug('Expert.EditCampaignController called !');
 
@@ -34,6 +34,23 @@
       }
       $scope.getAds = function (adGroupId) {
         return DisplayCampaignService.getAds(adGroupId);
+      };
+
+      $scope.availableInventorySources = DisplayCampaignService.getDisplayNetworkCampaign();
+
+      $scope.isInInventorySources = function(elem) {
+        var displayNetworkCampaigns = _.map( $scope.inventorySources, function (elem) {return "" + elem.display_network_campaign_id;});
+        return !_.contains(displayNetworkCampaigns, elem.id);
+      };
+
+      $scope.addDisplayNetwork= function(elem) {
+        if(elem === undefined) {
+          return;
+        }
+        var newInventorySource = {display_network_campaign_id: elem.id, display_network_name: elem.display_network_name}
+        $scope.displayNetwork = undefined;
+        DisplayCampaignService.addInventorySource(newInventorySource);
+
       };
 
 
