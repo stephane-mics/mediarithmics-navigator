@@ -1,4 +1,21 @@
-<table>
-  <tr><th>Name</th></tr>
-  <tr><td ng-click="editAdGroup(adGroup)">{{adGroup.name}}</td></tr>
-</table>
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>{{adGroup.name}}<small><a ng-click="editAdGroup(adGroup)">Edit</a></small></h4></div>
+    <div class="panel-body">
+        <div class="row">
+
+            <div class="col-xs-6 col-md-3" ng-repeat="ad in getAds(adGroup.id)">
+                <div class="thumbnail">
+                    {{ad | json}}
+                    {{ad.format}}
+                    <div class="caption">
+                        {{ad.name}}
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-xs-12 col-md-12" >Visibility : {{adGroup.visibility}}</div>
+        </div>
+
+    </div>
+</div>

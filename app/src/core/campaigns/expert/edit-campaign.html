@@ -10,56 +10,102 @@
 
         <form  role="form">
 
-          <div class="form-group">
-            <label>Id</label>
-            <p  class="form-control-static">{{campaign.id}}</p>
-          </div>
+          <!--<div class="form-group">-->
+            <!--<label>Id</label>-->
+            <!--<p  class="form-control-static">{{campaign.id}}</p>-->
+          <!--</div>-->
 
           <!-- Name -->
           <div class="form-group">
             <label for="name">Campaign name</label>
-            <input  ng-model="campaign.name" type="text" class="form-control" id="name">
+            <input  ng-model="campaign.name" type="text" class="form-control input-lg" id="name">
           </div>
 
-          <!-- Weekly budget -->
-          <div class="form-group">
-            <label for="weekly_budget">Weekly budget</label>
-            <input ng-model="campaign.weekly_budget" type="text" class="form-control" id="weekly_budget">
-          </div>
+            <!-- Weekly budget -->
+            <div class="form-group">
+                <label for="weekly_budget">Weekly budget</label>
+                <input ng-model="campaign.max_daily_budget" type="text" class="form-control "  format="L"   id="weekly_budget" />
+            </div>
+
+            <div class="form-group">
+                <label for="total-budget">Total budget</label>
+                <input ng-model="campaign.total_budget" type="text" class="form-control "  format="L"   id="total-budget" />
+            </div>
 
           <!-- Schedule -->
           <div class="form-group">
-            <label for="weekly_budget">Schedule</label>
-            <select>
+            <label for="schedule">Schedule</label>
+            <select class="form-control" id="schedule">
               <option>Ongoing (no end date)</option>
               <option></option>
             </select>
           </div>
 
-          <!-- Location -->
-          <div class="form-group">
-            <label for="location">Location</label>
-            <select>
-              <option>Worldwide</option>
-              <option></option>
-            </select>
-          </div>
+            <!-- Location -->
+            <div class="form-group">
+                <label for="location">Location</label>
+                <select class="form-control"  id="location">
+                    <option>Worldwide</option>
+                    <option></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="max-bid-price">Max bid price</label>
+                <input ng-model="campaign.max_bid_price" type="text" class="form-control "  format="L"   id="max-bid-price" />
+            </div>
+
+            <div class="form-group">
+                <label for="total-impression-capping">Total impression capping</label>
+                <input ng-model="campaign.total_impression_capping" type="text" class="form-control "  format="L"    id="total-impression-capping" />
+
+            </div>
+
+            <!-- Location -->
+            <div class="form-group">
+                <label for="per-day-impression-capping">Dayly impression capping</label>
+
+                <input ng-model="campaign.per_day_impression_capping" type="text" class="form-control "  format="L"   id="per-day-impression-capping" />
+
+            </div>
 
 
-          <!-- Ad Groups -->
+            <!-- Ad Groups -->
           <div class="form-group">
             <div ng-repeat="adGroup in adGroups">
               <div ng-include src="'src/core/campaigns/expert/view-ad-group.html'"></div>
             </div>
 
             <div class="btn-group">
-              <button class="btn btn-default" ng-click="newAdGroup()">Create new Ad Group</button>
+              <a class="btn btn-default" ng-click="newAdGroup()">Create new Ad Group</a>
             </div>
           </div>
 
 
           <!-- Display Networks -->
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><h4>Display networks <small><a ng-click="editDisplayNetwork(adGroup)">Edit</a></small></h4></div>
+                    <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <th>Display network</th>
+                    <th>Weight</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="inventorySource in inventorySources">
+                        <td>{{inventorySource.display_network_name}}</td>
+                        <td>{{inventorySource.source_ratio}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div >
 
+                </div>
+
+
+                    </div></div>
+            </div>
 
 
           <!-- saver or cancel -->

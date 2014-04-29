@@ -10,6 +10,7 @@
     "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer",
     function($q, Restangular, IdGenerator, async, AdGroupContainer) {
 
+
       var CampaignContainer = function CampaignContainer() {
 
         this.adGroups = [];
@@ -25,40 +26,46 @@
         var root = Restangular.one('display_campaigns', campaignId);
         // send requests to get the value and the list of
         // ad group ids
-        var pValue = root.get();
-        var pAdGroups = root.getList('ad_groups');
+        var campaignResourceP = root.get();
+        var AdGroupsListP = root.getList('ad_groups');
 
         var self = this;
 
         var defered = $q.defer();
 
 
-        $q.all([pValue, pAdGroups])
+        $q.all([campaignResourceP, AdGroupsListP])
         .then( function (result) {
           self.value = result[0];
+//          self.value.ad_groups = function () {
+//            return _.map(self.ad_groups(), "value");
+//          }
           self.id = self.value.id;
           var adGroups = result[1];
 
-          var pArray = [];
+          var adGroupsP = [];
           if (adGroups.length > 0) {
 
             for(var i=0; i < adGroups.length; i++) {
               // load the ad group container corresponding to the id list in ad groups
-              var adGroupCtn = new AdGroupContainer();
-              pArray.push(adGroupCtn.load(self.id, adGroups[i].id));
+              var adGroupCtn = new AdGroupContainer(adGroups[i]);
+
+              self.adGroups.push(adGroupCtn);
             }
 
-            $q.all(pArray).then(function(result) {
+            defered.resolve(self);
 
-              for(var i=0; i < result.length; i++) {
-                self.adGroups.push(result[i]);
-              }
-
-              defered.resolve(self);
-
-            }, function(reason) {
-              defered.reject(reason);
-            });
+//            $q.all(adGroupsP).then(function(result) {
+//
+//              for(var i=0; i < result.length; i++) {
+//
+//              }
+//
+//              defered.resolve(self);
+//
+//            }, function(reason) {
+//              defered.reject(reason);
+//            });
 
           } else {
             // return the loaded container
@@ -77,9 +84,13 @@
         return defered.promise;
       };
 
+      CampaignContainer.prototype.getInventorySources = function () {
+        return this.value.getList('inventory_sources').$object;
+      };
+
       CampaignContainer.prototype.addAdGroup = function addAdGroup() {
-        var adGroupCtn = new AdGroupContainer();
-        adGroupCtn.id = IdGenerator.getId();
+        var adGroupCtn = new AdGroupContainer(IdGenerator.getId());
+
         this.adGroups.push(adGroupCtn);
         return adGroupCtn.id;
       };

@@ -65,6 +65,13 @@
 
       };
 
+      service.getCampaign = function() {
+
+        $log.debug("> getCampaignValue, campaignCtn=", this.campaignCtn);
+        return this.campaignCtn;
+
+      };
+
       service.setCampaignValue = function(campaign) {
         this.campaignCtn.value = campaign;
       };
@@ -105,6 +112,10 @@
         return values;
       };
 
+      service.loadAdGroups = function () {
+        _.each(this.campaignCtn.adGroups, function(elem) {elem.load();})
+      }
+
       service.resetAdGroup = function(id) {
         if (id.indexOf('T') !== -1) {
           this.campaignCtn.removeAdGroup(id);
@@ -121,8 +132,11 @@
       };
 
       service.getAdValue = function(adGroupId, adId) {
-
         return this.campaignCtn.getAdGroup(adGroupId).getAd(adId).value;
+      };
+
+      service.getAds = function(adGroupId) {
+        return this.campaignCtn.getAdGroup(adGroupId).ads
       };
 
       service.setAdValue = function(adGroupId, ad) {
@@ -133,6 +147,11 @@
       service.removeAd = function(adGroupId, adId) {
         this.campaignCtn.getAdGroup(adGroupId).removeAd(adId);
       };
+
+      service.getInventorySources = function () {
+        return this.campaignCtn.getInventorySources();
+      };
+
 
 
       // save the campaign
@@ -149,11 +168,13 @@
 
       // reset method
       service.reset = function () {
-
         this.campaignCtn = null;
       };
 
 
+      service.isInitialized = function (){
+        return this.campaignCtn === undefined;
+      }
 
       return service;
     }

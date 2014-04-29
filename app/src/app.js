@@ -98,20 +98,8 @@
       .when('/home', {
         redirectTo: '/display-campaigns'
       })
-      .when('/display-campaigns', {
-        templateUrl: 'src/core/campaigns/list.html'
-      })
       .when('/display-campaigns/select-campaign-template', {
         templateUrl: 'src/core/campaigns/create.html'
-      })
-      .when('/display-campaigns/expert/edit-campaign/:campaign_id', {
-        templateUrl:'src/core/campaigns/expert/edit-campaign.html'
-      })
-      .when('/display-campaigns/expert/edit-ad-group/:ad_group_id', {
-        templateUrl:'src/core/campaigns/expert/edit-ad-group.html'
-      })
-       .when('/display-campaigns/edit-expert/:campaign_id', {
-        templateUrl:'src/core/campaigns/expert/edit-campaign.html'
       })
 
       .when('/route-not-found', {
@@ -165,6 +153,14 @@
 
       // set the api entry point
       RestangularProvider.setBaseUrl(configuration.WS_URL);
+
+      RestangularProvider.addRequestInterceptor(function (element, operation, what, url) {
+        if(operation === "put") {
+          delete element.metadata;
+        }
+        return element;
+
+      });
 
       // configure the response extractor
       RestangularProvider.setResponseExtractor(function(response, operation, what, url) {
