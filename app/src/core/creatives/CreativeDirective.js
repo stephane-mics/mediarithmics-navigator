@@ -15,7 +15,7 @@
           $scope.creative = Restangular.one("creatives", $scope.creativeId).get().$object
 
         },
-        templateUrl:"src/core/creative/creative-thumbnail.html"
+        templateUrl:"src/core/creatives/creative-thumbnail.html"
       }
     }
   ]);
