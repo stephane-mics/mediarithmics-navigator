@@ -3,6 +3,7 @@
   'use strict';
 
   var module = angular.module('core/campaigns', [
+    'core/creative',
     'core/campaigns/expert',
     'core/campaigns/keywords',
     'core/campaigns/report',
