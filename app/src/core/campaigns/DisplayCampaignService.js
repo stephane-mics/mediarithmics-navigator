@@ -36,12 +36,12 @@
       };
 
 
-      service.initCreateCampaign = function(template, organisationId) {
+      service.initCreateCampaign = function(template) {
 
 
         var campaignCtn = new CampaignContainer();
         campaignCtn.id = IdGenerator.getId();
-        campaignCtn.organisationId = organisationId;
+        campaignCtn.organisationId = Session.getCurrentWorkspace().organisation_id;
 
         // set currency ...
         this.campaignCtn = campaignCtn;
@@ -79,6 +79,14 @@
 
       service.setCampaignValue = function(campaign) {
         this.campaignCtn.value = campaign;
+      };
+
+      service.isCreationMode = function () {
+        return this.getCampaignId().indexOf('T')=== 0;
+      };
+
+      service.isTemporaryId = function (id) {
+        return id.indexOf('T') === 0;
       };
 
       service.getCampaignId = function() {
@@ -158,6 +166,8 @@
       };
 
       service.addInventorySource = function (inventorySource) {
+
+        $log.debug("> add inventory source to ", this.campaignCtn, inventorySource);
         return this.campaignCtn.addInventorySource(inventorySource);
       };
 

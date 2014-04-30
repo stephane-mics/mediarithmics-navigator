@@ -13,7 +13,7 @@
       var AdGroupContainer = function AdGroupContainer(value) {
         if (typeof value === "string") {
           this.id = value;
-          this.value = {};
+          this.value = {id:value};
         } else {
 
           this.value = value;

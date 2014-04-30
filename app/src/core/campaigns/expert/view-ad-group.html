@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-    <div class="panel-heading"><h4>{{adGroup.name}}<small><a ng-click="editAdGroup(adGroup)">Edit</a></small></h4></div>
+    <div class="panel-heading"><h4>{{adGroup.name}} <small><a ng-click="editAdGroup(adGroup)">Edit</a></small></h4></div>
     <div class="panel-body">
         <div class="row">
 
@@ -13,7 +13,7 @@
 
 
             </div>
-            <div class="col-xs-12 col-md-12" >Visibility : {{adGroup.visibility}}</div>
+            <div class="col-xs-12 col-md-12" >Visibility : {{adGroup.visibility | constant:'adgroup_visibility'}}</div>
         </div>
 
     </div>

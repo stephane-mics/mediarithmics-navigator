@@ -33,13 +33,18 @@
             </div>
 
           <!-- Schedule -->
-          <div class="form-group">
-            <label for="schedule">Schedule</label>
-            <select class="form-control" id="schedule">
-              <option>Ongoing (no end date)</option>
-              <option></option>
-            </select>
-          </div>
+            <div class="form-group">
+                <label for="schedule">Schedule</label>
+                <select ng-model="schedule" class="form-control" id="schedule">
+                    <option value="">Ongoing (no end date)</option>
+                    <!--<option value="endDate">With end date</option>-->
+                </select>
+            </div>
+            <!--<div class="form-group" ng-show="schedule === 'endDate'">-->
+                <!--<label for="schedule">End date</label>-->
+                <!--<datepicker ng-model="campaign.end_date" />-->
+            <!--</div>-->
+
 
             <!-- Location -->
             <div class="form-group">
@@ -72,7 +77,7 @@
 
             <!-- Ad Groups -->
           <div class="form-group">
-            <div ng-repeat="adGroup in adGroups">
+            <div ng-repeat="adGroup in adGroups|orderBy:'id'">
               <div ng-include src="'src/core/campaigns/expert/view-ad-group.html'"></div>
             </div>
 
@@ -93,7 +98,7 @@
                     <div class="panel-body">
                         <div class="form-inline" >
                             <div class="form-group">
-                                <select ng-model="displayNetwork" ng-options="source.display_network_name for source in availableInventorySources|filter:isInInventorySources">
+                                <select class="form-control" ng-model="displayNetwork" ng-options="source.display_network_name for source in availableInventorySources|orderBy:'display_network_name'|filter:isInInventorySources">
 
                                 </select>
 
@@ -101,7 +106,7 @@
                             <a class="btn btn-default" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
                         </div>
                         <div class="well">
-                            <span class="label label-default" ng-repeat="source in inventorySources">{{source.display_network_name}}</span>
+                            <span class="label label-default" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
                         </div>
 
 

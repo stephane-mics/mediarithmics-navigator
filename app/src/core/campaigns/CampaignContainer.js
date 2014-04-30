@@ -13,6 +13,8 @@
 
       var CampaignContainer = function CampaignContainer() {
 
+        this.creationMode = true;
+
         this.adGroups = [];
         this.removedAdGroups = [];
         this.inventorySources = undefined;
@@ -21,7 +23,7 @@
 
         this.keywordsLists = [];
 
-        this.value = {type:"DISPLAY"};
+        this.value = {type:"DISPLAY", template_group_id: "com.mediarithmics.campaign.display", template_artifact_id:"default-template"};
       };
 
       CampaignContainer.prototype.load = function (campaignId) {
@@ -39,6 +41,7 @@
 
         $q.all([campaignResourceP, AdGroupsListP])
         .then( function (result) {
+          self.creationMode = false;
           self.value = result[0];
 //          self.value.ad_groups = function () {
 //            return _.map(self.ad_groups(), "value");
@@ -88,16 +91,23 @@
       };
 
       CampaignContainer.prototype.getInventorySources = function () {
-        if(this.inventorySources === undefined) {
+        if(this.inventorySources === undefined && !this.creationMode) {
           this.inventorySources =  this.value.getList('inventory_sources');
+
+        } else if (this.inventorySources === undefined) {
+          this.inventorySources = {$object:[]};
+
         }
         return this.inventorySources.$object;
+
       };
 
 
       CampaignContainer.prototype.addInventorySource = function (inventorySource) {
         this.addedInventorySources.push(inventorySource);
-        this.inventorySources.$object.push(inventorySource);
+        if(this.inventorySources !== undefined) {
+          this.inventorySources.$object.push(inventorySource);
+        }
       };
 
 
@@ -221,7 +231,7 @@
             if (err) {
               defered.reject(err);
             } else {
-              defered.resolve(results);
+              defered.resolve(self);
             }
           });
 

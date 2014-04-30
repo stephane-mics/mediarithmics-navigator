@@ -12,10 +12,12 @@
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditAdGroupController', [
-    '$scope', '$location', '$routeParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService',
-    function($scope, $location, $routeParams, $modal, $log, DisplayCampaignService) {
+    '$scope', '$location', '$routeParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService','core/common/ConstantsService',
+    function($scope, $location, $routeParams, $modal, $log, DisplayCampaignService, ConstantsService) {
 
       var adGroupId = $routeParams.ad_group_id;
+
+      $scope.visibilityValues = ConstantsService.getValues("adgroup_visibility");
 
       $scope.campaignName = DisplayCampaignService.getCampaignValue().name;
 
