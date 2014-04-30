@@ -203,9 +203,9 @@
                 callback(null, result);
               }, function(reason) {
                 callback(new Error(reason));
-              })
+              });
             });
-          };
+          }
 
           async.mapSeries(adGroups, function(adGroup, callback) {
 

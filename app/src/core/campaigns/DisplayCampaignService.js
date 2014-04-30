@@ -1,3 +1,4 @@
+/* global _ */
 (function () {
   'use strict';
 
@@ -24,9 +25,9 @@
        */
 
       service.getDisplayNetworkCampaign = function () {
-         var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
-         return Restangular.all('display_network_campaign').getList(params).$object;
-      }
+        var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
+        return Restangular.all('display_network_campaign').getList(params).$object;
+      };
 
       service.getDeepCampaignView = function (campaignId) {
         var root = Restangular.one('display_campaigns', campaignId);
@@ -126,8 +127,8 @@
       };
 
       service.loadAdGroups = function () {
-        _.each(this.campaignCtn.adGroups, function(elem) {elem.load();})
-      }
+        _.each(this.campaignCtn.adGroups, function(elem) {elem.load();});
+      };
 
       service.resetAdGroup = function(id) {
         if (id.indexOf('T') !== -1) {
@@ -149,7 +150,7 @@
       };
 
       service.getAds = function(adGroupId) {
-        return this.campaignCtn.getAdGroup(adGroupId).ads
+        return this.campaignCtn.getAdGroup(adGroupId).ads;
       };
 
       service.setAdValue = function(adGroupId, ad) {
@@ -195,7 +196,7 @@
 
       service.isInitialized = function (){
         return this.campaignCtn === undefined;
-      }
+      };
 
       return service;
     }

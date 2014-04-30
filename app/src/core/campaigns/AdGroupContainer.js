@@ -127,7 +127,7 @@
               defered.reject(reason);
             });
           }, function (reason) {
-
+            defered.reject(reason);
           });
 
         return defered.promise;

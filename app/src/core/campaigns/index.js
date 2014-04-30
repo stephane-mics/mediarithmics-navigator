@@ -25,7 +25,7 @@
         })
         .when('/display-campaigns', {
           templateUrl: 'src/core/campaigns/list.html'
-        })
+        });
     }
   ]);
 

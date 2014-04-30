@@ -1,3 +1,4 @@
+/* global _ */
 (function () {
   'use strict';
 
@@ -32,13 +33,13 @@
         if (DisplayCampaignService.isTemporaryId($routeParams.campaign_id)) {
           DisplayCampaignService.initCreateCampaign("expert").then(function () {
             initView();
-          })
+          });
         } else {
           DisplayCampaignService.initEditCampaign($routeParams.campaign_id).then(function () {
             initView();
-          })
+          });
         }
-        ;
+
 
       } else {
         // init scope
@@ -61,7 +62,7 @@
         if (elem === undefined) {
           return;
         }
-        var newInventorySource = {display_network_campaign_id: elem.id, display_network_name: elem.display_network_name}
+        var newInventorySource = {display_network_campaign_id: elem.id, display_network_name: elem.display_network_name};
         $scope.displayNetwork = undefined;
         DisplayCampaignService.addInventorySource(newInventorySource);
 
