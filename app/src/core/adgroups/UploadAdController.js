@@ -21,7 +21,7 @@
       $scope.uploadedFiles = [];
 
       // for the page
-      $scope.uploadedAsset = [];
+      $scope.newCreativesWrapper = [];
 
 
       $scope.logAssetDeletion = function (elt) {
@@ -32,35 +32,62 @@
         while(newFiles.length) {
           var file = newFiles.pop();
           $log.info("got new uploaded file, pushing as asset", file);
-          file.name = file.original_filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
-          $scope.uploadedAsset.push(file);
+          $scope.newCreativesWrapper.push({
+            asset:file,
+            creative:{
+              name : file.original_filename.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')
+            },
+            rendererProperties : []
+          });
         }
       });
 
-      function saveCreative(asset) {
-        $log.debug("creating creative", asset);
+      function saveCreativeWrapper(userDefinedCreative) {
+
+        var isFlash = userDefinedCreative.asset.mime_type === "application/x-shockwave-flash";
+
+        var groupId = "com.mediarithmics.creative.display";
+        var artifactId = "quick-image-banner";
+
+        if (isFlash) {
+          artifactId = "quick-flash-banner";
+        }
+
+        $log.debug("creating creative", userDefinedCreative);
         return Restangular.all("creatives").post({
-          name : asset.name,
+          name : userDefinedCreative.creative.name,
           type : "DISPLAY_AD",
-          template_group_id : "com.mediarithmics.creative.display",
-          // TODO : flash banners
-          template_artifact_id : "quick-image-banner"
+          template_group_id : groupId,
+          template_artifact_id : artifactId
         }, {
           // query params
           organisation_id : Session.getCurrentWorkspace().organisation_id
         }).then(function (creative) {
+          var rendererProperties = [];
+
+          rendererProperties.push({
+            "technical_name" : "destination_url",
+            "value" : {"url":userDefinedCreative.creative.url_target}
+          });
+
+          if(isFlash) {
+            rendererProperties.push({
+              "technical_name" : "flash",
+              "value": {"asset_id":userDefinedCreative.asset.id}
+            });
+          } else {
+            rendererProperties.push({
+              "technical_name" : "image",
+              "value": {"asset_id":userDefinedCreative.asset.id}
+            });
+          }
           // the creative has been created but now we need to
           // update the renderer properties : the target url and the asset.
-          Restangular.one("display_ads", creative.id).one("renderer_properties").customPUT([{
-            "technical_name" : "destination_url",
-            "value" : {"url":asset.url}
-          },{
-            "technical_name" : "image",
-            "value": {"asset_id":asset.id}
-          }]).then(function() {
+          Restangular.one("display_ads", creative.id).one("renderer_properties").customPUT(rendererProperties).then(function(returnedProperties) {
             $scope.$emit("mics-creative:new", {
               creative : creative,
-              asset : asset
+              asset : userDefinedCreative.asset,
+              rendererProperties:returnedProperties
             });
           }, function (reason) {
             $log.error("creative, set renderer_properties : fail, ", reason);
@@ -71,10 +98,10 @@
       }
 
       $scope.done = function() {
-        var assets = $scope.uploadedAsset;
+        var wrapper = $scope.newCreativesWrapper;
 
-        for (var i = 0; i < assets.length; i++) {
-          saveCreative(assets[i]);
+        for (var i = 0; i < wrapper.length; i++) {
+          saveCreativeWrapper(wrapper[i]);
         }
         $modalInstance.close();
       };

@@ -8,17 +8,17 @@
     </tr>
   </thead>
   <tbody>
-  <tr ng-repeat="creative in creatives">
-    <td mics-asset-thumbnail asset="creative">
+  <tr ng-repeat="wrapper in wrappers">
+    <td mics-asset-thumbnail asset="wrapper.asset">
     </td>
     <td>
-      <input required ng-model="creative.name">
+      <input required ng-model="wrapper.creative.name">
     </td>
     <td>
-      <input required type="url" ng-model="creative.url_target">
+      <input required type="url" ng-model="wrapper.creative.url_target">
     </td>
     <td ng-if="showDelete" class="delete-action">
-      <a ng-click="onDelete(creative)">x</a>
+      <a ng-click="onDelete(wrapper)">x</a>
     </td>
   </tr>
   </tbody>

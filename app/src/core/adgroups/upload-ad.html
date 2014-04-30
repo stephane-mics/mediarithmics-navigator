@@ -4,11 +4,11 @@
   </div>
 
   <div class="modal-body">
-    <div ng-show="uploadedAsset.length">
-      <div mics-list-creatives creatives="uploadedAsset" show-delete="false" on-delete="logAssetDeletion"></div>
+    <div ng-show="newCreativesWrapper.length">
+      <div mics-list-new-creatives wrappers="newCreativesWrapper" show-delete="false" on-delete="logAssetDeletion"></div>
     </div>
 
-    <div mics-pl-upload id="ad-upload" uploaded-files="uploadedFiles" ng-show="!uploadedAsset.length">
+    <div mics-pl-upload id="ad-upload" uploaded-files="uploadedFiles" ng-show="!newCreativesWrapper.length">
 
       <button  class="btn btn-default browse-button" >Select files</button>
 
@@ -22,7 +22,7 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-default" ng-show="uploadedAsset.length">Done</button>
+    <button class="btn btn-default" ng-show="newCreativesWrapper.length">Done</button>
     <a ng-click="cancel()" class="btn btn-default">Cancel</a>
   </div>
 </form>
