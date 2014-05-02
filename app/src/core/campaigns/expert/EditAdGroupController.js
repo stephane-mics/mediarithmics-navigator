@@ -34,11 +34,15 @@
         return DisplayCampaignService.getAds(adGroupId);
       };
 
+      $scope.deleteAd = function (adId) {
+        return DisplayCampaignService.removeAd(adGroupId, adId);
+      };
+
 
       $scope.$on("mics-creative:selected", function (event, params) {
         var ad  = {creative_id: params.creative.id};
 //        $scope.campaign.creatives.push(params.creative);
-        var adId = DisplayCampaignService.addAd(adGroupId,ad);
+        DisplayCampaignService.addAd(adGroupId, ad);
       });
 
       // save button

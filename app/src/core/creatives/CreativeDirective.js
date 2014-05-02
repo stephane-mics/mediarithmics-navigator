@@ -23,9 +23,9 @@
             // then calling element.setAttribute('src', 'foo') doesn't do anything, so we need
             // to set the property as well to achieve the desired effect.
             // we use attr[attrName] value since $set can sanitize the url.
-            if (msie) {
-              element.prop("src", attrs["src"]);
-            }
+//            if (msie) {
+//              element.prop("src", attrs["src"]);
+//            }
           });
         }
 
