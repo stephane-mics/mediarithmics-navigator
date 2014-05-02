@@ -18,10 +18,8 @@
         var creative;
         for (var i = 0; i < $scope.selectedCreatives.length; i++) {
           creative = $scope.selectedCreatives[i];
-          $scope.$emit("mics-creative:select", {
-            creative : creative,
-            asset : null,
-            rendererProperties : null
+          $scope.$emit("mics-creative:selected", {
+            creative : creative
           });
         }
         $modalInstance.close();

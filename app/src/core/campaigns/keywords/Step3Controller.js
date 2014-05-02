@@ -24,11 +24,7 @@
       };
 
 
-      $scope.$on("mics-creative:new", function (event, params) {
-        $scope.campaign.creatives.push(params.creative);
-      });
-
-      $scope.$on("mics-creative:select", function (event, params) {
+      $scope.$on("mics-creative:selected", function (event, params) {
         $scope.campaign.creatives.push(params.creative);
       });
 

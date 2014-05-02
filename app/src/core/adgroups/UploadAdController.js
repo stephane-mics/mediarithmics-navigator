@@ -85,10 +85,8 @@
           // the creative has been created but now we need to
           // update the renderer properties : the target url and the asset.
           Restangular.one("display_ads", creative.id).one("renderer_properties").customPUT(rendererProperties).then(function(returnedProperties) {
-            $scope.$emit("mics-creative:new", {
-              creative : creative,
-              asset : userDefinedCreative.asset,
-              rendererProperties : returnedProperties
+            $scope.$emit("mics-creative:selected", {
+              creative : creative
             });
           }, function (reason) {
             $log.error("creative, set renderer_properties : fail, ", reason);
