@@ -30,6 +30,9 @@
 
       // fo the keywords controller
       // $scope.keywordsList =
+      $scope.getAds = function (adGroupId) {
+        return DisplayCampaignService.getAds(adGroupId);
+      };
 
 
       $scope.$on("mics-creative:selected", function (event, params) {

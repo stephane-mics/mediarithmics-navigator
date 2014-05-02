@@ -24,7 +24,66 @@
             </div>
 
           <div ng-include="'src/core/adgroups/choose-ads.html'"></div>
+            <div class="col-xs-12 col-md-10">
 
+                    <table class="fragment-list-creatives list-ads">
+                        <thead>
+                        <tr>
+                            <th>Size</th>
+                            <th>Ad Name</th>
+                            <th>Url</th>
+                            <th>Created</th>
+                            <th>Remove</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative">
+
+                            <!-- <td mics-asset-thumbnail asset="creative"></td> -->
+
+                            <td>
+
+                                <div class="thumbnail">
+
+
+                                    <img creative-thumbnail="creative.id" />
+                                    <div class="caption">
+                                            {{creative.format}}
+                                    </div>
+                                </div>
+
+                            </td>
+
+                            <td>
+                                {{creative.name}}
+                            </td>
+                            <td>
+                                {{creative.url_target}}
+                            </td>
+                            <td>
+                                {{creative.creation_date|date:'shortDate'}}
+                            </td>
+
+                            <td class="delete-action">
+                                <a ng-click="deleteCreative(creative)">x</a>
+                            </td>
+
+
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+
+
+
+
+
+
+                </div>
+
+
+            </div>
 
 
 
