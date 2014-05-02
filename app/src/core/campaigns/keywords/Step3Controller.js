@@ -38,6 +38,17 @@
       $scope.next = function () {
         $scope.container.step = "step4";
       };
+
+      $scope.resolveUrlTarget = _.memoize(function (creativeId) {
+        var result = {url:""};
+        Restangular.one("display_ads", creativeId).one("renderer_properties").getList().then(function(properties) {
+          var dest = _.find(properties, function (elt) {return elt.technical_name === "destination_url";});
+          if(dest) {
+            result.url = dest.value.url;
+          }
+        });
+        return result;
+      });
     }
   ]);
 })();

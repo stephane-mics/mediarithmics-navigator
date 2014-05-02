@@ -39,7 +39,7 @@
             {{creative.name}}
           </td>
           <td>
-            {{creative.url_target}}
+            {{resolveUrlTarget(creative.id).url}}
           </td>
           <td>
             {{creative.creation_date|date:'shortDate'}}
