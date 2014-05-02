@@ -57,6 +57,7 @@
         return Restangular.all("creatives").post({
           name : userDefinedCreative.creative.name,
           type : "DISPLAY_AD",
+          format : userDefinedCreative.asset.width + "x" + userDefinedCreative.asset.height,
           template_group_id : groupId,
           template_artifact_id : artifactId
         }, {
@@ -87,7 +88,7 @@
             $scope.$emit("mics-creative:new", {
               creative : creative,
               asset : userDefinedCreative.asset,
-              rendererProperties:returnedProperties
+              rendererProperties : returnedProperties
             });
           }, function (reason) {
             $log.error("creative, set renderer_properties : fail, ", reason);

@@ -25,8 +25,11 @@
 
 
       $scope.$on("mics-creative:new", function (event, params) {
-        // TODO
-        $scope.campaign.creatives.push(params.asset);
+        $scope.campaign.creatives.push(params.creative);
+      });
+
+      $scope.$on("mics-creative:select", function (event, params) {
+        $scope.campaign.creatives.push(params.creative);
       });
 
       $scope.previous = function () {

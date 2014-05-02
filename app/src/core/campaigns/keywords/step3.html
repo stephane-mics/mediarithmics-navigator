@@ -14,7 +14,7 @@
       <span>300x250</span>
     </div>
     <div ng-show="campaign.creatives.length">
-      <table class="fragment-list-creatives">
+      <table class="fragment-list-creatives list-ads">
         <thead>
           <tr>
             <th>Size</th>
@@ -26,7 +26,15 @@
         </thead>
         <tbody>
         <tr ng-repeat="creative in campaign.creatives">
-          <td mics-asset-thumbnail asset="creative"></td>
+          <!-- <td mics-asset-thumbnail asset="creative"></td> -->
+          <td>
+            <div class="thumbnail">
+              <img ng-src="http://placekitten.com/50/50" />
+              <div class="caption">
+                {{creative.format}}
+              </div>
+            </div>
+          </td>
           <td>
             {{creative.name}}
           </td>
@@ -34,7 +42,7 @@
             {{creative.url_target}}
           </td>
           <td>
-            {{creative.creation_date}}
+            {{creative.creation_date|date:'shortDate'}}
           </td>
           <td class="delete-action">
             <a ng-click="deleteCreative(creative)">x</a>

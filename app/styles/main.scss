@@ -406,6 +406,7 @@ table.fragment-list-creatives {
   .thumbnail {
     margin : 0;
     border : none;
+    background-color:none;
     img {
       max-width : 50px;
       max-height : 50px;
@@ -422,5 +423,24 @@ table.fragment-list-creatives {
   }
   .delete-action {
     @extend .text-center;
+  }
+}
+
+.choose-existing-ads {
+  input[type=text] {
+    @extend .pull-right;
+  }
+
+}
+table.list-ads {
+  @extend .table;
+  @extend .table-striped;
+
+  img {
+    max-width : 50px;
+    max-height : 50px;
+  }
+  td {
+    line-height : 50px !important;
   }
 }

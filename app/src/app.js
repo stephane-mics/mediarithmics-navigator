@@ -14,6 +14,7 @@
     'nvd3ChartDirectives',
     'ngBootstrap',
     'ui.keypress',
+    'ui.unique',
 
     'core/configuration',
     'core/layout',

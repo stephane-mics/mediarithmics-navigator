@@ -1,0 +1,40 @@
+<div class="choose-existing-ads">
+  <div class="modal-header">
+    <h3>Select Ads</h3>
+  </div>
+
+  <div class="modal-body">
+    <select ng-model="creativeformat" ng-options="availableCreative.format as availableCreative.format for availableCreative in availableCreatives | unique:'format' | orderBy:'format'">
+      <option value="">all sizes</option>
+    </select>
+
+    <input type="text" ng-model="creativename" placeholder="search">
+
+    <table class="list-ads">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Size</th>
+          <th>Ad Name</th>
+          <th>Created</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="availableCreative in availableCreatives | filter:creativename | filter:creativeformat">
+          <td><input type="checkbox" checklist-model="selectedCreatives" checklist-value="availableCreative"></td>
+          <td>
+            {{availableCreative.format}}
+            <img ng-src="http://placekitten.com/50/50" />
+          </td>
+          <td>{{availableCreative.name}}</td>
+          <td>{{availableCreative.creation_date|date:'shortDate'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-footer">
+    <a class="btn btn-default" ng-show="selectedCreatives.length" ng-click="done()">Done</a>
+    <a ng-click="cancel()" class="btn btn-default">Cancel</a>
+  </div>
+</div>

@@ -29,7 +29,20 @@
       // select exisiting Ads
       $scope.selectExistingAd = function(adGroup) {
         // display pop-up
+        var uploadModal = $modal.open({
+          templateUrl: 'src/core/adgroups/ChooseExistingAds.html',
+          scope : $scope,
+          backdrop : 'static',
+          controller: 'core/adgroups/ChooseExistingAdsController'
+        });
+
+        uploadModal.result.then(function () {
+
+        }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+        });
       };
+
     }
   ]);
 })();
