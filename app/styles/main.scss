@@ -395,22 +395,24 @@ input.mcs-amount {
 
 table.fragment-list-creatives {
 
-  width : 100%;
+  @extend .table;
+  @extend .table-striped;
 
   thead th {
     @extend .text-center;
   }
   td {
-    padding : 0 5px;
+    /* padding : 0 5px; */
+    line-height : 50px !important;
   }
   .thumbnail {
     margin : 0;
+    padding:0;
     border : none;
-    background-color:none;
+    background-color:transparent;
     img {
       max-width : 50px;
       max-height : 50px;
-      padding-top : 10px;
     }
     .caption {
       @extend .text-center;
@@ -431,16 +433,4 @@ table.fragment-list-creatives {
     @extend .pull-right;
   }
 
-}
-table.list-ads {
-  @extend .table;
-  @extend .table-striped;
-
-  img {
-    max-width : 50px;
-    max-height : 50px;
-  }
-  td {
-    line-height : 50px !important;
-  }
 }
