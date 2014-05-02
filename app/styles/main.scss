@@ -434,3 +434,16 @@ table.fragment-list-creatives {
   }
 
 }
+
+.create-keywords-campaign .summary {
+  @extend .table;
+  @extend .table-striped;
+
+  .action {
+    @extend .text-right;
+  }
+
+  img {
+    margin:0 8px;
+  }
+}

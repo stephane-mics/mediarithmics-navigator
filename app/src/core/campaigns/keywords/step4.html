@@ -5,6 +5,40 @@
 
     <h2 class="text-center">{{ campaign.name }}</h2>
     <h3 class="text-center">{{ campaign.schedule }} </h3>
+    <table class="summary">
+      <tbody>
+      <tr>
+        <td>Weekly budget</td>
+        <td>{{campaign.weekly_budget|currencyWithSymbol:'EUR'}}</td>
+        <td class="action"><a class="btn btn-default" ng-click="editBudget()">Edit</a></td>
+      </tr>
+      <tr>
+        <td>Location</td>
+        <td>{{campaign.location}}</td>
+        <td class="action"><a class="btn btn-default" ng-click="editLocation()">Edit</a></td>
+      </tr>
+      <tr>
+        <td>Target Placement</td>
+        <td>{{campaign.keywordsLists.length}} keywords list</td>
+        <td class="action"><a class="btn btn-default" ng-click="editKeywordsList()">Edit</a></td>
+      </tr>
+      <tr>
+        <td>
+          Ads<br/>
+          {{campaign.creatives.length}} ads
+        </td>
+        <td>
+          <img ng-repeat="creative in campaign.creatives" ng-src="http://placekitten.com/50/50" />
+        </td>
+        <td class="action"><a class="btn btn-default" ng-click="editPlacement()">Edit</a></td>
+      </tr>
+      <tr>
+        <td>Payment Method</td>
+        <td></td>
+        <td class="action"></td>
+      </tr>
+      </tbody>
+    </table>
     <a class="btn btn-default" ng-click="previous()">go back</a>
     <button class="btn btn-default">Launch Campaign</button>
   </form>
