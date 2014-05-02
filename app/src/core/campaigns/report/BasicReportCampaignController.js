@@ -138,7 +138,7 @@
         // get campaign edit template
         var editTemplateView = '/display-campaigns/expert/edit/';
 //        DisplayCampaignService.initEditCampaign(campaign.id).then(function () {
-          $location.path(editTemplateView + campaign.id);
+        $location.path(editTemplateView + campaign.id);
 //        });
 
 
