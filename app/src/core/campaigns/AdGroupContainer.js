@@ -62,9 +62,8 @@
 
       };
 
-      AdGroupContainer.prototype.addAd = function addAd() {
+      AdGroupContainer.prototype.addAd = function addAd(ad) {
 
-        var ad = {};
         ad.id = IdGenerator.getId();
         this.ads.push(ad);
 
@@ -114,7 +113,7 @@
             // persist ads
             var pAds = [];
             for (var i = 0; i < self.ads.length; i++) {
-              var pAd = Restangular.one('display_campaigns', campaignId).one('ad_groups', adGroup.id).post('ads', self.ads[i].value);
+              var pAd = Restangular.one('display_campaigns', campaignId).one('ad_groups', adGroup.id).post('ads', self.ads[i]);
               pAds.push(pAd);
             }
 
@@ -151,17 +150,14 @@
               var ad = self.ads[i];
               if ((ad.id.indexOf('T') === -1) || (typeof(ad.modified) !== "undefined")) {
                 // update the ad
-                pAd = Restangular.one('display_campaigns', campaignId)
-                  .one('ad_groups', adGroup.id)
-                  .one('ads', ad.id)
-                  .put(ad.value);
+                pAd = ad.put();
                 pAds.push(pAd);
 
               } else {
                 // create the ad
                 pAd = Restangular.one('display_campaigns', campaignId)
                   .one('ad_groups', adGroup.id)
-                  .post('ads', ad.value);
+                  .post('ads', ad);
                 pAds.push(pAd);
 
               }

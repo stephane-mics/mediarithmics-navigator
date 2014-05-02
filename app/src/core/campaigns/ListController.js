@@ -51,7 +51,7 @@
         $log.debug("> editCampaign for campaignId=", campaign.id);
 
         // get campaign edit template
-        var editTemplateView = '/display-campaigns/expert/edit-campaign/';
+        var editTemplateView = 'display-campaigns/expert/edit/';
         DisplayCampaignService.initEditCampaign(campaign.id).then(function () {
           $location.path(editTemplateView + campaign.id);
         });

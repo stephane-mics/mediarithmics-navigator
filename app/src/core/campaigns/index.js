@@ -14,14 +14,11 @@
     "$routeProvider",
     function ($routeProvider) {
       $routeProvider
-        .when('/display-campaigns/expert/edit-campaign/:campaign_id', {
+        .when('/display-campaigns/expert/edit/:campaign_id', {
           templateUrl:'src/core/campaigns/expert/edit-campaign.html'
         })
-        .when('/display-campaigns/expert/edit-ad-group/:ad_group_id', {
+        .when('/display-campaigns/expert/edit/:campaign_id/edit-ad-group/:ad_group_id', {
           templateUrl:'src/core/campaigns/expert/edit-ad-group.html'
-        })
-        .when('/display-campaigns/edit-expert/:campaign_id', {
-          templateUrl:'src/core/campaigns/expert/edit-campaign.html'
         })
         .when('/display-campaigns', {
           templateUrl: 'src/core/campaigns/list.html'

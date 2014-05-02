@@ -15,32 +15,29 @@
   module.controller('core/campaigns/expert/EditCampaignController', [
     '$scope', '$log', '$location', '$routeParams', 'core/campaigns/DisplayCampaignService',
     function ($scope, $log, $location, $routeParams, DisplayCampaignService) {
+      var campaignId = $routeParams.campaign_id;
 
       function initView() {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
-        if (!DisplayCampaignService.isCreationMode()) {
-          DisplayCampaignService.loadAdGroups();
 
-        }
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
       }
 
       $log.debug('Expert.EditCampaignController called !');
 
       // TODO oad the campaign (no effect if already in cache or if this is a temporary id)
-      if (DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== $routeParams.campaign_id) {
-        if (DisplayCampaignService.isTemporaryId($routeParams.campaign_id)) {
+      if (!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
+        if (DisplayCampaignService.isTemporaryId(campaignId)) {
           DisplayCampaignService.initCreateCampaign("expert").then(function () {
             initView();
           });
         } else {
-          DisplayCampaignService.initEditCampaign($routeParams.campaign_id).then(function () {
+          DisplayCampaignService.initEditCampaign(campaignId).then(function () {
             initView();
+            DisplayCampaignService.loadAdGroups();
           });
         }
-
-
       } else {
         // init scope
         initView();
@@ -78,12 +75,12 @@
       // new Ad Group
       $scope.newAdGroup = function () {
         var adGroupId = DisplayCampaignService.addAdGroup();
-        $location.path('/display-campaigns/expert/edit-ad-group/' + adGroupId);
+        $location.path('/display-campaigns/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroupId);
       };
 
       // edit Ad Group
       $scope.editAdGroup = function (adGroup) {
-        $location.path('/display-campaigns/expert/edit-ad-group/' + adGroup.id);
+        $location.path('/display-campaigns/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroup.id);
       };
 
 

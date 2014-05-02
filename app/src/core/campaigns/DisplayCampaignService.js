@@ -141,8 +141,8 @@
        * Ad methods
        */
 
-      service.addAd = function(adGroupId) {
-        return this.campaignCtn.getAdGroup(adGroupId).addAd();
+      service.addAd = function(adGroupId, ad) {
+        return this.campaignCtn.getAdGroup(adGroupId).addAd(ad);
       };
 
       service.getAdValue = function(adGroupId, adId) {
@@ -195,7 +195,7 @@
 
 
       service.isInitialized = function (){
-        return this.campaignCtn === undefined;
+        return this.campaignCtn !== undefined;
       };
 
       return service;
