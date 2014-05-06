@@ -20,6 +20,7 @@
     'core/layout',
     'core/keywords',
     'core/adgroups',
+    'core/usergroups',
     'core/campaigns',
     'core/datamart',
     'core/login',

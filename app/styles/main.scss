@@ -447,3 +447,8 @@ table.fragment-list-creatives {
     margin:0 8px;
   }
 }
+
+table.fragment-list-user-groups {
+  @extend .table;
+  @extend .table-striped;
+}

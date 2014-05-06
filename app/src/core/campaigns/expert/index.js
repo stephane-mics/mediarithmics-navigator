@@ -7,6 +7,7 @@
     // TODO : circular deps ?
     'core/campaigns',
     'core/adgroups',
+    'core/usergroups',
     'ui.bootstrap',
     "core/keywords"
   ]);

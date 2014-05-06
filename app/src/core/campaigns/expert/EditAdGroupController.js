@@ -38,6 +38,26 @@
         return DisplayCampaignService.removeAd(adGroupId, adId);
       };
 
+      $scope.getUserGroups = function (adGroupId) {
+        return DisplayCampaignService.getUserGroups(adGroupId);
+      };
+
+      $scope.deleteUserGroup = function (userGroupId) {
+        return DisplayCampaignService.removeUserGroup(adGroupId, userGroupId);
+      };
+
+      $scope.$on("mics-user-group:selected", function (event, params) {
+        var existing = _.find(DisplayCampaignService.getUserGroups(adGroupId), function (userGroupSelection) {return userGroupSelection.user_group_id === params.usergroup.id;});
+        if(!existing) {
+          var userGroupSelection = {
+            user_group_id : params.usergroup.id,
+            name : params.usergroup.name,
+            technical_name : params.usergroup.technicalName,
+            exclude : params.exclude
+          };
+          DisplayCampaignService.addUserGroup(adGroupId, userGroupSelection);
+        }
+      });
 
       $scope.$on("mics-creative:selected", function (event, params) {
         var ad  = {creative_id: params.creative.id};

@@ -162,6 +162,24 @@
         this.campaignCtn.getAdGroup(adGroupId).removeAd(adId);
       };
 
+      /*
+       * User group methods
+       */
+      service.getUserGroups = function(adGroupId) {
+        return this.campaignCtn.getAdGroup(adGroupId).userGroups;
+      };
+
+      service.addUserGroup = function (adGroupId, usergroup) {
+        return this.campaignCtn.getAdGroup(adGroupId).addUserGroup(usergroup);
+      };
+
+      service.removeUserGroup = function(adGroupId, userGroupId) {
+        this.campaignCtn.getAdGroup(adGroupId).removeUserGroup(userGroupId);
+      };
+
+
+
+
       service.getInventorySources = function () {
         return this.campaignCtn.getInventorySources();
       };
