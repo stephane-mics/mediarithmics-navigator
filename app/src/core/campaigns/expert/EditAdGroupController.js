@@ -12,8 +12,8 @@
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditAdGroupController', [
-    '$scope', '$location', '$routeParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService','core/common/ConstantsService',
-    function($scope, $location, $routeParams, $modal, $log, DisplayCampaignService, ConstantsService) {
+    '$scope', '$location', '$routeParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService','core/common/ConstantsService', 'lodash',
+    function($scope, $location, $routeParams, $modal, $log, DisplayCampaignService, ConstantsService, _) {
 
       var adGroupId = $routeParams.ad_group_id;
       var campaignId = $routeParams.campaign_id;
