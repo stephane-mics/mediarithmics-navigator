@@ -34,8 +34,7 @@
           $scope.language = null;
         }
 
-        // fetch with 'one' so that paging info gets added to response's metadata by response extractor
-        Restangular.one('datamarts', $scope.datamartId).one('datasheets/search/').get({ terms: $scope.searchTerms, market: market, language: $scope.language, offset: offset, limit: limit})
+        Restangular.one('datamarts', $scope.datamartId).all('datasheets/search/').getList({ terms: $scope.searchTerms, market: market, language: $scope.language, offset: offset, limit: limit})
           .then(function (result) {
             $scope.datasheets = result;
           });

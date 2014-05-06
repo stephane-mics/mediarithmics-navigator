@@ -58,20 +58,20 @@
             $scope.language = null;
           }
           // get all categories by query
-          Restangular.one('datamarts', $scope.datamartId).one('categories').get({ market:market, language: $scope.language, offset: offset, limit: limit }).then(function (result){
+          Restangular.one('datamarts', $scope.datamartId).all('categories').getList({ market:market, language: $scope.language, offset: offset, limit: limit }).then(function (result){
             $scope.categories = result;
           });
         };
 
         // in catalog view, show all items
         $scope.refreshDatasheets = function (offset, limit) {
-          Restangular.one('datamarts', $scope.datamartId).one('datasheets/search/').get({ offset: offset, limit: limit }).then(function (result) {
+          Restangular.one('datamarts', $scope.datamartId).all('datasheets/search/').getList({ offset: offset, limit: limit }).then(function (result) {
             $scope.datasheets = result;
           });
         };
 
         // fetch market definitions
-        Restangular.one('datamarts', $scope.datamartId).one('default-catalog/markets/').getList().then(function (definedMarkets) {
+        Restangular.one('datamarts', $scope.datamartId).all('default-catalog/markets/').getList().then(function (definedMarkets) {
           $scope.definedMarkets = definedMarkets;
           $scope.market = definedMarkets[0];
           $scope.language = definedMarkets[0].languages[0];

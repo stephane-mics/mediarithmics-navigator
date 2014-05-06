@@ -22,6 +22,7 @@ Getting started
 
 * Clone the navigator project
 * Make sure all prerequisites are fulfilled
-* `bower install` will resolve components to 'app\bower_components'
+* `npm install`
+* `bower install`
 * `grunt` or `grunt serve` 
 

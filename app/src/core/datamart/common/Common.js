@@ -8,7 +8,20 @@
     '$route',
     function($route) {
 
-      // Locations for navs
+      /* Utility methods for collections */
+
+      var collections = {};
+      collections.findById = function(collection, id) {
+        var i = 0;
+        while (i < collection.length && collection[i].id !== id) {
+          i++;
+        }
+        var item = collection[i];
+        return item;
+      };
+
+      /* Locations for navigation */
+
       var locations = {};
       locations.all = [
         { href: '/datamart', name: 'Datamart' },
@@ -41,7 +54,7 @@
         locations.current = locations.all[0];
       }
 
-      return { locations: locations };
+      return { collections: collections, locations: locations };
     }
   ]);
 

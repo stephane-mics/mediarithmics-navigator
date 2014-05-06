@@ -1,58 +1,126 @@
 <div ng-include src="'src/core/datamart/nav.html'" class="row-fluid"></div>
 <div ng-controller="core/datamart/users/ViewOneController" class="row-fluid">
-	<div class="vertically-spaced clearfix">
+  <div class="vertically-spaced clearfix">
 
-		<!-- Account details -->
-		<div class="pull-left">
-	  	<table class="table table-hover">
-				<tr ng-hide="user.first_name == null">
-					<td>First name</td>
-					<td><strong>{{ user.first_name }}</strong></td>
-				</tr>
-				<tr ng-hide="user.last_name == null">
-					<td>Last name</td>
-					<td><strong>{{ user.last_name }}</strong></td>
-				</tr>
-				<tr ng-hide="user.email == null">
-					<td>Email</td>
-					<td>{{ user.email }}</td>
-				</tr>
-				<tr ng-hide="user.account_id == null">
-					<td>Account ID</td>
-					<td><code>{{ user.account_id }}</code></td>
-				</tr>
-				<tr ng-hide="user.gender == null">
-					<td>Gender</td>
-					<td>{{ user.gender }}</td>
-				</tr>
-				</tr>
-				<tr ng-hide="user.account_creation_date == null">
-					<td>Account created on</td>
-					<td>{{ user.account_creation_date | date}}</td>
-				</tr>
-			</table>
-		</div>
+    <!-- Account details -->
+    <div class="pull-left">
+        <table class="table table-hover">
+        <tr ng-hide="user.first_name == null">
+          <td>First name</td>
+          <td><strong>{{ user.first_name }}</strong></td>
+        </tr>
+        <tr ng-hide="user.last_name == null">
+          <td>Last name</td>
+          <td><strong>{{ user.last_name }}</strong></td>
+        </tr>
+        <tr ng-hide="user.email == null">
+          <td>Email</td>
+          <td>{{ user.email }}</td>
+        </tr>
+        <tr ng-hide="user.account_id == null">
+          <td>Account ID</td>
+          <td><code>{{ user.account_id }}</code></td>
+        </tr>
+        <tr ng-hide="user.gender == null">
+          <td>Gender</td>
+          <td>{{ user.gender }}</td>
+        </tr>
+        </tr>
+        <tr ng-hide="user.account_creation_date == null">
+          <td>Account created on</td>
+          <td>{{ user.account_creation_date | date }}</td>
+        </tr>
+      </table>
+    </div>
 
-	</div>
+  </div>
 
-	<!-- Agents Grid -->
-	<div class="list-group">
-		<a href class="list-group-item" ng-repeat="agent in agents" ng-click="expandAgent($event)">
-			<div class="clearfix">
-			    <!-- image -->
-			    <img src="http://placehold.it/40x40" alt="" class="pull-left" style="margin-right:10px" valign="middle">
+  <!-- timeline -->
+  <div class="col-md-6">
+    <ul class="datamart-timeline">
+      <!-- timeline item -->
+      <li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.enabled:true} | orderBy:orderByVisitStartDate:newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">
 
-			    <!-- some properties -->
-			    <div class="pull-left">
-			      <p ng-show="agent.device_type">Device: <strong>{{ agent.device_type }}</strong></p>
-			      <p ng-show="agent/user_agent_type">User-Agent: <strong>{{ agent.user_agent_type }}</strong></p>
-			      <p ng-show="agent.operating_system">OS: <strong>{{ agent.operating_system }}</strong></p>
-			      <div ng-show="agent.expanded">
-			      	<p>Visits: <strong ng-repeat="visit in agent.visits">{{ visit.end_date | date }};</strong></p>
-			      </div>
-			    </div>
-	  		</div>
-		</a>
-	</div>
+        <!-- datetime -->
+        <time class="datamart-timeline-datetime" datetime="{{ activity.visit.start_date | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
+          <span>{{ activity.visit.start_date | date : 'MMMM d' }}</span>
+          <span>{{ activity.visit.start_date | date : 'shortTime' }}</span>
+        </time>
+
+        <!-- icon -->
+        <div class="datamart-timeline-icon">
+          <img src="images/datamart/device_phone.svg" width="24" height="24" ng-show="activity.agent.device_type == 'smartphone'" />
+          <img src="images/datamart/device_tablet.svg" width="24" height="24" ng-show="activity.agent.device_type == 'tablet'" />
+          <img src="images/datamart/device_pc.svg" width="24" height="24" ng-show="activity.agent.device_type != 'smartphone' && activity.agent.device_type != 'tablet' " />
+        </div>
+
+        <!-- content -->
+        <div class="datamart-timeline-content">
+          <div class="datamart-timeline-content-header">
+            <h2>{{ activity.agent.device_type }}<description>{{ activity.agent.user_agent_type }}, {{ activity.agent.operating_system }}</description></h2>
+            Duration: {{ toHumanReadableDuration(activity.visit.duration) }}
+          </div>
+          
+          <!-- actions during visit -->  
+          <div class="datamart-timeline-content-details" ng-show="activity.actions && activity.actions.length > 0">
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="action in activity.actions | limitTo:getLimit(activity)">
+                <!-- perfomed_action -->
+                <span ng-show="action.activity_type == 'performed_action'">{{ action.details.name }}</span>
+
+                <!-- view_item -->
+                <span class="badge" ng-show="action.activity_type == 'view_item'">{{ action.view_count }}</span>
+                <span ng-show="action.activity_type == 'view_item'">Viewed item <a href="{{ itemUrl + action.datasheet_id }}">{{ action.item.item_id }}</a></span>
+
+                <!-- purchase_item -->
+                <span class="badge" ng-show="action.activity_type == 'purchase_item'">{{ action.purchase_count }}</span>
+                <span ng-show="action.activity_type == 'purchase_item'">Purchased item <a href="{{ itemUrl + action.datasheet_id }}">{{ action.datasheet_id }}</a></span>
+              </li>
+            </ul>
+            <!-- expand/collapse switch -->
+            <div class="clearfix" ng-show="activity.actions && activity.actions.length > ACTIONS_PER_ACTIVITY">
+              <a href class="btn btn-link pull-right" ng-click="activity.expanded = !activity.expanded">
+                <span ng-hide="activity.expanded">Expand <span class="glyphicon glyphicon-chevron-down"></span></span>
+                <span ng-show="activity.expanded">Collapse <span class="glyphicon glyphicon-chevron-up"></span></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="datamart-timeline-footer-node">
+        <div class="datamart-timeline-icon">
+          <img src="images/datamart/more.svg" width="24" height="24" />
+        </div>
+        <div class="datamart-timeline-content">
+          <span>Load more</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- filter dropdown -->
+  <div class="col-md-6">
+      <span class="btn-group agent-filter-box">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          Screens <span class="caret"></span>
+        </button>
+        <!-- dropdown -->
+        <ul class="dropdown-menu" role="menu">
+          <!-- agents -->
+          <li class="agent" ng-repeat="agent in agents">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="agent.enabled"> {{ agent.device_type }}
+              </label>
+            </div>
+          </li>
+          <!-- ordering -->
+          <li class="agent-filter-box-ordering"> 
+            <span>Order by <span><a href ng-click="newestFirst = !newestFirst"><span ng-hide="newestFirst">oldest first</span><span ng-show="newestFirst">newest first</span></a>
+          </li>
+        </ul>
+      </span>
+  </div>
 
 </div>

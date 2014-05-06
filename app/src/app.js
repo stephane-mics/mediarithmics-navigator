@@ -173,14 +173,8 @@
 
           // this is an array
           newResponse = response.data;
-          // metadata ..
-          // newResponse.metadata = response.data.meta;
-        } else {
-
-          // This is an element
-          newResponse = response.data;
-
-          // add paging to metadata (datamart)
+          
+          // add paging to metadata
           newResponse.metadata = {
             paging: {
               count: response.count,
@@ -188,7 +182,9 @@
               limit: response.limit
             }
           };
-
+        } else {
+          // This is an element
+          newResponse = response.data;
         }
         return newResponse;
       });
