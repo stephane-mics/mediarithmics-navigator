@@ -681,3 +681,57 @@ table.fragment-list-user-groups {
     margin: -55px 5px 0 0px;
   }
 }
+
+.campaign-status {
+  @extend .btn-group;
+
+  button.campaign-status-state {
+    @extend .btn;
+    @extend .btn-xs;
+
+    span {
+      @extend .glyphicon;
+    }
+  }
+  button.campaign-status-action {
+    @extend .btn;
+    @extend .btn-xs;
+    @extend .dropdown-toggle;
+  }
+}
+.campaign-status-PAUSED {
+  button.campaign-status-state {
+    @extend .btn-warning;
+
+    span {
+      @extend .glyphicon-stop;
+    }
+  }
+  button.campaign-status-action {
+    @extend .btn-warning;
+  }
+}
+.campaign-status-PENDING {
+  button.campaign-status-state {
+    @extend .btn-info;
+
+    span {
+      @extend .glyphicon-cog;
+    }
+  }
+  button.campaign-status-action {
+    @extend .btn-info;
+  }
+}
+.campaign-status-ACTIVE {
+  button.campaign-status-state {
+    @extend .btn-success;
+
+    span {
+      @extend .glyphicon-play;
+    }
+  }
+  button.campaign-status-action {
+    @extend .btn-success;
+  }
+}

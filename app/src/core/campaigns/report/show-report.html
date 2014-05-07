@@ -12,20 +12,18 @@
         <div class="campaign-heading">
 
             <h2 class="">{{campaign.name}}
-                <div class="btn-group">
-                    <button class="btn btn-warning btn-xs" type="button"><span
-                            class="glyphicon glyphicon-stop"></span> {{campaign.status}}
+              <div class="campaign-status campaign-status-{{campaign.status}}">
+                  <button class="campaign-status-state">
+                      <span>&nbsp;</span>
+                      {{campaign.status}}
                     </button>
-                    <button data-toggle="dropdown" class="btn btn-warning dropdown-toggle btn-xs" type="button">
+                    <button data-toggle="dropdown" class="campaign-status-action">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul role="menu" class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li><a ng-click="activateCampaign(campaign)">Activate Campaign</a></li>
+                        <li><a ng-click="pauseCampaign(campaign)">Pause Campaign</a></li>
                     </ul>
                 </div>
 
