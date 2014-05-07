@@ -5,8 +5,8 @@
   var module = angular.module('core/datamart');
 
   module.controller('core/datamart/users/ViewOneController', [
-    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common',
-    function($scope, $routeParams, Restangular, Common) {
+    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'jquery',
+    function($scope, $routeParams, Restangular, Common, $) {
 
       $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
       $scope.INITIAL_VISITS_PER_AGENT = 1;
@@ -36,9 +36,13 @@
             $scope.getVisits($scope.agents[i].id, visitLimit);
           }
         });
-      }
+      };
 
       $scope.getVisits = function(agentId, limit) {
+        // TODO fix me !
+        // this is just a quick fix to make it deploy in production.
+        // If you see this message in more than 1 month, then this is a fail.
+        /* jshint loopfunc: true */
         Restangular.one('datamarts', $scope.datamartId).one('agents', agentId).all('visits').getList({ limit: limit }).then(function (visits) {
           // if there are more visits avaialble, but a limit is set, show the 'load more' button
           if (visits.metadata.paging.count > visits.metadata.paging.limit) {
@@ -76,12 +80,12 @@
             });
           }
         });
-      }
+      };
 
       $scope.loadMoreVisits = function() {
         $scope.showLoadMore = false;
         $scope.getAgentsAndVisits(null);
-      }
+      };
 
       $scope.toHumanReadableDuration = function(duration) {
         var cd = 24 * 60 * 60 * 1000,
@@ -101,12 +105,12 @@
       };
 
       $scope.isAgentEnabled = function(agent) {
-        var visible = 0
+        var visible = 0;
         for (var i = 0; i < $scope.agents.length; i++) {
           visible += $scope.agents[i].visible ? 1 : 0;
         }
         return visible > 1;
-      }
+      };
 
       $scope.orderByVisitStartDate = function(activity) {
         return activity.visit.start_date;
