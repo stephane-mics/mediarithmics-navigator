@@ -39,7 +39,7 @@
   <div class="col-md-6">
     <ul class="datamart-timeline">
       <!-- timeline item -->
-      <li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.enabled:true} | orderBy:orderByVisitStartDate:newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">
+      <li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.visible:true} | orderBy:orderByVisitStartDate:!newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">
 
         <!-- datetime -->
         <time class="datamart-timeline-datetime" datetime="{{ activity.visit.start_date | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
@@ -74,11 +74,11 @@
 
                 <!-- purchase_item -->
                 <span class="badge" ng-show="action.activity_type == 'purchase_item'">{{ action.purchase_count }}</span>
-                <span ng-show="action.activity_type == 'purchase_item'">Purchased item <a href="{{ itemUrl + action.datasheet_id }}">{{ action.datasheet_id }}</a></span>
+                <span ng-show="action.activity_type == 'purchase_item'">Purchased item <a href="{{ itemUrl + action.datasheet_id }}">{{ action.item.item_id }}</a></span>
               </li>
             </ul>
             <!-- expand/collapse switch -->
-            <div class="clearfix" ng-show="activity.actions && activity.actions.length > ACTIONS_PER_ACTIVITY">
+            <div class="clearfix" ng-show="activity.actions && activity.actions.length > INITIAL_ACTIONS_PER_ACTIVITY">
               <a href class="btn btn-link pull-right" ng-click="activity.expanded = !activity.expanded">
                 <span ng-hide="activity.expanded">Expand <span class="glyphicon glyphicon-chevron-down"></span></span>
                 <span ng-show="activity.expanded">Collapse <span class="glyphicon glyphicon-chevron-up"></span></span>
@@ -88,11 +88,11 @@
         </div>
       </li>
 
-      <li class="datamart-timeline-footer-node">
+      <li class="datamart-timeline-footer-node" ng-show="showLoadMore">
         <div class="datamart-timeline-icon">
           <img src="images/datamart/more.svg" width="24" height="24" />
         </div>
-        <div class="datamart-timeline-content">
+        <div class="datamart-timeline-content" ng-click="loadMoreVisits()">
           <span>Load more</span>
         </div>
       </li>
@@ -111,13 +111,13 @@
           <li class="agent" ng-repeat="agent in agents">
             <div class="checkbox">
               <label>
-                <input type="checkbox" ng-model="agent.enabled"> {{ agent.device_type }}
+                <input type="checkbox" ng-model="agent.visible" ng-disabled="!isAgentEnabled(agent)"> {{ agent.device_type }}
               </label>
             </div>
           </li>
           <!-- ordering -->
           <li class="agent-filter-box-ordering"> 
-            <span>Order by <span><a href ng-click="newestFirst = !newestFirst"><span ng-hide="newestFirst">oldest first</span><span ng-show="newestFirst">newest first</span></a>
+            <span>Ordered by <span><a href ng-click="newestFirst = !newestFirst"><span ng-hide="newestFirst">newest</span><span ng-show="newestFirst">oldest</span> first</a>
           </li>
         </ul>
       </span>

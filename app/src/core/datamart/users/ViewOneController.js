@@ -8,8 +8,8 @@
     '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common',
     function($scope, $routeParams, Restangular, Common) {
 
-      $scope.ACTIONS_PER_ACTIVITY = 4;
-      $scope.VISITS_PER_AGENT = 3;
+      $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
+      $scope.INITIAL_VISITS_PER_AGENT = 1;
 
       // TODO: get organisationId from session, get appropriate datamartId
       $scope.datamartId = 8;
@@ -20,52 +20,68 @@
       $scope.activities = [];
 
       // fetch UserAccount
-      var userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $routeParams.userId);
-      userEndpoint.get().then(function (user) {
+      $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $routeParams.userId);
+      $scope.userEndpoint.get().then(function (user) {
         $scope.user = user;
+        $scope.getAgentsAndVisits($scope.INITIAL_VISITS_PER_AGENT);
+      });
 
+      $scope.getAgentsAndVisits = function(visitLimit) {
         // fetch UserAgents
-        userEndpoint.one('agents').get().then(function (agents){
+        $scope.userEndpoint.all('agents').getList().then(function (agents){
           $scope.agents = agents;
-          for (var i = 0; i < agents.length; i++) {
-            agents[i].enabled = true;
+          for (var i = 0; i < $scope.agents.length; i++) {
+            $scope.agents[i].visible = true;
             // fetch visits of each agent
-            Restangular.one('datamarts', $scope.datamartId).one('agents', agents[i].id).all('visits').getList().then(function (visits) {
-              // store visits in parent agent
-              var agent = Common.collections.findById($scope.agents, visits.parentResource.id);
-              agent.visits = visits;
-              // iterate visits
-              for (var j = 0; j < visits.length; j++) {
-                // assemble an activity
-                var activity = { id: agent.id + '_' + visits[j].id, agent: agent, visit: visits[j] };
-                $scope.activities.push(activity);
-                // fetch actions of each visit
-                Restangular.one('datamarts', $scope.datamartId).one('agents', visits.parentResource.id).one('visits', visits[j].id).all('activity').getList().then(function (actions) {
-                  // find activity object by id
-                  var activity = Common.collections.findById($scope.activities, actions.parentResource.parentResource.id + '_' + actions.parentResource.id);
-                  if (activity) {
-                    activity.actions = [];
-                    activity.expanded = false;
-                    for (var k = 0; k < actions.length; k++) {
-                      var action = actions[k];
-                      // fetch action
-                      if (action.activity_type === 'performed_action') {
-                        action.details = Restangular.one('datamarts', $scope.datamartId).one('actions', action.action_id).get().$object;
-                      }
-                      // fetch item
-                      if (action.activity_type === 'purchase_item' || action.activity_type === 'view_item') {
-                        activity.with_purchase = true;
-                        action.item = Restangular.one('datamarts', $scope.datamartId).one('items', action.datasheet_id).get().$object;
-                      }
-                      activity.actions.push(action);
-                    }
+            $scope.getVisits($scope.agents[i].id, visitLimit);
+          }
+        });
+      }
+
+      $scope.getVisits = function(agentId, limit) {
+        Restangular.one('datamarts', $scope.datamartId).one('agents', agentId).all('visits').getList({ limit: limit }).then(function (visits) {
+          // if there are more visits avaialble, but a limit is set, show the 'load more' button
+          if (visits.metadata.paging.count > visits.metadata.paging.limit) {
+            $scope.showLoadMore = true;
+          }
+          // store visits in parent agent
+          var agent = Common.collections.findById($scope.agents, visits.parentResource.id);
+          agent.visits = visits;
+          // iterate visits
+          for (var j = 0; j < visits.length; j++) {
+            // assemble an activity
+            var activity = { id: agent.id + '_' + visits[j].id, agent: agent, visit: visits[j] };
+            $scope.activities.push(activity);
+            // fetch actions of each visit
+            Restangular.one('datamarts', $scope.datamartId).one('agents', visits.parentResource.id).one('visits', visits[j].id).all('activity').getList().then(function (actions) {
+              // find activity object by id
+              var activity = Common.collections.findById($scope.activities, actions.parentResource.parentResource.id + '_' + actions.parentResource.id);
+              if (activity) {
+                activity.actions = [];
+                activity.expanded = false;
+                for (var k = 0; k < actions.length; k++) {
+                  var action = actions[k];
+                  // fetch action
+                  if (action.activity_type === 'performed_action') {
+                    action.details = Restangular.one('datamarts', $scope.datamartId).one('actions', action.action_id).get().$object;
                   }
-                });
+                  // fetch item
+                  if (action.activity_type === 'purchase_item' || action.activity_type === 'view_item') {
+                    activity.with_purchase = true;
+                    action.item = Restangular.one('datamarts', $scope.datamartId).one('items', action.datasheet_id).get().$object;
+                  }
+                  activity.actions.push(action);
+                }
               }
             });
           }
         });
-      });
+      }
+
+      $scope.loadMoreVisits = function() {
+        $scope.showLoadMore = false;
+        $scope.getAgentsAndVisits(null);
+      }
 
       $scope.toHumanReadableDuration = function(duration) {
         var cd = 24 * 60 * 60 * 1000,
@@ -78,11 +94,19 @@
 
       $scope.getLimit = function(activity) {
         if (activity && activity.expanded) {
-          return activity.expanded ? activity.actions.length : $scope.ACTIONS_PER_ACTIVITY;
+          return activity.expanded ? activity.actions.length : $scope.INITIAL_ACTIONS_PER_ACTIVITY;
         } else {
-          return $scope.ACTIONS_PER_ACTIVITY;
+          return $scope.INITIAL_ACTIONS_PER_ACTIVITY;
         }
       };
+
+      $scope.isAgentEnabled = function(agent) {
+        var visible = 0
+        for (var i = 0; i < $scope.agents.length; i++) {
+          visible += $scope.agents[i].visible ? 1 : 0;
+        }
+        return visible > 1;
+      }
 
       $scope.orderByVisitStartDate = function(activity) {
         return activity.visit.start_date;
