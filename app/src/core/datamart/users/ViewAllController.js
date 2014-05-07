@@ -14,7 +14,7 @@
       $scope.datamartId = 8;
 
       $scope.refreshUsers = function (offset, limit) {
-        Restangular.one('datamarts', $scope.datamartId).one('users/search/').get({ terms: $scope.searchTerms, offset: offset, limit: limit}).then(function (result) {
+        Restangular.one('datamarts', $scope.datamartId).all('users/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit}).then(function (result) {
           $scope.users = result;
         });
       };
