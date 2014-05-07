@@ -603,6 +603,9 @@ table.fragment-list-user-groups {
     padding-bottom: 0;
     > li > .checkbox {
       padding: 1px 35px;
+      label {
+        padding-left: 10px;
+      }
     }
   }
   .agent-filter-box-ordering {

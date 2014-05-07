@@ -101,11 +101,17 @@
       };
 
       $scope.isAgentEnabled = function(agent) {
-        var visible = 0
+        // count visible agents
+        var visible = 0;
         for (var i = 0; i < $scope.agents.length; i++) {
           visible += $scope.agents[i].visible ? 1 : 0;
         }
-        return visible > 1;
+        // disble checkbox for the last visible so that there is always at leas one visible
+        if (visible <= 1) {
+          return !agent.visible;
+        } else {
+          return true;
+        }
       }
 
       $scope.orderByVisitStartDate = function(activity) {
