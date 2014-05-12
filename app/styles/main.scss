@@ -10,6 +10,7 @@ $dark-blue-not : #ffffff;
 $mcs-red : #fe5858;
 $mcs-light-blue: #00a1e1;
 $mcs-green: #00ad68;
+$mcs-light-grey: #E6E6E6;
 
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
@@ -130,49 +131,6 @@ input.mcs-amount {
   border-color: green;
 }
 
-
-/*
- * Datamart
- */
-
- .inlined {
-  display: inline;
-}
-
-.top-spaced {
-  margin-top: 20px;
-}
-
-.bottom-spaced {
-  margin-bottom: 20px;
-}
-
-.vertically-spaced {
-  @extend .top-spaced;
-  @extend .bottom-spaced;
-}
-
-.current-category {
-  padding: 10px 15px;
-  border-radius: 4px;
-  background: #428BCA;
-  color: white;
-  width: 300px;
-}
-
-.parent-category-list {
-  padding: 10px 15px;
-
-  .parent-category {
-
-    &:after {
-      content: ",";
-    }
-    &:last-child:after {
-      content: '';
-    }
-  }
-}
 /**
 * campaign list
 */
@@ -455,6 +413,158 @@ table.fragment-list-user-groups {
   @extend .table-striped;
 }
 
+/* Datamart */
+
+.blue {
+  color: $dark-blue;
+}
+
+.inlined {
+  display: inline;
+}
+
+.top-spaced {
+  margin-top: 20px;
+}
+
+.bottom-spaced {
+  margin-bottom: 20px;
+}
+
+.not-bottom-spaced {
+  margin-bottom: 0;
+}
+
+.vertically-spaced {
+  @extend .top-spaced;
+  @extend .bottom-spaced;
+}
+
+.right-spaced {
+  margin-right: 20px;
+}
+
+.left-spaced {
+  margin-left: 20px;
+}
+
+.current-category {
+  padding: 15px;
+  background: $mcs-light-blue;
+  color: white;
+  width: 300px;
+}
+
+.parent-category-list {
+  padding: 15px 0;
+
+  .parent-category {
+    &:after {
+      content: ",";
+      padding-right: 10px;
+    }
+    &:last-child:after {
+      content: '';
+    }
+  }
+}
+
+.datamart.nav-tabs {
+  padding-bottom: 20px;
+  border-bottom: none;
+
+  li {
+    a {
+      color: $mcs-light-blue;
+      padding: 10px;
+      margin-right: 10px;
+
+      &:hover {
+        background: none;
+        border: 1px solid transparent;
+        border-bottom-color: $mcs-light-blue;
+      }
+    }
+  }
+
+  li.active {
+    a {
+      color: $dark-blue;
+      border: 1px solid transparent;
+      border-bottom-color: $dark-blue;
+
+      &:hover {
+        background: none;
+        color: $dark-blue;
+        border: 1px solid transparent;
+        border-bottom-color: $dark-blue;
+      }
+    }
+  }
+}
+
+.table {
+  color: $dark-blue;
+}
+
+.table-hover {
+  
+}
+
+form {
+  .form-group label {
+    color: $dark-blue;
+  }  
+}
+
+.datamart-well {
+  background: $mcs-light-grey;
+  padding: 20px;
+}
+
+.list-group {
+  .list-group-item-heading {
+    color: $dark-blue;
+    font-weight: bold;
+  }
+
+  .list-group-item {
+    padding: 15px;
+    border-color: $mcs-light-grey;
+    color: $dark-blue;
+    .badge {
+      background: $dark-blue;
+    }
+    &:hover {
+      background: $mcs-light-blue;
+      color: #ffffff;
+      a {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+input[type="search"] {
+  color: $dark-blue;
+  border: 1px solid $mcs-light-blue;
+}
+
+select {
+  color: $dark-blue !important;
+  border: 1px solid $mcs-light-blue !important;
+}
+
+.btn-round-light-blue {
+  border-radius: 50px;
+  background: $mcs-light-blue;
+  color: #ffffff; 
+  &:hover, &:active, &:focus {
+    color: $dark-blue;
+  } 
+}
+
 /* Datamart timeline */
  
 .datamart-timeline {
@@ -464,52 +574,45 @@ table.fragment-list-user-groups {
   position: relative;
 }
  
-/* Vertical line */
 .datamart-timeline:before {
   content: '';
   position: absolute;
   top: 0;
+  left: 20.5%;
   bottom: 0;
-  width: 10px;
-  background: #eeeeee;
-  left: 20%;
+  width: 2px;
+  background: $mcs-light-grey;
   margin-left: -10px;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
  
 .datamart-timeline > li {
   position: relative;
 }
  
-/* Datetime */
 .datamart-timeline > li .datamart-timeline-datetime {
   display: block;
   width: 25%;
   padding-right: 100px;
   position: absolute;
   font-size: 1em;
+  color: $dark-blue;
 }
  
 .datamart-timeline > li .datamart-timeline-datetime span {
   display: block;
   text-align: right;
-  color: #666666;
+  color: $dark-blue;
 }
- 
-/* Bubble content */
 
 .datamart-timeline > li .datamart-timeline-content {
   margin: 0 0 15px 25%;
-  background: #EEEEEE;
-  color: #333333;
+  background: $mcs-light-grey;
+  color: $dark-blue;
   padding: 1.2em;
-  font-weight: 300;
   position: relative;
-  border-radius: 5px;
   border-left: 6px solid #cccccc;
   left: 0;
   transition: left 0.2s;
-  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .datamart-timeline > li:hover .datamart-timeline-content {
@@ -534,7 +637,7 @@ table.fragment-list-user-groups {
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header h2 description {
   padding-left: 10px;
-  color: rgba(0,0,0,0.2);
+  color: rgba($dark-blue, 0.2);
   visibility: hidden; 
 }
 
@@ -546,9 +649,6 @@ table.fragment-list-user-groups {
   padding-top: 15px;
   border-top: 1px solid rgba(0,0,0,0.1);
 }
-
-
-/* Bubble arrow */
  
 .datamart-timeline > li .datamart-timeline-content:after {
   right: 100%;
@@ -570,8 +670,6 @@ table.fragment-list-user-groups {
 .datamart-timeline > li.with_purchase .datamart-timeline-content:after {
   border-right-color: $mcs-red !important;
 }
- 
-/* Icons */
 
 .datamart-timeline > li .datamart-timeline-icon {
   width: 40px;
@@ -581,7 +679,6 @@ table.fragment-list-user-groups {
   background: #cccccc;
   line-height: 40px;
   border-radius: 50%;
-  box-shadow: 0 0 0 8px #eeeeee;
   text-align: center;
   left: 20%;
   top: 0;
@@ -596,29 +693,6 @@ table.fragment-list-user-groups {
   background: $mcs-red !important;
 }
 
-.agent-filter-box {
-  margin-top: 30px;
-  > ul { 
-    min-width: 180px;
-    padding-bottom: 0;
-    > li > .checkbox {
-      padding: 1px 35px;
-      label {
-        padding-left: 10px;
-      }
-    }
-  }
-  .agent-filter-box-ordering {
-    background: #EEEEEE;
-    padding: 10px;
-    color: #888888;
-
-    a:hover {
-      background: none;
-    }
-  }
-}
-
 .datamart-timeline > li.datamart-timeline-footer-node {
   margin-top: 50px;
 
@@ -626,13 +700,13 @@ table.fragment-list-user-groups {
     display: inline-block;
     padding: 10px !important;
     margin-bottom: 0px;
-    background: #EEEEEE;
-    border-color: #EEEEEE;
+    background: $mcs-light-grey;
+    border-color: $mcs-light-grey;
     cursor: pointer;
-    color: #333333;
+    color: $dark-blue;
 
     &:after {
-      border-right-color: #EEEEEE;
+      border-right-color: $mcs-light-grey;
     }
   }
 
@@ -681,6 +755,54 @@ table.fragment-list-user-groups {
     margin: -55px 5px 0 0px;
   }
 }
+
+.agent-filter-box {
+  margin-top: 30px;
+  color: $dark-blue;
+
+  button {
+    color: $dark-blue;
+    border-radius: 50px;
+    border-color: $dark-blue;
+    &:hover, &:active, &:focus {
+      background: $dark-blue;
+      color: #ffffff;
+      border-color: transparent;
+    }
+  }
+  > .dropdown-menu { 
+    min-width: 180px;
+    padding-bottom: 0;
+    border-color: $mcs-light-grey;
+    box-shadow: none;
+
+    > li > .checkbox {
+      padding: 1px 35px;
+      label {
+        padding-left: 10px;
+      }
+    }
+  }
+  .agent-filter-box-ordering {
+    background: $mcs-light-grey;
+    padding: 10px;
+    color: $dark-blue;
+
+    a:hover {
+      background: none;
+    }
+  }
+}
+
+.agent-filter-box.open {
+  button {
+    background: $dark-blue !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+  }
+}
+
+/* end of datamart */
 
 .campaign-status {
   @extend .btn-group;

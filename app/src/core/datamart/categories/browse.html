@@ -1,48 +1,57 @@
 <div ng-include src="'src/core/datamart/nav.html'" class="row-fluid"></div>
 <div ng-controller="core/datamart/categories/BrowseController" class="row-fluid">
 
-  <div class="well">
+  <div class="datamart-well">
 
     <!-- Catalog view -->
     <div ng-hide="currentCategory !== null">
 
       <!-- Search form -->
-      <div style="padding-bottom:20px">
-        <form class="form-inline" role="form">
+      <form class="clearfix" role="form">
 
-          <div class="form-group">
-            <select class="form-control" ng-model="market" ng-options="m.market for m in definedMarkets">
-              <option value="">All</option>
-            </select>
-          </div>
+        <div class="form-group pull-left right-spaced not-bottom-spaced">
+          <label for="marketSelect">Market</label>
+          <select id="marketSelect" class="form-control" ng-model="market" ng-options="m.market for m in definedMarkets">
+            <option value="">All</option>
+          </select>
+        </div>
 
-          <div class="form-group">
-            <select class="form-control" ng-model="language" ng-options="lang for lang in market.languages">
-              <option value="">All</option>
-            </select>
-          </div>
+        <div class="form-group pull-left not-bottom-spaced">
+          <label for="languageSelect">Language</label>
+          <select id="languageSelect" class="form-control" ng-model="language" ng-options="lang for lang in market.languages">
+            <option value="">All</option>
+          </select>
+        </div>
+      </form>
 
-        </form>
-      </div>
-
-      <div class="current-category bottom-spaced">
-          <span class="glyphicon glyphicon-th"></span> Catalog
+      <div class="vertically-spaced">
+        <label class="blue">Current category</label>
+        <div class="current-category">
+            <span class="glyphicon glyphicon-th"></span> Catalog
+        </div>
       </div>
 
     </div>
       
     <!-- Single category view -->
-    <div class="clearfix bottom-spaced" ng-hide="currentCategory == null">
+    <div class="clearfix" ng-hide="currentCategory == null">
 
       <!-- Current category -->
-      <div class="current-category pull-left">
-        {{ currentCategory.name }}&nbsp;<span class="badge">{{ currentCategory.market }}</span> <span class="badge">{{ currentCategory.language }}</span>
+      <div class="pull-left">
+        <label class="blue">Current category</label>
+        <div class="current-category">
+          {{ currentCategory.name }}&nbsp;<span class="badge">{{ currentCategory.market }}</span> <span class="badge">{{ currentCategory.language }}</span>
+        </div>
       </div>
       
       <!-- Parent-categories  -->
-      <div class="parent-category-list pull-left">
-        Parents:
-        <a href="{{ baseUrl + element.id }}" ng-repeat="element in parents" class="parent-category">{{ element.name }}</a>
+      <div class="pull-left left-spaced">
+        <div>
+          <label class="blue">Parents</label>
+        </div>
+        <div class="parent-category-list">
+          <a href="{{ baseUrl + element.id }}" ng-repeat="element in parents" class="parent-category">{{ element.name }}</a>
+        </div>
       </div>
 
     </div>

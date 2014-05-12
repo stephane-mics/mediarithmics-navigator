@@ -109,7 +109,7 @@
 
       // TODO: move these to non-public and authenticate
       $routeProvider
-      .when('/datamart', {
+      .when('/datamart/overview', {
         templateUrl: 'src/core/datamart/index.html',
         publicUrl : true
       })

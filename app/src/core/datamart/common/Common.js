@@ -24,14 +24,14 @@
 
       var locations = {};
       locations.all = [
-        { href: '/datamart', name: 'Datamart' },
+        { href: '/datamart/overview', name: 'Overview' },
         { href: '/datamart/items', name: 'Items' },
         { href: '/datamart/categories/', name: 'Categories'},
         { href: '/datamart/users', name: 'Users'}
       ];
 
       locations.isCurrent = function(location) {
-        return location.href === $route.current.$$route.originalPath;
+        return $route.current.$$route.originalPath.search(location.href) > -1;
       };
 
       locations.set = function(location) {
