@@ -537,6 +537,7 @@ form {
     }
     &:hover {
       background: $mcs-light-blue;
+      border-color: $mcs-light-blue;
       color: #ffffff;
       a {
         color: #ffffff;
@@ -558,7 +559,6 @@ select {
 
 .btn-round-light-blue {
   border-radius: 50px;
-  background: $mcs-light-blue;
   color: #ffffff; 
   &:hover, &:active, &:focus {
     color: $dark-blue;
