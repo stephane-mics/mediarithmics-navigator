@@ -521,15 +521,6 @@ table.fragment-list-user-groups {
   border: 1px solid darken($mcs-light-grey, 5);
 }
 
-.btn-round-light-blue {
-  border-radius: 50px;
-  color: #ffffff; 
-  background: $mcs-light-blue;
-  &:hover, &:active, &:focus {
-    color: $dark-blue;
-  } 
-}
-
 /* Generics */
 
 .datamart.nav-tabs {
@@ -595,8 +586,8 @@ form.datamart {
     }
   }
   > li.active > a, > li.active > a:hover {
-    background: #FE9015 !important;
-    border-color: #FE9015 !important;
+    background: $mcs-orange !important;
+    border-color: $mcs-orange !important;
     color: #ffffff;
   }
   > li.disabled > a, > li.disabled > a:hover {
@@ -613,9 +604,24 @@ form.datamart {
 }
 
 .list-group {
-  .list-group-item-heading {
+  .list-group-label {
     color: $dark-blue;
     font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .list-group-header-item {
+    padding: 15px;
+    background: $mcs-light-blue;
+    border: 1px solid $mcs-light-blue;
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  .list-group-cell-element {
+    display: table-cell;
+    width: 50%;
+    min-width: 100px;
   }
 
   .list-group-item {
@@ -637,23 +643,30 @@ form.datamart {
   }
 }
 
-.current-category {
+.category-item {
+  @extend .bordered;
   padding: 15px;
-  background: $mcs-light-blue;
-  color: white;
-  width: 300px;
+  color: $dark-blue;
 }
 
-.parent-category-list {
+a.category-item {
+  background: #ffffff;
+  &:hover {
+    background: $mcs-light-blue;
+    border-color: $mcs-light-blue;
+    text-decoration: none;
+    color: #ffffff;
+  }
+}
+
+.category-list {
   padding: 15px 0;
 
-  .parent-category {
-    &:after {
-      content: ",";
-      padding-right: 10px;
-    }
-    &:last-child:after {
-      content: '';
+  > .category-item {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
     }
   }
 }
@@ -852,17 +865,7 @@ form.datamart {
 .agent-filter-box {
   margin-top: 30px;
   color: $dark-blue;
-
-  button {
-    color: $dark-blue;
-    border-radius: 50px;
-    border-color: $dark-blue;
-    &:hover, &:active, &:focus {
-      background: $dark-blue;
-      color: #ffffff;
-      border-color: transparent;
-    }
-  }
+  
   > .dropdown-menu { 
     min-width: 180px;
     padding-bottom: 0;
@@ -876,6 +879,9 @@ form.datamart {
       }
     }
   }
+  .caret {
+    margin-left: 10px;
+  }
   .agent-filter-box-ordering {
     background: $mcs-light-grey;
     padding: 10px;
@@ -884,14 +890,6 @@ form.datamart {
     a:hover {
       background: none;
     }
-  }
-}
-
-.agent-filter-box.open {
-  button {
-    background: $dark-blue !important;
-    color: #ffffff !important;
-    border-color: transparent !important;
   }
 }
 

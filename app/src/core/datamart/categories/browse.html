@@ -26,7 +26,7 @@
 
       <div class="vertically-spaced">
         <label class="blue">Current category</label>
-        <div class="current-category">
+        <div class="category-item">
             <span class="glyphicon glyphicon-th"></span> Catalog
         </div>
       </div>
@@ -39,8 +39,8 @@
       <!-- Current category -->
       <div class="pull-left">
         <label class="blue">Current category</label>
-        <div class="current-category">
-          {{ currentCategory.name }}&nbsp;<span class="badge">{{ currentCategory.market }}</span> <span class="badge">{{ currentCategory.language }}</span>
+        <div class="category-item">
+          {{ currentCategory.name }}
         </div>
       </div>
       
@@ -49,8 +49,8 @@
         <div>
           <label class="blue">Parents</label>
         </div>
-        <div class="parent-category-list">
-          <a href="{{ baseUrl + element.id }}" ng-repeat="element in parents" class="parent-category">{{ element.name }}</a>
+        <div class="category-list">
+          <a href="{{ baseUrl + element.id }}" ng-repeat="element in parents" class="category-item">{{ element.name }}</a>
         </div>
       </div>
 
