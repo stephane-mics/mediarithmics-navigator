@@ -13,13 +13,11 @@
 
             <h2 class="">{{campaign.name}}
               <div class="campaign-status campaign-status-{{campaign.status}}">
-                  <button class="campaign-status-state">
-                      <span>&nbsp;</span>
+                  <button data-toggle="dropdown" class="campaign-status-state">
+                      <span></span>
                       {{campaign.status}}
-                    </button>
-                    <button data-toggle="dropdown" class="campaign-status-action">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
+                      &nbsp;
+                      <span class="caret"></span>
                     </button>
                     <ul role="menu" class="dropdown-menu">
                         <li><a ng-click="activateCampaign(campaign)">Activate Campaign</a></li>

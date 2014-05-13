@@ -10,17 +10,17 @@
       <tr>
         <td>Weekly budget</td>
         <td>{{campaign.weekly_budget|currencyWithSymbol:'EUR'}}</td>
-        <td class="action"><a class="btn btn-default" ng-click="editBudget()">Edit</a></td>
+        <td class="actions"><a class="mics-btn mics-btn-edit" ng-click="editBudget()">Edit</a></td>
       </tr>
       <tr>
         <td>Location</td>
         <td>{{campaign.location}}</td>
-        <td class="action"><a class="btn btn-default" ng-click="editLocation()">Edit</a></td>
+        <td class="actions"><a class="mics-btn mics-btn-edit" ng-click="editLocation()">Edit</a></td>
       </tr>
       <tr>
         <td>Target Placement</td>
         <td>{{campaign.keywordsLists.length}} keywords list</td>
-        <td class="action"><a class="btn btn-default" ng-click="editKeywordsList()">Edit</a></td>
+        <td class="actions"><a class="mics-btn mics-btn-edit" ng-click="editKeywordsList()">Edit</a></td>
       </tr>
       <tr>
         <td>
@@ -30,17 +30,17 @@
         <td>
           <img ng-repeat="creative in campaign.creatives" ng-src="http://placekitten.com/50/50" />
         </td>
-        <td class="action"><a class="btn btn-default" ng-click="editPlacement()">Edit</a></td>
+        <td class="actions"><a class="mics-btn mics-btn-edit" ng-click="editPlacement()">Edit</a></td>
       </tr>
       <tr>
         <td>Payment Method</td>
         <td></td>
-        <td class="action"></td>
+        <td class="actions"></td>
       </tr>
       </tbody>
     </table>
-    <a class="btn btn-default" ng-click="previous()">go back</a>
-    <button class="btn btn-default">Launch Campaign</button>
+    <a class="mics-btn mics-btn-previous" ng-click="previous()">go back</a>
+    <button class="mics-btn mics-btn-finish">Launch Campaign</button>
   </form>
   <div class="col-md-2">
     <p>How do I choose my budget ?</p>

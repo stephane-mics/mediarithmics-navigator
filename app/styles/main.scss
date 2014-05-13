@@ -19,6 +19,10 @@ $nav-tabs-active-link-hover-color: $mcs-light-blue-not;
 $nav-tabs-active-link-hover-bg: $mcs-light-blue;
 $nav-tabs-active-link-hover-border-color: $mcs-light-blue;
 
+$breadcrumb-active-color: $dark-blue;
+$breadcrumb-color: $mcs-light-blue;
+$breadcrumb-separator: '>';
+$breadcrumb-padding-horizontal: 0;
 
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
@@ -134,7 +138,7 @@ a, *[ng-click] {
   @include mics-button-variant($mcs-red);
 }
 
-.mics-btn-edit {
+.mics-btn-edit, .mics-btn-continue, .mics-btn-previous {
   @include mics-button-variant($mcs-light-blue);
 }
 
@@ -177,16 +181,28 @@ a, *[ng-click] {
 	padding-right: 20px;
 }
 
-.mcs-app .breadcrumb > li + li:before {
-  content: " > ";
+.breadcrumb > li:before {
+  content: "> "; /* event the first */
 }
 
-.mcs-app .breadcrumb {
-  color : #888;
+.breadcrumb {
+  color : $breadcrumb-color; /* not just the separator */
+  background-color: transparent;
+ 
+  font-size: $font-size-large;
+  line-height: 30px; /* TODO use sass variables */
+  border-top: 1px solid $mcs-light-grey;
+  li {
+    margin-right: 10px;
+  }
 }
-.mcs-app .breadcrumb > .active {
-  color : #000;
-  font-weight : bold;
+.breadcrumb > .active {
+  &:before {
+    color: $breadcrumb-active-color;
+    padding: 0 5px 0 0;
+  }
+
+  border-bottom: 1px solid $breadcrumb-active-color;
 }
 
 form.mcs-limit-input-length {
@@ -495,7 +511,7 @@ table.fragment-list-creatives {
 .create-keywords-campaign .summary {
   @extend .mics-table;
 
-  .action {
+  .actions {
     @extend .text-right;
   }
 
@@ -930,52 +946,39 @@ a.category-item {
   @extend .btn-group;
 
   button.campaign-status-state {
-    @extend .btn;
-    @extend .btn-xs;
-
-    span {
-      @extend .glyphicon;
-    }
-  }
-  button.campaign-status-action {
-    @extend .btn;
+    @extend .mics-btn;
     @extend .btn-xs;
     @extend .dropdown-toggle;
+
+    span:first-child {
+      @extend .glyphicon;
+    }
   }
 }
 .campaign-status-PAUSED {
   button.campaign-status-state {
     @extend .btn-warning;
 
-    span {
-      @extend .glyphicon-stop;
+    span:first-child {
+      @extend .glyphicon-pause;
     }
-  }
-  button.campaign-status-action {
-    @extend .btn-warning;
   }
 }
 .campaign-status-PENDING {
   button.campaign-status-state {
     @extend .btn-info;
 
-    span {
+    span:first-child {
       @extend .glyphicon-cog;
     }
-  }
-  button.campaign-status-action {
-    @extend .btn-info;
   }
 }
 .campaign-status-ACTIVE {
   button.campaign-status-state {
     @extend .btn-success;
 
-    span {
+    span:first-child {
       @extend .glyphicon-play;
     }
-  }
-  button.campaign-status-action {
-    @extend .btn-success;
   }
 }
