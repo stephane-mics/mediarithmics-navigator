@@ -9,9 +9,16 @@ $dark-blue: #092f56;
 $dark-blue-not : #ffffff;
 $mcs-red : #fe5858;
 $mcs-light-blue: #00a1e1;
+$mcs-light-blue-not: #fff;
 $mcs-green: #00ad68;
 $mcs-orange: #FE8F10;
 $mcs-light-grey: #E6E6E6;
+
+
+$nav-tabs-active-link-hover-color: $mcs-light-blue-not;
+$nav-tabs-active-link-hover-bg: $mcs-light-blue;
+$nav-tabs-active-link-hover-border-color: $mcs-light-blue;
+
 
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
@@ -33,6 +40,10 @@ $border-radius-force-round: 100px;
 
 a, *[ng-click] {
   cursor : pointer;
+}
+
+*[ng-click][modal-window] {
+  cursor:default;
 }
 
 .mcs-top-navbar {
@@ -85,6 +96,21 @@ a, *[ng-click] {
   }
 }
 
+@mixin mics-button-variant($background) {
+  $color : #fff;
+  @include button-variant($color, $background, $background);
+
+  /* no darken() on hover */
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    background-color: $background;
+    border-color: $background;
+  }
+
+}
+
 .mics-btn {
   @extend .btn;
   border-radius: $border-radius-force-round !important;
@@ -98,22 +124,33 @@ a, *[ng-click] {
   &.active {
     color: $dark-blue !important;
   }
+
+  .btn-group & + & {
+    margin-left:5px;
+  }
 }
 
 .mics-btn-delete, .mics-btn-cancel {
-  @include button-variant(#fff, $mcs-red, $mcs-red);
+  @include mics-button-variant($mcs-red);
 }
 
 .mics-btn-edit {
-  @include button-variant(#fff, $mcs-light-blue, $mcs-light-blue);
+  @include mics-button-variant($mcs-light-blue);
 }
 
 .mics-btn-add, .mics-btn-create {
-  @include button-variant(#fff, $mcs-orange, $mcs-orange);
+  @include mics-button-variant($mcs-orange);
+}
+
+/* TODO : use an other class for this behavior ? */
+.mics-btn-add:before {
+  @extend .glyphicon;
+  @extend .glyphicon-plus;
+  margin-right:4px;
 }
 
 .mics-btn-finish {
-  @include button-variant(#fff, $mcs-green, $mcs-green);
+  @include mics-button-variant($mcs-green);
 }
 
 
@@ -419,11 +456,10 @@ input.mcs-amount {
 
 table.fragment-list-creatives {
 
-  @extend .table;
-  @extend .table-striped;
+  @extend .mics-table;
 
   thead th {
-    @extend .text-center;
+    /* @extend .text-center; */
   }
   td {
     /* padding : 0 5px; */
@@ -447,9 +483,6 @@ table.fragment-list-creatives {
   input {
     @extend .form-control;
   }
-  .delete-action {
-    @extend .text-center;
-  }
 }
 
 .choose-existing-ads {
@@ -460,8 +493,7 @@ table.fragment-list-creatives {
 }
 
 .create-keywords-campaign .summary {
-  @extend .table;
-  @extend .table-striped;
+  @extend .mics-table;
 
   .action {
     @extend .text-right;
@@ -473,8 +505,7 @@ table.fragment-list-creatives {
 }
 
 table.fragment-list-user-groups {
-  @extend .table;
-  @extend .table-striped;
+  @extend .mics-table;
 }
 
 /*

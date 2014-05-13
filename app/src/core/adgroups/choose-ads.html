@@ -2,13 +2,19 @@
 
   <form>
     <div class="form-group">
-      <label>Ads</label>
       <div ng-repeat="ad in ads">
         <div ng-include src="'src/core/adgroups/view-ad.html'"></div>
       </div>
-      <div class="btn-group">
-        <button class="btn btn-default" ng-click="selectExistingAd()">Select Existing Ad</button>
-        <button class="btn btn-default" ng-click="uploadNewAd()">Upload New Ad</button>
+
+      <div class="dropdown">
+        <button class="mics-btn mics-btn-add dropdown-toggle" type="button" data-toggle="dropdown">
+          Add Ads
+          <!-- <span class="caret"></span> -->
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="add ads">
+          <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="selectExistingAd()">Choose From Library</a></li>
+          <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="uploadNewAd()">Upload New</a></li>
+        </ul>
       </div>
     </div>
   </form>

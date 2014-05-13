@@ -82,7 +82,7 @@
             </div>
 
             <div class="btn-group">
-              <a class="btn btn-default" ng-click="newAdGroup()">Create new Ad Group</a>
+              <a class="mics-btn mics-btn-add" ng-click="newAdGroup()">Create new Ad Group</a>
             </div>
           </div>
 
@@ -103,7 +103,7 @@
                                 </select>
 
                             </div>
-                            <a class="btn btn-default" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
+                            <a class="mics-btn mics-btn-add" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
                         </div>
                         <div class="well">
                             <span class="label label-default" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
@@ -120,8 +120,8 @@
 
           <!-- saver or cancel -->
           <div class="btn-group">
-            <button class="btn btn-default" ng-click="save()">Save</button>
-            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button class="mics-btn mics-btn-finish" ng-click="save()">Save</button>
+            <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
           </div>
 
         </form>
