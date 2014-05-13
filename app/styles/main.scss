@@ -413,7 +413,12 @@ table.fragment-list-user-groups {
   @extend .table-striped;
 }
 
-/* Datamart */
+/*
+ * Datamart
+ * --------
+ */
+
+/* Reusables */
 
 .blue {
   color: $dark-blue;
@@ -448,26 +453,20 @@ table.fragment-list-user-groups {
   margin-left: 20px;
 }
 
-.current-category {
-  padding: 15px;
+.bordered {
+  border: 1px solid darken($mcs-light-grey, 5);
+}
+
+.btn-round-light-blue {
+  border-radius: 50px;
+  color: #ffffff; 
   background: $mcs-light-blue;
-  color: white;
-  width: 300px;
+  &:hover, &:active, &:focus {
+    color: $dark-blue;
+  } 
 }
 
-.parent-category-list {
-  padding: 15px 0;
-
-  .parent-category {
-    &:after {
-      content: ",";
-      padding-right: 10px;
-    }
-    &:last-child:after {
-      content: '';
-    }
-  }
-}
+/* Generics */
 
 .datamart.nav-tabs {
   padding-bottom: 20px;
@@ -503,18 +502,45 @@ table.fragment-list-user-groups {
   }
 }
 
-.table {
+table.datamart.table {
   color: $dark-blue;
 }
 
-.table-hover {
-  
-}
-
-form {
+form.datamart {
   .form-group label {
     color: $dark-blue;
   }  
+  input[type="search"] {
+    color: $dark-blue;
+    border: 1px solid $mcs-light-blue;
+  }
+
+  select {
+    color: $dark-blue !important;
+    border: 1px solid $mcs-light-blue !important;
+  }
+}
+
+.datamart.pagination {
+  > li > a {
+    color: $dark-blue;
+    border-color: $mcs-light-grey;
+    &:hover {
+      background: $mcs-light-grey;
+      color: $dark-blue;
+    }
+  }
+  > li.active > a, > li.active > a:hover {
+    background: #FE9015 !important;
+    border-color: #FE9015 !important;
+    color: #ffffff;
+  }
+  > li.disabled > a, > li.disabled > a:hover {
+    background: #ffffff;
+    border-color: $mcs-light-grey;
+    color: $mcs-light-grey;
+    cursor: auto;
+  }
 }
 
 .datamart-well {
@@ -547,25 +573,28 @@ form {
   }
 }
 
-input[type="search"] {
-  color: $dark-blue;
-  border: 1px solid $mcs-light-blue;
+.current-category {
+  padding: 15px;
+  background: $mcs-light-blue;
+  color: white;
+  width: 300px;
 }
 
-select {
-  color: $dark-blue !important;
-  border: 1px solid $mcs-light-blue !important;
+.parent-category-list {
+  padding: 15px 0;
+
+  .parent-category {
+    &:after {
+      content: ",";
+      padding-right: 10px;
+    }
+    &:last-child:after {
+      content: '';
+    }
+  }
 }
 
-.btn-round-light-blue {
-  border-radius: 50px;
-  color: #ffffff; 
-  &:hover, &:active, &:focus {
-    color: $dark-blue;
-  } 
-}
-
-/* Datamart timeline */
+/* User activity timeline */
  
 .datamart-timeline {
   margin: 30px 0;
@@ -712,7 +741,7 @@ select {
 
 }
  
-/* Media query for smaller devices */
+/* User activity timeline: media query for smaller screens */
 
 @media screen and (max-width: 47.2em) {
   .datamart-timeline:before {

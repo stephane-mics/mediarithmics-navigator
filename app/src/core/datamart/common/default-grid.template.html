@@ -8,7 +8,7 @@
 
 <!-- Pagination -->
 <div style="width: 100%; text-align: center;">
-  <ul class="pagination" style="margin-top: 0;" ng-hide="pageCount == 0">
+  <ul class="datamart pagination" style="margin-top: 0;" ng-hide="pageCount == 0">
     <li ng-class="{disabled: currentPage == 0}" ng-click="previousPage()"><a href >&laquo;</a></li>
     <li ng-class="{active: page == currentPage}" ng-repeat="page in generatePaging()" ng-click="setPageTo()"><a href ng-bind="page + 1">{{ page }}</a></li>
     <li ng-class="{disabled: currentPage == pageCount}"><a href ng-click="nextPage()">&raquo;</a></li>
