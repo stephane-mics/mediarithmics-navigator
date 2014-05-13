@@ -10,18 +10,19 @@ $dark-blue-not : #ffffff;
 $mcs-red : #fe5858;
 $mcs-light-blue: #00a1e1;
 $mcs-green: #00ad68;
+$mcs-orange: #FE8F10;
 $mcs-light-grey: #E6E6E6;
 
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
 $brand-info: #0BA3DE;
 
-$brand-warning: #FE8F10;
+$brand-warning: $mcs-orange;
 $brand-danger:  $mcs-red;
 $border-radius-base: 0px;
 $border-radius-small: 0px;
 $border-radius-large: 0px;
-
+$border-radius-force-round: 100px;
 
 @import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
 
@@ -30,7 +31,7 @@ $border-radius-large: 0px;
  * Common styles
  */
 
-a {
+a, *[ng-click] {
   cursor : pointer;
 }
 
@@ -50,6 +51,71 @@ a {
 .mcs-content {
 
 }
+
+.mics-table {
+  @extend .table;
+  @extend .table-striped;
+  thead {
+    color:white;
+    background-color: $mcs-light-blue;
+    tr {
+      th {
+        /* if I play with the line-height, I might get strange results with multilines headers */
+        padding-top: 16px;
+        padding-bottom: 16px;
+      }
+      th.actions {
+        background-color: $dark-blue;
+      }
+    }
+  }
+  td, th {
+    border-top: none !important;
+    border-bottom: none !important;
+  }
+  tbody {
+    tr {
+      td + td {
+        border-left: 1px solid #DDD;
+      }
+      td.actions .mics-btn {
+        @extend .btn-sm;
+      }
+    }
+  }
+}
+
+.mics-btn {
+  @extend .btn;
+  border-radius: $border-radius-force-round !important;
+  &.btn-lg, &.btn-sm, &.btn-xs {
+    border-radius: $border-radius-force-round !important;
+  }
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    color: $dark-blue !important;
+  }
+}
+
+.mics-btn-delete, .mics-btn-cancel {
+  @include button-variant(#fff, $mcs-red, $mcs-red);
+}
+
+.mics-btn-edit {
+  @include button-variant(#fff, $mcs-light-blue, $mcs-light-blue);
+}
+
+.mics-btn-add, .mics-btn-create {
+  @include button-variant(#fff, $mcs-orange, $mcs-orange);
+}
+
+.mics-btn-finish {
+  @include button-variant(#fff, $mcs-green, $mcs-green);
+}
+
 
 /*
  * Sign-in
@@ -234,9 +300,7 @@ input.mcs-amount {
       .test {
         @include make-md-column(12);
         .campaign-list-table {
-          @extend .table;
-          @extend .table-striped;
-
+          @extend .mics-table;
         }
       }
     }
