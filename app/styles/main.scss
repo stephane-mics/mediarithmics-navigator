@@ -24,6 +24,8 @@ $breadcrumb-color: $mcs-light-blue;
 $breadcrumb-separator: '>';
 $breadcrumb-padding-horizontal: 0;
 
+$text-color: $dark-blue;
+
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
 $brand-info: #0BA3DE;
@@ -382,9 +384,17 @@ input.mcs-amount {
 
         .chart-controller {
             @include make-row();
+            margin:8px 0;
+            padding: 8px 0;
+            border-top: 1px solid $dark-blue;
+            border-bottom: 1px solid $dark-blue;
             .report-type-controller {
                 @include make-md-column(8);
-
+                .nav-pills {
+                  .active a {
+                    background-color : $dark-blue;
+                  }
+                }
             }
             .report-date-controller {
                 @include make-md-column(4);
@@ -399,22 +409,78 @@ input.mcs-amount {
             @include    make-row();
             .kpi-area {
                 @include make-md-column(2);
-                @extend .text-right;
-                dt {
-                    font-weight: normal;
 
+                dl {
+                  margin-bottom:0;
+                }
+
+                dt {
+                  @extend .text-left;
+                  color: $mcs-light-blue;
+                    font-weight: normal;
+                  margin-top: 8px;
+                  padding-top: 8px;
                 }
                 dd {
-                    font-size: $font-size-h3;
+                @extend .text-right;
+                    font-size: $font-size-h1;
                     font-weight: bold;
+                }
+                dd + dt {
+                  border-top: 1px solid $mcs-light-grey;
+                }
+
+                .kpi-legend {
+                  dd {
+                    font-size: $font-size-h3;
+                  }
+                  dt {
+                    border-top: 1px solid $mcs-light-grey;
+                  }
                 }
             }
 
             .medium-chart {
                 @include make-md-column(10);
                 .chart {
-                    height: 250px;
+                    height: 300px;
                     position: static;
+
+                    svg {
+                      .nv-x {
+                        text {
+                          fill:$dark-blue;
+                        }
+                      }
+
+                      .nv-y1, .nv-y2 {
+                        text {
+                          fill:$mcs-light-blue;
+                        }
+                      }
+                    }
+                }
+                .chart-legend {
+
+                  /* align it with the chart */
+                  padding: 20px 0 0 60px;
+
+                  .y1-legend:before {
+                    color: #00AC67;
+                  }
+                  .y2-legend:before {
+                    color: #FE5858;
+                  }
+                  .y1-legend:before, .y2-legend:before {
+                    content:' \25CF';
+                    font-size: $font-size-h2;
+                    display: inline-block;
+                    margin-top: -4px;
+                    vertical-align: middle;
+                  }
+                  .y1-legend, .y2-legend {
+                    margin-right: 20px;
+                  }
                 }
             }
             .big-chart {
@@ -425,31 +491,26 @@ input.mcs-amount {
                 }
             }
         }
-        .chart-legend-area {
-            @include    make-row();
-            .kpi-legend {
-             @include make-md-column(2);
-             @extend .text-right;
-            }
-            .chart-legend {
-             @include make-md-column(10);
-                .y1-legend {
-                    @extend .label;
-                    @extend .label-default;
-                    background-color: #00AC67;
-                }
-                .y2-legend {
-                    @extend .label;
-                    background-color: #FE5858;
-                }
-            }
-        }
         .breakdown-area {
             @include    make-row();
                 .breakdown {
                     @extend .nav;
                     @extend .nav-tabs ;
                     @extend .nav-justified;
+
+                    .status-ACTIVE {
+                      color:$mcs-green;
+                    }
+                    .status-PAUSED {
+                      color:$mcs-red;
+                    }
+                }
+                .nav-tabs a {
+                  font-weight: bold;
+                  color : $dark-blue;
+                }
+                .nav-tabs .active a {
+                  color : $dark-blue-not;
                 }
         }
     }
