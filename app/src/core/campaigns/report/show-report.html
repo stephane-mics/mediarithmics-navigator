@@ -1,12 +1,6 @@
 <div class="campaign-report" ng-Controller="core/campaigns/report/BasicReportCampaignController">
     <div class="report-sidebar">
-
-        <ul>
-            <li class="active"><a ng-click="editCampaign(campaign)" >Edit Campaign</a></li>
-
-
-        </ul>
-
+      <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign)" >Edit Campaign</a>
     </div>
     <div class="report">
         <div class="campaign-heading">
@@ -40,8 +34,8 @@
             <div class="report-date-controller">
                 <form class="form-inline" role="form">
                     <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L">
-                    <button type="button" class="btn btn-default" ng-click="refresh()"><span
-                            class="glyphicon glyphicon-refresh"></span>
+                    <button type="button" class="mics-btn mics-btn-action" ng-click="refresh()">
+                      <span class="glyphicon glyphicon-refresh"></span>
                         Refresh
                     </button>
                 </form>

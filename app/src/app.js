@@ -81,19 +81,23 @@
       })
       .when('/login', {
         templateUrl: 'src/core/login/main.html',
-        publicUrl : true
+        publicUrl : true,
+        sidebar : false
       })
       .when('/logout', {
         templateUrl: 'src/core/login/logout.html',
-        publicUrl : true
+        publicUrl : true,
+        sidebar : false
       })
       .when('/remember-me', {
         templateUrl: 'src/core/login/remember-me.html',
-        publicUrl : true
+        publicUrl : true,
+        sidebar : false
       })
       .when('/init-session', {
         templateUrl: 'src/core/login/init-session.html',
-        publicUrl : true
+        publicUrl : true,
+        sidebar : false
       });
 
       $routeProvider
@@ -249,11 +253,21 @@
     '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
     function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
 
+      var defaults = _.partialRight(_.assign, function(a, b) {
+        return typeof a === 'undefined' ? b : a;
+      });
+
       $rootScope.$on('$routeChangeStart', function (event, next, current) {
 
         $log.debug("$routeChangeStart  next : ", next);
 
-        if (!next.publicUrl) {
+
+        var options = defaults(next, {
+          publicUrl : false,
+          sidebar : true
+        });
+        $rootScope.sidebar = options.sidebar;
+        if (!options.publicUrl) {
 
           if (AuthenticationService.hasAccessToken()) {
 

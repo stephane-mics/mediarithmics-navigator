@@ -8,9 +8,11 @@ $font-family-sans-serif: "Source Sans Pro", Helvetica, Arial, sans-serif;
 $dark-blue: #092f56;
 $dark-blue-not : #ffffff;
 $mcs-red : #fe5858;
+$mcs-red-not : #fff;
 $mcs-light-blue: #00a1e1;
 $mcs-light-blue-not: #fff;
 $mcs-green: #00ad68;
+$mcs-green-not: #fff;
 $mcs-orange: #FE8F10;
 $mcs-light-grey: #E6E6E6;
 
@@ -25,6 +27,7 @@ $breadcrumb-separator: '>';
 $breadcrumb-padding-horizontal: 0;
 
 $text-color: $dark-blue;
+$input-border: $mcs-light-blue;
 
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
@@ -140,7 +143,7 @@ a, *[ng-click] {
   @include mics-button-variant($mcs-red);
 }
 
-.mics-btn-edit, .mics-btn-continue, .mics-btn-previous {
+.mics-btn-edit, .mics-btn-continue, .mics-btn-previous, .mics-btn-action {
   @include mics-button-variant($mcs-light-blue);
 }
 
@@ -159,6 +162,17 @@ a, *[ng-click] {
   @include mics-button-variant($mcs-green);
 }
 
+
+.daterangepicker {
+  .applyBtn {
+    @extend .mics-btn;
+    @extend .mics-btn-action;
+  }
+  .cancelBtn {
+    @extend .mics-btn;
+    @extend .mics-btn-cancel;
+  }
+}
 
 /*
  * Sign-in
@@ -233,6 +247,14 @@ input.mcs-amount {
     line-height: 0.8;
   }
 
+  &.positive-keywords-expressions > div {
+    color: $mcs-green-not;
+    background-color: $mcs-green;
+  }
+  &.negative-keywords-expressions > div {
+    color: $mcs-red-not;
+    background-color: $mcs-red;
+  }
 }
 
 .drop-target {
@@ -298,16 +320,26 @@ input.mcs-amount {
 
 
 .mcs-default-sidebar {
-  @extend .sidebar;
+  /* @extend .sidebar; */
   @include make-md-column(2);
   @include make-md-column-push(10);
-
   ul {
     @extend .nav;
     @extend .nav-pills;
     @extend .nav-stacked;
 
   }
+}
+
+.sidebar-placeholder {
+  @include make-md-column(2);
+  background-color: $mcs-light-grey;
+
+  position: fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  padding-top:100px;
 }
 
 .mcs-default-content {
@@ -345,6 +377,9 @@ input.mcs-amount {
                 min-width: 270px;
                 input.range {
                     width: 240px;
+                    background-color: $mcs-light-blue;
+                    color: $mcs-light-blue-not;
+                    font-weight: bold;
                 }
                 @extend .text-right;
             }
@@ -374,12 +409,17 @@ input.mcs-amount {
     }
     .report-sidebar {
         @extend .mcs-default-sidebar;
+
+        > .mics-btn {
+          margin-top: $line-height-computed; /* same as h2 to align with it */
+        }
     }
 
     .report {
         @extend .mcs-default-content;
         .campaign-heading {
           @extend .mcs-default-heading;
+          border-bottom: none; /* this one has no border... */
         }
 
         .chart-controller {
@@ -401,6 +441,9 @@ input.mcs-amount {
                 min-width: 270px;
                 input.range {
                     width: 240px;
+                    background-color: $mcs-light-blue;
+                    color: $mcs-light-blue-not;
+                    font-weight: bold;
                 }
                 @extend .text-right;
             }
@@ -563,10 +606,26 @@ table.fragment-list-creatives {
 }
 
 .choose-existing-ads {
-  input[type=text] {
+  .filter-size {
+    @extend .pull-left;
+    @include make-md-column(5);
+    @extend .form-group;
+  }
+  .filter-name {
     @extend .pull-right;
+    @include make-md-column(7);
+    @extend .form-group;
   }
 
+  select, input[type=text] {
+    @extend .form-control;
+  }
+
+  .modal-body .filtered-content {
+    @include make-md-column(12);
+    max-height : 300px; /* TODO : arbitrary value */
+    overflow: auto;
+  }
 }
 
 .create-keywords-campaign .summary {

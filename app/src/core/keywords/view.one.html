@@ -16,24 +16,25 @@
 
       <div class="form-group">
         <input type="text" ng-model="newKeywordExpression.content" placeholder="add new keywords" class="form-control pull-left" ui-keypress="{13:'doNothing($event)'}"/>&nbsp;
-        <a class="btn btn-default" ng-click="addKeywordExpression(keywordsList, newKeywordExpression)">add</a>
+        <a class="mics-btn mics-btn-add" ng-click="addKeywordExpression(keywordsList, newKeywordExpression)">add</a>
       </div>
       <hr>
     </div>
-    <div class="keywords-expressions well">
+    <div class="keywords-expressions positive-keywords-expressions well">
       <div ng-repeat="keywordExpression in keywordsList.expressionList | filter : positiveExpressionsFilter">
         {{ keywordExpression.content }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
       </div>
     </div>
     <hr>
-    <div class="keywords-expressions well">
+    <div class="keywords-expressions negative-keywords-expressions well">
       <div ng-repeat="keywordExpression in keywordsList.expressionList | filter : negativeExpressionsFilter">
         {{ keywordExpression.content }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
       </div>
     </div>
   </div>
+  <!--
   <div class="col-md-6">
     <div class="jumbotron">
       Volume d'audience <a class="btn btn-default" ng-click="refreshStats()">Refresh</a>
@@ -44,4 +45,5 @@
       </dl>
     </div>
   </div>
+  -->
 </div>
