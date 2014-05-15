@@ -213,7 +213,7 @@
 
 
       service.isInitialized = function (){
-        return this.campaignCtn !== undefined;
+        return !!this.campaignCtn;
       };
 
       return service;
