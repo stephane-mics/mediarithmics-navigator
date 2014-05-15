@@ -13,7 +13,8 @@
     function ($routeProvider) {
       $routeProvider
       .when('/display-campaigns/campaign/keywords', {
-        templateUrl: 'src/core/campaigns/keywords/index.html'
+        templateUrl: 'src/core/campaigns/keywords/index.html',
+        topbar : false
       });
     }
   ]);

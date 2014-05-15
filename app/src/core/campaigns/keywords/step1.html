@@ -1,53 +1,46 @@
-<div ng-controller="core/campaigns/keywords/Step1Controller" class="row">
+<div ng-controller="core/campaigns/keywords/Step1Controller" class="mcs-default-container">
 
-  <form ng-submit="next()" class="col-md-10 mcs-limit-input-length">
+  <div class="mcs-default-sidebar">
+    <!--
+    <p>How do I choose my budget ?</p>
+    <p>Integer elementum massa at nulla placerat varius. Suspendisse in libero risus, in interdum massa. Vestibulum ac leo vitae metus faucibus gravida ac in neque. Nullam est eros, suscipit sed dictum quis, accumsan a ligula. In sit amet justo lectus. Etiam feugiat dolor ac elit suscipit in elementum orci fringilla. Aliquam in felis eros. Praesent hendrerit lectus sit amet turpis tempus hendrerit. Donec laoreet volutpat molestie. Praesent tempus dictum nibh ac ullamcorper. Sed eu consequat nisi. Quisque ligula metus, tristique eget euismod at, ullamcorper et nibh. Duis ultricies quam egestas nibh mollis in ultrices turpis pharetra. Vivamus et volutpat mi. Donec nec est eget dolor laoreet iaculis a sit amet diam.</p>
+    -->
+  </div>
+  <form ng-submit="next()" class="mcs-default-content mcs-full-page-form">
 
     <div ng-include="'src/core/campaigns/keywords/breadcrumb.html'"></div>
 
     <!-- Name -->
-    <div class="form-group">
-      <label for="keywords_step1_name">
-        Campaign name
-      </label>
-      <input required ng-model="campaign.name" type="text" class="form-control" id="keywords_step1_name">
+    <div mcs-form-group="" label-for="keywords_step1_name" label-text="Campaign name">
+      <input required class="input-lg" ng-model="campaign.name" type="text" id="keywords_step1_name">
     </div>
 
     <!-- Weekly budget -->
-    <div class="form-group">
-      <label for="keywords_step1_budget">
-        Weekly budget <small>(<a ng-click="">recommendations</a>)</small>
-      </label>
-      <div class="form-inline">
-        <input required ng-model="campaign.weekly_budget" type="number" min="20" class="form-control mcs-amount" id="keywords_step1_budget"> &euro;<br>
-        <small>Minimum budget : 20 &euro;</small>
-      </div>
+    <div mcs-form-group="number" label-for="keywords_step1_budget" label-text="Weekly budget (20&euro; min.)">
+      <div class="input-group">
+        <input required ng-model="campaign.weekly_budget" type="number" min="20" id="keywords_step1_budget">
+          <span class="input-group-addon">&euro;</span>
+        </div>
     </div>
 
     <!-- Schedule -->
-    <div class="form-group">
-      <label for="keywords_step1_schedule">
-        Schedule
-      </label>
-        <select required ng-model="campaign.schedule" class="form-control" id="keywords_step1_schedule">
+    <div mcs-form-group="select" label-for="keywords_step1_schedule" label-text="Schedule">
+        <select required ng-model="campaign.schedule" id="keywords_step1_schedule">
           <option value="ongoing">Ongoing (no end date)</option>
-          <option></option>
+          <!-- <option></option> -->
         </select>
     </div>
 
     <!-- Location -->
-    <div class="form-group">
-      <label for="keywords_step1_location">
-        Location
-      </label>
-        <select required ng-model="campaign.location"  class="form-control" id="keywords_step1_location">
+    <div mcs-form-group="select" label-for="keywords_step1_location" label-text="Location">
+        <select required ng-model="campaign.location"  id="keywords_step1_location">
           <option value="worlwide">Worldwide</option>
-          <option></option>
+          <!-- <option></option> -->
         </select>
     </div>
-    <button class="mics-btn mics-btn-continue">next</button>
+    <div class="mcs-actions-group">
+      <a class="mics-btn mics-btn-cancel" ng-click="cancel()">cancel</a>
+      <button class="mics-btn mics-btn-continue">next</button>
+    </div>
   </form>
-  <div class="col-md-2">
-    <p>How do I choose my budget ?</p>
-    <p>Integer elementum massa at nulla placerat varius. Suspendisse in libero risus, in interdum massa. Vestibulum ac leo vitae metus faucibus gravida ac in neque. Nullam est eros, suscipit sed dictum quis, accumsan a ligula. In sit amet justo lectus. Etiam feugiat dolor ac elit suscipit in elementum orci fringilla. Aliquam in felis eros. Praesent hendrerit lectus sit amet turpis tempus hendrerit. Donec laoreet volutpat molestie. Praesent tempus dictum nibh ac ullamcorper. Sed eu consequat nisi. Quisque ligula metus, tristique eget euismod at, ullamcorper et nibh. Duis ultricies quam egestas nibh mollis in ultrices turpis pharetra. Vivamus et volutpat mi. Donec nec est eget dolor laoreet iaculis a sit amet diam.</p>
-  </div>
 </div>

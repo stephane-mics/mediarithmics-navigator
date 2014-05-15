@@ -72,6 +72,12 @@ a, *[ng-click] {
 
 }
 
+.input-group-addon {
+  background-color:$mcs-light-blue;
+  color:$mcs-light-blue-not;
+  font-weight:bold;
+}
+
 .mics-table {
   @extend .table;
   @extend .table-striped;
@@ -221,14 +227,47 @@ a, *[ng-click] {
   border-bottom: 1px solid $breadcrumb-active-color;
 }
 
-form.mcs-limit-input-length {
-  input, select {
-    max-width: 400px;
-  }
-}
+form.mcs-full-page-form {
 
-input.mcs-amount {
-  max-width: 200px;
+  .mcs-form-row {
+    @include make-row();
+  }
+  .mcs-form-group {
+    @extend .form-group;
+
+    input, select {
+      @extend .form-control;
+
+      /* force input variations */
+      &.input-lg {
+        @extend .input-lg;
+      }
+      &.input-sm {
+        @extend .input-sm;
+      }
+    }
+  }
+  .mcs-form-group-number {
+    @include make-sm-column(3);
+  }
+
+  .mcs-form-group-select {
+    @include make-sm-column(6);
+  }
+
+  .mcs-form-group-default {
+    @include make-sm-column(6);
+  }
+
+  /* for the actions buttons at the bottom of the page */
+  .mcs-actions-group {
+    margin-top : 30px;
+    margin-bottom : 30px;
+
+    .mics-btn + .mics-btn {
+      margin-left: 8px;
+    }
+  }
 }
 
 .keywords-expressions {
@@ -339,7 +378,6 @@ input.mcs-amount {
   top:0;
   right:0;
   bottom:0;
-  padding-top:100px;
 }
 
 .mcs-default-content {

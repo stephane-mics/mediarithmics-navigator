@@ -264,9 +264,11 @@
 
         var options = defaults(next, {
           publicUrl : false,
-          sidebar : true
+          sidebar : true,
+          topbar : true
         });
         $rootScope.sidebar = options.sidebar;
+        $rootScope.topbar = options.topbar;
         if (!options.publicUrl) {
 
           if (AuthenticationService.hasAccessToken()) {

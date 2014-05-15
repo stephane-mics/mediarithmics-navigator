@@ -1,133 +1,114 @@
+<!-- campaign edition form -->
+<h3>Campaign</h3>
 
-<div class="container-fluid">
+<div class="mcs-default-container" ng-Controller="core/campaigns/expert/EditCampaignController">
+  <div class="mcs-default-sidebar">
+  </div>
+  <form role="form" class="mcs-default-content mcs-full-page-form">
 
-  <!-- campaign edition form -->
-  <h3>Campaign</h3>
+    <!--<div class="form-group">-->
+    <!--<label>Id</label>-->
+    <!--<p  class="form-control-static">{{campaign.id}}</p>-->
+    <!--</div>-->
 
-  <div class="" ng-Controller="core/campaigns/expert/EditCampaignController">
-    <div class="row">
-      <div class="col-md-8">
+    <!-- Name -->
+    <div mcs-form-group="" label-for="name" label-text="Campaign name">
+      <input  ng-model="campaign.name" type="text" class="form-control input-lg" id="name">
+    </div>
 
-        <form  role="form">
+    <!-- Weekly budget -->
+    <div mcs-form-group="number" label-for="weekly_budget" label-text="Weekly budget">
+      <input ng-model="campaign.max_daily_budget" type="text" class="form-control "  format="L"   id="weekly_budget" />
+    </div>
 
-          <!--<div class="form-group">-->
-            <!--<label>Id</label>-->
-            <!--<p  class="form-control-static">{{campaign.id}}</p>-->
-          <!--</div>-->
+    <div mcs-form-group="number" label-for="total-budget" label-text="Total budget">
+      <input ng-model="campaign.total_budget" type="text" class="form-control "  format="L"   id="total-budget" />
+    </div>
 
-          <!-- Name -->
-          <div class="form-group">
-            <label for="name">Campaign name</label>
-            <input  ng-model="campaign.name" type="text" class="form-control input-lg" id="name">
-          </div>
-
-            <!-- Weekly budget -->
-            <div class="form-group">
-                <label for="weekly_budget">Weekly budget</label>
-                <input ng-model="campaign.max_daily_budget" type="text" class="form-control "  format="L"   id="weekly_budget" />
-            </div>
-
-            <div class="form-group">
-                <label for="total-budget">Total budget</label>
-                <input ng-model="campaign.total_budget" type="text" class="form-control "  format="L"   id="total-budget" />
-            </div>
-
-          <!-- Schedule -->
-            <div class="form-group">
-                <label for="schedule">Schedule</label>
-                <select ng-model="schedule" class="form-control" id="schedule">
-                    <option value="">Ongoing (no end date)</option>
-                    <!--<option value="endDate">With end date</option>-->
-                </select>
-            </div>
-            <!--<div class="form-group" ng-show="schedule === 'endDate'">-->
-                <!--<label for="schedule">End date</label>-->
-                <!--<datepicker ng-model="campaign.end_date" />-->
-            <!--</div>-->
+    <!-- Schedule -->
+    <div mcs-form-group="select" label-for="schedule" label-text="Schedule">
+      <select ng-model="schedule" class="form-control" id="schedule">
+        <option value="">Ongoing (no end date)</option>
+        <!--<option value="endDate">With end date</option>-->
+      </select>
+    </div>
+    <!--<div class="form-group" ng-show="schedule === 'endDate'">-->
+    <!--<label for="schedule">End date</label>-->
+    <!--<datepicker ng-model="campaign.end_date" />-->
+    <!--</div>-->
 
 
-            <!-- Location -->
-            <div class="form-group">
-                <label for="location">Location</label>
-                <select class="form-control"  id="location">
-                    <option>Worldwide</option>
-                    <option></option>
-                </select>
-            </div>
+    <!-- Location -->
+    <div mcs-form-group="select" label-for="location" label-text="Location">
+      <select class="form-control"  id="location">
+        <option>Worldwide</option>
+        <option></option>
+      </select>
+    </div>
 
-            <div class="form-group">
-                <label for="max-bid-price">Max bid price</label>
-                <input ng-model="campaign.max_bid_price" type="text" class="form-control "  format="L"   id="max-bid-price" />
-            </div>
+    <div mcs-form-group="number" label-for="max-bid-price" label-text="Max bid price">
+      <input ng-model="campaign.max_bid_price" type="text" class="form-control "  format="L"   id="max-bid-price" />
+    </div>
 
-            <div class="form-group">
-                <label for="total-impression-capping">Total impression capping</label>
-                <input ng-model="campaign.total_impression_capping" type="text" class="form-control "  format="L"    id="total-impression-capping" />
+    <div mcs-form-group="number" label-for="total-impression-capping" label-text="Total impression capping">
+      <input ng-model="campaign.total_impression_capping" type="text" class="form-control "  format="L"    id="total-impression-capping" />
+    </div>
 
-            </div>
-
-            <!-- Location -->
-            <div class="form-group">
-                <label for="per-day-impression-capping">Dayly impression capping</label>
-
-                <input ng-model="campaign.per_day_impression_capping" type="text" class="form-control "  format="L"   id="per-day-impression-capping" />
-
-            </div>
+    <!-- Location -->
+    <div mcs-form-group="number" label-for="per-day-impression-capping" label-text="Daily impression capping">
+      <input ng-model="campaign.per_day_impression_capping" type="text" class="form-control "  format="L"   id="per-day-impression-capping" />
+    </div>
 
 
-            <!-- Ad Groups -->
-          <div class="form-group">
-            <div ng-repeat="adGroup in adGroups|orderBy:'id'">
-              <div ng-include src="'src/core/campaigns/expert/view-ad-group.html'"></div>
-            </div>
+    <!-- Ad Groups -->
+    <div class="form-group">
+      <div ng-repeat="adGroup in adGroups|orderBy:'id'">
+        <div ng-include src="'src/core/campaigns/expert/view-ad-group.html'"></div>
+      </div>
 
-            <div class="btn-group">
-              <a class="mics-btn mics-btn-add" ng-click="newAdGroup()">Create new Ad Group</a>
-            </div>
-          </div>
-
-
-          <!-- Display Networks -->
-            <div class="form-group">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4>Display networks
-
-                        </h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-inline" >
-                            <div class="form-group">
-                                <select class="form-control" ng-model="displayNetwork" ng-options="source.display_network_name for source in availableInventorySources|orderBy:'display_network_name'|filter:isInInventorySources">
-
-                                </select>
-
-                            </div>
-                            <a class="mics-btn mics-btn-add" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
-                        </div>
-                        <div class="well">
-                            <span class="label label-default" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
-                        </div>
-
-
-
-
-
-                    </div>
-                </div>
-            </div>
-
-
-          <!-- saver or cancel -->
-          <div class="btn-group">
-            <button class="mics-btn mics-btn-finish" ng-click="save()">Save</button>
-            <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
-          </div>
-
-        </form>
-
+      <div class="btn-group">
+        <a class="mics-btn mics-btn-add" ng-click="newAdGroup()">Create new Ad Group</a>
       </div>
     </div>
 
-  </div>
+
+    <!-- Display Networks -->
+    <div class="form-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>Display networks
+
+          </h4>
+        </div>
+        <div class="panel-body">
+          <div class="form-inline" >
+            <div class="form-group">
+              <select class="form-control" ng-model="displayNetwork" ng-options="source.display_network_name for source in availableInventorySources|orderBy:'display_network_name'|filter:isInInventorySources">
+
+              </select>
+
+            </div>
+            <a class="mics-btn mics-btn-add" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
+          </div>
+          <div class="well">
+            <span class="label label-default" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
+          </div>
+
+
+
+
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- saver or cancel -->
+    <div class="mcs-actions-group">
+      <button class="mics-btn mics-btn-finish" ng-click="save()">Save</button>
+      <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
+    </div>
+
+  </form>
+
 </div>

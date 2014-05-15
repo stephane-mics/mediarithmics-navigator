@@ -1,4 +1,4 @@
-<div ng-controller="core/keywords/EditOneController" class="col-md-12">
+<div ng-controller="core/keywords/EditOneController" class="row">
   <div class="col-md-6">
     <!--
     yes, this should be a <form>
@@ -7,15 +7,19 @@
     -->
     <div name="addKeywordExpressionForm">
 
-      <div class="form-group">
-        <select ng-model="newKeywordExpression.type" class="form-control">
-          <option value="include">Target pages which contain the keywords</option>
-          <option value="exclude">Target pages which don't contain the keywords</option>
-        </select>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <select ng-model="newKeywordExpression.type" class="form-control">
+            <option value="include">Target pages which contain the keywords</option>
+            <option value="exclude">Target pages which don't contain the keywords</option>
+          </select>
+        </div>
       </div>
 
-      <div class="form-group">
-        <input type="text" ng-model="newKeywordExpression.content" placeholder="add new keywords" class="form-control pull-left" ui-keypress="{13:'doNothing($event)'}"/>&nbsp;
+      <div class="row">
+        <div class="form-group col-md-6">
+          <input type="text" ng-model="newKeywordExpression.content" placeholder="add new keywords" class="form-control pull-left" ui-keypress="{13:'doNothing($event)'}"/>&nbsp;
+        </div>
         <a class="mics-btn mics-btn-add" ng-click="addKeywordExpression(keywordsList, newKeywordExpression)">add</a>
       </div>
       <hr>
