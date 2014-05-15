@@ -65,11 +65,11 @@
 
   var module = angular.module('core/campaigns/report');
   module.factory('CampaignAnalyticsReportService',
-    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService','core/configuration',
+    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration',
       function ($resource, Session, AuthenticationService, configuration) {
         var displayCampaignResource = $resource(
           configuration.WS_URL + "/reports/display_campaign_performance_report",
-          {organisation_id: Session.getCurrentWorkspace().organisation_id},
+          {},
           {get: {
             method: 'GET',
             headers: { 'Authorization': AuthenticationService.getAccessToken() }
@@ -78,7 +78,7 @@
         );
 
         var adGroupResource = $resource(configuration.WS_URL + "/reports/adgroup_performance_report",
-          {organisation_id: Session.getCurrentWorkspace().organisation_id},
+          {},
           {get: {
             method: 'GET',
             headers: { 'Authorization': AuthenticationService.getAccessToken() }
@@ -86,7 +86,7 @@
           }
         );
         var adResource = $resource(configuration.WS_URL + "/reports/ad_performance_report",
-          {organisation_id: Session.getCurrentWorkspace().organisation_id},
+          {},
           {get: {
             method: 'GET',
             headers: { 'Authorization': AuthenticationService.getAccessToken() }
@@ -94,7 +94,7 @@
           }
         );
         var creativeResource = $resource(configuration.WS_URL + "/reports/creative_performance_report",
-          {organisation_id: Session.getCurrentWorkspace().organisation_id},
+          {},
           {get: {
             method: 'GET',
             headers: { 'Authorization': AuthenticationService.getAccessToken() }
@@ -106,6 +106,7 @@
         var ReportService = {
           'creativePerformance': function (startDate, endDate, campaignId) {
             return  creativeResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate.format('YYYY-MM-D'),
               end_date: endDate.format('YYYY-MM-D'),
               dimension: "",
@@ -118,6 +119,7 @@
           },
           'adGroupPerformance': function (startDate, endDate, campaignId) {
             return  adGroupResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate.format('YYYY-MM-D'),
               end_date: endDate.format('YYYY-MM-D'),
               dimension: "",
@@ -130,6 +132,7 @@
           },
           'adPerformance': function (startDate, endDate, campaignId) {
             return  adResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate.format('YYYY-MM-D'),
               end_date: endDate.format('YYYY-MM-D'),
               dimension: "",
@@ -142,6 +145,7 @@
           },
           'kpi': function (startDate, endDate, campaignId) {
             return  displayCampaignResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate.format('YYYY-MM-D'),
               end_date: endDate.format('YYYY-MM-D'),
               dimension: "",
@@ -169,6 +173,7 @@
           },
           'allCampaigns': function (startDate, endDate, organisation_id) {
             return  displayCampaignResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate.format('YYYY-MM-D'),
               end_date: endDate.format('YYYY-MM-D'),
               dimension: "",
@@ -232,6 +237,7 @@
             };
 
             return  displayCampaignResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate.format('YYYY-MM-D'),
               end_date: endDate.format('YYYY-MM-D'),
               dimension: "day",
