@@ -1,4 +1,4 @@
-/* global _ */
+/* global _, moment */
 (function () {
   'use strict';
 
@@ -30,54 +30,41 @@
   };
 
   var updateStatistics = function ($scope, CampaignAnalyticsReportService, $routeParams) {
+    CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
 
-    var startDate = $scope.reportDateRange.startDate;
-    var endDate = $scope.reportDateRange.endDate;
     var campaignId = $routeParams.campaign_id;
 
-    $scope.xaxisdomain = [startDate.toDate().getTime(),
-      endDate.toDate().getTime()
+    $scope.xaxisdomain = [CampaignAnalyticsReportService.getStartDate().toDate().getTime(),
+      CampaignAnalyticsReportService.getEndDate().toDate().getTime()
     ];
 
     CampaignAnalyticsReportService.dayPerformance(
-      startDate,
-      endDate,
       campaignId,
       "clicks", "impressions"
     ).then(function (data) {
         $scope.data1 = data;
       });
     CampaignAnalyticsReportService.adGroupPerformance(
-      startDate,
-      endDate,
       campaignId
     ).then(function (data) {
         $scope.adGroupPerformance = data;
       });
     CampaignAnalyticsReportService.creativePerformance(
-      startDate,
-      endDate,
       campaignId
     ).then(function (data) {
         $scope.creativePerformance = data;
       });
     CampaignAnalyticsReportService.adPerformance(
-      startDate,
-      endDate,
       campaignId
     ).then(function (data) {
         $scope.adPerformance = data;
       });
     CampaignAnalyticsReportService.mediaPerformance(
-      startDate,
-      endDate,
       campaignId
     ).then(function (data) {
         $scope.mediaPerformance = data;
       });
     CampaignAnalyticsReportService.kpi(
-      startDate,
-      endDate,
       campaignId
     ).then(function (data) {
         $scope.kpis = data;
@@ -93,6 +80,9 @@
     '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService',
     function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService) {
       $scope.valTo = 10;
+
+      $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
+
       $log.debug("fetching " + $routeParams.campaign_id);
       DisplayCampaignService.getDeepCampaignView($routeParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
@@ -100,7 +90,7 @@
         $scope.ads = _.unique(_.flatten(_.map(campaign.ad_groups, "ads")), "creative_id");
 
 
-        $scope.reportDateRange = {startDate: moment().subtract('days', 20), endDate: moment()};
+
 
 
         $scope.$watch('reportDateRange', function () {

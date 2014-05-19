@@ -4,9 +4,9 @@
   var module = angular.module('core/campaigns');
 
   var updateStatistics = function ($scope, CampaignAnalyticsReportService, organisationId) {
-    var startDate = $scope.reportDateRange.startDate;
-    var endDate = $scope.reportDateRange.endDate;
-    var report = CampaignAnalyticsReportService.allCampaigns(startDate, endDate, organisationId);
+    CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
+    //Moment is not immutable
+    var report = CampaignAnalyticsReportService.allCampaigns(organisationId);
     report.then(function (stats) {
       $scope.campaignsStatistics = stats;
     });
@@ -20,7 +20,7 @@
     '$scope', '$location', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session','CampaignAnalyticsReportService',
     function ($scope, $location, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService) {
 
-      $scope.reportDateRange = {startDate: moment().subtract('days', 20), endDate: moment()};
+      $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.organisationName = function (id ){ return Session.getOrganisationName(id);};
 
       $scope.administrator = Session.getCurrentWorkspace().administrator;
