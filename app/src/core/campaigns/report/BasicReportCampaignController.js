@@ -68,6 +68,13 @@
     ).then(function (data) {
         $scope.adPerformance = data;
       });
+    CampaignAnalyticsReportService.mediaPerformance(
+      startDate,
+      endDate,
+      campaignId
+    ).then(function (data) {
+        $scope.mediaPerformance = data;
+      });
     CampaignAnalyticsReportService.kpi(
       startDate,
       endDate,

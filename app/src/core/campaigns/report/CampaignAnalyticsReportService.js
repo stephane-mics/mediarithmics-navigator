@@ -5,12 +5,16 @@
   'use strict';
 
   function ReportWrapper(report) {
+    var self = this;
     this.getMetrics = function () {
       return _.filter(report.columns_headers, isMetrics);
     };
     this.getRow = _.memoize(function (id) {
       id = parseInt(id);
       var row = _.select(report.rows, function(r) {return r[0] === id;})[0];
+      return self.decorate(row);
+    });
+    this.decorate = _.memoize(function (row) {
       if (row === undefined) {
         return _.map(new Array(this.getMetrics().length), function () {return 0; });
       } else {
@@ -28,6 +32,11 @@
     this.getMetricType = function (index) {
       return tableHeaders[this.getMetrics()[index]].type;
     };
+
+    this.getRows = function () {
+      return report.rows;
+    };
+
   }
 
 //  function Report(report) {
@@ -41,16 +50,18 @@
 
 
   var isMetrics = function (e) {
-    return !(/name|id|day/).test(e);
+    return !(/name|id|day|site/).test(e);
   };
   var notMetrics = function (e) {
-    return (/name|id|day/).test(e);
+    return (/name|id|day|site/).test(e);
   };
 
   var tableHeaders = {
     "creative_id": {name:"Id"},
     "adgroup_id": {name:"Id"},
     "ad_id": {name:"Id"},
+    "site": {name:"Site"},
+    "display_network": {name:"Display Network"},
     "adgroup_name": {name:"Ad Group Name"},
     "day": {name:"Date"},
     "cost_impressions": {name:"Spend", type:"currency"},
@@ -101,6 +112,14 @@
           }
           }
         );
+        var mediaResource = $resource(configuration.WS_URL + "/reports/media_performance_report",
+          {},
+          {get: {
+            method: 'GET',
+            headers: { 'Authorization': AuthenticationService.getAccessToken() }
+          }
+          }
+        );
 
 
         var ReportService = {
@@ -140,6 +159,19 @@
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
+              });
+
+          },
+          'mediaPerformance': function (startDate, endDate, campaignId) {
+            return  mediaResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
+              start_date: startDate.format('YYYY-MM-D'),
+              end_date: endDate.format('YYYY-MM-D'),
+              dimension: "",
+              metrics: "impressions,clicks,cpm,cpc,cost_impressions",
+              filters: "campaign_id==" + campaignId
+            }).$promise.then(function (response) {
+                return new ReportWrapper(response.report_view);
               });
 
           },
