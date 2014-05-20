@@ -1,0 +1,37 @@
+
+
+<div class="mcs-default-container" ng-controller="core/creatives/display-ads/standard-banner/EditDisplayAdController">
+  <div class="mcs-default-sidebar">
+  </div>
+  <form role="form" class="mcs-default-content mcs-full-page-form">
+    <div class="mcs-default-heading">
+      <h1>Display Ad</h1>
+    </div>    
+
+    <div class="row">
+
+      <div class="col-md-6">
+
+        <!-- Name -->
+        <div mcs-form-group="" label-for="name" label-text="Ad name">
+          <input  ng-model="display_ad.name" type="text" class="form-control input-lg" id="name">
+        </div>
+
+        <!-- Format -->
+        <div mcs-form-group="" label-for="format" label-text="Format">
+          <input  ng-model="display_ad.name" type="text" class="form-control input-lg" id="format">
+        </div>
+
+      <div>
+
+    </div>
+
+    <!-- save or cancel -->
+    <div class="mcs-actions-group">
+      <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
+      <button class="mics-btn mics-btn-finish" ng-click="save()">Save</button>
+    </div>
+
+  </form>
+
+</div>

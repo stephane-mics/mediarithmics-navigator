@@ -7,7 +7,8 @@
    */
 
   module.factory("core/creatives/DisplayAdContainer", [
-    "$q", "Restangular", "core/common/IdGenerator", "async", "PropertyContainer",
+    "$q", "Restangular", "core/common/IdGenerator", "async", "core/creatives/PropertyContainer",
+    
     function($q, Restangular, IdGenerator, async, PropertyContainer) {
 
       var DisplayAdContainer = function DisplayAdContainer() {

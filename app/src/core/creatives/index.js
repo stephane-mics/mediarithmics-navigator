@@ -25,8 +25,8 @@
 
         // Display Ads Templates
         // expert template
-        .when('/creatives/display-ads/expert/edit/:creative_id', {
-          templateUrl:'src/core/displays/expert/edit-campaign.html',
+        .when('/creatives/display-ads/standard-banner/edit/:creative_id', {
+          templateUrl:'src/core/creatives/display-ads/standard-banner/edit-display-ad.html',
           topbar : false
         });
 

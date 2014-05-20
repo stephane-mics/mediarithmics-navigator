@@ -10,24 +10,31 @@
    *
    */
 
-  var module = angular.module('core/creatives/display_ads/expert');
+  //console.debug("core/creatives/display-ads/standard-banner CREATED !")
 
-  module.controller('core/creatives/display_ads/expert/EditDisplayAdController', [
+  var module = angular.module('core/creatives/display-ads/standard-banner');
+                     
+  module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
+
     '$scope', '$log', '$location', '$routeParams', 'core/creatives/DisplayAdService',
 
     function ($scope, $log, $location, $routeParams, DisplayAdService) {
+
       var creativeId = $routeParams.creative_id;
 
+
       function initView() {
-        $scope.display_ad = DisplayAdService.getCreativeValue();
+        $scope.display_ad = DisplayAdService.getDisplayAdValue();
       }
 
       $log.debug('Expert.EditDisplayAdController called !');
 
-      // TODO oad the campaign (no effect if already in cache or if this is a temporary id)
+      /*
+
       if (!DisplayAdService.isInitialized() || DisplayAdService.getDisplayAdId() !== creativeId) {
+
         if (DisplayAdService.isTemporaryId(creativeId)) {
-          DisplayAdService.initCreateDisplayAd("expert").then(function () {
+          DisplayAdService.initCreateDisplayAd().then(function () {
             initView();
           });
         } else {
@@ -40,6 +47,12 @@
         // init scope
         initView();
       }
+      */
+
+      DisplayAdService.initEditDisplayAd(creativeId).then(function () {
+          initView();
+          DisplayAdService.loadProperties();
+        });
 
 
       /*
@@ -64,5 +77,6 @@
 
     }
   ]);
+
 })();
 

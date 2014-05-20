@@ -19,6 +19,12 @@
       var idCounter = 1;
       var service = {};
 
+      service.initEditDisplayAd = function(creativeId) {
+
+        var ctn = new DisplayAdContainer();
+        this.displayAdCtn = ctn;
+        return ctn.load(creativeId);
+      };
 
       return service;
     }

@@ -14,6 +14,7 @@
             <table class="mics-table">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Status</th>
                     <th>Name</th>
                     <th>Type</th>
@@ -22,6 +23,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="creative in creatives " ng-click="showCreative(creative)">
+                    <td><img creative-thumbnail="creative.id"/></td>
                     <td>{{creative.status}}</td>
                     <td>{{creative.name}} </td>
                     <td>{{creative.type}}</td>

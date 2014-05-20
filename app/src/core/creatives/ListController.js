@@ -31,7 +31,9 @@
 
       $scope.showCreative = function (creative) {
         $log.debug("> showCreative for creativeId=", creative.id);
-        $location.path("/display-creatives/report/" + creative.id + "/basic");
+
+        // Todo switch on the edit page depending on the creative template editor
+        $location.path("/creatives/display-ads/standard-banner/edit/" + creative.id );
       };
 
       $scope.editCreative = function (creative) {
