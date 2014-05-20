@@ -179,6 +179,23 @@
 
 
 
+      /*
+       * Keyword list methods
+       */
+      service.getKeywordLists = function(adGroupId) {
+        return this.campaignCtn.getAdGroup(adGroupId).userGroups;
+      };
+
+      service.addKeywordList = function (adGroupId, keywordList) {
+        return this.campaignCtn.getAdGroup(adGroupId).addKeywordList(keywordList);
+      };
+
+      service.removeKeywordList = function(adGroupId, keywordListId) {
+        this.campaignCtn.getAdGroup(adGroupId).removeKeywordList(keywordListId);
+      };
+
+
+
 
       service.getInventorySources = function () {
         return this.campaignCtn.getInventorySources();

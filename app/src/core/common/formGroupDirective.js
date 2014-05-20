@@ -1,7 +1,5 @@
 (function () {
   'use strict';
-
-
   var module = angular.module('core/common');
   module.directive('mcsFormGroup', [
     function () {
@@ -18,7 +16,4 @@
       };
     }
   ]);
-
 }());
-
-

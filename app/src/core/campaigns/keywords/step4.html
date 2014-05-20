@@ -10,7 +10,7 @@
     <div ng-include="'src/core/campaigns/keywords/breadcrumb.html'"></div>
 
     <h2 class="text-center">{{ campaign.name }}</h2>
-    <h3 class="text-center">{{ campaign.schedule }} </h3>
+    <h3 class="text-center">Ongoing (no end date)</h3>
     <table class="summary">
       <tbody>
       <tr>
@@ -20,7 +20,10 @@
       </tr>
       <tr>
         <td>Location</td>
-        <td>{{campaign.location}}</td>
+        <td>
+          Worldwide
+          <!-- {{campaign.location}} -->
+        </td>
         <td class="actions"><a class="mics-btn mics-btn-edit" ng-click="editLocation()">Edit</a></td>
       </tr>
       <tr>
@@ -31,18 +34,22 @@
       <tr>
         <td>
           Ads<br/>
-          {{campaign.creatives.length}} ads
+          {{getAds(adGroupId).length}} ads
         </td>
         <td>
-          <img ng-repeat="creative in campaign.creatives" ng-src="http://placekitten.com/50/50" />
+          <div ng-repeat="ad in getAds(adGroupId)" fetch-creative="ad.creative_id as creative">
+            <img creative-thumbnail="creative.id"/>
+          </div>
         </td>
         <td class="actions"><a class="mics-btn mics-btn-edit" ng-click="editPlacement()">Edit</a></td>
       </tr>
+      <!--
       <tr>
         <td>Payment Method</td>
         <td></td>
         <td class="actions"></td>
       </tr>
+      -->
       </tbody>
     </table>
     <div class="mcs-actions-group">

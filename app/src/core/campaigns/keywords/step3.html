@@ -16,7 +16,7 @@
       <span>728x90</span>
       <span>300x250</span>
     </div>
-    <div ng-show="campaign.creatives.length">
+    <div ng-show="getAds(adGroup.id).length">
       <table class="fragment-list-creatives">
         <thead>
           <tr>
@@ -28,11 +28,12 @@
           </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="creative in campaign.creatives">
+        <tr ng-repeat="ad in getAds(adGroupId)" fetch-creative="ad.creative_id as creative">
+        <!-- <tr ng-repeat="creative in campaign.creatives"> -->
           <!-- <td mics-asset-thumbnail asset="creative"></td> -->
           <td>
             <div class="thumbnail">
-              <img ng-src="http://placekitten.com/50/50" />
+              <img creative-thumbnail="creative.id"/>
               <div class="caption">
                 {{creative.format}}
               </div>

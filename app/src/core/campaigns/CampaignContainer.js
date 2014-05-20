@@ -7,8 +7,8 @@
    */
 
   module.factory("core/campaigns/CampaignContainer", [
-    "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer",
-    function($q, Restangular, IdGenerator, async, AdGroupContainer) {
+    "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log",
+    function($q, Restangular, IdGenerator, async, AdGroupContainer, $log) {
 
 
       var CampaignContainer = function CampaignContainer() {
@@ -19,9 +19,6 @@
         this.removedAdGroups = [];
         this.inventorySources = undefined;
         this.addedInventorySources = [];
-
-
-        this.keywordsLists = [];
 
         this.value = {type:"DISPLAY", template_group_id: "com.mediarithmics.campaign.display", template_artifact_id:"default-template"};
       };
@@ -147,6 +144,40 @@
 
       };
 
+
+
+      var saveAdGroups = function (self, adGroups, defered) {
+
+        async.mapSeries(adGroups, function(adGroup, callback) {
+          var action;
+
+          if (adGroup.id.indexOf('T') === -1) {
+            action = "update";
+          } else {
+            action = "persist";
+            // reuse the name of the campaign for the ad group
+            if (!adGroup.value.name) {
+              adGroup.value.name = self.value.name;
+            }
+          }
+
+          adGroup[action](self.id).then(function(result) {
+            callback(null, result);
+          }, function(reason) {
+            callback(new Error(reason));
+          });
+
+
+        }, function(err, results){
+          if (err) {
+            defered.reject(err);
+          } else {
+            $log.info("ad groups saved");
+            defered.resolve(self);
+          }
+        });
+      };
+
       CampaignContainer.prototype.persist = function persist() {
 
         var defered = $q.defer();
@@ -160,25 +191,9 @@
 
           var pArray = [];
 
-          if (self.adGroups.length > 0) {
 
-            for(var i=0; i < this.adGroups.length; i++) {
-              // persist the ad group container
-              pArray.push(this.adGroups[i].persist(self.id));
-            }
-
-            $q.all(pArray).then(function(result) {
-
-              defered.resolve(self);
-
-            }, function(reason) {
-              defered.reject(reason);
-            });
-
-          } else {
-            // return the loaded container
-            defered.resolve(self);
-          }
+          var adGroups = self.adGroups;
+          saveAdGroups(self, adGroups, defered);
 
         }), function(reason) {
           defered.reject(reason);
@@ -207,34 +222,8 @@
             });
           }
 
-          async.mapSeries(adGroups, function(adGroup, callback) {
 
-            if (adGroup.id.indexOf('T') === -1) {
-              // update the ad group
-              adGroup.update(self.id).then(function(result) {
-                callback(null, result);
-              }, function(reason) {
-                callback(new Error(reason));
-              });
-
-            } else {
-              // persist the ad group container
-              adGroup.persist(self.id).then(function(result) {
-                callback(null, result);
-              }, function(reason) {
-                callback(new Error(reason));
-              });
-            }
-
-          }, function(err, results){
-
-            if (err) {
-              defered.reject(err);
-            } else {
-              defered.resolve(self);
-            }
-          });
-
+          saveAdGroups(self, adGroups, defered);
 
         }, function(reason) {
           defered.reject(reason);
