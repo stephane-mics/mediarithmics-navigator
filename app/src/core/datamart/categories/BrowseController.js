@@ -6,10 +6,11 @@
 
   module.controller('core/datamart/categories/BrowseController', [
     '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common',
+    
     function($scope, $routeParams, Restangular, Common) {
 
-      $scope.baseUrl = '#' + Common.locations.all[2].href;
-      $scope.itemUrl = '#' + Common.locations.all[1].href;
+      $scope.baseUrl = '#/datamart/categories';
+      $scope.itemUrl = '#/datamart/item';
 
       // TODO: get organisationId from session, get appropriate datamartId
       $scope.datamartId = 8;

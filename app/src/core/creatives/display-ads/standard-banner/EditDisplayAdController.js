@@ -14,21 +14,24 @@
 
   var module = angular.module('core/creatives/display-ads/standard-banner');
                      
-  module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
+  //module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
 
+  module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
+    
     '$scope', '$log', '$location', '$routeParams', 'core/creatives/DisplayAdService',
 
     function ($scope, $log, $location, $routeParams, DisplayAdService) {
 
+      /*
       var creativeId = $routeParams.creative_id;
 
 
       function initView() {
         $scope.display_ad = DisplayAdService.getDisplayAdValue();
       }
-
+      
       $log.debug('Expert.EditDisplayAdController called !');
-
+      */
       /*
 
       if (!DisplayAdService.isInitialized() || DisplayAdService.getDisplayAdId() !== creativeId) {
@@ -48,16 +51,12 @@
         initView();
       }
       */
-
+      /*
       DisplayAdService.initEditDisplayAd(creativeId).then(function () {
           initView();
           DisplayAdService.loadProperties();
         });
 
-
-      /*
-       * Display Ad Edition
-       */
 
       // save button
       $scope.save = function () {
@@ -73,7 +72,7 @@
         $location.path('/creatives');
 
       };
-
+    */
 
     }
   ]);

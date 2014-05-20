@@ -8,7 +8,7 @@
     '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common',
     function($scope, $routeParams, Restangular, Common) {
 
-      $scope.categoryUrl = '#' + Common.locations.all[2].href;
+      $scope.categoryUrl = '#/datamart/categories' ;
 
       // pass datamartId from other controller
       var datasheets = Restangular.one('datamarts', 8).one('datasheets', $routeParams.itemId);

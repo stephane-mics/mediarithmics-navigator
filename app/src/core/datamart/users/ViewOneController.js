@@ -14,8 +14,8 @@
       // TODO: get organisationId from session, get appropriate datamartId
       $scope.datamartId = 8;
 
-      $scope.agentUrl = Common.locations.all[3].href + "/" + $routeParams.userId + "/agents";
-      $scope.itemUrl = "#" + Common.locations.all[1].href + "/";
+      $scope.agentUrl = "#/datamart/users/" + $routeParams.userId + "/agents";
+      $scope.itemUrl = "#datamart/items/";
 
       // fetch UserAccount
       $scope.activities = [];

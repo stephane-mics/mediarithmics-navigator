@@ -2,8 +2,10 @@
 
   'use strict';
 
-  angular.module('core/creatives/display-ads/standard-banner', [
+  var module = angular.module('core/creatives/display-ads/standard-banner', [
     'restangular'
   ]);
+
+  //console.debug(module);
 
 })();
