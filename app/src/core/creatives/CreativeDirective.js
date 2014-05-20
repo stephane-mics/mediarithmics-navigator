@@ -2,7 +2,8 @@
   'use strict';
 
 
-  var module = angular.module('core/creative');
+  var module = angular.module('core/creatives');
+  
   module.directive('creativeThumbnail', [
     "Restangular",
     function (Restangular) {

@@ -16,17 +16,19 @@
       <ul class="nav navbar-nav ">
         <li><a href="#audience">Audience</a></li>
         <li><a href="#display-campaigns">Campaigns</a></li>
-        <li><a href="#creatives">Library</a></li>
+        <li><a href="#creatives">Creatives</a></li>
+        <!-- <li><a href="#creatives">Library</a></li> -->
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{currentOrganisation}}<b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle mcs-workspace-label" data-toggle="dropdown">{{currentOrganisation}}<b class="caret"></b></a>
               <ul class="dropdown-menu">
                   <li ng-repeat="workspace in workspaces"><a ng-click="switchWorkspace(workspace.idx)">{{workspace.organisationName}}</a></li>
               </ul>
           </li>
 
+          <!--
           <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings<b class="caret"></b></a>
               <ul class="dropdown-menu">
@@ -34,7 +36,7 @@
                   <li><a >Setting 2</a></li>
               </ul>
           </li>
-
+          -->
 
         <li><a href="#logout">Logout</a></li>
       </ul>

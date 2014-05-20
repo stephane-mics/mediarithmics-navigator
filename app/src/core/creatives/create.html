@@ -1,0 +1,26 @@
+
+<!--creative creation -->
+<h1>New Creative </h1>
+<div class="container-fluid" class="col-md-10" ng-controller="core/creatives/CreateController">
+
+<form class="mcs-full-page-form" role="form">
+	<div class="row">
+    	
+    	<div class="col-md-3" > 
+    		<img style="" src="">
+    		<h4>Quick Ad Banner</h4>
+    		<button class="mics-btn mics-btn-add" ng-click="create('com.mediarithmics.creatives.displayads.quick')">New</a>
+    	</div>
+
+    	<div  class="col-md-3" >
+    		<img style="" src="">
+    		<h4>Ad Banner with Options</h4>
+			   <button class="mics-btn mics-btn-add" ng-click="create('com.mediarithmics.creatives.displayads.banner')">New</button>
+    	</div>
+	      
+	 </div>
+  	 <div class="mcs-actions-group" style="margin-top:70px">
+  		<button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button><br>
+  	 </div>	
+  	</form>
+</div>

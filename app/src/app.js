@@ -22,6 +22,7 @@
     'core/adgroups',
     'core/usergroups',
     'core/campaigns',
+    'core/creatives',
     'core/datamart',
     'core/login',
     'core/common',
@@ -104,10 +105,6 @@
       .when('/home', {
         redirectTo: '/display-campaigns'
       })
-      .when('/display-campaigns/select-campaign-template', {
-        templateUrl: 'src/core/campaigns/create.html'
-      })
-
       .when('/route-not-found', {
       });
 

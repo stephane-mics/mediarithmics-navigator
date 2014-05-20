@@ -24,10 +24,9 @@
 
       var locations = {};
       locations.all = [
-        { href: '/datamart/overview', name: 'Overview' },
-        { href: '/datamart/items', name: 'Items' },
+        { href: '/datamart/users', name: 'Users'},      
         { href: '/datamart/categories/', name: 'Categories'},
-        { href: '/datamart/users', name: 'Users'}
+        { href: '/datamart/items', name: 'Items' }
       ];
 
       locations.isCurrent = function(location) {

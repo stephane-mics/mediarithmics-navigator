@@ -3,7 +3,7 @@
   'use strict';
 
   var module = angular.module('core/campaigns', [
-    'core/creative',
+    'core/creatives',
     'core/campaigns/expert',
     'core/campaigns/keywords',
     'core/campaigns/report',
@@ -14,6 +14,10 @@
     "$routeProvider",
     function ($routeProvider) {
       $routeProvider
+        .when('/display-campaigns/select-campaign-template', {
+          templateUrl:'src/core/campaigns/create.html',
+          topbar : false
+        })      
         .when('/display-campaigns/expert/edit/:campaign_id', {
           templateUrl:'src/core/campaigns/expert/edit-campaign.html',
           topbar : false
