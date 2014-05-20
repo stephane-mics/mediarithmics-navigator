@@ -6,8 +6,8 @@
   <form role="form" class="mcs-default-content mcs-full-page-form">
     <!-- Ad Group edition form -->
     <div class="mcs-default-heading">
-    <h3>Editing Ad Group</h3>
-    <h4>for {{campaignName}} Campaign</h4>
+      <h3>Editing Ad Group</h3>
+      <h4>for {{campaignName}} Campaign</h4>
     </div>
     <!-- Name -->
     <div mcs-form-group="" label-for="name" label-text="Ad Group Name">
@@ -34,44 +34,31 @@
       </thead>
       <tbody>
       <tr ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative with rendererProperties">
-
-          <!-- <td mics-asset-thumbnail asset="creative"></td> -->
-
-          <td>
-
-            <div class="thumbnail">
-
-
-              <img creative-thumbnail="creative.id"/>
-
-              <div class="caption">
-                {{creative.format}}
-              </div>
+        <!-- <td mics-asset-thumbnail asset="creative"></td> -->
+        <td>
+          <div class="thumbnail">
+            <img creative-thumbnail="creative.id"/>
+            <div class="caption">
+              {{creative.format}}
             </div>
-
-          </td>
-
+          </div>
+        </td>
         <td>
           {{creative.name}}
         </td>
         <td>
-            {{creativeProperties["destination_url"] | rendererProperty }}
+          {{creativeProperties["destination_url"] | rendererProperty }}
         </td>
         <td>
           {{creative.creation_date|date:'shortDate'}}
         </td>
 
-          <td class="actions">
-            <button class="mics-btn mics-btn-delete" ng-click="deleteAd(ad.id)">Delete</button>
-          </td>
-
-
-        </tr>
-
-
-        </tbody>
-      </table>
-    </div>
+        <td class="actions">
+          <button class="mics-btn mics-btn-delete" ng-click="deleteAd(ad.id)">Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
     <h4>Visitor Groups</h4>
     <div class="mcs-form-group">
@@ -117,7 +104,6 @@
       <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
 
-  </div>
 
-</form>
+  </form>
 </div>
