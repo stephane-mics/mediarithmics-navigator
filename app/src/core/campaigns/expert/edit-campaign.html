@@ -1,11 +1,11 @@
 <!-- campaign edition form -->
 
-<div class="mcs-default-container" ng-Controller="core/campaigns/expert/EditCampaignController">
+<div class="mcs-default-container edit-campaign-expert" ng-Controller="core/campaigns/expert/EditCampaignController">
   <div class="mcs-default-sidebar">
   </div>
   <form role="form" class="mcs-default-content mcs-full-page-form">
     <div class="mcs-default-heading">
-      <h3>Campaign</h3>
+      <h1>Campaign</h1>
     </div>
 
     <!--<div class="form-group">-->
@@ -90,23 +90,19 @@
 
           </h4>
         </div>
-        <div class="panel-body">
+        <div class="panel-body display-network-list">
           <div class="form-inline" >
             <div class="form-group">
               <select class="form-control" ng-model="displayNetwork" ng-options="source.display_network_name for source in availableInventorySources|orderBy:'display_network_name'|filter:isInInventorySources">
-
+                <option value="">Please choose a display network</option>
               </select>
 
             </div>
             <a class="mics-btn mics-btn-add" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
           </div>
           <div class="well">
-            <span class="label label-default" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
+            <span class="label label-default selected-display-network" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
           </div>
-
-
-
-
 
         </div>
       </div>
