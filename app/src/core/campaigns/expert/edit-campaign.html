@@ -17,8 +17,16 @@
     </div>
 
     <!-- Weekly budget -->
-    <div mcs-form-group="number" label-for="weekly_budget" label-text="Weekly budget">
-      <input ng-model="campaign.max_daily_budget" type="text" class="form-control "  format="L"   id="weekly_budget" />
+    <div mcs-form-group="number" label-for="max_budget_per_period" label-text="Budget">
+      <div class="form-inline">
+      <input ng-model="campaign.max_budget_per_period" type="text" class="form-control "  format="L"   id="max_budget_per_period" />
+      &euro; per
+      <select ng-model="campaign.max_budget_period">
+        <option value="DAY">day</option>
+        <option value="WEEK">week</option>
+        <option value="MONTH">month</option>
+      </select>
+    </div>
     </div>
 
     <div mcs-form-group="number" label-for="total-budget" label-text="Total budget">

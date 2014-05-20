@@ -5,12 +5,16 @@
   'use strict';
 
   function ReportWrapper(report) {
+    var self = this;
     this.getMetrics = function () {
       return _.filter(report.columns_headers, isMetrics);
     };
     this.getRow = _.memoize(function (id) {
       id = parseInt(id);
       var row = _.select(report.rows, function(r) {return r[0] === id;})[0];
+      return self.decorate(row);
+    });
+    this.decorate = _.memoize(function (row) {
       if (row === undefined) {
         return _.map(new Array(this.getMetrics().length), function () {return 0; });
       } else {
@@ -28,6 +32,11 @@
     this.getMetricType = function (index) {
       return tableHeaders[this.getMetrics()[index]].type;
     };
+
+    this.getRows = function () {
+      return report.rows;
+    };
+
   }
 
 //  function Report(report) {
@@ -41,16 +50,18 @@
 
 
   var isMetrics = function (e) {
-    return !(/name|id|day/).test(e);
+    return !(/name|id|day|site/).test(e);
   };
   var notMetrics = function (e) {
-    return (/name|id|day/).test(e);
+    return (/name|id|day|site/).test(e);
   };
 
   var tableHeaders = {
     "creative_id": {name:"Id"},
     "adgroup_id": {name:"Id"},
     "ad_id": {name:"Id"},
+    "site": {name:"Site"},
+    "display_network": {name:"Display Network"},
     "adgroup_name": {name:"Ad Group Name"},
     "day": {name:"Date"},
     "cost_impressions": {name:"Spend", type:"currency"},
@@ -65,8 +76,8 @@
 
   var module = angular.module('core/campaigns/report');
   module.factory('CampaignAnalyticsReportService',
-    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration',
-      function ($resource, Session, AuthenticationService, configuration) {
+    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment',
+      function ($resource, Session, AuthenticationService, configuration,moment ) {
         var displayCampaignResource = $resource(
           configuration.WS_URL + "/reports/display_campaign_performance_report",
           {},
@@ -101,14 +112,31 @@
           }
           }
         );
+        var mediaResource = $resource(configuration.WS_URL + "/reports/media_performance_report",
+          {},
+          {get: {
+            method: 'GET',
+            headers: { 'Authorization': AuthenticationService.getAccessToken() }
+          }
+          }
+        );
+        var range = {startDate: moment().subtract('days', 20), endDate: moment()};
+
+        var startDate = function () {
+          return moment(range.startDate).startOf('day');
+        };
+        var endDate = function () {
+          return moment(range.endDate).add(1, 'day').startOf('day');
+        };
+
 
 
         var ReportService = {
-          'creativePerformance': function (startDate, endDate, campaignId) {
+          'creativePerformance': function (campaignId) {
             return  creativeResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
-              start_date: startDate.format('YYYY-MM-D'),
-              end_date: endDate.format('YYYY-MM-D'),
+              start_date: startDate().format('YYYY-MM-D'),
+              end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
@@ -117,11 +145,11 @@
               });
 
           },
-          'adGroupPerformance': function (startDate, endDate, campaignId) {
+          'adGroupPerformance': function (campaignId) {
             return  adGroupResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
-              start_date: startDate.format('YYYY-MM-D'),
-              end_date: endDate.format('YYYY-MM-D'),
+              start_date: startDate().format('YYYY-MM-D'),
+              end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
@@ -130,11 +158,11 @@
               });
 
           },
-          'adPerformance': function (startDate, endDate, campaignId) {
+          'adPerformance': function (campaignId) {
             return  adResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
-              start_date: startDate.format('YYYY-MM-D'),
-              end_date: endDate.format('YYYY-MM-D'),
+              start_date: startDate().format('YYYY-MM-D'),
+              end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
               metrics: "impressions,clicks,cpm,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
@@ -143,11 +171,24 @@
               });
 
           },
-          'kpi': function (startDate, endDate, campaignId) {
+          'mediaPerformance': function (campaignId) {
+            return  mediaResource.get({
+              organisation_id: Session.getCurrentWorkspace().organisation_id,
+              start_date: startDate().format('YYYY-MM-D'),
+              end_date: endDate().format('YYYY-MM-D'),
+              dimension: "",
+              metrics: "impressions,clicks,cpm,cpc,cost_impressions",
+              filters: "campaign_id==" + campaignId
+            }).$promise.then(function (response) {
+                return new ReportWrapper(response.report_view);
+              });
+
+          },
+          'kpi': function (campaignId) {
             return  displayCampaignResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
-              start_date: startDate.format('YYYY-MM-D'),
-              end_date: endDate.format('YYYY-MM-D'),
+              start_date: startDate().format('YYYY-MM-D'),
+              end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
               metrics: "impressions,clicks,cpm,cpc,cost_impressions,ctr",
               filters: "campaign_id==" + campaignId
@@ -171,11 +212,11 @@
               });
 
           },
-          'allCampaigns': function (startDate, endDate, organisation_id) {
+          'allCampaigns': function (organisation_id) {
             return  displayCampaignResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
-              start_date: startDate.format('YYYY-MM-D'),
-              end_date: endDate.format('YYYY-MM-D'),
+              start_date: startDate().format('YYYY-MM-D'),
+              end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
               metrics: "impressions,clicks,cpm,cpc,cost_impressions,ctr",
               filters: "organisation==" + organisation_id
@@ -185,19 +226,25 @@
               });
 
           },
-          'dayPerformance': function (startDate, endDate, campaignId, leftMetric, rightMetric) {
-            startDate =  startDate.startOf('day');
-            endDate = endDate.add(1, 'day').startOf('day');
+          'getDateRange': function () {
+            return range;
+          },
+          'setDateRange': function (newRange) {
+            range = newRange;
+          },
+          'getStartDate': function () {return startDate();},
+          'getEndDate': function () {return endDate();},
+          'dayPerformance': function (campaignId, leftMetric, rightMetric) {
             var mapStatsToNvd3 = function (response) {
               var report =new ReportWrapper(response.report_view);
 
-              var test = report.getRow(startDate.valueOf());
+              var test = report.getRow(startDate().valueOf());
               var y1 = [], y2 = [];
 
 
 
-              var dateIter = startDate;
-              while (dateIter.isBefore(endDate)) {
+              var dateIter = startDate();
+              while (dateIter.isBefore(endDate())) {
                 var row = report.getRow(dateIter.valueOf());
                 if(row[1] === 0) {
                   y1.push({x: dateIter.valueOf(), y: 0 });
@@ -238,8 +285,8 @@
 
             return  displayCampaignResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
-              start_date: startDate.format('YYYY-MM-D'),
-              end_date: endDate.format('YYYY-MM-D'),
+              start_date: startDate().format('YYYY-MM-D'),
+              end_date: endDate().format('YYYY-MM-D'),
               dimension: "day",
               metrics: leftMetric + "," + rightMetric,
               filters: "campaign_id==" + campaignId

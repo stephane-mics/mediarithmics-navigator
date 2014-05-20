@@ -18,23 +18,25 @@
     <!-- Weekly budget -->
     <div mcs-form-group="number" label-for="keywords_step1_budget" label-text="Weekly budget (20&euro; min.)">
       <div class="input-group">
-        <input required ng-model="campaign.weekly_budget" type="number" min="20" id="keywords_step1_budget">
+        <input required ng-model="campaign.max_budget_per_period" type="number" min="20" id="keywords_step1_budget">
           <span class="input-group-addon">&euro;</span>
         </div>
     </div>
 
     <!-- Schedule -->
     <div mcs-form-group="select" label-for="keywords_step1_schedule" label-text="Schedule">
-        <select required ng-model="campaign.schedule" id="keywords_step1_schedule">
-          <option value="ongoing">Ongoing (no end date)</option>
+      <!-- TODO activate -->
+        <select ng-model="schedule" id="keywords_step1_schedule">
+          <option value="">Ongoing (no end date)</option>
           <!-- <option></option> -->
         </select>
     </div>
 
     <!-- Location -->
     <div mcs-form-group="select" label-for="keywords_step1_location" label-text="Location">
-        <select required ng-model="campaign.location"  id="keywords_step1_location">
-          <option value="worlwide">Worldwide</option>
+      <!-- TODO activate -->
+        <select ng-model="location"  id="keywords_step1_location">
+          <option value="">Worldwide</option>
           <!-- <option></option> -->
         </select>
     </div>

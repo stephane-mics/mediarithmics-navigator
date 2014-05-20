@@ -12,9 +12,9 @@
     function($scope, $log, Restangular, Session) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
 
-      $scope.keywordsList = $scope.keywordsList || {
-        expressionList : []
-      };
+      // $scope.keywordsList = $scope.keywordsList || {
+        // expressionList : []
+      // };
 
       $scope.newKeywordExpression = {
         content : "",
