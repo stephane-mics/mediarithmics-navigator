@@ -1,27 +1,30 @@
 
 <!--display campaign creation -->
-<h1>New Campaign </h1>
-<div class="container-fluid" class="col-md-10" ng-controller="core/campaigns/CreateController">
+<div class="mcs-default-container" ng-Controller="core/campaigns/CreateController">
+  <div class="mcs-default-sidebar">
+  </div>
+  <form role="form" class="mcs-default-content mcs-full-page-form">
+    <div class="campaign-list-heading">
+      <h1>New Campaign </h1>
+    </div>
+    <div class="row">
 
-<form class="mcs-full-page-form" role="form">
-	<div class="row">
-    	
-    	<div class="col-md-3" > 
-    		<img style="height:150px" src="/images/plugins/keywords-targeting-small.png">
-    		<h4>Keywords Targeting</h4>
-    		<a class="mics-btn mics-btn-add" href="#/display-campaigns/campaign/keywords">New</a>
-    	</div>
+      <div class="col-md-3" >
+        <img style="height:150px" src="/images/plugins/keywords-targeting-small.png">
+        <h4>Keywords Targeting</h4>
+        <a class="mics-btn mics-btn-add" href="#/display-campaigns/campaign/keywords">New</a>
+      </div>
 
-    	<div  class="col-md-3" >
-    		<img style="height:150px" src="/images/plugins/multi-targeting-small.png">
-    		<h4>Multi Targeting</h4>
-			<button class="mics-btn mics-btn-add" ng-click="create('com.mediarithmics.expert')">New</button>
-    	</div>
-	      
-	     <!-- <button class="btn btn-default" ng-click="create('com.mediarithmics.keywords')">Template Keywords Targeting</button> -->
-	 </div>
-  	 <div class="mcs-actions-group" style="margin-top:70px">
-  		<button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button><br>
-  	 </div>	
-  	</form>
+      <div  class="col-md-3" >
+        <img style="height:150px" src="/images/plugins/multi-targeting-small.png">
+        <h4>Multi Targeting</h4>
+        <button class="mics-btn mics-btn-add" ng-click="create('com.mediarithmics.expert')">New</button>
+      </div>
+
+      <!-- <button class="btn btn-default" ng-click="create('com.mediarithmics.keywords')">Template Keywords Targeting</button> -->
+    </div>
+    <div class="mcs-actions-group" style="margin-top:70px">
+      <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button><br>
+    </div>
+  </form>
 </div>
