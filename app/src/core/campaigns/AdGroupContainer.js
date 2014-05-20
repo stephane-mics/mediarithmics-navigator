@@ -154,11 +154,11 @@
        * @param {Function} callback the function(err, res) to call.
        */
       function bindPromiseCallback(promise, callback) {
-          promise.then(function (res) {
-            callback(null, res);
-          }, function(err) {
-            callback(err, null);
-          });
+        promise.then(function (res) {
+          callback(null, res);
+        }, function(err) {
+          callback(err, null);
+        });
       }
 
       /**
