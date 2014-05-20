@@ -99,7 +99,11 @@
       // back button
       $scope.cancel = function () {
         DisplayCampaignService.reset();
-        $location.path('/display-campaigns/report/' + $scope.campaign.id + '/basic');
+        if ($scope.campaign && $scope.campaign.id) {
+          $location.path('/display-campaigns/report/' + $scope.campaign.id + '/basic');
+        } else {
+          $location.path('/display-campaigns');
+        }
 
       };
 

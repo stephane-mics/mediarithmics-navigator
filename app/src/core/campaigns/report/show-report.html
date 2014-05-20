@@ -1,11 +1,11 @@
-<div class="campaign-report" ng-Controller="core/campaigns/report/BasicReportCampaignController">
-    <div class="report-sidebar">
+<div class="mcs-default-container campaign-report" ng-Controller="core/campaigns/report/BasicReportCampaignController">
+    <div class="mcs-default-sidebar report-sidebar">
       <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign)" >Edit Campaign</a>
     </div>
-    <div class="report">
+    <div class="report mcs-default-content">
         <div class="campaign-heading">
 
-            <h2 class="">{{campaign.name}}
+            <h2 class="">{{campaign.name}}&nbsp;
               <div class="campaign-status campaign-status-{{campaign.status}}">
                   <button data-toggle="dropdown" class="campaign-status-state">
                       <span></span>

@@ -1,10 +1,12 @@
 <!-- campaign edition form -->
-<h3>Campaign</h3>
 
-<div class="mcs-default-container" ng-Controller="core/campaigns/expert/EditCampaignController">
+<div class="mcs-default-container edit-campaign-expert" ng-Controller="core/campaigns/expert/EditCampaignController">
   <div class="mcs-default-sidebar">
   </div>
   <form role="form" class="mcs-default-content mcs-full-page-form">
+    <div class="mcs-default-heading">
+      <h1>Campaign</h1>
+    </div>
 
     <!--<div class="form-group">-->
     <!--<label>Id</label>-->
@@ -17,7 +19,7 @@
     </div>
 
     <!-- Weekly budget -->
-    <div mcs-form-group="number" label-for="max_budget_per_period" label-text="Budget">
+    <div mcs-form-group="" label-for="max_budget_per_period" label-text="Budget">
       <div class="form-inline">
       <input ng-model="campaign.max_budget_per_period" type="text" class="form-control "  format="L"   id="max_budget_per_period" />
       &euro; per
@@ -88,23 +90,19 @@
 
           </h4>
         </div>
-        <div class="panel-body">
+        <div class="panel-body display-network-list">
           <div class="form-inline" >
             <div class="form-group">
               <select class="form-control" ng-model="displayNetwork" ng-options="source.display_network_name for source in availableInventorySources|orderBy:'display_network_name'|filter:isInInventorySources">
-
+                <option value="">Please choose a display network</option>
               </select>
 
             </div>
             <a class="mics-btn mics-btn-add" ng-click="addDisplayNetwork(displayNetwork)">Add Display network</a>
           </div>
           <div class="well">
-            <span class="label label-default" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
+            <span class="label label-default selected-display-network" ng-repeat="source in inventorySources|orderBy:'display_network_name'">{{source.display_network_name}}</span>
           </div>
-
-
-
-
 
         </div>
       </div>
