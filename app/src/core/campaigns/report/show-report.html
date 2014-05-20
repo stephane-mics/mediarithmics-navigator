@@ -139,7 +139,7 @@
                             <thead>
 
                             <tr>
-                                <th>Status</th>
+                                <!--<th>Status</th>-->
                                 <th>Adgroup name</th>
                                 <th class="metrics" ng-repeat="header in adGroupPerformance.getMetrics()">
                                     {{ adPerformance.getMetricName(header) }}
@@ -149,7 +149,7 @@
                             <tbody>
 
                             <tr ng-repeat="row in adgroups">
-                                <td>{{row.status}}</td>
+                                <!--<td>{{row.status}}</td>-->
                                 <td>{{row.name}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index" >
@@ -188,7 +188,7 @@
                             <tbody>
 
                             <tr ng-repeat="row in mediaPerformance.getRows()">
-                                <td>{{row[0]}}</td>
+                                <td>{{row[0] | website }}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in  mediaPerformance.decorate(row) track by $index">
                                         <span ng-if="metricValue.type == 'currency'">
