@@ -21,11 +21,11 @@
       }
 
       Restangular.all('creatives').getList(params).then(function (creatives) {
-        $scope.creatives = creatives;      
+        $scope.creatives = creatives;
       });
 
       $scope.newCreative = function () {
-        $log.debug("> newCreative ")
+        $log.debug("> newCreative ");
         $location.path('/creatives/select-creative-template');
       };
 

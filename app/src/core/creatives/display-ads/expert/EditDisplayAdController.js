@@ -48,7 +48,7 @@
 
       // save button
       $scope.save = function () {
-        $log.debug("save display ad : ", $scope.display_ad;
+        $log.debug("save display ad : ", $scope.display_ad);
         DisplayAdService.save().then(function (displayAdContainer) {
           $location.path('/creatives');
         });

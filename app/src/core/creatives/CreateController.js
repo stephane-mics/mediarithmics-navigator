@@ -21,11 +21,13 @@
         var createTemplateView = '/display-campaigns/expert/edit-campaign/';
         var organisationId = Session.getCurrentWorkspace().organisation_id;
 
+       /* 
         DisplayCampaignService.initCreateCampaign(template, organisationId).then(function(campaignId){
           $log.debug("campaign init , campaign_id = ", campaignId);
           $location.path(createTemplateView + campaignId);
         });
-
+        */
+        
       };
 
       $scope.cancel = function() {

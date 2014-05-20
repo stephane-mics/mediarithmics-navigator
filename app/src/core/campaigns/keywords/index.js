@@ -4,7 +4,7 @@
 
   var module = angular.module('core/campaigns/keywords', [
     'core/campaigns',
-    'core/creative',
+    'core/creatives',
     'core/adgroups',
     'restangular'
   ]);

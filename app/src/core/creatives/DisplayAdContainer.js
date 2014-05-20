@@ -7,9 +7,8 @@
    */
 
   module.factory("core/creatives/DisplayAdContainer", [
-    "$q", "Restangular", "core/common/IdGenerator", "async", 
-    function($q, Restangular, IdGenerator, async) {
-
+    "$q", "Restangular", "core/common/IdGenerator", "async", "PropertyContainer",
+    function($q, Restangular, IdGenerator, async, PropertyContainer) {
 
       var DisplayAdContainer = function DisplayAdContainer() {
 
@@ -140,14 +139,14 @@
               });
 
 
-          }, function(err, results){
+            }, function(err, results) {
 
-            if (err) {
-              defered.reject(err);
-            } else {
-              defered.resolve(self);
-            }
-          });
+              if (err) {
+                defered.reject(err);
+              } else {
+                defered.resolve(self);
+              }
+            });
 
 
         }, function(reason) {

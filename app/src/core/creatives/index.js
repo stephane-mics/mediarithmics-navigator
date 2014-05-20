@@ -3,8 +3,8 @@
 
   /* Services */
   var module = angular.module('core/creatives',[
-  	'restangular'
-  	]);
+    'restangular'
+  ]);
 
 
   module.config([
@@ -12,7 +12,7 @@
     function ($routeProvider) {
       $routeProvider
 
-      	// list creatives 
+        // list creatives 
         .when('/creatives', {
           templateUrl: 'src/core/creatives/list.html'
         })
@@ -21,7 +21,7 @@
         .when('/creatives/select-creative-template', {
           templateUrl:'src/core/creatives/create.html',
           topbar : false
-        })      
+        })
 
         // Display Ads Templates
         // expert template

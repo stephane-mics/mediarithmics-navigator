@@ -24,7 +24,7 @@
 
       var locations = {};
       locations.all = [
-        { href: '/datamart/users', name: 'Users'},      
+        { href: '/datamart/users', name: 'Users'},
         { href: '/datamart/categories/', name: 'Categories'},
         { href: '/datamart/items', name: 'Items' }
       ];

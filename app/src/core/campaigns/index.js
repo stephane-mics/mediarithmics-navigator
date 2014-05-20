@@ -17,7 +17,7 @@
         .when('/display-campaigns/select-campaign-template', {
           templateUrl:'src/core/campaigns/create.html',
           topbar : false
-        })      
+        })
         .when('/display-campaigns/expert/edit/:campaign_id', {
           templateUrl:'src/core/campaigns/expert/edit-campaign.html',
           topbar : false
