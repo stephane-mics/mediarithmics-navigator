@@ -14,6 +14,7 @@ $mcs-light-blue-not: #fff;
 $mcs-green: #00ad68;
 $mcs-green-not: #fff;
 $mcs-orange: #FE8F10;
+$mcs-orange-not: #fff;
 $mcs-light-grey: #E6E6E6;
 
 
@@ -28,6 +29,7 @@ $breadcrumb-padding-horizontal: 0;
 
 $text-color: $dark-blue;
 $input-border: $mcs-light-blue;
+$dropdown-link-color: $dark-blue;
 
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
@@ -42,6 +44,11 @@ $border-radius-force-round: 100px;
 
 @import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
 
+.mcs-app .daterangepicker {
+  .calendar-date, td, th, .ranges .input-mini {
+    border-radius: 0;
+  }
+}
 
 /*
  * Common styles
@@ -66,10 +73,6 @@ a, *[ng-click] {
       font-weight: bold;
     }
  }
-
-.mcs-top-navbar li a:hover {
-    color: $dark-blue-not !important;
-}
 
 .navbar {
 
@@ -136,6 +139,10 @@ a, *[ng-click] {
     border-color: $background;
   }
 
+  .dropdown.open & {
+    background-color: $background;
+    border-color: $background;
+  }
 }
 
 .mics-btn {
@@ -192,6 +199,10 @@ a, *[ng-click] {
   }
 }
 
+input[type=daterange] {
+  margin-right: 5px;
+}
+
 /*
  * Sign-in
  */
@@ -222,12 +233,12 @@ a, *[ng-click] {
 .breadcrumb {
   color : $breadcrumb-color; /* not just the separator */
   background-color: transparent;
- 
+
   font-size: $font-size-large;
   line-height: 30px; /* TODO use sass variables */
-  border-top: 1px solid $mcs-light-grey;
+  /* border-top: 1px solid $mcs-light-grey; */
   li {
-    margin-right: 10px;
+    margin-right: 25px;
   }
 }
 .breadcrumb > .active {
@@ -246,9 +257,16 @@ form.mcs-full-page-form {
   }
   .mcs-form-group {
     @extend .form-group;
+    margin-bottom: 40px;
+
+    label {
+      font-weight: normal;
+    }
 
     input, select {
       @extend .form-control;
+      font-weight: bold;
+      color: $dark-blue;
 
       /* force input variations */
       &.input-lg {
@@ -305,6 +323,17 @@ form.mcs-full-page-form {
   &.negative-keywords-expressions > div {
     color: $mcs-red-not;
     background-color: $mcs-red;
+  }
+}
+
+.dropdown-toggle.mics-btn-add {
+  & + ul.dropdown-menu {
+    padding:0;
+
+    li > a:hover, li > a:focus {
+      background-color: $mcs-orange;
+      color: $mcs-orange-not;
+    }
   }
 }
 
@@ -371,9 +400,12 @@ form.mcs-full-page-form {
 
 
 .mcs-default-sidebar {
-  /* @extend .sidebar; */
-  @include make-md-column(2);
-  @include make-md-column-push(10);
+  /* override right and width to the good values but keep the overall behavior */
+  @include make-md-column(3);
+  width:20% !important;
+  @include make-md-column-push(9);
+  /* right: 20% !important; */
+  left: 80% !important;
   ul {
     @extend .nav;
     @extend .nav-pills;
@@ -383,7 +415,9 @@ form.mcs-full-page-form {
 }
 
 .sidebar-placeholder {
-  @include make-md-column(2);
+  /* override right and width to the good values but keep the overall behavior */
+  @include make-md-column(3);
+  width:20% !important;
   background-color: $mcs-light-grey;
 
   position: fixed;
@@ -393,9 +427,11 @@ form.mcs-full-page-form {
 }
 
 .mcs-default-content {
-
-        @include make-md-column-pull(2);
-        @include make-md-column(10);
+  /* override right and width to the good values but keep the overall behavior */
+  @include make-md-column-pull(3);
+  right: 20% !important;
+  @include make-md-column(9, 100px);
+  width:80% !important;
 }
 
 .mcs-default-heading {
@@ -453,22 +489,18 @@ form.mcs-full-page-form {
 
 
 .campaign-report {
-    @extend .mcs-default-container;
     .report-top-tab {
         .organisation-name {
             @include make-md-column(12)
         }
     }
     .report-sidebar {
-        @extend .mcs-default-sidebar;
-
         > .mics-btn {
           margin-top: $line-height-computed; /* same as h2 to align with it */
         }
     }
 
     .report {
-        @extend .mcs-default-content;
         .campaign-heading {
           @extend .mcs-default-heading;
           border-bottom: none; /* this one has no border... */
@@ -481,7 +513,7 @@ form.mcs-full-page-form {
             border-top: 1px solid $dark-blue;
             border-bottom: 1px solid $dark-blue;
             .report-type-controller {
-                @include make-md-column(8);
+                @include make-md-column(4);
                 .nav-pills {
                   .active a {
                     background-color : $dark-blue;
@@ -489,7 +521,7 @@ form.mcs-full-page-form {
                 }
             }
             .report-date-controller {
-                @include make-md-column(4);
+                @include make-md-column(8);
                 min-width: 270px;
                 input.range {
                     width: 240px;
@@ -783,7 +815,7 @@ table.datamart.table {
 form.datamart {
   .form-group label {
     color: $dark-blue;
-  }  
+  }
   input[type="search"] {
     color: $dark-blue;
     border: 1px solid $mcs-light-blue;
@@ -891,14 +923,14 @@ a.category-item {
 }
 
 /* User activity timeline */
- 
+
 .datamart-timeline {
   margin: 30px 0;
   padding: 0;
   list-style: none;
   position: relative;
 }
- 
+
 .datamart-timeline:before {
   content: '';
   position: absolute;
@@ -909,11 +941,11 @@ a.category-item {
   background: $mcs-light-grey;
   margin-left: -10px;
 }
- 
+
 .datamart-timeline > li {
   position: relative;
 }
- 
+
 .datamart-timeline > li .datamart-timeline-datetime {
   display: block;
   width: 25%;
@@ -922,7 +954,7 @@ a.category-item {
   font-size: 1em;
   color: $dark-blue;
 }
- 
+
 .datamart-timeline > li .datamart-timeline-datetime span {
   display: block;
   text-align: right;
@@ -955,7 +987,7 @@ a.category-item {
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header {
   padding: 0 0 10px 0;
 }
- 
+
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header h2 {
     margin-top: 0px;
 }
@@ -963,18 +995,18 @@ a.category-item {
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header h2 description {
   padding-left: 10px;
   color: rgba($dark-blue, 0.2);
-  visibility: hidden; 
+  visibility: hidden;
 }
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header:hover h2 description {
-  visibility: visible; 
+  visibility: visible;
 }
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-details {
   padding-top: 15px;
   border-top: 1px solid rgba(0,0,0,0.1);
 }
- 
+
 .datamart-timeline > li .datamart-timeline-content:after {
   right: 100%;
   border: solid transparent;
@@ -1036,7 +1068,7 @@ a.category-item {
   }
 
 }
- 
+
 /* User activity timeline: media query for smaller screens */
 
 @media screen and (max-width: 47.2em) {
@@ -1084,8 +1116,8 @@ a.category-item {
 .agent-filter-box {
   margin-top: 30px;
   color: $dark-blue;
-  
-  > .dropdown-menu { 
+
+  > .dropdown-menu {
     min-width: 180px;
     padding-bottom: 0;
     border-color: $mcs-light-grey;
