@@ -2,7 +2,7 @@
   'use strict';
 
 
-  var module = angular.module('core/creative');
+  var module = angular.module('core/creatives');
   module.directive('creativeThumbnail', ["Restangular", 'core/configuration',
     function (Restangular, configuration) {
 //      var CreativeRestangular = Restangular.withConfig(

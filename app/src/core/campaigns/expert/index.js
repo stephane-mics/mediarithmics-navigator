@@ -6,6 +6,7 @@
     'restangular',
     // TODO : circular deps ?
     'core/campaigns',
+    'core/creatives',
     'core/adgroups',
     'core/usergroups',
     'ui.bootstrap',
