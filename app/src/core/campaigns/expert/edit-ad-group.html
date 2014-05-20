@@ -21,20 +21,19 @@
     </div>
 
     <h4>Ads</h4>
-    <div class="mcs-form-group">
-      <div ng-include="'src/core/adgroups/choose-ads.html'"></div>
-      <table class="fragment-list-creatives list-ads" ng-show="getAds(adGroup.id).length">
-        <thead>
-          <tr>
-            <th>Size</th>
-            <th>Ad Name</th>
-            <th>Url</th>
-            <th>Created</th>
-            <th class="actions">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative">
+    <div ng-include="'src/core/adgroups/choose-ads.html'"></div>
+    <table class="fragment-list-creatives list-ads" ng-show="getAds(adGroup.id).length">
+      <thead>
+        <tr>
+          <th>Size</th>
+          <th>Ad Name</th>
+          <th>Url</th>
+          <th>Created</th>
+          <th class="actions">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative with rendererProperties">
 
           <!-- <td mics-asset-thumbnail asset="creative"></td> -->
 
@@ -52,15 +51,15 @@
 
           </td>
 
-          <td>
-            {{creative.name}}
-          </td>
-          <td>
-            {{creative.url_target}}
-          </td>
-          <td>
-            {{creative.creation_date|date:'shortDate'}}
-          </td>
+        <td>
+          {{creative.name}}
+        </td>
+        <td>
+            {{creativeProperties["destination_url"] | rendererProperty }}
+        </td>
+        <td>
+          {{creative.creation_date|date:'shortDate'}}
+        </td>
 
           <td class="actions">
             <button class="mics-btn mics-btn-delete" ng-click="deleteAd(ad.id)">Delete</button>
