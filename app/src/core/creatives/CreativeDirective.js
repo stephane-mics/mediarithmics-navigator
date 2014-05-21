@@ -54,47 +54,37 @@
 
       return {
         restrict: 'EA',
-        transclude: 'element',
-        compile: function (element, attr, linker) {
-          return function ($scope, $element, $attr) {
-            var asString = $attr.fetchCreative;
+        controller : function ($scope) {
+          this.setup = function(fetchCreative) {
+            var asString = fetchCreative;
             //ad.creative_id as creative with rendererProperties
             var match = asString.match(/^\s*(.+)\s+as\s+(.*?)\s*(with\s*(.*))?$/);
             var creativeIdExpr = match[1];
             var exposedVar = match[2];
             var withRendererProperties = match[4] === "rendererProperties";
-
-            var parent = $element.parent();
             $scope.$watch(creativeIdExpr, function (newValue, oldValue, scope) {
-              if (newValue !== undefined) {
-                var creative = Restangular.one("creatives", newValue);
-                $scope[exposedVar] = creative.get().$object;
-                if (withRendererProperties) {
-                  Restangular.one("display_ads", newValue).all("renderer_properties").getList().then(
-                    function (properties) {
-                      var result = {};
-                      for (var i = 0; i < properties.length; i++) {
-                        var p = properties[i];
-                        result[p.technical_name] = {value: p.value, property_type: p.property_type};
-                      }
-                      $scope[exposedVar + "Properties"] = result;
-                    }
-                  );
-                }
+              if (!newValue) {
+                return;
               }
-              linker($scope, function (clone) {
-                // clone the transcluded element, passing in the new scope.
-                parent.append(clone); // add to DOM
-                var block = {};
-                block.el = clone;
-                block.scope = $scope;
-//                elements.push(block);
-              });
-
+              var creative = Restangular.one("creatives", newValue);
+              $scope[exposedVar] = creative.get().$object;
+              if (withRendererProperties) {
+                Restangular.one("display_ads", newValue).all("renderer_properties").getList().then(
+                  function (properties) {
+                  var result = {};
+                  for (var i = 0; i < properties.length; i++) {
+                    var p = properties[i];
+                    result[p.technical_name] = {value: p.value, property_type: p.property_type};
+                  }
+                  $scope[exposedVar + "Properties"] = result;
+                }
+                );
+              }
             });
-
-
           };
+        },
+        link: function(scope, element, attrs, myCtrl) {
+          myCtrl.setup(attrs.fetchCreative);
         }
       };
     }
