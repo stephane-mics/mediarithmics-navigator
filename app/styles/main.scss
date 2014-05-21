@@ -16,6 +16,7 @@ $mcs-green-not: #fff;
 $mcs-orange: #FE8F10;
 $mcs-orange-not: #fff;
 $mcs-light-grey: #E6E6E6;
+$body-bg:#fff;
 
 
 $nav-tabs-active-link-hover-color: $mcs-light-blue-not;
@@ -42,7 +43,39 @@ $border-radius-small: 0px;
 $border-radius-large: 0px;
 $border-radius-force-round: 100px;
 
+
+//navbar style
+$navbar-inverse-link-active-color:$dark-blue;
+$navbar-inverse-link-active-bg: $body-bg;
+$navbar-inverse-border: $body-bg;
+$navbar-inverse-bg: $dark-blue;
+
+$navbar-inverse-color: $body-bg;
+$navbar-inverse-link-color: $body-bg;
+
+
 @import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
+
+.navbar-nav.mcs-main-nav  > li > a {
+  height: 33px;
+  margin-top: 17px;
+  padding-right: 9px;
+  padding-left: 9px;
+
+  margin-right: 11px;
+  margin-left: 11px;
+
+  padding-top: 3px;
+
+font-weight: bold;
+
+}
+
+
+
+.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+  margin-left:120px;
+}
 
 .mcs-app .daterangepicker {
   .calendar-date, td, th, .ranges .input-mini {
@@ -66,11 +99,16 @@ a, *[ng-click] {
 
 //    margin-bottom: 0px !important;
     background-color: $dark-blue;
+    border-color: white;
 
     .mcs-workspace-label {
       color :$dark-blue-not !important;
       font-size : 15px;
       font-weight: bold;
+    }
+
+    > .active > a {
+      background-color: white;
     }
  }
 

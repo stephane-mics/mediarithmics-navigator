@@ -6,8 +6,8 @@
 
   /* define the Authentication service */
   module.controller('core/layout/HeaderController', [
-    '$scope', 'core/common/auth/Session', 'core/login/constants',
-    function($scope, Session, LoginConstants) {
+    '$scope', 'core/common/auth/Session', 'core/login/constants', '$location',
+    function($scope, Session, LoginConstants, $location) {
 
       function isLoggued() {
         $scope.isLoggued = Session.isInitialized();
@@ -24,6 +24,8 @@
         $scope.workspaces = Session.getWorkspaces();
         $scope.currentOrganisation = Session.getCurrentWorkspace().organisation_name;
       }
+
+
 
       $scope.$on(LoginConstants.LOGIN_SUCCESS, isLoggued);
       $scope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);

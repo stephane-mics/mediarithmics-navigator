@@ -265,6 +265,7 @@
           topbar : true
         });
         $rootScope.sidebar = options.sidebar;
+        $rootScope.category = $location.url().match(/\/([^\/]+)\/?/)[1];
         $rootScope.topbar = options.topbar;
         if (!options.publicUrl) {
 
