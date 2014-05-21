@@ -33,9 +33,9 @@
           <tbody>
           <tr ng-repeat="availableCreative in availableCreatives | filter:creativename | filter:creativeformat">
             <td><input type="checkbox" checklist-model="selectedCreatives" checklist-value="availableCreative"></td>
-            <td>
-              {{availableCreative.format}}
-              <img ng-src="http://placekitten.com/50/50" />
+            <td class="thumbnail">
+              <img creative-thumbnail="availableCreative.id"/>
+              <span class="caption">{{availableCreative.format}}</span>
             </td>
             <td>{{availableCreative.name}}</td>
             <td>{{availableCreative.creation_date|date:'shortDate'}}</td>

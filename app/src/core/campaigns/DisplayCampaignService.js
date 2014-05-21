@@ -104,6 +104,11 @@
         return this.campaignCtn.addAdGroup();
       };
 
+      service.getAdGroup = function(id) {
+
+        return this.campaignCtn.getAdGroup(id);
+      };
+
       service.getAdGroupValue = function(id) {
 
         return Restangular.copy(this.campaignCtn.getAdGroup(id).value);
@@ -146,7 +151,12 @@
       };
 
       service.getAdValue = function(adGroupId, adId) {
-        return this.campaignCtn.getAdGroup(adGroupId).getAd(adId).value;
+        var ad = this.campaignCtn.getAdGroup(adGroupId).getAd(adId);
+        if (ad) {
+          return ad.value;
+        } else {
+          return null;
+        }
       };
 
       service.getAds = function(adGroupId) {
