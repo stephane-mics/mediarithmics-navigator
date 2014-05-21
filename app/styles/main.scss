@@ -102,7 +102,7 @@ a, *[ng-click] {
     border-color: white;
 
     .mcs-workspace-label {
-      color :$dark-blue-not !important;
+      color :$dark-blue-not;
       font-size : 15px;
       font-weight: bold;
     }
