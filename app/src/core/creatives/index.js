@@ -3,7 +3,8 @@
 
   /* Services */
   var module = angular.module('core/creatives',[
-    'restangular'
+    'restangular',
+    'core/creatives/display-ads/standard-banner'
   ]);
 
 

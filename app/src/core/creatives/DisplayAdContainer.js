@@ -28,6 +28,7 @@
         var propertiesP = root.getList('renderer_properties');
 
         var self = this;
+        self.properties = [];
 
         var defered = $q.defer();
 

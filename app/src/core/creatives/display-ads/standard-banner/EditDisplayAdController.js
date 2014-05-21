@@ -18,22 +18,19 @@
 
   module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
     
-    '$scope', '$log', '$location', '$routeParams', 'core/creatives/DisplayAdService',
+    '$scope', '$sce', '$log', '$location', '$routeParams', 'core/creatives/DisplayAdService',
 
-    function ($scope, $log, $location, $routeParams, DisplayAdService) {
+    function ($scope, $sce, $log, $location, $routeParams, DisplayAdService) {
 
-      /*
+      
       var creativeId = $routeParams.creative_id;
 
 
-      function initView() {
-        $scope.display_ad = DisplayAdService.getDisplayAdValue();
-      }
       
       $log.debug('Expert.EditDisplayAdController called !');
-      */
+      
+      
       /*
-
       if (!DisplayAdService.isInitialized() || DisplayAdService.getDisplayAdId() !== creativeId) {
 
         if (DisplayAdService.isTemporaryId(creativeId)) {
@@ -51,10 +48,14 @@
         initView();
       }
       */
-      /*
+      
       DisplayAdService.initEditDisplayAd(creativeId).then(function () {
-          initView();
-          DisplayAdService.loadProperties();
+
+          $scope.displayAd = DisplayAdService.getDisplayAdValue();
+          $scope.previewUrl = $sce.trustAsResourceUrl("http://ads.mediarithmics.com/ads/render?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
+          var sizes = $scope.displayAd.format.split("x");
+          $scope.previewWidth = parseInt(sizes[0])+10;
+          $scope.previewHeight = parseInt(sizes[1])+10;
         });
 
 
@@ -72,7 +73,7 @@
         $location.path('/creatives');
 
       };
-    */
+    
 
     }
   ]);

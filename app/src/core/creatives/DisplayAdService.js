@@ -19,7 +19,20 @@
       var idCounter = 1;
       var service = {};
 
+      service.reset = function() {
+
+        this.displayAdCtn = null;
+      };
+
+      service.getDisplayAdValue = function() {
+
+        $log.debug("> getDisplayAdValue, ctn=", this.displayAdCtn);
+        return this.displayAdCtn.value;
+      };
+
       service.initEditDisplayAd = function(creativeId) {
+
+        $log.debug("> initEditDisplayAd creativeId = ", creativeId);
 
         var ctn = new DisplayAdContainer();
         this.displayAdCtn = ctn;
