@@ -1,11 +1,11 @@
 <div ng-include src="'src/core/datamart/nav.html'" class="row-fluid"></div>
 <div ng-controller="core/datamart/users/ViewOneController" class="row-fluid">
 
-  <div class="vertically-spaced clearfix" style="margin-left:155px">
+  <div class="vertically-spaced clearfix">
 
     <!-- Account details -->
-    <div class="pull-left">
-        <table class="datamart table table-hover">
+    <div class="col-md-6 col-xs-6">
+        <table class="datamart table table-hover timeline-aligned">
         <tr ng-hide="user.first_name == null">
           <td>First name</td>
           <td><strong>{{ user.first_name }}</strong></td>
@@ -37,7 +37,7 @@
   </div>
 
   <!-- timeline -->
-  <div class="col-md-6">
+  <div class="col-md-6 col-xs-6">
     <ul class="datamart-timeline">
       <!-- timeline item -->
       <li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.visible:true} | orderBy:orderByVisitStartDate:!newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">
@@ -101,7 +101,7 @@
   </div>
 
   <!-- filter dropdown -->
-  <div class="col-md-6">
+  <div class="col-md-6 col-xs-6">
       <span class="btn-group agent-filter-box">
         <button type="button" class="mics-btn mics-btn-edit dropdown-toggle" data-toggle="dropdown">
           Screens <span class="caret"></span>

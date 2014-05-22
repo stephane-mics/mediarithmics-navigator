@@ -53,7 +53,19 @@
         locations.current = locations.all[0];
       }
 
-      return { collections: collections, locations: locations };
+      /* Language mappings */
+
+      var languageMapping = {};
+      languageMapping.mappingTable = {
+        'en': 'English',
+        'fr': 'French',
+        'es': 'Spanish'
+      };
+      languageMapping.map = function(key) {
+        return this.mappingTable.hasOwnProperty(key) ? this.mappingTable[key] : key;
+      };
+
+      return { collections: collections, locations: locations, languageMapping: languageMapping };
     }
   ]);
 

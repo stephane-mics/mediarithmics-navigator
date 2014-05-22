@@ -864,6 +864,10 @@ table.datamart.table {
   color: $dark-blue;
 }
 
+table.datamart.timeline-aligned {
+  margin-left: 25%;
+}
+
 form.datamart {
   .form-group label {
     color: $dark-blue;
@@ -1164,6 +1168,10 @@ a.category-item {
     float: right;
     left: auto;
     margin: -55px 5px 0 0px;
+  }
+
+  table.datamart.timeline-aligned {
+    margin-left: 0px;
   }
 }
 

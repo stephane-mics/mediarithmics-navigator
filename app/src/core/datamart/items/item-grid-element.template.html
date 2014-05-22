@@ -10,7 +10,7 @@
       <div>Price: <strong>{{ element.price }}</strong></div>
       <div>{{ element.description }}</div>
       <div>
-        Defined for: <strong>{{ element.market }}</strong>, <strong>{{ element.language }}</strong>
+        Defined for: <strong>{{ element.market }}</strong> in <strong>{{ languageMapping.map(element.language) }}</strong>
       </div>
     </div>
   </div>

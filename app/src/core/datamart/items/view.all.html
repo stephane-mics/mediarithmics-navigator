@@ -22,7 +22,7 @@
 
               <div class="form-group pull-left right-spaced not-bottom-spaced">
                 <label for="languageSelect">Language</label>
-                <select id="languageSelect" class="form-control" ng-model="language" ng-options="lang for lang in market.languages">
+                <select id="languageSelect" class="form-control" ng-model="language" ng-options="languageMapping.map(lang) for lang in market.languages">
                   <option value="">All</option>
                 </select>
               </div>

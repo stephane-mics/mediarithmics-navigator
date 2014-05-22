@@ -40,6 +40,9 @@
           });
       };
 
+      // add languageMapping controls
+      $scope.languageMapping = Common.languageMapping;
+
     }
   ]);
 

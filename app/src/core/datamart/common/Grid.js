@@ -4,7 +4,7 @@
 
   var module = angular.module('core/datamart');
 
-  module.directive('micsDatamartGrid', function() {
+  module.directive('micsDatamartGrid', [ 'core/datamart/common/Common', function(Common) {
     return {
       restrict: 'A',
       scope: {
@@ -91,6 +91,8 @@
           callDataRefresh();
         };
 
+        scope.languageMapping = Common.languageMapping;
+
         var callDataRefresh = function() {
           // call the provided callback with the offset and limit calculated
           scope.currentOffset = scope.currentPage * scope.elementsPerPage;
@@ -104,6 +106,6 @@
       },
       template: '<div ng-include="getTemplate()"></div>'
     };
-  });
+  }]);
 
 })();
