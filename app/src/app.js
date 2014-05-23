@@ -265,7 +265,10 @@
           topbar : true
         });
         $rootScope.sidebar = options.sidebar;
-        $rootScope.category = $location.url().match(/\/([^\/]+)\/?/)[1];
+        var urlMatch = $location.url().match(/\/([^\/]+)\/?/);
+        if (urlMatch) {
+          $rootScope.category = urlMatch[1];
+        }
         $rootScope.topbar = options.topbar;
         if (!options.publicUrl) {
 
