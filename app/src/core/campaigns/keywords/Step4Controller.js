@@ -34,7 +34,6 @@
         return DisplayCampaignService.getAds(adGroupId);
       };
 
-
       $scope.previous = function () {
         $scope.container.step = "step3";
       };

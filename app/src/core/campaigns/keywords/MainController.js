@@ -12,6 +12,8 @@
       function initView () {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
 
+        $scope.isCreationMode = DisplayCampaignService.isCreationMode();
+
         var adgroups = DisplayCampaignService.getAdGroupValues();
         if (adgroups.length !== 0) {
           $scope.adGroup = adgroups[0];
