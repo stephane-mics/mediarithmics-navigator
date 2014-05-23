@@ -8,20 +8,11 @@
       <h1>New Campaign </h1>
     </div>
     <div class="row">
-
-      <div class="col-md-3" >
-        <img style="height:150px" src="/images/plugins/keywords-targeting-small.png">
-        <h4>Keywords Targeting</h4>
-        <a class="mics-btn mics-btn-add" href="#/display-campaigns/campaign/keywords">New</a>
+      <div class="col-md-3" ng-repeat="template in campaignTemplates">
+        <img style="height:150px" ng-src="{{template.image}}">
+        <h4>{{template.name}}</h4>
+        <a class="mics-btn mics-btn-add" ng-click="create(template)">New</a>
       </div>
-
-      <div  class="col-md-3" >
-        <img style="height:150px" src="/images/plugins/multi-targeting-small.png">
-        <h4>Multi Targeting</h4>
-        <button class="mics-btn mics-btn-add" ng-click="create('com.mediarithmics.expert')">New</button>
-      </div>
-
-      <!-- <button class="btn btn-default" ng-click="create('com.mediarithmics.keywords')">Template Keywords Targeting</button> -->
     </div>
     <div class="mcs-actions-group" style="margin-top:70px">
       <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button><br>

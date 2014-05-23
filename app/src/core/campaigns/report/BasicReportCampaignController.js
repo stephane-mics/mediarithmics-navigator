@@ -77,8 +77,8 @@
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService',
-    function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService) {
+    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService',
+    function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService) {
       $scope.valTo = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
@@ -149,13 +149,10 @@
 
         $log.debug("> editCampaign for campaignId=", campaign.id);
 
-        // get campaign edit template
-        var editTemplateView = '/display-campaigns/expert/edit/';
-//        DisplayCampaignService.initEditCampaign(campaign.id).then(function () {
-        $location.path(editTemplateView + campaign.id);
-//        });
-
-
+        CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
+          var location = template.editor.edit_path.replace(/{id}/g, campaign.id);
+          $location.path(location);
+        });
       };
     }
   ]);

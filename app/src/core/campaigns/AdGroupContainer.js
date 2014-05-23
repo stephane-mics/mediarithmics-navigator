@@ -4,8 +4,8 @@
   var module = angular.module('core/campaigns');
 
   module.factory("core/campaigns/AdGroupContainer", [
-    "$q", "Restangular", "jquery", "core/common/IdGenerator", "async", "$log", 'core/common/auth/Session',
-    function ($q, Restangular, $, IdGenerator, async, $log, Session) {
+    "$q", "Restangular", "jquery", "core/common/IdGenerator", "async", "$log", 'core/common/auth/Session', 'lodash',
+    function ($q, Restangular, $, IdGenerator, async, $log, Session, _) {
       /*
        * Ad Group Container
        */
@@ -106,10 +106,15 @@
 
       AdGroupContainer.prototype.addKeywordList = function addKeywordList(keywordListSelection) {
 
-        keywordListSelection.id = IdGenerator.getId();
-        this.keywordLists.push(keywordListSelection);
+        var found = _.find(this.keywordLists, function (kw) {
+          return kw.keyword_list_id === keywordListSelection.keyword_list_id;
+        });
+        if(!found) {
+          keywordListSelection.id = IdGenerator.getId();
+          this.keywordLists.push(keywordListSelection);
+        }
 
-        return keywordListSelection.id;
+        return keywordListSelection.id || found.id;
       };
 
       AdGroupContainer.prototype.removeKeywordList = function removeKeywordList(keywordListId) {
@@ -213,26 +218,6 @@
       }
 
       /**
-       * Create a task (to be used by async.series) to create a keyword expression and bind it to a keyword list.
-       * @param {String} kwListId the id of the keyword list.
-       * @param {Object} expr the keyword expression to save.
-       * @return {Function} the task.
-       */
-      function createKeywordExpressionTask(kwListId, expr) {
-        return function (callback) {
-          $log.info("saving keyword expression", expr);
-          var promise = Restangular
-          .one('keyword_lists', kwListId)
-          .all('keyword_expressions')
-          .post({
-            expression : expr.content,
-            exclude : expr.type === "exclude"
-          });
-          bindPromiseCallback(promise, callback);
-        };
-      }
-
-      /**
        * Create a task (to be used by async.series) to save the given keywords list.
        * @param {Object} keywordList the keywords list to save.
        * @param {String} campaignId the id of the current campaign.
@@ -246,43 +231,15 @@
           var promise;
           if ((keywordList.id.indexOf('T') === -1) || (typeof(keywordList.modified) !== "undefined")) {
             // update the keyword list
-            // TODO : kw expressions
-            // promise = keywordList.put();
-            // bindPromiseCallback(promise, callback);
-            callback(null, keywordList);
+            promise = keywordList.put();
 
           } else {
             // create the keyword list
-            promise = Restangular.all('keyword_lists').post({
-              name : adGroupName,
-              list_type : "UNION"
-            }, {
-              organisation_id: Session.getCurrentWorkspace().organisation_id
-            });
-
-            promise.then(function (kwList) {
-              // create keyword expressions on the list
-              var tasks = [];
-              for(var i = 0; i < keywordList.expressionList.length; i++) {
-                var expr = keywordList.expressionList[i];
-                tasks.push(createKeywordExpressionTask(kwList.id, expr));
-              }
-
-              tasks.push(function (callback) {
-                $log.info("saving keyword list selection", kwList.id);
-                var promise = Restangular
-                .one('display_campaigns', campaignId)
-                .one('ad_groups', adGroupId)
-                .post('keyword_lists', {
-                  keyword_list_id : kwList.id
-                });
-                bindPromiseCallback(promise, callback);
-              });
-              async.series(tasks, function (err, res) {
-                callback(err, res);
-              });
-            });
+            promise = Restangular.one('display_campaigns', campaignId)
+            .one('ad_groups', adGroupId)
+            .post('keyword_lists', keywordList);
           }
+          bindPromiseCallback(promise, callback);
         };
       }
 

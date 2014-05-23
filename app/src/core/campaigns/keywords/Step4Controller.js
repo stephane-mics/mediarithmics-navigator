@@ -5,9 +5,30 @@
   var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/Step4Controller', [
-    "$scope", "$window", "lodash", "core/common/auth/Session", 'core/campaigns/DisplayCampaignService', "$log", "$location",
-    function ($scope, $window, _, Session, DisplayCampaignService, $log, $location) {
+    "$scope", "$window", "lodash", "core/common/auth/Session", 'core/campaigns/DisplayCampaignService', "$log", "$location", "$q", "Restangular", "async",
+    function ($scope, $window, _, Session, DisplayCampaignService, $log, $location, $q, Restangular, async) {
 
+      /**
+       * Bind a promise to a callback : call the callback when the promise is resolved.
+       * @param {$q} promise the angular promise
+       * @param {Function} callback the function(err, res) to call.
+       */
+      function bindPromiseCallback(promise, callback) {
+        promise.then(function (res) {
+          callback(null, res);
+        }, function(err) {
+          callback(err, null);
+        });
+      }
+
+      function handleKeywordList(campaignContainer, keywordsListContainer) {
+        keywordsListContainer.keywordList.name = campaignContainer.name;
+        return keywordsListContainer.save().then(function (kwList) {
+          DisplayCampaignService.addKeywordList($scope.adGroupId, {
+            keyword_list_id : kwList.id
+          });
+        });
+      }
 
       $scope.getAds = function (adGroupId) {
         return DisplayCampaignService.getAds(adGroupId);
@@ -33,16 +54,7 @@
       $scope.next = function () {
         var campaign = $scope.campaign;
 
-        // var adGroupId = $scope.campaign.addAdGroup();
-        // var adGroup = $scope.campaign.getAdGroup(adGroupId);
-        // adGroup.name = $scope.campaign.name;
-        // _.forEach($scope.campaign.creatives, function (creative) {
-          // adGroup.addAd({
-            // creative_id: creative.id
-          // });
-        // });
-
-        var promise = DisplayCampaignService.save();
+        var promise = handleKeywordList(campaign, $scope.keywordsList).then(_.bind(DisplayCampaignService.save, DisplayCampaignService));
 
         promise.then(function success(campaignContainer){
           $log.info("success");

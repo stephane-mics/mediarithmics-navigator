@@ -13,7 +13,7 @@
     "$routeProvider",
     function ($routeProvider) {
       $routeProvider
-      .when('/display-campaigns/campaign/keywords', {
+      .when('/display-campaigns/campaign/keywords/:campaign_id?', {
         templateUrl: 'src/core/campaigns/keywords/index.html',
         topbar : false
       });

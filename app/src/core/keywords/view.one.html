@@ -18,22 +18,22 @@
 
       <div class="row">
         <div class="form-group col-md-6">
-          <input type="text" ng-model="newKeywordExpression.content" placeholder="add new keywords" class="form-control pull-left" ui-keypress="{13:'doNothing($event)'}"/>&nbsp;
+          <input type="text" ng-model="newKeywordExpression.expression" placeholder="add new keywords" class="form-control pull-left" ui-keypress="{13:'doNothing($event)'}"/>&nbsp;
         </div>
         <a class="mics-btn mics-btn-add" ng-click="addKeywordExpression(keywordsList, newKeywordExpression)">add</a>
       </div>
       <hr>
     </div>
     <div class="keywords-expressions positive-keywords-expressions well">
-      <div ng-repeat="keywordExpression in keywordsList.expressionList | filter : positiveExpressionsFilter">
-        {{ keywordExpression.content }}
+      <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : positiveExpressionsFilter">
+        {{ keywordExpression.expression }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
       </div>
     </div>
     <hr>
     <div class="keywords-expressions negative-keywords-expressions well">
-      <div ng-repeat="keywordExpression in keywordsList.expressionList | filter : negativeExpressionsFilter">
-        {{ keywordExpression.content }}
+      <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : negativeExpressionsFilter">
+        {{ keywordExpression.expression }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
       </div>
     </div>

@@ -11,7 +11,7 @@
     function($q, Restangular, IdGenerator, async, AdGroupContainer, $log) {
 
 
-      var CampaignContainer = function CampaignContainer() {
+      var CampaignContainer = function CampaignContainer(templateGroupId, templateArtifactId) {
 
         this.creationMode = true;
 
@@ -20,7 +20,8 @@
         this.inventorySources = undefined;
         this.addedInventorySources = [];
 
-        this.value = {type:"DISPLAY", template_group_id: "com.mediarithmics.campaign.display", template_artifact_id:"default-template"};
+        this.value = {type:"DISPLAY", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
+        $log.info("CampaignContainer", this.value);
       };
 
       CampaignContainer.prototype.load = function (campaignId) {

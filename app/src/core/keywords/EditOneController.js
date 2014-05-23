@@ -8,25 +8,23 @@
   // TODO retreive and use angular.module('keywords') instead ?
 
   module.controller('core/keywords/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session',
-    function($scope, $log, Restangular, Session) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash',
+    function($scope, $log, Restangular, Session, _) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
 
-      // $scope.keywordsList = $scope.keywordsList || {
-        // expressionList : []
-      // };
+      // $scope.keywordsList is a KeywordListContainer
 
       $scope.newKeywordExpression = {
-        content : "",
+        expression : "",
         type : "include"
       };
 
       $scope.negativeExpressionsFilter = function (expression) {
-        return expression.type === "exclude";
+        return expression.exclude === true;
       };
 
       $scope.positiveExpressionsFilter = function (expression) {
-        return expression.type === "include";
+        return expression.exclude === false;
       };
 
       $scope.refreshStats = function () {
@@ -39,31 +37,13 @@
       };
 
       $scope.addKeywordExpression = function (kw, newKeywordExpression) {
-        if (!newKeywordExpression.content) {
-          return;
-        }
-
-        var found = false, current;
-        for (var i = 0; i < kw.expressionList.length; i++) {
-          current = kw.expressionList[i];
-          if (current.content === newKeywordExpression.content) {
-            found = true;
-            break;
-          }
-        }
-
-        if(!found) {
-          kw.expressionList.push({
-            content : newKeywordExpression.content,
-            type : newKeywordExpression.type
-          });
-          newKeywordExpression.content = "";
+        if (kw.addExpression(newKeywordExpression.expression, newKeywordExpression.type === "exclude")) {
+          newKeywordExpression.expression = "";
         }
       };
 
       $scope.removeKeywordExpression = function(kw, keywordExpression) {
-        var idx = kw.expressionList.indexOf(keywordExpression);
-        kw.expressionList.splice(idx, 1);
+        kw.removeExpression(keywordExpression.expression, keywordExpression.exclude);
       };
     }
   ]);
