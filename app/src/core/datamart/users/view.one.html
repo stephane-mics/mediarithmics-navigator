@@ -37,7 +37,8 @@
   </div>
 
   <!-- timeline -->
-  <div class="col-md-6 col-xs-6">
+  <div class="col-md-6 col-xs-9">    
+
     <ul class="datamart-timeline">
       <!-- timeline item -->
       <li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.visible:true} | orderBy:orderByVisitStartDate:!newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">
@@ -101,7 +102,7 @@
   </div>
 
   <!-- filter dropdown -->
-  <div class="col-md-6 col-xs-6">
+  <div class="col-md-6 col-xs-3">
       <span class="btn-group agent-filter-box">
         <button type="button" class="mics-btn mics-btn-edit dropdown-toggle" data-toggle="dropdown">
           Screens <span class="caret"></span>

@@ -862,6 +862,9 @@ table.fragment-list-user-groups {
 
 table.datamart.table {
   color: $dark-blue;
+  > tbody > tr > td:first-child {
+    min-width: 100px;
+  }
 }
 
 table.datamart.timeline-aligned {
@@ -1130,6 +1133,11 @@ a.category-item {
 /* User activity timeline: media query for smaller screens */
 
 @media screen and (max-width: 47.2em) {
+
+  .datamart-timeline {
+    margin-top: 60px;
+  }
+
   .datamart-timeline:before {
     display: none;
   }
@@ -1172,6 +1180,13 @@ a.category-item {
 
   table.datamart.timeline-aligned {
     margin-left: 0px;
+  }
+
+  .agent-filter-box {
+    margin-top: 0 !important;
+    > .dropdown-menu {
+      box-shadow: 1px 2px 1px #999999;
+    }
   }
 }
 
