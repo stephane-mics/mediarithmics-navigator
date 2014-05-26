@@ -42,6 +42,14 @@
         return DisplayCampaignService.getUserGroups(adGroupId);
       };
 
+      $scope.getKeywordLists = function (keywordListId) {
+        return DisplayCampaignService.getKeywordLists(keywordListId);
+      };
+
+      $scope.deleteKeywordList = function (keywordList) {
+        return DisplayCampaignService.removeKeywordList(adGroupId, keywordList);
+      };
+
       $scope.deleteUserGroup = function (userGroupId) {
         return DisplayCampaignService.removeUserGroup(adGroupId, userGroupId);
       };
@@ -57,6 +65,12 @@
           };
           DisplayCampaignService.addUserGroup(adGroupId, userGroupSelection);
         }
+      });
+
+      $scope.$on("mics-keyword-list:selected", function (event, params) {
+        DisplayCampaignService.addKeywordList(adGroupId, {
+          keyword_list_id : params.keywordList.id
+        });
       });
 
       $scope.$on("mics-creative:selected", function (event, params) {

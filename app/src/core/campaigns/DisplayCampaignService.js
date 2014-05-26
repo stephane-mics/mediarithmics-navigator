@@ -201,8 +201,8 @@
         return this.campaignCtn.getAdGroup(adGroupId).addKeywordList(keywordList);
       };
 
-      service.removeKeywordList = function(adGroupId, keywordListId) {
-        this.campaignCtn.getAdGroup(adGroupId).removeKeywordList(keywordListId);
+      service.removeKeywordList = function(adGroupId, keywordList) {
+        this.campaignCtn.getAdGroup(adGroupId).removeKeywordList(keywordList);
       };
 
 

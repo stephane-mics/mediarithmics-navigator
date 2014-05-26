@@ -342,30 +342,37 @@ form.mcs-full-page-form {
   }
 }
 
-.keywords-expressions {
 
-  min-height: 100px;
-  > div {
-    display: inline-block;
-    border: 1px solid #888;
-    border-radius: 4px;
-    padding: 4px;
-    margin: 4px;
-  }
 
-  > div a {
+
+
+.keyword-expression {
+  display: inline-block;
+  border: 1px solid #888;
+  padding: 4px;
+  margin: 4px;
+
+
+  /* link to delete */
+  > a {
     margin-left: 5px;
     line-height: 0.8;
   }
+}
 
-  &.positive-keywords-expressions > div {
-    color: $mcs-green-not;
-    background-color: $mcs-green;
-  }
-  &.negative-keywords-expressions > div {
-    color: $mcs-red-not;
-    background-color: $mcs-red;
-  }
+.positive-keyword-expression {
+  @extend .keyword-expression;
+  color: $mcs-green-not;
+  background-color: $mcs-green;
+}
+.negative-keyword-expression {
+  @extend .keyword-expression;
+  color: $mcs-red-not;
+  background-color: $mcs-red;
+}
+
+.keywords-expressions-block {
+  min-height: 100px;
 }
 
 .dropdown-toggle.mics-btn-add {
@@ -780,6 +787,17 @@ table.fragment-list-user-groups {
   @extend .mics-table;
 }
 
+table.fragment-list-keyword-list {
+  @extend .mics-table;
+}
+
+.choose-existing-keyword-list {
+  .modal-body {
+    @include make-md-column(12);
+    max-height : 300px; /* TODO : arbitrary value */
+    overflow: auto;
+  }
+}
 /*
  * Datamart
  * --------

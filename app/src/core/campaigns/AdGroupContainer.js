@@ -117,13 +117,13 @@
         return keywordListSelection.id || found.id;
       };
 
-      AdGroupContainer.prototype.removeKeywordList = function removeKeywordList(keywordListId) {
+      AdGroupContainer.prototype.removeKeywordList = function removeKeywordList(keywordList) {
 
         for (var i = 0; i < this.keywordLists.length; i++) {
-          if (this.keywordLists[i].id === keywordListId) {
+          if (this.keywordLists[i].keyword_list_id === keywordList.keyword_list_id) {
             this.keywordLists.splice(i, 1);
-            if (keywordListId.indexOf("T") === -1) {
-              this.removedKeywordLists.push(keywordListId);
+            if (keywordList.id && keywordList.id.indexOf("T") === -1) {
+              this.removedKeywordLists.push(keywordList);
             }
             return;
           }
@@ -243,6 +243,28 @@
         };
       }
 
+      /**
+       * Create a task (to be used by async.series) to delete the given keywords list.
+       * @param {Object} keywordList the keywords list to delete.
+       * @return {Function} the task.
+       */
+      function deleteKeywordsTask(keywordList) {
+        return function (callback) {
+          $log.info("deleting keyword list", keywordList.id);
+          var promise;
+          if (keywordList.id && keywordList.id.indexOf('T') === -1) {
+            // update the keyword list
+            promise = keywordList.remove();
+          } else {
+            // the keyword list selection was not persisted, nothing to do
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+          }
+          bindPromiseCallback(promise, callback);
+        };
+      }
+
       AdGroupContainer.prototype.persist = function persist(campaignId) {
 
         var defered = $q.defer();
@@ -271,6 +293,9 @@
             var pKeywordLists = [], pKeywordList;
             for (i = 0; i < self.keywordLists.length; i++) {
               pKeywordLists.push(saveKeywordsTask(self.keywordLists[i], campaignId, adGroup.id, adGroup.name));
+            }
+            for (i = 0; i < self.removedKeywordLists.length; i++) {
+              pKeywordLists.push(deleteKeywordsTask(self.removedKeywordLists[i]));
             }
 
             var pList = [];
@@ -321,6 +346,9 @@
             var pKeywordLists = [], pKeywordList;
             for (i = 0; i < self.keywordLists.length; i++) {
               pKeywordLists.push(saveKeywordsTask(self.keywordLists[i], campaignId, adGroup.id, adGroup.name));
+            }
+            for (i = 0; i < self.removedKeywordLists.length; i++) {
+              pKeywordLists.push(deleteKeywordsTask(self.removedKeywordLists[i]));
             }
 
             var pList = [];

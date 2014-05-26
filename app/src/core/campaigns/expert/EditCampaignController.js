@@ -92,6 +92,7 @@
         $scope.save = function () {
           $log.debug("save campaign : ", $scope.campaign);
           DisplayCampaignService.save().then(function (campaignContainer) {
+            DisplayCampaignService.reset();
             $location.path('/display-campaigns/report/' + campaignContainer.id + '/basic');
           });
         };

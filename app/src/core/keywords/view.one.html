@@ -24,15 +24,15 @@
       </div>
       <hr>
     </div>
-    <div class="keywords-expressions positive-keywords-expressions well">
-      <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : positiveExpressionsFilter">
+    <div class="keywords-expressions-block well">
+      <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : positiveExpressionsFilter" class="positive-keyword-expression">
         {{ keywordExpression.expression }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
       </div>
     </div>
     <hr>
-    <div class="keywords-expressions negative-keywords-expressions well">
-      <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : negativeExpressionsFilter">
+    <div class="keywords-expressions well">
+      <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : negativeExpressionsFilter" class="negative-keyword-expression">
         {{ keywordExpression.expression }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
       </div>

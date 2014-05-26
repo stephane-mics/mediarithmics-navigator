@@ -103,7 +103,35 @@
 
 
     <h4>Keywords lists</h4>
-    <!--<div ng-include="'src/core/keywords/view.one.html'"></div>-->
+    <div class="mcs-form-group">
+      <div ng-include="'src/core/keywords/choose-keyword-list.html'"></div>
+
+      <table class="fragment-list-keyword-list" ng-show="getKeywordLists(adGroup.id).length">
+        <thead>
+          <tr>
+            <th>Keyword list name</th>
+            <th>Expressions</th>
+            <!-- <th>Total Users</th> -->
+            <!-- <th>Duration (days)</th> -->
+            <th class="actions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="keywordListSelection in getKeywordLists(adGroup.id)" fetch-keyword-list="keywordListSelection.keyword_list_id as keywordList with expressions">
+          <td>{{keywordList.name}}</td>
+          <td>
+            <!-- {{keywordListExpressions|json}} -->
+            <span ng-repeat="expression in keywordListExpressions" class="{{expression.exclude ? 'negative' : 'positive'}}-keyword-expression">
+              {{expression.expression}}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="mics-btn mics-btn-delete" ng-click="deleteKeywordList(keywordListSelection)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- save or cancel -->
     <div class="mcs-actions-group">
