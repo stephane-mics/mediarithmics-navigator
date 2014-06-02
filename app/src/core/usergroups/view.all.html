@@ -1,0 +1,17 @@
+<div ng-controller="core/usergroups/EditAllController">
+  <table class="mics-table">
+    <thead>
+
+      <tr>
+        <th>Name</th>
+        <th>Name on your side</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="userGroup in userGroups">
+      <td>{{userGroup.name}}</td>
+      <td>{{userGroup.technical_name}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
