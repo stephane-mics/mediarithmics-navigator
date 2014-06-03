@@ -12,8 +12,8 @@
 
   /* define the Authentication service */
   module.factory('core/campaigns/DisplayCampaignService', [
-    '$q', 'lodash', 'Restangular', 'core/common/IdGenerator', 'core/campaigns/AdGroupContainer', 'core/campaigns/CampaignContainer', '$log', 'core/common/auth/Session',
-    function($q, _, Restangular, IdGenerator, AdGroupContainer, CampaignContainer, $log, Session) {
+    '$q', 'lodash', 'Restangular', 'core/common/IdGenerator', 'core/campaigns/AdGroupContainer', 'core/campaigns/DisplayCampaignContainer', '$log', 'core/common/auth/Session',
+    function($q, _, Restangular, IdGenerator, AdGroupContainer, DisplayCampaignContainer, $log, Session) {
 
       var idCounter = 1;
       var service = {};
@@ -38,7 +38,7 @@
       service.initCreateCampaign = function(template) {
 
 
-        var campaignCtn = new CampaignContainer(template.template_group_id, template.template_artifact_id);
+        var campaignCtn = new DisplayCampaignContainer(template.template_group_id, template.template_artifact_id);
         campaignCtn.id = IdGenerator.getId();
         campaignCtn.organisationId = Session.getCurrentWorkspace().organisation_id;
 
@@ -52,7 +52,7 @@
 
       service.initEditCampaign = function(campaignId, template) {
 
-        var campaignCtn = new CampaignContainer(template.template_group_id, template.template_artifact_id);
+        var campaignCtn = new DisplayCampaignContainer(template.template_group_id, template.template_artifact_id);
         this.campaignCtn = campaignCtn;
         return campaignCtn.load(campaignId);
       };

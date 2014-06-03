@@ -5,8 +5,8 @@
   var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/MainController', [
-    "$scope", 'core/campaigns/CampaignContainer', 'core/campaigns/DisplayCampaignService', '$routeParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', 'core/keywords/KeywordListContainer',
-    function ($scope, CampaignContainer, DisplayCampaignService, $routeParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
+    "$scope", 'core/campaigns/DisplayCampaignContainer', 'core/campaigns/DisplayCampaignService', '$routeParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', 'core/keywords/KeywordListContainer',
+    function ($scope, DisplayCampaignContainer, DisplayCampaignService, $routeParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
       var campaignId = $routeParams.campaign_id;
 
       function initView () {

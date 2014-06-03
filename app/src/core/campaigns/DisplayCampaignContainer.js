@@ -6,12 +6,12 @@
    * Campaign Container
    */
 
-  module.factory("core/campaigns/CampaignContainer", [
+  module.factory("core/campaigns/DisplayCampaignContainer", [
     "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log",
     function($q, Restangular, IdGenerator, async, AdGroupContainer, $log) {
 
 
-      var CampaignContainer = function CampaignContainer(templateGroupId, templateArtifactId) {
+      var DisplayCampaignContainer = function DisplayCampaignContainer(templateGroupId, templateArtifactId) {
 
         this.creationMode = true;
 
@@ -21,10 +21,10 @@
         this.addedInventorySources = [];
 
         this.value = {type:"DISPLAY", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
-        $log.info("CampaignContainer", this.value);
+        $log.info("DisplayCampaignContainer", this.value);
       };
 
-      CampaignContainer.prototype.load = function (campaignId) {
+      DisplayCampaignContainer.prototype.load = function (campaignId) {
 
         var root = Restangular.one('display_campaigns', campaignId);
         // send requests to get the value and the list of
@@ -88,7 +88,7 @@
         return defered.promise;
       };
 
-      CampaignContainer.prototype.getInventorySources = function () {
+      DisplayCampaignContainer.prototype.getInventorySources = function () {
         if(this.inventorySources === undefined && !this.creationMode) {
           this.inventorySources =  this.value.getList('inventory_sources');
 
@@ -101,7 +101,7 @@
       };
 
 
-      CampaignContainer.prototype.addInventorySource = function (inventorySource) {
+      DisplayCampaignContainer.prototype.addInventorySource = function (inventorySource) {
         this.addedInventorySources.push(inventorySource);
         if(this.inventorySources !== undefined) {
           this.inventorySources.$object.push(inventorySource);
@@ -112,7 +112,7 @@
 
 
 
-      CampaignContainer.prototype.addAdGroup = function addAdGroup() {
+      DisplayCampaignContainer.prototype.addAdGroup = function addAdGroup() {
         var adGroupCtn = new AdGroupContainer(IdGenerator.getId());
 
         this.adGroups.push(adGroupCtn);
@@ -120,7 +120,7 @@
       };
 
 
-      CampaignContainer.prototype.getAdGroup = function getAdGroup(id) {
+      DisplayCampaignContainer.prototype.getAdGroup = function getAdGroup(id) {
 
         for(var i=0; i < this.adGroups.length; i++){
           if (this.adGroups[i].id === id) {
@@ -131,7 +131,7 @@
       };
 
 
-      CampaignContainer.prototype.removeAdGroup = function removeAdGroup(id) {
+      DisplayCampaignContainer.prototype.removeAdGroup = function removeAdGroup(id) {
 
         for(var i=0; i < this.adGroups.length; i++){
           if (this.adGroups[i].id === id) {
@@ -179,7 +179,7 @@
         });
       };
 
-      CampaignContainer.prototype.persist = function persist() {
+      DisplayCampaignContainer.prototype.persist = function persist() {
 
         var defered = $q.defer();
 
@@ -203,7 +203,7 @@
         return defered.promise;
       };
 
-      CampaignContainer.prototype.update = function update() {
+      DisplayCampaignContainer.prototype.update = function update() {
 
         var defered = $q.defer();
 
@@ -233,7 +233,7 @@
         return defered.promise;
       };
 
-      return CampaignContainer;
+      return DisplayCampaignContainer;
     }
   ]);
 })();
