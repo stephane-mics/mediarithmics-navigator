@@ -103,7 +103,7 @@
 
       $routeProvider
       .when('/home', {
-        redirectTo: '/display-campaigns'
+        redirectTo: '/campaigns'
       })
       .when('/route-not-found', {
       });

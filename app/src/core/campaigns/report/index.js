@@ -16,7 +16,7 @@
     "$routeProvider",
     function ($routeProvider) {
       $routeProvider
-      .when('/display-campaigns/report/:campaign_id/:template', {
+      .when('/campaigns/display/report/:campaign_id/:template', {
         templateUrl:'src/core/campaigns/report/show-report.html'
       });
     }

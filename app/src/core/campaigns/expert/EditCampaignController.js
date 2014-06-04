@@ -75,12 +75,12 @@
         // new Ad Group
         $scope.newAdGroup = function () {
           var adGroupId = DisplayCampaignService.addAdGroup();
-          $location.path('/display-campaigns/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroupId);
+          $location.path('/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroupId);
         };
 
         // edit Ad Group
         $scope.editAdGroup = function (adGroup) {
-          $location.path('/display-campaigns/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroup.id);
+          $location.path('/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroup.id);
         };
 
 
@@ -93,7 +93,7 @@
           $log.debug("save campaign : ", $scope.campaign);
           DisplayCampaignService.save().then(function (campaignContainer) {
             DisplayCampaignService.reset();
-            $location.path('/display-campaigns/report/' + campaignContainer.id + '/basic');
+            $location.path('/campaigns/display/report/' + campaignContainer.id + '/basic');
           });
         };
 
@@ -101,9 +101,9 @@
         $scope.cancel = function () {
           DisplayCampaignService.reset();
           if ($scope.campaign && $scope.campaign.id) {
-            $location.path('/display-campaigns/report/' + $scope.campaign.id + '/basic');
+            $location.path('/campaigns/display/report/' + $scope.campaign.id + '/basic');
           } else {
-            $location.path('/display-campaigns');
+            $location.path('/campaigns');
           }
 
         };

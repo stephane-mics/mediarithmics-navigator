@@ -18,7 +18,7 @@
       var adGroupId = $routeParams.ad_group_id;
       var campaignId = $routeParams.campaign_id;
       if(!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
-        $location.path("/display-campaigns/expert/edit/"+campaignId);
+        $location.path("/campaigns/display/expert/edit/"+campaignId);
       }
 
       $scope.visibilityValues = ConstantsService.getValues("adgroup_visibility");
@@ -85,7 +85,7 @@
         $log.debug("Editing Ad Group done! :", $scope.adGroup);
 
         DisplayCampaignService.setAdGroupValue(adGroupId, $scope.adGroup);
-        $location.path('/display-campaigns/expert/edit/'+DisplayCampaignService.getCampaignId());
+        $location.path('/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
 
       };
 
@@ -98,7 +98,7 @@
         DisplayCampaignService.resetAdGroup(adGroupId);
 
         //DisplayCampaignService.resetAdGroupValue();
-        $location.path('/display-campaigns/expert/edit/'+DisplayCampaignService.getCampaignId());
+        $location.path('/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
 
       };
 

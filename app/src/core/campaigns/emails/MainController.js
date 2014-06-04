@@ -32,7 +32,7 @@
         EmailCampaignService.save()
         .then(function success(campaignContainer){
           $log.info("success");
-          $location.path("/display-campaigns/report/" + campaignContainer.id + "/basic");
+          $location.path("/campaigns/");
           EmailCampaignService.reset();
         }, function failure(){
           $log.info("failure");

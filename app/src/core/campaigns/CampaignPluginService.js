@@ -16,8 +16,8 @@
         template_artifact_id : "default-template",
         image : "/images/plugins/multi-targeting-small.png",
         editor : {
-          create_path : "/display-campaigns/expert/edit/{id}",
-          edit_path : "/display-campaigns/expert/edit/{id}"
+          create_path : "/campaigns/display/expert/edit/{id}",
+          edit_path : "/campaigns/display/expert/edit/{id}"
         }
       }, {
         name : "Keywords Targeting",
@@ -25,8 +25,8 @@
         template_artifact_id : "keywords-targeting-template",
         image : "/images/plugins/keywords-targeting-small.png",
         editor : {
-          create_path : "/display-campaigns/campaign/keywords",
-          edit_path : "/display-campaigns/campaign/keywords/{id}"
+          create_path : "/campaigns/display/keywords",
+          edit_path : "/campaigns/display/keywords/{id}"
         }
       }, {
         name : "Email campaign",
@@ -34,8 +34,8 @@
         template_artifact_id : "expert-template",
         image : "/images/plugins/keywords-targeting-small.png",
         editor : {
-          create_path : "/email-campaigns/campaign/expert",
-          edit_path : "/email-campaigns/campaign/expert/{id}"
+          create_path : "/campaigns/email/expert",
+          edit_path : "/campaigns/email/expert/{id}"
         }
       }];
 

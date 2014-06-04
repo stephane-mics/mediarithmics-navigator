@@ -18,7 +18,7 @@
       // create button
       $scope.create = function(template) {
 
-        var createTemplateView = '/display-campaigns/expert/edit-campaign/';
+        var createTemplateView = '/campaigns/display/expert/edit-campaign/';
         var organisationId = Session.getCurrentWorkspace().organisation_id;
 
        /* 

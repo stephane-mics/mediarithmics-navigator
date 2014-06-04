@@ -30,7 +30,7 @@
       };
 
       $scope.cancel = function() {
-        $location.path('/display-campaigns');
+        $location.path('/campaigns');
       };
 
     }

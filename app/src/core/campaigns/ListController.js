@@ -37,12 +37,12 @@
       });
 
       $scope.newCampaign = function () {
-        $location.path('/display-campaigns/select-campaign-template');
+        $location.path('/campaigns/select-campaign-template');
       };
 
       $scope.showCampaign = function (campaign) {
         $log.debug("> showCampaign for campaignId=", campaign.id);
-        $location.path("/display-campaigns/report/" + campaign.id + "/basic");
+        $location.path("/campaigns/display/report/" + campaign.id + "/basic");
 
       };
 
@@ -51,7 +51,7 @@
         $log.debug("> editCampaign for campaignId=", campaign.id);
 
         // get campaign edit template
-        var editTemplateView = 'display-campaigns/expert/edit/';
+        var editTemplateView = 'campaigns/display/expert/edit/';
         DisplayCampaignService.initEditCampaign(campaign.id).then(function () {
           $location.path(editTemplateView + campaign.id);
         });

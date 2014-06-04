@@ -12,7 +12,7 @@
     "$routeProvider",
     function ($routeProvider) {
       $routeProvider
-      .when('/email-campaigns/campaign/expert/:campaign_id?', {
+      .when('/campaigns/email/expert/:campaign_id?', {
         templateUrl: 'src/core/campaigns/emails/index.html',
         topbar : false
       });
