@@ -8,7 +8,8 @@
     'core/campaigns/keywords',
     'core/campaigns/emails',
     'core/campaigns/report',
-    'restangular'
+    'restangular',
+    'ui.bootstrap'
   ]);
 
   module.config([

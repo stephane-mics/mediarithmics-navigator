@@ -22,45 +22,78 @@
                 </form>
             </div>
         </div>
-        <div class="campaign-list-area">
-            <div class="test">
-                <table class="campaign-list-table ">
-                    <thead>
-                    <tr>
-                        <th>Status</th>
-                        <th>Name</th>
-                        <th ng-if="administrator">Organisation</th>
-                        <th class="metrics" ng-repeat="metric in campaignsStatistics.getMetrics()">
-                            {{campaignsStatistics.getMetricName(metric) }}
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="campaign in campaigns " ng-click="showCampaign(campaign)">
-                        <td>{{campaign.status}}</td>
-                        <td>{{campaign.name}} </td>
-                        <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
-                        <td class="metrics " ng-repeat="metricValue in campaignsStatistics.getRow(campaign.id) track by $index">
-                            <span ng-if="metricValue.type == 'currency'">
-                                {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
-                            </span>
-                            <span ng-if="metricValue.type == 'percent'">
-                                {{metricValue.value | number}} %
-                            </span>
-                            <span ng-if="metricValue.type == 'number'">
-                                {{metricValue.value | number}}
-                            </span>
-                            <span ng-if="!metricValue.type">
-                                -
-                            </span>
-                        </td>
+        <div class="campaign-list-area" ng-show="displayCampaigns.length">
+          <h2>Display Campaigns</h2>
+          <table class="campaign-list-table ">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th ng-if="administrator">Organisation</th>
+                <th class="metrics" ng-repeat="metric in displayCampaignsStatistics.getMetrics()">
+                  {{displayCampaignsStatistics.getMetricName(metric) }}
+                </th>
+                <th class="actions">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="campaign in displayCampaigns | offset: (currentPageDisplayCampaign - 1)*itemsPerPage | limitTo: itemsPerPage" ng-click="showCampaign(campaign)">
+              <td>{{campaign.status}}</td>
+              <td>{{campaign.name}} </td>
+              <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
+              <td class="metrics " ng-repeat="metricValue in displayCampaignsStatistics.getRow(campaign.id) track by $index">
+                <span ng-if="metricValue.type == 'currency'">
+                  {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
+                </span>
+                <span ng-if="metricValue.type == 'percent'">
+                  {{metricValue.value | number}} %
+                </span>
+                <span ng-if="metricValue.type == 'number'">
+                  {{metricValue.value | number}}
+                </span>
+                <span ng-if="!metricValue.type">
+                  -
+                </span>
+              </td>
+              <td class="actions">
+                <a class="mics-btn mics-btn-action" ng-click="showCampaign(campaign, $event)">Show Details</a>
+                <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <pagination total-items="displayCampaigns.length" page="currentPageDisplayCampaign" items-per-page="itemsPerPage"></pagination>
 
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        </div>
+        <div class="campaign-list-area" ng-show="emailCampaigns.length">
+          <h2>Email Campaigns</h2>
+          <table class="campaign-list-table">
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th ng-if="administrator">Organisation</th>
+                <th class="actions">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="campaign in emailCampaigns | offset: (currentPageEmailCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
+              <td>{{campaign.status}}</td>
+              <td>{{campaign.name}} </td>
+              <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
+              <td class="actions">
+                <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <pagination total-items="emailCampaigns.length" page="currentPageEmailCampaign" items-per-page="itemsPerPage"></pagination>
         </div>
 
 
+      </div>
     </div>
-</div>

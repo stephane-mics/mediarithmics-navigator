@@ -161,8 +161,13 @@ a, *[ng-click] {
       td + td {
         border-left: 1px solid #DDD;
       }
-      td.actions .mics-btn {
-        @extend .btn-sm;
+      td.actions {
+        .mics-btn {
+          @extend .btn-sm;
+        }
+        .mics-btn + .mics-btn {
+          margin-left: 8px;
+        }
       }
     }
   }
@@ -532,12 +537,8 @@ form.mcs-full-page-form {
       margin-bottom: 20px;
     }
     .campaign-list-area {
-      @include make-row();
-      .test {
-        @include make-md-column(12);
-        .campaign-list-table {
-          @extend .mics-table;
-        }
+      .campaign-list-table {
+        @extend .mics-table;
       }
     }
   }
