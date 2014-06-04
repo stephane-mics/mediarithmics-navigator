@@ -28,6 +28,15 @@
           create_path : "/display-campaigns/campaign/keywords",
           edit_path : "/display-campaigns/campaign/keywords/{id}"
         }
+      }, {
+        name : "Email campaign",
+        template_group_id : "com.mediarithmics.campaign.email",
+        template_artifact_id : "expert-template",
+        image : "/images/plugins/keywords-targeting-small.png",
+        editor : {
+          create_path : "/email-campaigns/campaign/expert",
+          edit_path : "/email-campaigns/campaign/expert/{id}"
+        }
       }];
 
       function CampaignPluginService() {}

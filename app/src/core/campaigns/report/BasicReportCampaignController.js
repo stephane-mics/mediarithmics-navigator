@@ -129,7 +129,7 @@
 
 
       var updateCampaignStatus = function (campaign, status) {
-        Restangular.one("campaigns", campaign.id).customPUT({
+        Restangular.one("display_campaigns", campaign.id).customPUT({
           status : status,
           type : "DISPLAY" // XXX this is used server side to find the right subclass of CampaignResource
         }).then(function(returnedCampaign) {

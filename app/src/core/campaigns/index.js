@@ -6,6 +6,7 @@
     'core/creatives',
     'core/campaigns/expert',
     'core/campaigns/keywords',
+    'core/campaigns/emails',
     'core/campaigns/report',
     'restangular'
   ]);

@@ -185,7 +185,7 @@
 
         var self = this;
 
-        Restangular.all('campaigns').post(this.value, {organisation_id: this.organisationId})
+        Restangular.all('display_campaigns').post(this.value, {organisation_id: this.organisationId})
         .then(angular.bind(this, function(campaign) {
 
           self.id = campaign.id;
