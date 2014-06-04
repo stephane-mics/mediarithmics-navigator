@@ -80,10 +80,10 @@
 
         for (var i = 0; i < this.ads.length; i++) {
           if (this.ads[i].id === adId) {
-            this.ads.splice(i, 1);
             if (adId.indexOf("T") === -1) {
-              this.removedAds.push(adId);
+              this.removedAds.push(this.ads[i]);
             }
+            this.ads.splice(i, 1);
             return;
           }
         }
@@ -192,6 +192,28 @@
       }
 
       /**
+       * Create a task (to be used by async.series) to delete the given ad.
+       * @param {Object} ad the ad to delete.
+       * @return {Function} the task.
+       */
+      function deleteAdTask(ad) {
+        return function (callback) {
+          $log.info("deleting ad", ad.id);
+          var promise;
+          if (ad.id && ad.id.indexOf('T') === -1) {
+            // delete the ad
+            promise = ad.remove();
+          } else {
+            // the ad was not persisted, nothing to do
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+          }
+          bindPromiseCallback(promise, callback);
+        };
+      }
+
+      /**
        * Create a task (to be used by async.series) to save the given user group.
        * @param {Object} userGroup the user group to save.
        * @param {String} campaignId the id of the current campaign.
@@ -212,6 +234,28 @@
             promise = Restangular.one('display_campaigns', campaignId)
             .one('ad_groups', adGroupId)
             .post('user_groups', userGroup);
+          }
+          bindPromiseCallback(promise, callback);
+        };
+      }
+
+      /**
+       * Create a task (to be used by async.series) to delete the given user group.
+       * @param {Object} userGroup the user group to delete.
+       * @return {Function} the task.
+       */
+      function deleteUserGroupTask(userGroup) {
+        return function (callback) {
+          $log.info("deleting user group", userGroup.id);
+          var promise;
+          if (userGroup.id && userGroup.id.indexOf('T') === -1) {
+            // delete the user group
+            promise = userGroup.remove();
+          } else {
+            // the user group was not persisted, nothing to do
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
           }
           bindPromiseCallback(promise, callback);
         };
@@ -253,7 +297,7 @@
           $log.info("deleting keyword list", keywordList.id);
           var promise;
           if (keywordList.id && keywordList.id.indexOf('T') === -1) {
-            // update the keyword list
+            // delete the keyword list
             promise = keywordList.remove();
           } else {
             // the keyword list selection was not persisted, nothing to do
@@ -265,37 +309,34 @@
         };
       }
 
-      AdGroupContainer.prototype.persist = function persist(campaignId) {
 
-        var defered = $q.defer();
-
-        var self = this;
-
-        Restangular.one('display_campaigns', campaignId).post('ad_groups', this.value)
-          .then(function (adGroup) {
+      function persistDependencies(campaignId, adGroupContainer, adGroup, defered) {
             var i;
-
-            self.id = adGroup.id;
-
             // update/persist ads
             var pAds = [];
-            for (i = 0; i < self.ads.length; i++) {
-              pAds.push(saveAdTask(self.ads[i], campaignId, adGroup.id, adGroup.name));
+            for (i = 0; i < adGroupContainer.ads.length; i++) {
+              pAds.push(saveAdTask(adGroupContainer.ads[i], campaignId, adGroup.id, adGroup.name));
+            }
+            for (i = 0; i < adGroupContainer.removedAds.length; i++) {
+              pAds.push(deleteAdTask(adGroupContainer.removedAds[i]));
             }
 
             // update/persist user groups
             var pUserGroups = [];
-            for (i = 0; i < self.userGroups.length; i++) {
-              pUserGroups.push(saveUserGroupTask(self.userGroups[i], campaignId, adGroup.id, adGroup.name));
+            for (i = 0; i < adGroupContainer.userGroups.length; i++) {
+              pUserGroups.push(saveUserGroupTask(adGroupContainer.userGroups[i], campaignId, adGroup.id, adGroup.name));
+            }
+            for (i = 0; i < adGroupContainer.removedUserGroups.length; i++) {
+              pUserGroups.push(deleteUserGroupTask(adGroupContainer.removedUserGroups[i]));
             }
 
             // update/persist keyword lists
             var pKeywordLists = [], pKeywordList;
-            for (i = 0; i < self.keywordLists.length; i++) {
-              pKeywordLists.push(saveKeywordsTask(self.keywordLists[i], campaignId, adGroup.id, adGroup.name));
+            for (i = 0; i < adGroupContainer.keywordLists.length; i++) {
+              pKeywordLists.push(saveKeywordsTask(adGroupContainer.keywordLists[i], campaignId, adGroup.id, adGroup.name));
             }
-            for (i = 0; i < self.removedKeywordLists.length; i++) {
-              pKeywordLists.push(deleteKeywordsTask(self.removedKeywordLists[i]));
+            for (i = 0; i < adGroupContainer.removedKeywordLists.length; i++) {
+              pKeywordLists.push(deleteKeywordsTask(adGroupContainer.removedKeywordLists[i]));
             }
 
             var pList = [];
@@ -309,9 +350,24 @@
               } else {
                 $log.info("ad group saved");
                 // return the ad group container as the promise results
-                defered.resolve(self);
+                defered.resolve(adGroupContainer);
               }
             });
+      }
+
+      AdGroupContainer.prototype.persist = function persist(campaignId) {
+
+        var defered = $q.defer();
+
+        var self = this;
+
+        Restangular.one('display_campaigns', campaignId).post('ad_groups', this.value)
+          .then(function (adGroup) {
+
+            self.id = adGroup.id;
+
+            persistDependencies.call(null, campaignId, self, adGroup, defered);
+
           }, function (reason) {
             defered.reject(reason);
           });
@@ -326,45 +382,10 @@
 
         this.value.put()
           .then(function (adGroup) {
-            var i;
 
             self.id = adGroup.id;
 
-            // update/persist ads
-            var pAds = [];
-            for (i = 0; i < self.ads.length; i++) {
-              pAds.push(saveAdTask(self.ads[i], campaignId, adGroup.id, adGroup.name));
-            }
-
-            // update user groups
-            var pUserGroups = [];
-            for (i = 0; i < self.userGroups.length; i++) {
-              pUserGroups.push(saveUserGroupTask(self.userGroups[i], campaignId, adGroup.id, adGroup.name));
-            }
-
-            // update keyword lists
-            var pKeywordLists = [], pKeywordList;
-            for (i = 0; i < self.keywordLists.length; i++) {
-              pKeywordLists.push(saveKeywordsTask(self.keywordLists[i], campaignId, adGroup.id, adGroup.name));
-            }
-            for (i = 0; i < self.removedKeywordLists.length; i++) {
-              pKeywordLists.push(deleteKeywordsTask(self.removedKeywordLists[i]));
-            }
-
-            var pList = [];
-            pList = pList.concat(pAds);
-            pList = pList.concat(pUserGroups);
-            pList = pList.concat(pKeywordLists);
-
-            async.series(pList, function (err, res) {
-              if (err) {
-                defered.reject(err);
-              } else {
-                $log.info("ad group saved");
-                // return the ad group container as the promise results
-                defered.resolve(self);
-              }
-            });
+            persistDependencies.call(null, campaignId, self, adGroup, defered);
           }, function (reason) {
             defered.reject(reason);
           });
