@@ -22,7 +22,6 @@
 
       function updateWorkspaces() {
         $scope.workspaces = Session.getWorkspaces();
-        $scope.currentOrganisation = Session.getCurrentWorkspace().organisation_name;
       }
 
 

@@ -461,6 +461,17 @@ form.mcs-full-page-form {
     @extend .nav-stacked;
 
   }
+  .organisation-name-block {
+      text-align:right;
+      color :$dark-blue-not;
+      background-color:$dark-blue;
+      font-size : 15px;
+      line-height: $line-height-computed;
+      font-weight: bold;
+      padding: 15px 15px 15px 0;
+      padding-top: 15px;
+      margin: -20px -15px 15px;
+  }
 }
 
 .sidebar-placeholder {

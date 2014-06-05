@@ -254,6 +254,12 @@
         return typeof a === 'undefined' ? b : a;
       });
 
+      function updateWorkspaces() {
+        $rootScope.currentOrganisation = Session.getCurrentWorkspace().organisation_name;
+      }
+      $rootScope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
+      $rootScope.$on(LoginConstants.LOGIN_SUCCESS, updateWorkspaces);
+
       $rootScope.$on('$routeChangeStart', function (event, next, current) {
 
         $log.debug("$routeChangeStart  next : ", next);
