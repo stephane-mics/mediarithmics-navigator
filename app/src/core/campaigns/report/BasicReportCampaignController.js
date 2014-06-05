@@ -77,8 +77,8 @@
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$window',
-    function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $window) {
+    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
+    function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
       $scope.valTo = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
@@ -156,11 +156,14 @@
       };
 
       $scope.deleteCampaign = function (campaign) {
-        if ($window.confirm("Do you really want to delete this campaign ?")) {
-          campaign.remove().then(function () {
-            $location.path("/");
-          });
-        }
+        var newScope = $scope.$new(true);
+        newScope.campaign = campaign;
+        $modal.open({
+          templateUrl: 'src/core/campaigns/delete.html',
+          scope : newScope,
+          backdrop : 'static',
+          controller: 'core/campaigns/DeleteController'
+        });
       };
     }
   ]);
