@@ -67,7 +67,7 @@ $navbar-inverse-link-color: $body-bg;
 
   padding-top: 3px;
 
-font-weight: bold;
+  font-weight: bold;
 
 }
 
@@ -299,7 +299,7 @@ form.mcs-full-page-form {
   }
   .mcs-form-group {
     @extend .form-group;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 
     label {
       font-weight: normal;
