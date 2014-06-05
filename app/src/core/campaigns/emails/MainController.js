@@ -12,6 +12,8 @@
       function initView () {
         $scope.campaign = EmailCampaignService.getCampaignValue();
         $scope.isCreationMode = EmailCampaignService.isCreationMode();
+        $scope.userGroupOpeningFeed = EmailCampaignService.getCampaign().userGroupOpeningFeed;
+        $scope.userGroupClickFeed = EmailCampaignService.getCampaign().userGroupClickFeed;
       }
 
       CampaignPluginService.getCampaignTemplate("com.mediarithmics.campaign.email", "expert-template").then(function (template) {

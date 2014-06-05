@@ -15,6 +15,9 @@
 
         this.creationMode = true;
 
+        this.userGroupClickFeed = null;
+        this.userGroupOpeningFeed = null;
+
         this.value = {type:"EMAIL", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
       };
 
@@ -40,6 +43,13 @@
           self.creationMode = false;
           self.value = result[0];
           self.id = self.value.id;
+
+          if(self.value.user_group_click_feed_id) {
+            self.userGroupClickFeed = Restangular.one('user_groups', self.value.user_group_click_feed_id).get().$object;
+          }
+          if(self.value.user_group_opening_feed_id) {
+            self.userGroupOpeningFeed = Restangular.one('user_groups', self.value.user_group_opening_feed_id).get().$object;
+          }
 
           // return the loaded container
           defered.resolve(self);
