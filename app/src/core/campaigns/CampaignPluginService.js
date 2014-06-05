@@ -32,7 +32,7 @@
         name : "Email campaign",
         template_group_id : "com.mediarithmics.campaign.email",
         template_artifact_id : "expert-template",
-        image : "/images/plugins/keywords-targeting-small.png",
+        image : "/images/plugins/email-campaign-expert-small.png",
         editor : {
           create_path : "/campaigns/email/expert",
           edit_path : "/campaigns/email/expert/{id}"
