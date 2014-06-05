@@ -311,48 +311,48 @@
 
 
       function persistDependencies(campaignId, adGroupContainer, adGroup, defered) {
-            var i;
-            // update/persist ads
-            var pAds = [];
-            for (i = 0; i < adGroupContainer.ads.length; i++) {
-              pAds.push(saveAdTask(adGroupContainer.ads[i], campaignId, adGroup.id, adGroup.name));
-            }
-            for (i = 0; i < adGroupContainer.removedAds.length; i++) {
-              pAds.push(deleteAdTask(adGroupContainer.removedAds[i]));
-            }
+        var i;
+        // update/persist ads
+        var pAds = [];
+        for (i = 0; i < adGroupContainer.ads.length; i++) {
+          pAds.push(saveAdTask(adGroupContainer.ads[i], campaignId, adGroup.id, adGroup.name));
+        }
+        for (i = 0; i < adGroupContainer.removedAds.length; i++) {
+          pAds.push(deleteAdTask(adGroupContainer.removedAds[i]));
+        }
 
-            // update/persist user groups
-            var pUserGroups = [];
-            for (i = 0; i < adGroupContainer.userGroups.length; i++) {
-              pUserGroups.push(saveUserGroupTask(adGroupContainer.userGroups[i], campaignId, adGroup.id, adGroup.name));
-            }
-            for (i = 0; i < adGroupContainer.removedUserGroups.length; i++) {
-              pUserGroups.push(deleteUserGroupTask(adGroupContainer.removedUserGroups[i]));
-            }
+        // update/persist user groups
+        var pUserGroups = [];
+        for (i = 0; i < adGroupContainer.userGroups.length; i++) {
+          pUserGroups.push(saveUserGroupTask(adGroupContainer.userGroups[i], campaignId, adGroup.id, adGroup.name));
+        }
+        for (i = 0; i < adGroupContainer.removedUserGroups.length; i++) {
+          pUserGroups.push(deleteUserGroupTask(adGroupContainer.removedUserGroups[i]));
+        }
 
-            // update/persist keyword lists
-            var pKeywordLists = [], pKeywordList;
-            for (i = 0; i < adGroupContainer.keywordLists.length; i++) {
-              pKeywordLists.push(saveKeywordsTask(adGroupContainer.keywordLists[i], campaignId, adGroup.id, adGroup.name));
-            }
-            for (i = 0; i < adGroupContainer.removedKeywordLists.length; i++) {
-              pKeywordLists.push(deleteKeywordsTask(adGroupContainer.removedKeywordLists[i]));
-            }
+        // update/persist keyword lists
+        var pKeywordLists = [], pKeywordList;
+        for (i = 0; i < adGroupContainer.keywordLists.length; i++) {
+          pKeywordLists.push(saveKeywordsTask(adGroupContainer.keywordLists[i], campaignId, adGroup.id, adGroup.name));
+        }
+        for (i = 0; i < adGroupContainer.removedKeywordLists.length; i++) {
+          pKeywordLists.push(deleteKeywordsTask(adGroupContainer.removedKeywordLists[i]));
+        }
 
-            var pList = [];
-            pList = pList.concat(pAds);
-            pList = pList.concat(pUserGroups);
-            pList = pList.concat(pKeywordLists);
+        var pList = [];
+        pList = pList.concat(pAds);
+        pList = pList.concat(pUserGroups);
+        pList = pList.concat(pKeywordLists);
 
-            async.series(pList, function (err, res) {
-              if (err) {
-                defered.reject(err);
-              } else {
-                $log.info("ad group saved");
-                // return the ad group container as the promise results
-                defered.resolve(adGroupContainer);
-              }
-            });
+        async.series(pList, function (err, res) {
+          if (err) {
+            defered.reject(err);
+          } else {
+            $log.info("ad group saved");
+            // return the ad group container as the promise results
+            defered.resolve(adGroupContainer);
+          }
+        });
       }
 
       AdGroupContainer.prototype.persist = function persist(campaignId) {

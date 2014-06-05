@@ -9,8 +9,8 @@
 
       $scope.done = function() {
         $scope.campaign.remove().then(function (){
-        $modalInstance.close();
-        $location.path("/");
+          $modalInstance.close();
+          $location.path("/");
         });
       };
 
