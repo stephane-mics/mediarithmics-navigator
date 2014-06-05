@@ -52,7 +52,7 @@
       DisplayAdService.initEditDisplayAd(creativeId).then(function () {
 
           $scope.displayAd = DisplayAdService.getDisplayAdValue();
-          $scope.previewUrl = $sce.trustAsResourceUrl("http://ads.mediarithmics.com/ads/render?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
+          $scope.previewUrl = $sce.trustAsResourceUrl("//ads.mediarithmics.com/ads/render?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
           var sizes = $scope.displayAd.format.split("x");
           $scope.previewWidth = parseInt(sizes[0])+10;
           $scope.previewHeight = parseInt(sizes[1])+10;
