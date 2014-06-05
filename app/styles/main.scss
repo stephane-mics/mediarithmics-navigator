@@ -542,6 +542,12 @@ form.mcs-full-page-form {
     .campaign-list-area {
       .campaign-list-table {
         @extend .mics-table;
+        tr .actions > * {
+          visibility:hidden;
+        }
+        tr:hover .actions > * {
+          visibility:visible;
+        }
       }
     }
   }
