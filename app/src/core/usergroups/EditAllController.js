@@ -13,7 +13,7 @@
       });
 
       $scope.createUserGroup = function (type) {
-          $location.path("/library/usergroups/" + type);
+        $location.path("/library/usergroups/" + type);
       };
 
       $scope.editUserGroup = function (userGroup, $event) {

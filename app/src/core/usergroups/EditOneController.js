@@ -36,7 +36,6 @@
         } else {
           promise = Restangular.all('user_groups').post($scope.userGroup, {organisation_id: Session.getCurrentWorkspace().organisation_id});
         }
-        console.log("posting user group name=%s", $scope.userGroup.name);
         promise.then(function success(campaignContainer){
           $log.info("success");
           $location.path("/library/usergroups");
