@@ -20,10 +20,27 @@
           group_type : type
         };
       } else {
-        $scope.userGroup = Restangular.one('user_groups', userGroupId).get().then(function (userGroup) {
+        Restangular.one('user_groups', userGroupId).get().then(function (userGroup) {
           $scope.userGroup = userGroup;
         });
+        Restangular.one('user_groups', userGroupId).all("generator_campaigns").getList().then(function (campaigns) {
+          $scope.generatorCampains = campaigns;
+        });
+        Restangular.one('user_groups', userGroupId).all("consumer_campaigns").getList().then(function (campaigns) {
+          $scope.consumerCampains = campaigns;
+        });
       }
+
+      $scope.goToCampaign = function (campaign) {
+        switch(campaign.type) {
+          case "DISPLAY":
+            $location.path("/campaigns/display/report/" + campaign.id + "/basic");
+            break;
+          default:
+            $location.path("/campaigns");
+            break;
+        }
+      };
 
       $scope.cancel = function () {
         $location.path("/library/usergroups");
