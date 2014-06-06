@@ -22,7 +22,7 @@
 
       $scope.currentPageDisplayCampaign = 1;
       $scope.currentPageEmailCampaign = 1;
-      $scope.itemsPerPage = 5;
+      $scope.itemsPerPage = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.organisationName = function (id ){ return Session.getOrganisationName(id);};
