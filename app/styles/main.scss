@@ -3,7 +3,11 @@
  */
 $icon-font-path: "/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/";
 // override bootstrap variables
-$font-family-sans-serif: "Source Sans Pro", Helvetica, Arial, sans-serif;
+$font-family-sans-serif: "LLCircularWeb-Book", "Source Sans Pro", Helvetica, Arial, sans-serif;
+
+@mixin use-bold-font() {
+  font-family : "LLCircularWeb-Medium", "Source Sans Pro", Helvetica, Arial, sans-serif;
+}
 
 $dark-blue: #092f56;
 $dark-blue-not : #ffffff;
@@ -70,10 +74,9 @@ $navbar-inverse-link-color: $body-bg;
 
   padding-top: 3px;
 
-  font-weight: bold;
+  @include use-bold-font();
 
 }
-
 
 
 .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
@@ -107,7 +110,7 @@ a, *[ng-click] {
     .mcs-workspace-label {
       color :$dark-blue-not;
       font-size : 15px;
-      font-weight: bold;
+      @include use-bold-font();
     }
 
     > .active > a {
@@ -129,7 +132,7 @@ a, *[ng-click] {
 .input-group-addon {
   background-color:$mcs-light-blue;
   color:$mcs-light-blue-not;
-  font-weight:bold;
+  @include use-bold-font();
 }
 
 .mics-table-toolbar {
@@ -326,7 +329,7 @@ form.mcs-full-page-form {
 
     input, select {
       @extend .form-control;
-      font-weight: bold;
+      @include use-bold-font();
       color: $dark-blue;
 
       /* force input variations */
@@ -486,7 +489,7 @@ form.mcs-full-page-form {
       background-color:$dark-blue;
       font-size : 15px;
       line-height: $line-height-computed;
-      font-weight: bold;
+      @include use-bold-font();
       padding: 15px 15px 15px 0;
       padding-top: 15px;
       margin: -20px -15px 15px;
@@ -544,7 +547,7 @@ form.mcs-full-page-form {
                     width: 240px;
                     background-color: $mcs-light-blue;
                     color: $mcs-light-blue-not;
-                    font-weight: bold;
+                    @include use-bold-font();
                 }
                 @extend .text-right;
             }
@@ -615,7 +618,7 @@ form.mcs-full-page-form {
                     width: 240px;
                     background-color: $mcs-light-blue;
                     color: $mcs-light-blue-not;
-                    font-weight: bold;
+                    @include use-bold-font();
                 }
                 @extend .text-right;
             }
@@ -639,7 +642,7 @@ form.mcs-full-page-form {
                 dd {
                 @extend .text-right;
                     font-size: $font-size-h1;
-                    font-weight: bold;
+                    @include use-bold-font();
                 }
                 dd + dt {
                   border-top: 1px solid $mcs-light-grey;
@@ -722,7 +725,7 @@ form.mcs-full-page-form {
                     }
                 }
                 .nav-tabs a {
-                  font-weight: bold;
+                  @include use-bold-font();
                   color : $dark-blue;
                 }
                 .nav-tabs .active a {
@@ -971,7 +974,7 @@ form.datamart {
 .list-group {
   .list-group-label {
     color: $dark-blue;
-    font-weight: bold;
+    @include use-bold-font();
     margin-bottom: 5px;
   }
 
@@ -980,7 +983,7 @@ form.datamart {
     background: $mcs-light-blue;
     border: 1px solid $mcs-light-blue;
     color: #ffffff;
-    font-weight: bold;
+    @include use-bold-font();
   }
 
   .list-group-cell-element {
