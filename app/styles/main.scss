@@ -168,9 +168,8 @@ a, *[ng-click] {
         @extend .text-right;
         .mics-btn {
           @extend .btn-sm;
-        }
-        .mics-btn + .mics-btn {
-          margin-left: 8px;
+          margin-left:8px;
+          margin-bottom:8px;
         }
       }
     }
@@ -470,9 +469,9 @@ form.mcs-full-page-form {
 
 .mcs-default-sidebar {
   /* override right and width to the good values but keep the overall behavior */
-  @include make-md-column(3);
+  @include make-xs-column(3);
   width:20% !important;
-  @include make-md-column-push(9);
+  @include make-xs-column-push(9);
   /* right: 20% !important; */
   left: 80% !important;
   ul {
@@ -496,7 +495,7 @@ form.mcs-full-page-form {
 
 .sidebar-placeholder {
   /* override right and width to the good values but keep the overall behavior */
-  @include make-md-column(3);
+  @include make-xs-column(3);
   width:20% !important;
   background-color: $mcs-light-grey;
 
@@ -508,9 +507,9 @@ form.mcs-full-page-form {
 
 .mcs-default-content {
   /* override right and width to the good values but keep the overall behavior */
-  @include make-md-column-pull(3);
+  @include make-xs-column-pull(3);
   right: 20% !important;
-  @include make-md-column(9, 100px);
+  @include make-xs-column(9, 100px);
   width:80% !important;
 }
 
@@ -519,7 +518,7 @@ form.mcs-full-page-form {
   margin-bottom: 15px;
   @include make-row();
   > * {
-    @include make-md-column(12);
+    @include make-xs-column(12);
   }
 }
 
@@ -536,10 +535,10 @@ form.mcs-full-page-form {
     .campaign-list-controller {
       @include make-row();
       .campaign-list-actions {
-            @include make-md-column(6);
+            @include make-sm-column(6);
       }
       .campaign-list-date-controller {
-                @include make-md-column(6);
+                @include make-sm-column(6);
                 min-width: 270px;
                 input.range {
                     width: 240px;
@@ -563,7 +562,15 @@ form.mcs-full-page-form {
 
 .mcs-default-sidebar {
   .mcs-campaign-type {
-    padding-left:50px;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    & > img {
+      width:100%;
+    }
+    & > h4 {
+      display: inline-block;
+    }
   }
 }
 
@@ -645,6 +652,7 @@ form.mcs-full-page-form {
                   dt {
                     border-top: 1px solid $mcs-light-grey;
                   }
+                  margin-bottom: 20px;
                 }
             }
 
@@ -753,7 +761,7 @@ table.fragment-list-creatives {
   }
   td {
     /* padding : 0 5px; */
-    line-height : 50px !important;
+    /* line-height : 50px !important; */
   }
   .thumbnail {
     margin : 0;
@@ -778,12 +786,12 @@ table.fragment-list-creatives {
 .choose-existing-ads {
   .filter-size {
     @extend .pull-left;
-    @include make-md-column(5);
+    @include make-sm-column(5);
     @extend .form-group;
   }
   .filter-name {
     @extend .pull-right;
-    @include make-md-column(7);
+    @include make-sm-column(7);
     @extend .form-group;
   }
 
@@ -792,7 +800,7 @@ table.fragment-list-creatives {
   }
 
   .modal-body .filtered-content {
-    @include make-md-column(12);
+    @include make-sm-column(12);
     max-height : 300px; /* TODO : arbitrary value */
     overflow: auto;
   }
