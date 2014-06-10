@@ -23,6 +23,17 @@
         var self = this;
 
         Restangular.one('connected_user').get().then(function(userProfile){
+
+          // TODO : remove this hack
+          for(var i = 0; i < userProfile.workspaces.length; i++) {
+            var workspace = userProfile.workspaces[i];
+            if (workspace.organisation_id === "501") {
+              workspace.datamart_id = "8";
+            } else {
+              workspace.datamart_id = "0";
+            }
+          }
+
           self.userProfile = userProfile;
           self.currentWorkspace = userProfile.default_workspace;
           self.initialized = true;

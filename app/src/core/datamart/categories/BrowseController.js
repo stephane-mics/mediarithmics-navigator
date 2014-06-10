@@ -5,15 +5,14 @@
   var module = angular.module('core/datamart');
 
   module.controller('core/datamart/categories/BrowseController', [
-    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common',
+    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
 
-    function($scope, $routeParams, Restangular, Common) {
+    function($scope, $routeParams, Restangular, Common, Session) {
 
       $scope.baseUrl = '#/datamart/categories';
       $scope.itemUrl = '#/datamart/items';
 
-      // TODO: get organisationId from session, get appropriate datamartId
-      $scope.datamartId = 8;
+      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
       $scope.categoriesPerPage = 10;
 
       if ($routeParams.categoryId) {

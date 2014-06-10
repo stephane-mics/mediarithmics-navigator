@@ -10,10 +10,7 @@
 
       $scope.baseUrl = '#' + Common.locations.current.href;
 
-      // TODO: get organisationId from session, get appropriate datamartId
-      var workspace = Session.getCurrentWorkspace();
-      if (workspace.organisation_id == "501") $scope.datamartId = 8;
-      else $scope.datamartId = 0;
+      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
 
       $scope.refreshUsers = function (offset, limit) {
         Restangular.one('datamarts', $scope.datamartId).all('users/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit}).then(function (result) {

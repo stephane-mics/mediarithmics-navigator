@@ -5,13 +5,14 @@
   var module = angular.module('core/datamart');
 
   module.controller('core/datamart/items/ViewOneController', [
-    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common',
-    function($scope, $routeParams, Restangular, Common) {
+    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
+    function($scope, $routeParams, Restangular, Common, Session) {
 
       $scope.categoryUrl = '#/datamart/categories' ;
 
       // pass datamartId from other controller
-      var datasheets = Restangular.one('datamarts', 8).one('datasheets', $routeParams.itemId);
+      var datamartId = Session.getCurrentWorkspace().datamart_id;
+      var datasheets = Restangular.one('datamarts', datamartId).one('datasheets', $routeParams.itemId);
       datasheets.get().then(function (result) {
         $scope.datasheet = result;
 

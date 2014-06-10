@@ -5,13 +5,12 @@
   var module = angular.module('core/datamart');
 
   module.controller('core/datamart/items/ViewAllController', [
-    '$scope', '$route', 'Restangular', 'core/datamart/common/Common',
-    function($scope, $route, Restangular, Common) {
+    '$scope', '$route', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
+    function($scope, $route, Restangular, Common, Session) {
 
       $scope.baseUrl = '#' + Common.locations.current.href;
 
-      // TODO: get organisationId from session, get appropriate datamartId
-      $scope.datamartId = 8;
+      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
 
       // fetch market definitions
       Restangular.one('datamarts', $scope.datamartId).one('default-catalog/markets/').getList().then(function (definedMarkets) {

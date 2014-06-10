@@ -5,14 +5,13 @@
   var module = angular.module('core/datamart');
 
   module.controller('core/datamart/users/ViewOneController', [
-    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'jquery',
-    function($scope, $routeParams, Restangular, Common, $) {
+    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
+    function($scope, $routeParams, Restangular, Common, $, Session) {
 
       $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
       $scope.INITIAL_VISITS_PER_AGENT = 1;
 
-      // TODO: get organisationId from session, get appropriate datamartId
-      $scope.datamartId = 8;
+      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
 
       $scope.agentUrl = "#/datamart/users/" + $routeParams.userId + "/agents";
       $scope.itemUrl = "#datamart/items/";
