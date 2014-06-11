@@ -7,8 +7,8 @@
    */
 
   module.factory("core/campaigns/DisplayCampaignContainer", [
-    "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log",
-    function($q, Restangular, IdGenerator, async, AdGroupContainer, $log) {
+    "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log", 'core/common/promiseUtils',
+    function($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils) {
 
 
       var DisplayCampaignContainer = function DisplayCampaignContainer(templateGroupId, templateArtifactId) {
@@ -17,8 +17,8 @@
 
         this.adGroups = [];
         this.removedAdGroups = [];
-        this.inventorySources = undefined;
-        this.addedInventorySources = [];
+        this.inventorySources = [];
+        this.removedInventorySources = [];
 
         this.value = {type:"DISPLAY", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
         $log.info("DisplayCampaignContainer", this.value);
@@ -31,13 +31,14 @@
         // ad group ids
         var campaignResourceP = root.get();
         var AdGroupsListP = root.getList('ad_groups');
+        var inventorySourcesP = root.getList('inventory_sources');
 
         var self = this;
 
         var defered = $q.defer();
 
 
-        $q.all([campaignResourceP, AdGroupsListP])
+        $q.all([campaignResourceP, AdGroupsListP, inventorySourcesP])
         .then( function (result) {
           self.creationMode = false;
           self.value = result[0];
@@ -46,6 +47,7 @@
 //          }
           self.id = self.value.id;
           var adGroups = result[1];
+          self.inventorySources = result[2];
 
           var adGroupsP = [];
           if (adGroups.length > 0) {
@@ -89,23 +91,12 @@
       };
 
       DisplayCampaignContainer.prototype.getInventorySources = function () {
-        if(this.inventorySources === undefined && !this.creationMode) {
-          this.inventorySources =  this.value.getList('inventory_sources');
-
-        } else if (this.inventorySources === undefined) {
-          this.inventorySources = {$object:[]};
-
-        }
-        return this.inventorySources.$object;
-
+        return this.inventorySources;
       };
 
 
       DisplayCampaignContainer.prototype.addInventorySource = function (inventorySource) {
-        this.addedInventorySources.push(inventorySource);
-        if(this.inventorySources !== undefined) {
-          this.inventorySources.$object.push(inventorySource);
-        }
+        this.inventorySources.push(inventorySource);
       };
 
 
@@ -147,8 +138,9 @@
 
 
 
-      var saveAdGroups = function (self, adGroups, defered) {
+      var saveAdGroups = function (self, adGroups) {
 
+        var defered = $q.defer();
         async.mapSeries(adGroups, function(adGroup, callback) {
           var action;
 
@@ -177,11 +169,92 @@
             defered.resolve(self);
           }
         });
+
+        return defered.promise;
       };
+
+      /**
+       * Create a task (to be used by async.series) to delete the given inventory source.
+       * @param {Object} inventorySource the inventory source to delete.
+       * @return {Function} the task.
+       */
+      function deleteInventorySourceTask(inventorySource) {
+        return function (callback) {
+          $log.info("deleting inventorySource", inventorySource.id);
+          var promise;
+          if (inventorySource.id && inventorySource.id.indexOf('T') === -1) {
+            // delete the inventorySource
+            promise = inventorySource.remove();
+          } else {
+            // the inventorySource was not persisted, nothing to do
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+      /**
+       * Create a task (to be used by async.series) to save the given inventory source.
+       * @param {Object} inventorySource the inventory source to save.
+       * @param {String} campaignId the id of the current campaign.
+       * @return {Function} the task.
+       */
+      function saveInventorySourceTask(inventorySource, campaignId) {
+        return function (callback) {
+          $log.info("saving inventorySource", inventorySource.id);
+          var promise;
+          if ((inventorySource.id && inventorySource.id.indexOf('T') === -1) || (typeof(inventorySource.modified) !== "undefined")) {
+            // update the inventory source
+            // TODO 501 Not Implemented
+            // promise = inventorySource.put();
+
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+
+          } else {
+            promise = Restangular
+            .one('display_campaigns', campaignId)
+            .post('inventory_sources', inventorySource);
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+
+      var saveInventorySources = function (self, campaignId) {
+        var deferred = $q.defer(), tasks = [], i;
+        for(i = 0; i < self.inventorySources.length ; i++) {
+          tasks.push(saveInventorySourceTask(self.inventorySources[i], campaignId));
+        }
+        for(i = 0; i < self.removedInventorySources.length ; i++) {
+          tasks.push(deleteInventorySourceTask(self.removedInventorySources[i]));
+        }
+
+        async.series(tasks, function (err, res) {
+          if (err) {
+            deferred.reject(err);
+          } else {
+            $log.info("ad group saved");
+            // return the ad group container as the promise results
+            deferred.resolve(self);
+          }
+
+        });
+        return deferred.promise;
+      };
+
+      function persistDependencies(self, campaignId, adGroups) {
+        return saveInventorySources(self, campaignId).then(function () {
+          return saveAdGroups(self, adGroups);
+        });
+      }
 
       DisplayCampaignContainer.prototype.persist = function persist() {
 
-        var defered = $q.defer();
+        var deferred = $q.defer();
 
         var self = this;
 
@@ -190,47 +263,34 @@
 
           self.id = campaign.id;
 
-          var pArray = [];
-
-
-          var adGroups = self.adGroups;
-          saveAdGroups(self, adGroups, defered);
+          persistDependencies.call(null, self, campaign.id, self.adGroups).then(function() {
+            deferred.resolve(campaign);
+          }, deferred.reject);
 
         }), function(reason) {
-          defered.reject(reason);
+          deferred.reject(reason);
         });
 
-        return defered.promise;
+        return deferred.promise;
       };
 
       DisplayCampaignContainer.prototype.update = function update() {
 
-        var defered = $q.defer();
+        var deferred = $q.defer();
 
         var self = this;
 
         this.value.put().then(function(campaign) {
 
-          var adGroups = self.adGroups;
-
-          if (self.addedInventorySources.length !== 0) {
-            async.mapSeries(self.addedInventorySources, function(inventorySource, callback) {
-              self.inventorySources.$object.post(inventorySource).then(function(result) {
-                callback(null, result);
-              }, function(reason) {
-                callback(new Error(reason));
-              });
-            });
-          }
-
-
-          saveAdGroups(self, adGroups, defered);
+          persistDependencies.call(null, self, campaign.id, self.adGroups).then(function() {
+            deferred.resolve(campaign);
+          }, deferred.reject);
 
         }, function(reason) {
-          defered.reject(reason);
+          deferred.reject(reason);
         });
 
-        return defered.promise;
+        return deferred.promise;
       };
 
       return DisplayCampaignContainer;

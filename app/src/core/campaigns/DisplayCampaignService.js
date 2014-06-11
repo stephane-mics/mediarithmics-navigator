@@ -23,8 +23,11 @@
        */
 
       service.getDisplayNetworkCampaign = function () {
+        return this.getDisplayNetworkCampaignPromise().$object;
+      };
+      service.getDisplayNetworkCampaignPromise = function () {
         var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
-        return Restangular.all('display_network_campaign').getList(params).$object;
+        return Restangular.all('display_network_campaign').getList(params);
       };
 
       service.getDeepCampaignView = function (campaignId) {

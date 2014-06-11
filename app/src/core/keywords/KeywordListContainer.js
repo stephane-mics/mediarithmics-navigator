@@ -5,21 +5,8 @@
   var module = angular.module('core/keywords');
 
   module.factory('core/keywords/KeywordListContainer', [
-    "Restangular", "lodash", "core/common/auth/Session", "$log", "$location", "$q", "async",
-    function (Restangular, _, Session, $log, $location, $q, async) {
-
-      /**
-       * Bind a promise to a callback : call the callback when the promise is resolved.
-       * @param {$q} promise the angular promise
-       * @param {Function} callback the function(err, res) to call.
-       */
-      function bindPromiseCallback(promise, callback) {
-        promise.then(function (res) {
-          callback(null, res);
-        }, function(err) {
-          callback(err, null);
-        });
-      }
+    "Restangular", "lodash", "core/common/auth/Session", "$log", "$location", "$q", "async", 'core/common/promiseUtils',
+    function (Restangular, _, Session, $log, $location, $q, async, promiseUtils) {
 
       /**
        * Create a task (to be used by async.series) to create a keyword expression and bind it to a keyword list.
@@ -41,7 +28,7 @@
             .post(expr);
           }
           if (promise) {
-            bindPromiseCallback(promise, callback);
+            promiseUtils.bindPromiseCallback(promise, callback);
           } else {
             callback(null, null);
           }

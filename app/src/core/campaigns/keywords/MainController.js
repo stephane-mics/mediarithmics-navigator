@@ -9,7 +9,7 @@
     function ($scope, DisplayCampaignContainer, DisplayCampaignService, $routeParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
       var campaignId = $routeParams.campaign_id;
 
-      function initView () {
+      function initView (displayNetworkCampaigns) {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
 
         $scope.isCreationMode = DisplayCampaignService.isCreationMode();
@@ -22,6 +22,18 @@
           $scope.adGroupId = DisplayCampaignService.addAdGroup();
           $scope.adGroup = DisplayCampaignService.getAdGroupValue($scope.adGroupId);
         }
+
+        if($scope.isCreationMode) {
+          for(var i = 0; i < displayNetworkCampaigns.length; i++) {
+            var displayNetworkCampaign = displayNetworkCampaigns[i];
+            var newInventorySource = {
+              display_network_campaign_id: displayNetworkCampaign.id,
+              display_network_name: displayNetworkCampaign.display_network_name
+            };
+            DisplayCampaignService.addInventorySource(newInventorySource);
+          }
+        }
+
 
         $scope.keywordsList = new KeywordListContainer();
         var keywordListSelections = DisplayCampaignService.getKeywordLists($scope.adGroupId);
@@ -41,15 +53,15 @@
         // TODO load the campaign (no effect if already in cache or if this is a temporary id)
         if (!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
           if (!campaignId || DisplayCampaignService.isTemporaryId(campaignId)) {
-            DisplayCampaignService.initCreateCampaign(template).then(function () {
-              initView();
-            });
+            DisplayCampaignService.initCreateCampaign(template)
+            .then(_.bind(DisplayCampaignService.getDisplayNetworkCampaignPromise, DisplayCampaignService))
+            .then(initView);
           } else {
             DisplayCampaignService
             .initEditCampaign(campaignId, template)
-            .then(_.bind(DisplayCampaignService.loadAdGroups, DisplayCampaignService)).then(function () {
-              initView();
-            });
+            .then(_.bind(DisplayCampaignService.loadAdGroups, DisplayCampaignService))
+            .then(_.bind(DisplayCampaignService.getDisplayNetworkCampaignPromise, DisplayCampaignService))
+            .then(initView);
           }
         }
       });

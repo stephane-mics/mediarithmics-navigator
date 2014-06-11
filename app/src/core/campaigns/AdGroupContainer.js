@@ -4,8 +4,8 @@
   var module = angular.module('core/campaigns');
 
   module.factory("core/campaigns/AdGroupContainer", [
-    "$q", "Restangular", "jquery", "core/common/IdGenerator", "async", "$log", 'core/common/auth/Session', 'lodash',
-    function ($q, Restangular, $, IdGenerator, async, $log, Session, _) {
+    "$q", "Restangular", "jquery", "core/common/IdGenerator", "async", "$log", 'core/common/auth/Session', 'lodash', 'core/common/promiseUtils',
+    function ($q, Restangular, $, IdGenerator, async, $log, Session, _, promiseUtils) {
       /*
        * Ad Group Container
        */
@@ -153,18 +153,6 @@
       };
 
 
-      /**
-       * Bind a promise to a callback : call the callback when the promise is resolved.
-       * @param {$q} promise the angular promise
-       * @param {Function} callback the function(err, res) to call.
-       */
-      function bindPromiseCallback(promise, callback) {
-        promise.then(function (res) {
-          callback(null, res);
-        }, function(err) {
-          callback(err, null);
-        });
-      }
 
       /**
        * Create a task (to be used by async.series) to save the given ad.
@@ -187,7 +175,7 @@
             .one('ad_groups', adGroupId)
             .post('ads', ad);
           }
-          bindPromiseCallback(promise, callback);
+          promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
@@ -209,7 +197,7 @@
             promise = deferred.promise;
             deferred.resolve();
           }
-          bindPromiseCallback(promise, callback);
+          promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
@@ -235,7 +223,7 @@
             .one('ad_groups', adGroupId)
             .post('user_groups', userGroup);
           }
-          bindPromiseCallback(promise, callback);
+          promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
@@ -257,7 +245,7 @@
             promise = deferred.promise;
             deferred.resolve();
           }
-          bindPromiseCallback(promise, callback);
+          promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
@@ -283,7 +271,7 @@
             .one('ad_groups', adGroupId)
             .post('keyword_lists', keywordList);
           }
-          bindPromiseCallback(promise, callback);
+          promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
@@ -305,7 +293,7 @@
             promise = deferred.promise;
             deferred.resolve();
           }
-          bindPromiseCallback(promise, callback);
+          promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
