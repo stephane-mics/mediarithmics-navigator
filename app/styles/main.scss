@@ -829,7 +829,20 @@ table.fragment-list-keyword-list {
   @extend .mics-table;
 }
 
+
 .choose-existing-keyword-list {
+  .modal-body {
+    @include make-md-column(12);
+    max-height : 300px; /* TODO : arbitrary value */
+    overflow: auto;
+  }
+}
+
+table.fragment-list-placement-list {
+  @extend .mics-table;
+}
+
+.choose-existing-placement-list {
   .modal-body {
     @include make-md-column(12);
     max-height : 300px; /* TODO : arbitrary value */

@@ -50,6 +50,14 @@
         return DisplayCampaignService.removeKeywordList(adGroupId, keywordList);
       };
 
+      $scope.getPlacementLists = function (placementListId) {
+        return DisplayCampaignService.getPlacementLists(placementListId);
+      };
+
+      $scope.deletePlacementList = function (placementList) {
+        return DisplayCampaignService.removePlacementList(adGroupId, placementList);
+      };
+
       $scope.deleteUserGroup = function (userGroupId) {
         return DisplayCampaignService.removeUserGroup(adGroupId, userGroupId);
       };
@@ -70,6 +78,12 @@
       $scope.$on("mics-keyword-list:selected", function (event, params) {
         DisplayCampaignService.addKeywordList(adGroupId, {
           keyword_list_id : params.keywordList.id
+        });
+      });
+
+      $scope.$on("mics-placement-list:selected", function (event, params) {
+        DisplayCampaignService.addPlacementList(adGroupId, {
+          placement_list_id : params.placementList.id
         });
       });
 

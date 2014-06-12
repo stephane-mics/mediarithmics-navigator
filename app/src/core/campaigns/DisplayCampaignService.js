@@ -208,6 +208,21 @@
         this.campaignCtn.getAdGroup(adGroupId).removeKeywordList(keywordList);
       };
 
+      /*
+       * Keyword list methods
+       */
+      service.getPlacementLists = function(adGroupId) {
+        return this.campaignCtn.getAdGroup(adGroupId).placementLists;
+      };
+
+      service.addPlacementList = function (adGroupId, placementList) {
+        return this.campaignCtn.getAdGroup(adGroupId).addPlacementList(placementList);
+      };
+
+      service.removePlacementList = function(adGroupId, placementList) {
+        this.campaignCtn.getAdGroup(adGroupId).removePlacementList(placementList);
+      };
+
 
 
 

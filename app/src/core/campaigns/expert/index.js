@@ -10,7 +10,8 @@
     'core/adgroups',
     'core/usergroups',
     'ui.bootstrap',
-    "core/keywords"
+    "core/keywords",
+    "core/placementlists"
   ]);
 
 })();

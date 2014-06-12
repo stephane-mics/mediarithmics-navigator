@@ -120,7 +120,7 @@
           </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="keywordListSelection in getKeywordLists(adGroup.id)" fetch-keyword-list="keywordListSelection.keyword_list_id as keywordList with expressions">
+        <tr ng-repeat="keywordListSelection in getKeywordLists(adGroup.id)">
           <td>{{keywordList.name}}</td>
           <td>
             <!-- {{keywordListExpressions|json}} -->
@@ -135,6 +135,39 @@
         </tbody>
       </table>
     </div>
+
+      <h4>Placements lists</h4>
+      <div class="mcs-form-group">
+          <div ng-include="'src/core/placementlists/choose-placement-list.html'"></div>
+
+          <table class="fragment-list-keyword-list" ng-show="getPlacementLists(adGroup.id).length">
+              <thead>
+              <tr>
+                  <th>Placement list name</th>
+                  <th>Target or Exclude</th>
+                  <!-- <th>Total Users</th> -->
+                  <!-- <th>Duration (days)</th> -->
+                  <th class="actions">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="placementListSelection in getPlacementLists(adGroup.id)" fetch-placement-list="placementListSelection.placement_list_id as placementList with expressions">
+                  <td>{{placementList.name}}</td>
+
+                  <td>
+                      <!-- TODO -->
+                      <input type="checkbox" ng-model="userGroup.exclude" />
+
+                      <span ng-show="userGroup.exclude">Exclude</span>
+                      <span ng-show="!userGroup.exclude">Target</span>
+                  </td>
+                  <td class="actions">
+                      <button class="mics-btn mics-btn-delete" ng-click="deletePlacementList(placementListSelection)">Delete</button>
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
 
     <!-- save or cancel -->
     <div class="mcs-actions-group">

@@ -29,6 +29,9 @@
         this.keywordLists = [];
         this.removedKeywordLists = [];
 
+        this.placementLists = [];
+        this.removedPlacementLists = [];
+
       };
 
 
@@ -37,13 +40,13 @@
         var pAds = this.value.getList('ads');
         var pUserGroups = this.value.getList('user_groups');
         var pKeywords = this.value.getList('keyword_lists');
-        //var pPlacements = root.getList('placement_lists');
+        var pPlacements = this.value.getList('placement_lists');
 
         var self = this;
 
         var defered = $q.defer();
         //var list = [pValue, pAds, pUserGroups, pKeywords, pPlacements];
-        var list = [pValue, pAds, pUserGroups, pKeywords];
+        var list = [pValue, pAds, pUserGroups, pKeywords, pPlacements];
 
         $q.all(list)
           .then(function (result) {
@@ -53,7 +56,7 @@
             self.userGroups = result[2];
             self.keywordLists =  result[3];
 
-            //self.placements = result[4];
+            self.placementLists = result[4];
 
             // return the loaded container
             defered.resolve(self);
@@ -124,6 +127,33 @@
             this.keywordLists.splice(i, 1);
             if (keywordList.id && keywordList.id.indexOf("T") === -1) {
               this.removedKeywordLists.push(keywordList);
+            }
+            return;
+          }
+        }
+      };
+
+
+      AdGroupContainer.prototype.addPlacementList = function addPlacementList(placementListSelection) {
+
+        var found = _.find(this.placementLists, function (kw) {
+          return kw.placement_list_id === placementListSelection.placement_list_id;
+        });
+        if(!found) {
+          placementListSelection.id = IdGenerator.getId();
+          this.placementLists.push(placementListSelection);
+        }
+
+        return placementListSelection.id || found.id;
+      };
+
+      AdGroupContainer.prototype.removePlacementList = function removePlacementList(placementList) {
+
+        for (var i = 0; i < this.placementLists.length; i++) {
+          if (this.placementLists[i].placement_list_id === placementList.placement_list_id) {
+            this.placementLists.splice(i, 1);
+            if (placementList.id && placementList.id.indexOf("T") === -1) {
+              this.removedPlacementLists.push(placementList);
             }
             return;
           }
@@ -213,7 +243,7 @@
         return function (callback) {
           $log.info("saving user group", userGroup.id);
           var promise;
-          if ((userGroup.id.indexOf('T') === -1) || (typeof(userGroup.modified) !== "undefined")) {
+          if ((userGroup.id && userGroup.id.indexOf('T') === -1) || (typeof(userGroup.modified) !== "undefined")) {
             // update the user group
             promise = userGroup.put();
 
@@ -261,15 +291,15 @@
         return function (callback) {
           $log.info("saving keyword list", keywordList.id);
           var promise;
-          if ((keywordList.id.indexOf('T') === -1) || (typeof(keywordList.modified) !== "undefined")) {
+          if ((keywordList.id && keywordList.id.indexOf('T') === -1) || (typeof(keywordList.modified) !== "undefined")) {
             // update the keyword list
             promise = keywordList.put();
 
           } else {
             // create the keyword list
             promise = Restangular.one('display_campaigns', campaignId)
-            .one('ad_groups', adGroupId)
-            .post('keyword_lists', keywordList);
+              .one('ad_groups', adGroupId)
+              .post('keyword_lists', keywordList);
           }
           promiseUtils.bindPromiseCallback(promise, callback);
         };
@@ -289,6 +319,54 @@
             promise = keywordList.remove();
           } else {
             // the keyword list selection was not persisted, nothing to do
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+      /**
+       * Create a task (to be used by async.series) to save the given placements list.
+       * @param {Object} placementList the placements list to save.
+       * @param {String} campaignId the id of the current campaign.
+       * @param {String} adGroupId the id of the current ad group.
+       * @param {String} adGroupName the name of the current ad group.
+       * @return {Function} the task.
+       */
+      function savePlacementTask(placementList, campaignId, adGroupId, adGroupName) {
+        return function (callback) {
+          $log.info("saving placement list", placementList.id);
+          var promise;
+          if ((placementList.id && placementList.id.indexOf('T') === -1) || (typeof(placementList.modified) !== "undefined")) {
+            // update the placement list
+            promise = placementList.put();
+
+          } else {
+            // create the placement list
+            promise = Restangular.one('display_campaigns', campaignId)
+              .one('ad_groups', adGroupId)
+              .post('placement_lists', placementList);
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+      /**
+       * Create a task (to be used by async.series) to delete the given placements list.
+       * @param {Object} placementList the placements list to delete.
+       * @return {Function} the task.
+       */
+      function deletePlacementTask(placementList) {
+        return function (callback) {
+          $log.info("deleting placement list", placementList.id);
+          var promise;
+          if (placementList.id && placementList.id.indexOf('T') === -1) {
+            // delete the placement list
+            promise = placementList.remove();
+          } else {
+            // the placement list selection was not persisted, nothing to do
             var deferred = $q.defer();
             promise = deferred.promise;
             deferred.resolve();
@@ -319,7 +397,7 @@
         }
 
         // update/persist keyword lists
-        var pKeywordLists = [], pKeywordList;
+        var pKeywordLists = [];
         for (i = 0; i < adGroupContainer.keywordLists.length; i++) {
           pKeywordLists.push(saveKeywordsTask(adGroupContainer.keywordLists[i], campaignId, adGroup.id, adGroup.name));
         }
@@ -327,10 +405,20 @@
           pKeywordLists.push(deleteKeywordsTask(adGroupContainer.removedKeywordLists[i]));
         }
 
+        // update/persist keyword lists
+        var pPlacementLists = [];
+        for (i = 0; i < adGroupContainer.placementLists.length; i++) {
+          pPlacementLists.push(savePlacementTask(adGroupContainer.placementLists[i], campaignId, adGroup.id, adGroup.name));
+        }
+        for (i = 0; i < adGroupContainer.removedPlacementLists.length; i++) {
+          pPlacementLists.push(deletePlacementTask(adGroupContainer.removedPlacementLists[i]));
+        }
+
         var pList = [];
         pList = pList.concat(pAds);
         pList = pList.concat(pUserGroups);
         pList = pList.concat(pKeywordLists);
+        pList = pList.concat(pPlacementLists);
 
         async.series(pList, function (err, res) {
           if (err) {
