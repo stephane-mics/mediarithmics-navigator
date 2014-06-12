@@ -47,6 +47,10 @@
         // TODO
         $scope.campaign.currency_code = "EUR";
         $scope.campaign.max_budget_period = "WEEK";
+        $scope.campaign.max_bid_price = 1;
+        $scope.campaign.total_impression_capping = 10;
+        $scope.campaign.per_day_impression_capping = 10;
+
       }
 
       CampaignPluginService.getCampaignTemplate("com.mediarithmics.campaign.display", "keywords-targeting-template").then(function (template) {
