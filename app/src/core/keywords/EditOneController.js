@@ -8,16 +8,20 @@
   // TODO retreive and use angular.module('keywords') instead ?
 
   module.controller('core/keywords/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash',
-    function($scope, $log, Restangular, Session, _) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal',
+    function($scope, $log, Restangular, Session, _, $modal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
 
       // $scope.keywordsList is a KeywordListContainer
 
-      $scope.newKeywordExpression = {
-        expression : "",
-        type : "include"
+      $scope.newPositiveKeywordExpression = {
+        expression : ""
       };
+      $scope.newNegativeKeywordExpression = {
+        expression : ""
+      };
+
+      $scope.statsLoading = false;
 
       $scope.negativeExpressionsFilter = function (expression) {
         return expression.exclude === true;
@@ -28,7 +32,18 @@
       };
 
       $scope.refreshStats = function () {
-        $log.log("refreshStats has not been implemented yet");
+        var positiveExpressions = _.filter($scope.keywordsList.keywordExpressions, $scope.positiveExpressionsFilter);
+        var negativeExpressions = _.filter($scope.keywordsList.keywordExpressions, $scope.negativeExpressionsFilter);
+
+        $scope.statsLoading = true;
+        Restangular.all('keyword_lists').all('statistics').post({
+          positive_expressions:_.pluck(positiveExpressions, 'expression'),
+          negative_expressions:_.pluck(negativeExpressions, 'expression')
+        },{organisation_id:organisationId})
+        .then(function (stats) {
+          $scope.stats = stats;
+          $scope.statsLoading = false;
+        });
         return false;
       };
 
@@ -36,8 +51,8 @@
         $event.preventDefault();
       };
 
-      $scope.addKeywordExpression = function (kw, newKeywordExpression) {
-        if (kw.addExpression(newKeywordExpression.expression, newKeywordExpression.type === "exclude")) {
+      $scope.addKeywordExpression = function (kw, newKeywordExpression, type) {
+        if (kw.addExpression(newKeywordExpression.expression, type)) {
           newKeywordExpression.expression = "";
         }
       };
@@ -45,6 +60,28 @@
       $scope.removeKeywordExpression = function(kw, keywordExpression) {
         kw.removeExpression(keywordExpression.expression, keywordExpression.exclude);
       };
+
+      $scope.importKeywordExpressions = function (kw, typeStr) {
+        var childScope = $scope.$new(true);
+        childScope.type = typeStr;
+        $modal.open({
+          templateUrl: 'src/core/keywords/ImportList.html',
+          scope : childScope,
+          backdrop : 'static',
+          controller: 'core/keywords/ImportListController'
+        });
+      };
+
+      $scope.$on("mics-keywords-list:import", function (event, data) {
+        var exclude = data.type === "exclude";
+        if (data.deleteExisting) {
+          $scope.keywordsList.removeAllExpressions(exclude);
+        }
+        for(var i = 0; i < data.keywords.length; i++) {
+          $scope.keywordsList.addExpression(data.keywords[i], exclude);
+        }
+
+      });
     }
   ]);
 })();

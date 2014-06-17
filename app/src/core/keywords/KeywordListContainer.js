@@ -160,6 +160,23 @@
             this.keywordExpressions.splice(idx, 1);
             this.removedExpressions.push(obj);
           }
+        },
+
+        /**
+         * Remove all the expressions of a certain type (include or exclude) from the keywords expressions.
+         * @param {Boolean} exclude the type to remove.
+         */
+        removeAllExpressions : function (exclude) {
+          var toKeep = _.filter(this.keywordExpressions, function (expr) {
+            return expr.exclude !== exclude;
+          });
+          var toDelete = _.filter(this.keywordExpressions, function (expr) {
+            return expr.exclude === exclude;
+          });
+
+          this.keywordExpressions = toKeep;
+
+          this.removedExpressions = this.removedExpressions.concat(toDelete);
         }
       };
 

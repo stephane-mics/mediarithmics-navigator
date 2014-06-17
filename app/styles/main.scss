@@ -397,6 +397,11 @@ form.mcs-full-page-form {
   min-height: 100px;
 }
 
+.modal-dialog .import-keywords-list textarea {
+  width: 100%;
+  min-height: 300px;
+}
+
 .dropdown-toggle.mics-btn-add {
   & + ul.dropdown-menu {
     padding:0;
