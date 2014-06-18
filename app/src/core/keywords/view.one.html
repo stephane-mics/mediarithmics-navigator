@@ -18,8 +18,8 @@
     </div>
     <div class="keywords-expressions-block well">
       <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : positiveExpressionsFilter" class="positive-keyword-expression">
-        {{ keywordExpression.expression }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
+        {{ keywordExpression.expression }}
       </div>
     </div>
 
@@ -38,8 +38,8 @@
     </div>
     <div class="keywords-expressions-block well">
       <div ng-repeat="keywordExpression in keywordsList.keywordExpressions | filter : negativeExpressionsFilter" class="negative-keyword-expression">
-        {{ keywordExpression.expression }}
         <a ng-click="removeKeywordExpression(keywordsList, keywordExpression)" type="button" class="close" aria-hidden="true">&times;</a>
+        {{ keywordExpression.expression }}
       </div>
     </div>
   </div>
@@ -67,11 +67,6 @@
           </tr>
           </tbody>
         </table>
-        <!-- <dl class="dl-horizontal"> -->
-          <!-- <span ng-repeat="entry in stats.stats|limitTo:20"> -->
-            <!-- <dt>{{entry.domain}}</dt> <dd>{{entry.frequency|approxNumber}}</dd> -->
-          <!-- </span> -->
-        <!-- </dl> -->
       </div>
     </div>
   </div>
