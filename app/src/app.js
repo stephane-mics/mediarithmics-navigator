@@ -195,52 +195,6 @@
   ]);
 
 
-  navigatorApp.config(['$httpProvider', function ($httpProvider) {
-
-    $httpProvider.interceptors.push(['$q', function ($q){
-
-      return {
-        'response' : function(response) {
-          return response;
-        },
-
-        'responseError': function(rejection) {
-          return rejection;
-
-          /*
-
-             if (rejection.status == 401) {
-
-          // check if the error is an AccesTokenCreationError or a RefreshTokenCreationError
-
-          // check if the AuthenticationService is already trying to reconnect
-
-          AuthenticationService.createAccessToken().then(function() {
-          // success
-          console.log("http interceptor : acces token renewed successfully");
-
-          // resend the queue requests
-
-          },
-          function() {
-          // failure : redirect to login page
-
-          // flush the queue requests
-
-          // redirect
-          $location.path('/login');
-          });
-
-
-          }
-
-*/
-        }
-      };
-    }]);
-  }]);
-
-
   /* work to be performed after module loading */
 
   // add an event listener on $routeChangeStart to restrict access to
