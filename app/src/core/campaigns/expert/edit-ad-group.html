@@ -120,7 +120,7 @@
           </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="keywordListSelection in getKeywordLists(adGroup.id)">
+        <tr ng-repeat="keywordListSelection in getKeywordLists(adGroup.id)" fetch-keyword-list="keywordListSelection.keyword_list_id as keywordList with expressions">
           <td>{{keywordList.name}}</td>
           <td>
             <!-- {{keywordListExpressions|json}} -->
