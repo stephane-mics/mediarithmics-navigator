@@ -27,7 +27,7 @@
 
 
       
-      $log.debug('Expert.EditDisplayAdController called !');
+      $log.debug('standard-banner.EditDisplayAdController called !');
       
       
       /*
@@ -52,6 +52,10 @@
       DisplayAdService.initEditDisplayAd(creativeId).then(function () {
 
           $scope.displayAd = DisplayAdService.getDisplayAdValue();
+          $scope.properties = DisplayAdService.getProperties();
+
+          $log.debug('standard-banner.EditDisplayAdController, properties=', $scope.properties);
+
           $scope.previewUrl = $sce.trustAsResourceUrl("//ads.mediarithmics.com/ads/render?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
           var sizes = $scope.displayAd.format.split("x");
           $scope.previewWidth = parseInt(sizes[0])+10;

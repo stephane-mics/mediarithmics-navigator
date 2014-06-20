@@ -22,9 +22,11 @@
       DisplayAdContainer.prototype.load = function (creativeId) {
 
         var root = Restangular.one('display_ads', creativeId);
-        // send requests to get the value and the list of
-        // ad group ids
+
+        // get the display ad
         var creativeResourceP = root.get();
+
+        // get the properties
         var propertiesP = root.getList('renderer_properties');
 
         var self = this;
@@ -32,19 +34,21 @@
 
         var defered = $q.defer();
 
-
         $q.all([creativeResourceP, propertiesP])
         .then( function (result) {
           self.creationMode = false;
+
+          // set the display ad value
           self.value = result[0];
           self.id = self.value.id;
+
           var properties = result[1];
 
           var propertiesP = [];
           if (properties.length > 0) {
 
             for(var i=0; i < properties.length; i++) {
-              // load the ad group container corresponding to the id list in ad groups
+              // load the property container
               var propertyCtn = new PropertyContainer(properties[i]);
 
               self.properties.push(propertyCtn);
@@ -81,6 +85,12 @@
       };
 
 
+      DisplayAdContainer.prototype.getProperties = function getProperties() {
+
+        return this.properties;
+      };
+
+
       DisplayAdContainer.prototype.persist = function persist() {
 
         var defered = $q.defer();
@@ -88,9 +98,9 @@
         var self = this;
 
         Restangular.all('display_ads').post(this.value, {organisation_id: this.organisationId})
-        .then(angular.bind(this, function(campaign) {
+        .then(angular.bind(this, function(displayAd) {
 
-          self.id = campaign.id;
+          self.id = displayAd.id;
 
           var pArray = [];
 
@@ -131,13 +141,18 @@
 
           var properties = self.properties;
 
+          // update properties
           async.mapSeries(properties, function(property, callback) {
 
               // update the property
               property.update(self.id).then(function(result) {
+
                 callback(null, result);
+
               }, function(reason) {
+
                 callback(new Error(reason));
+
               });
 
 

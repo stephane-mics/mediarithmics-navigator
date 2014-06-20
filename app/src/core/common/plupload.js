@@ -8,7 +8,8 @@
     function ($log, configuration, Session, AuthenticationService, $, plupload) {
       return {
         scope: {
-          uploadedFiles: '='
+          uploadedFiles: '=',
+          multiSelection: '='
         },
         link: function (scope, iElement, iAttrs) {
 
@@ -19,11 +20,12 @@
 
           var uploadUrl = configuration.ADS_UPLOAD_URL + "?organisation_id="+Session.getCurrentWorkspace().organisation_id;
 
+          var specifiedMultiSelection = typeof scope.multiSelection !== "undefined";
           var options = {
             runtimes : 'html5,flash,html4',
             browse_button : iAttrs.id+"-browse-button",
             drop_element : iAttrs.id+"-drop-target",
-            multi_selection: true,
+            multi_selection: specifiedMultiSelection ? (scope.multiSelection === "true") : true,
             max_file_size : "200kb",
             url : uploadUrl,
             flash_swf_url : 'bower_components/plupload/Moxie.swf',
