@@ -45,7 +45,6 @@
         var self = this;
 
         var defered = $q.defer();
-        //var list = [pValue, pAds, pUserGroups, pKeywords, pPlacements];
         var list = [pValue, pAds, pUserGroups, pKeywords, pPlacements];
 
         $q.all(list)

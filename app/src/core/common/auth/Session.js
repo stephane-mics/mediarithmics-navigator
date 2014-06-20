@@ -39,7 +39,7 @@
           self.initialized = true;
           defered.resolve();
           $log.debug("User Profile :", userProfile);
-        });
+        }, defered.reject);
 
         return defered.promise;
       };

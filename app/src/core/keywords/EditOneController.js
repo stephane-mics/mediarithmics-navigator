@@ -5,83 +5,34 @@
 
   var module = angular.module('core/keywords');
 
-  // TODO retreive and use angular.module('keywords') instead ?
-
   module.controller('core/keywords/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal',
-    function($scope, $log, Restangular, Session, _, $modal) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal', '$routeParams', 'core/keywords/KeywordListContainer', '$location',
+    function($scope, $log, Restangular, Session, _, $modal, $routeParams, KeywordListContainer, $location) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
 
-      // $scope.keywordsList is a KeywordListContainer
+      var keywordslistId = $routeParams.keywordslist_id;
 
-      $scope.newPositiveKeywordExpression = {
-        expression : ""
-      };
-      $scope.newNegativeKeywordExpression = {
-        expression : ""
-      };
+      $scope.isCreationMode = !keywordslistId;
 
-      $scope.statsLoading = false;
+      $scope.keywordsList = new KeywordListContainer();
+      if (keywordslistId) {
+        $scope.keywordsList.load(keywordslistId);
+      }
 
-      $scope.negativeExpressionsFilter = function (expression) {
-        return expression.exclude === true;
+      $scope.cancel = function () {
+        $location.path("/library/keywordslists");
       };
 
-      $scope.positiveExpressionsFilter = function (expression) {
-        return expression.exclude === false;
-      };
-
-      $scope.refreshStats = function () {
-        var positiveExpressions = _.filter($scope.keywordsList.keywordExpressions, $scope.positiveExpressionsFilter);
-        var negativeExpressions = _.filter($scope.keywordsList.keywordExpressions, $scope.negativeExpressionsFilter);
-
-        $scope.statsLoading = true;
-        Restangular.all('keyword_lists').all('statistics').post({
-          positive_expressions:_.pluck(positiveExpressions, 'expression'),
-          negative_expressions:_.pluck(negativeExpressions, 'expression')
-        },{organisation_id:organisationId})
-        .then(function (stats) {
-          $scope.stats = stats;
-          $scope.statsLoading = false;
-        });
-        return false;
-      };
-
-      $scope.doNothing = function ($event) {
-        $event.preventDefault();
-      };
-
-      $scope.addKeywordExpression = function (kw, newKeywordExpression, type) {
-        if (kw.addExpression(newKeywordExpression.expression, type)) {
-          newKeywordExpression.expression = "";
-        }
-      };
-
-      $scope.removeKeywordExpression = function(kw, keywordExpression) {
-        kw.removeExpression(keywordExpression.expression, keywordExpression.exclude);
-      };
-
-      $scope.importKeywordExpressions = function (kw, typeStr) {
-        var childScope = $scope.$new(true);
-        childScope.type = typeStr;
-        $modal.open({
-          templateUrl: 'src/core/keywords/ImportList.html',
-          scope : childScope,
-          backdrop : 'static',
-          controller: 'core/keywords/ImportListController'
+      $scope.next = function () {
+        var promise = $scope.keywordsList.save();
+        promise.then(function success(keywordListContainer){
+          $log.info("success");
+          $location.path("/library/keywordslists");
+        }, function failure(){
+          $log.info("failure");
         });
       };
-
-      $scope.$on("mics-keywords-list:import", function (event, data) {
-        var exclude = data.type === "exclude";
-        if (data.deleteExisting) {
-          $scope.keywordsList.removeAllExpressions(exclude);
-        }
-        for(var i = 0; i < data.keywords.length; i++) {
-          $scope.keywordsList.addExpression(data.keywords[i], exclude);
-        }
-
-      });
     }
   ]);
 })();
+

@@ -11,11 +11,13 @@
         $("#loginEmail").checkAndTriggerAutoFillEvent();
       } ,0);
       function showSimpleError() {
+        $scope.authError = true;
         // failure : display an error message
         $scope.message = "Authentication error";
       }
 
       function initSession () {
+        $scope.authError = false;
         Session.init().then(function() {
           $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
           var newPath = AuthenticationService.popPendingPath();
