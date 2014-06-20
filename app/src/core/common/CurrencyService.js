@@ -99,7 +99,7 @@
       input = input || '';
       var currency = safeCurrency(currencyCode);
       //FIXME very naive approach, use js-world or something like this
-      var out = input + ' ' + currency;
+      var out = input + currency;
 
       return out;
     };

@@ -6,7 +6,9 @@
     <div class="report mcs-default-content">
         <div class="campaign-heading">
 
-            <h2 class="">{{campaign.name}}&nbsp;
+            <h3>
+
+              <span>{{campaign.name}}</span>
               <div class="campaign-status campaign-status-{{campaign.status}}">
                   <button data-toggle="dropdown" class="campaign-status-state">
                       <span></span>
@@ -19,8 +21,14 @@
                         <li><a ng-click="pauseCampaign(campaign)">Pause Campaign</a></li>
                     </ul>
                 </div>
+              <div class="pull-right">
+                <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
+                  <span class="glyphicon glyphicon-refresh"></span>
+                  Refresh
+                </button>
+              </div>
 
-            </h2>
+            </h3>
 
 
         </div>
@@ -28,17 +36,13 @@
             <div class="report-type-controller">
                 <ul class="nav nav-pills">
                     <li class="active"><a>Overview</a></li>
-                    <!-- <li class=""><a href="#">Intraday</a></li> -->
+                    <li class=""><a href="#">Intraday</a></li>
                     <!-- <li><a href="#">Trading Reports</a></li> -->
                 </ul>
             </div>
             <div class="report-date-controller">
                 <form class="form-inline" role="form">
                     <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L">
-                    <button type="button" class="mics-btn mics-btn-action" ng-click="refresh()">
-                      <span class="glyphicon glyphicon-refresh"></span>
-                        Refresh
-                    </button>
                 </form>
             </div>
         </div>

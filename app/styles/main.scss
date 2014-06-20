@@ -263,8 +263,8 @@ a, *[ng-click] {
   }
 }
 
-input[type=daterange] {
-  margin-right: 5px;
+input[type=daterange] + *{
+  margin-left: 5px;
 }
 
 /*
@@ -599,19 +599,42 @@ form.mcs-full-page-form {
     .report {
         .campaign-heading {
           @extend .mcs-default-heading;
+          margin-bottom: 0px;
+          h3 {
+            &>span {
+             @include use-bold-font();
+             margin-right: 20px;
+            }
+            margin-top: 12px;
+            padding: 0;
+          }
           border-bottom: none; /* this one has no border... */
+
+          /* compensate the bootstrap margin */
+          margin:0;
         }
 
         .chart-controller {
             @include make-row();
-            margin:8px 0;
+
+            /* compensate the bootstrap margin */
+            margin:0;
+
             padding: 8px 0;
             border-top: 1px solid $dark-blue;
             border-bottom: 1px solid $dark-blue;
             .report-type-controller {
                 @include make-md-column(4);
+                padding:0;
                 .nav-pills {
+                  @include use-bold-font();
+                  font-size : $font-size-large;
+                  a {
+                    padding: 4px 15px;
+                    color: $dark-blue;
+                  }
                   .active a {
+                    color: $dark-blue-not;
                     background-color : $dark-blue;
                   }
                 }
@@ -619,6 +642,7 @@ form.mcs-full-page-form {
             .report-date-controller {
                 @include make-md-column(8);
                 min-width: 270px;
+                padding:0;
                 input.range {
                     width: 240px;
                     background-color: $mcs-light-blue;
@@ -641,12 +665,14 @@ form.mcs-full-page-form {
                   @extend .text-left;
                   color: $mcs-light-blue;
                     font-weight: normal;
-                  margin-top: 8px;
-                  padding-top: 8px;
+                    margin-top: 7px;
+                    padding-top: 7px;
+                    @include use-bold-font();
+                    font-size: 12px;
                 }
                 dd {
                 @extend .text-right;
-                    font-size: $font-size-h1;
+                    font-size: 37px;
                     @include use-bold-font();
                 }
                 dd + dt {
@@ -656,6 +682,7 @@ form.mcs-full-page-form {
                 .kpi-legend {
                   dd {
                     font-size: $font-size-h3;
+                    margin-top: 10px;
                   }
                   dt {
                     border-top: 1px solid $mcs-light-grey;
@@ -665,6 +692,7 @@ form.mcs-full-page-form {
             }
 
             .medium-chart {
+              margin-top: 16px;
                 @include make-md-column(10);
                 .chart {
                     height: 300px;
@@ -697,9 +725,10 @@ form.mcs-full-page-form {
                   }
                   .y1-legend:before, .y2-legend:before {
                     content:' \25CF';
-                    font-size: $font-size-h2;
+                    font-size: $font-size-small;
                     display: inline-block;
-                    margin-top: -4px;
+                    margin-top: -3px;
+                    margin-right: 5px;
                     vertical-align: middle;
                   }
                   .y1-legend, .y2-legend {
