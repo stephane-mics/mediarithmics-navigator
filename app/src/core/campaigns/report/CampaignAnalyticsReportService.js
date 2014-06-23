@@ -138,7 +138,7 @@
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -151,7 +151,7 @@
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -164,7 +164,7 @@
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -177,7 +177,7 @@
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper(response.report_view);
