@@ -13,12 +13,12 @@
           property: "=property"
         },
         templateUrl: '/src/core/common/properties/url-property.html',
-        link : function(scope, ele, attrs, c) {
+        link: function (scope, ele, attrs, c) {
 
-            scope.$watch("property", function() {         
-              console.log(scope.property);
-            });
-        }        
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
       };
     }
   ]);
@@ -31,16 +31,16 @@
         scope: {
           labelText: '@',
           labelFor: '@',
-          property: '=property'          
+          property: '=property'
         },
         controller: 'core/common/properties/AssetPropertyController',
         templateUrl: '/src/core/common/properties/asset-property.html',
-        link : function(scope, ele, attrs, c) {
+        link: function (scope, ele, attrs, c) {
 
-            scope.$watch("property", function() {         
-              console.log(scope.property);
-            });
-        }        
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
       };
     }
   ]);

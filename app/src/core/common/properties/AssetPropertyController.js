@@ -9,7 +9,7 @@
   var module = angular.module('core/common/properties');
 
   module.controller('core/common/properties/AssetPropertyController', [
-    '$scope', '$modal', '$log', 
+    '$scope', '$modal', '$log',
 
     function($scope, $modal, $log) {
 
@@ -29,7 +29,7 @@
         uploadModal.result.then(function (assetValue) {
 
           if (typeof(assetValue) !== "undefined") {
-            $log.debug('asset upload result =', assetValue)
+            $log.debug('asset upload result =', assetValue);
             $scope.property.value = assetValue;
           }
 
