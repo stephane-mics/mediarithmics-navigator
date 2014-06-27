@@ -236,6 +236,23 @@
         return this.campaignCtn.addInventorySource(inventorySource);
       };
 
+      service.getLocations = function () {
+        return this.campaignCtn.getLocations();
+      };
+
+
+      service.addPostalCodeLocation= function (location) {
+
+        $log.debug("> add location to ", this.campaignCtn, location);
+        return this.campaignCtn.addPostalCodeLocation(location);
+      };
+
+      service.removeLocation= function (location) {
+
+        $log.debug("> add location to ", this.campaignCtn, location);
+        return this.campaignCtn.removeLocation(location);
+      };
+
 
 
 

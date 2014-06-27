@@ -4,6 +4,7 @@
 
   var module = angular.module('core/campaigns', [
     'core/creatives',
+    'core/location',
     'core/campaigns/expert',
     'core/campaigns/keywords',
     'core/campaigns/emails',

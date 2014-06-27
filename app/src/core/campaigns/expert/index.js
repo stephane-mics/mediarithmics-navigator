@@ -11,7 +11,8 @@
     'core/usergroups',
     'ui.bootstrap',
     "core/keywords",
-    "core/placementlists"
+    "core/placementlists",
+    "core/location"
   ]);
 
 })();

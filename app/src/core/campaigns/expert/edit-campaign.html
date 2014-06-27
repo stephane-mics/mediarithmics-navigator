@@ -59,11 +59,40 @@
 
     <!-- Location -->
     <div mcs-form-group="select" label-for="location" label-text="Location">
-      <select class="form-control"  id="location">
-        <option>Worldwide</option>
-        <option></option>
+      <select class="form-control"  id="location" ng-model="$parent.locationSelector">
+        <option value="" ng-show="!locations.length">Worldwide</option>
+        <option value="custom" selected="locations.length ? 'selected' : ''" >Custom</option >
       </select>
     </div>
+    <div>
+    <div ng-show="locationSelector == 'custom'" ng-include="'src/core/location/choose-custom-location.html'"></div>
+        <table class="fragment-list-keyword-list" ng-show="locations.length">
+            <thead>
+            <tr>
+                <th>Country</th>
+                <th>Type</th>
+                <th>Value</th>
+                <!-- <th>Duration (days)</th> -->
+                <th class="actions">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="location in locations" >
+                <td>{{location.country}}</td>
+                <td>
+                    {{location.type}}
+                </td>
+                <td mcs-location="location">
+                    {{location.postal_code}}: {{getLocationDescriptor(locationList)}}
+
+                </td>
+                <td class="actions">
+                    <button class="mics-btn mics-btn-delete" ng-click="deleteLocation(location)">Delete</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+     </div>
 
     <div mcs-form-group="number" label-for="max-bid-price" label-text="Max bid price">
       <input ng-model="campaign.max_bid_price" type="text" class="form-control "  format="L"   id="max-bid-price" />
@@ -73,10 +102,11 @@
       <input ng-model="campaign.total_impression_capping" type="text" class="form-control "  format="L"    id="total-impression-capping" />
     </div>
 
-    <!-- Location -->
+
     <div mcs-form-group="number" label-for="per-day-impression-capping" label-text="Daily impression capping">
       <input ng-model="campaign.per_day_impression_capping" type="text" class="form-control "  format="L"   id="per-day-impression-capping" />
     </div>
+
 
 
     <!-- Ad Groups -->

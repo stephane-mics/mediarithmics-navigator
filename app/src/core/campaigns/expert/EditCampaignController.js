@@ -21,6 +21,8 @@
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
 
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
+        $scope.locations = DisplayCampaignService.getLocations();
+        $scope.locationSelector = $scope.locations.length ? "custom" : "";
       }
 
       $log.debug('Expert.EditCampaignController called !');
@@ -62,6 +64,37 @@
           var newInventorySource = {display_network_campaign_id: elem.id, display_network_name: elem.display_network_name};
           $scope.displayNetwork = undefined;
           DisplayCampaignService.addInventorySource(newInventorySource);
+
+        };
+
+
+        $scope.$on("mics-location:postal-code-added", function (event, params) {
+          DisplayCampaignService.addPostalCodeLocation(params);
+        });
+
+        $scope.deleteLocation = function (elem) {
+          if (elem === undefined) {
+            return;
+          }
+          DisplayCampaignService.removeLocation(elem.id);
+          if (!$scope.locations.length) {
+            $scope.locationSelector = "";
+          }
+
+        };
+
+        $scope.getLocationDescriptor = function (locationList) {
+          var descriptor =  _.reduce(locationList, function (str, location) {
+            if(str === "") {
+              return location.name;
+            }
+             return str + ", "  +location.name;
+          }, "");
+          if(descriptor.length > 100) {
+            return descriptor.slice(0,100) + "...";
+          } else {
+            return descriptor;
+          }
 
         };
 

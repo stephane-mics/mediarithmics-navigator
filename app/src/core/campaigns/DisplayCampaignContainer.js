@@ -19,6 +19,8 @@
         this.removedAdGroups = [];
         this.inventorySources = [];
         this.removedInventorySources = [];
+        this.locations = [];
+        this.removedLocations = [];
 
         this.value = {type:"DISPLAY", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
         $log.info("DisplayCampaignContainer", this.value);
@@ -32,13 +34,14 @@
         var campaignResourceP = root.get();
         var AdGroupsListP = root.getList('ad_groups');
         var inventorySourcesP = root.getList('inventory_sources');
+        var locationsP = root.getList('locations');
 
         var self = this;
 
         var defered = $q.defer();
 
 
-        $q.all([campaignResourceP, AdGroupsListP, inventorySourcesP])
+        $q.all([campaignResourceP, AdGroupsListP, inventorySourcesP, locationsP])
         .then( function (result) {
           self.creationMode = false;
           self.value = result[0];
@@ -48,6 +51,7 @@
           self.id = self.value.id;
           var adGroups = result[1];
           self.inventorySources = result[2];
+          self.locations = result[3];
 
           var adGroupsP = [];
           if (adGroups.length > 0) {
@@ -100,6 +104,23 @@
       };
 
 
+      DisplayCampaignContainer.prototype.addPostalCodeLocation = function (location) {
+        this.locations.push(location);
+      };
+      DisplayCampaignContainer.prototype.getLocations = function () {
+        return this.locations;
+      };
+      DisplayCampaignContainer.prototype.removeLocation = function (locationId) {
+        for (var i = 0; i < this.locations.length; i++) {
+          if (this.locations[i].id === locationId) {
+            if (locationId.indexOf("T") === -1) {
+              this.removedLocations.push(this.locations[i]);
+            }
+            this.locations.splice(i, 1);
+            return;
+          }
+        }
+      };
 
 
 
@@ -246,9 +267,86 @@
         return deferred.promise;
       };
 
+
+      /**
+       * Create a task (to be used by async.series) to delete the given inventory source.
+       * @param {Object} location the location to delete.
+       * @return {Function} the task.
+       */
+      function deleteLocationTask(location) {
+        return function (callback) {
+          $log.info("deleting location", location.id);
+          var promise;
+          if (location.id && location.id.indexOf('T') === -1) {
+            // delete the location
+            promise = location.remove();
+          } else {
+            // the location was not persisted, nothing to do
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+      /**
+       * Create a task (to be used by async.series) to save the given inventory source.
+       * @param {Object} location the inventory source to save.
+       * @param {String} campaignId the id of the current campaign.
+       * @return {Function} the task.
+       */
+      function saveLocationTask(location, campaignId) {
+        return function (callback) {
+          $log.info("saving location", location.id);
+          var promise;
+          if ((location.id && location.id.indexOf('T') === -1) || (typeof(location.modified) !== "undefined")) {
+            // update the location
+            // TODO 501 Not Implemented
+            // promise = location.put();
+
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+
+          } else {
+            promise = Restangular
+              .one('display_campaigns', campaignId)
+              .post('locations', location);
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+
+      var saveLocations = function (self, campaignId) {
+        var deferred = $q.defer(), tasks = [], i;
+        for(i = 0; i < self.locations.length ; i++) {
+          tasks.push(saveLocationTask(self.locations[i], campaignId));
+        }
+        for(i = 0; i < self.removedLocations.length ; i++) {
+          tasks.push(deleteLocationTask(self.removedLocations[i]));
+        }
+
+        async.series(tasks, function (err, res) {
+          if (err) {
+            deferred.reject(err);
+          } else {
+            $log.info("ad group saved");
+            // return the ad group container as the promise results
+            deferred.resolve(self);
+          }
+
+        });
+        return deferred.promise;
+      };
+
+
       function persistDependencies(self, campaignId, adGroups) {
         return saveInventorySources(self, campaignId).then(function () {
-          return saveAdGroups(self, adGroups);
+          return saveLocations(self, campaignId).then(function () {
+            return saveAdGroups(self, adGroups);
+          });
         });
       }
 
