@@ -3,7 +3,8 @@
   'use strict';
 
   var module = angular.module('core/placementlists', [
-    'restangular'
+    'restangular',
+    'ngTable'
   ]);
 
    module.config([

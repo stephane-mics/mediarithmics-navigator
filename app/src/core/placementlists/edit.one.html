@@ -16,6 +16,47 @@
       <input required class="input-lg" ng-model="placementList.name" type="text" id="placement_list_name">
     </div>
 
+    <table class="mics-table" ng-table="tableParams">
+      <thead>
+        <tr>
+          <th>
+            Url
+          </th>
+          <th>
+            Type
+          </th>
+          <th>
+            Url Keywords
+          </th>
+          <th class="actions">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="descriptor in $data">
+        <td><a ng-href="{{descriptor.url}}" target="_blank">{{descriptor.url}}</a></td>
+        <td>{{descriptor.descriptor_type}}</td>
+        <td>
+          <span ng-show="descriptor.descriptor_type == 'PATTERN'" ng-repeat="keyword in descriptor.keywords">{{keyword + ' '}}</span>
+        </td>
+        <td class="actions">
+          <a class="mics-btn mics-btn-delete" ng-click="deletePlacement(descriptor)">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div ng-show="!!uploadError" class="alert alert-danger">
+      {{uploadError}}
+    </div>
+    <div mics-pl-upload="pluploadOptions" class="btn-group">
+      <a class="browse-button mics-btn mics-btn-add" ng-click="uploadCSV()">upload CSV file and replace</a>
+      <a ng-click="downloadCSV()" class="mics-btn mics-btn-action">Download CSV</a>
+    </div>
+
+    <br>
+
     <div ng-show="generatorCampains.length">
       <h4>Campaign generating data in this placement list</h4>
       <ul>
