@@ -9,36 +9,42 @@
       return {
         scope: {
           uploadedFiles: '=',
-          multiSelection: '='
+          multiSelection: '=',
+          micsPlUpload: '='
         },
         link: function (scope, iElement, iAttrs) {
 
-          scope.uploadError = null;
 
-          $('#'+iAttrs.id+' .browse-button').attr("id", iAttrs.id+"-browse-button");
-          $('#'+iAttrs.id+' .drop-target').attr("id", iAttrs.id+"-drop-target");
-
-          var uploadUrl = configuration.ADS_UPLOAD_URL + "?organisation_id="+Session.getCurrentWorkspace().organisation_id;
-
-          var specifiedMultiSelection = typeof scope.multiSelection !== "undefined";
-          var options = {
+          var defaultOptions = {
             runtimes : 'html5,flash,html4',
-            browse_button : iAttrs.id+"-browse-button",
-            drop_element : iAttrs.id+"-drop-target",
-            multi_selection: specifiedMultiSelection ? (scope.multiSelection === "true") : true,
-            max_file_size : "200kb",
-            url : uploadUrl,
             flash_swf_url : 'bower_components/plupload/Moxie.swf',
-            filters : {
-              mime_types: [
-                {title : "Image files", extensions : "jpg,jpeg,png,gif"},
-                {title : "Flash files", extensions : "swf"}
-              ]
-            },
             headers: {
               Authorization: AuthenticationService.getAccessToken()
             }
           };
+
+          scope.uploadError = null;
+
+          var currentEltId = iAttrs.id || 'plupload-' + Math.random();
+
+          var browseButton = iElement.find('.browse-button');
+          if (browseButton.length === 1) {
+            browseButton.attr("id", currentEltId + "-browse-button");
+            defaultOptions.browse_button = currentEltId + "-browse-button";
+          } else {
+            throw new Error("plupload : no .browse-button button found, aborting");
+          }
+
+          var dropTarget = iElement.find('.drop-target');
+          if (dropTarget.length === 1) {
+            dropTarget.attr("id", currentEltId + "-drop-target");
+            defaultOptions.drop_element = currentEltId + "-drop-target";
+          } else {
+            $log.info("plupload : no .drop-target found, ignoring drop_element");
+          }
+
+          var userOptions = scope.micsPlUpload;
+          var options = angular.extend({}, defaultOptions, userOptions);
 
           $log.log('plupload options :', options);
 

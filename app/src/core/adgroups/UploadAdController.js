@@ -12,8 +12,8 @@
   var module = angular.module('core/adgroups');
 
   module.controller('core/adgroups/UploadAdController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
+    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session', 'core/configuration',
+    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session, configuration) {
 
       $log.debug('Init UploadAdController');
 
@@ -26,6 +26,18 @@
 
       $scope.logAssetDeletion = function (elt) {
         $log.debug("deleted asset", elt);
+      };
+
+      $scope.pluploadOptions = {
+        multi_selection: true,
+        url : configuration.ADS_UPLOAD_URL + "?organisation_id=" + Session.getCurrentWorkspace().organisation_id,
+        filters : {
+          mime_types: [
+            {title : "Image files", extensions : "jpg,jpeg,png,gif"},
+            {title : "Flash files", extensions : "swf"}
+          ],
+          max_file_size: "200kb"
+        }
       };
 
       $scope.$watchCollection("uploadedFiles", function (newFiles) {

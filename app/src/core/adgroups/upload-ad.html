@@ -8,7 +8,7 @@
       <div mics-list-new-creatives wrappers="newCreativesWrapper" show-delete="false" on-delete="logAssetDeletion"></div>
     </div>
 
-    <div mics-pl-upload id="ad-upload" uploaded-files="uploadedFiles" ng-show="!newCreativesWrapper.length">
+    <div mics-pl-upload="pluploadOptions" id="ad-upload" uploaded-files="uploadedFiles" ng-show="!newCreativesWrapper.length">
 
       <button  class="mics-btn mics-btn-add browse-button" >Select files</button>
 
