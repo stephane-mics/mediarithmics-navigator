@@ -18,7 +18,7 @@
         if(newValue === undefined || newValue === "") {
           $scope.addedPostalCodes = [];
         } else {
-          $scope.addedPostalCodes = newValue.split(",");
+          $scope.addedPostalCodes = newValue.replace(/\s/g, '').split(",");
         }
       });
 
