@@ -114,16 +114,16 @@
                                 <td>{{row.format}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adPerformance.getRow(row.id) track by $index" ng-class="metricValue.type">
-                            <span ng-if="metricValue.type == 'currency'">
+                            <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
                                 {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                             </span>
-                            <span ng-if="metricValue.type == 'percent'">
+                            <span ng-if="metricValue.type == 'percent' && metricValue.value != undefined">
                                 {{metricValue.value | number}} %
                             </span>
-                            <span ng-if="metricValue.type == 'number'">
+                            <span ng-if="metricValue.type == 'number' && metricValue.value != undefined">
                                 {{metricValue.value | number}}
                             </span>
-                            <span ng-if="!metricValue.type">
+                            <span ng-if="!metricValue.type || metricValue.value == undefined">
                                 -
                             </span>
 
@@ -158,16 +158,16 @@
                                 <td>{{row.name}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index" >
-                            <span ng-if="metricValue.type == 'currency'">
+                            <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
                                 {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                             </span>
-                            <span ng-if="metricValue.type == 'percent'">
+                            <span ng-if="metricValue.type == 'percent' && metricValue.value != undefined">
                                 {{metricValue.value | number}} %
                             </span>
-                            <span ng-if="metricValue.type == 'number'">
+                            <span ng-if="metricValue.type == 'number' && metricValue.value != undefined">
                                 {{metricValue.value | number}}
                             </span>
-                            <span ng-if="!metricValue.type">
+                            <span ng-if="!metricValue.type || metricValue.value == undefined">
                                 -
                             </span>
 
@@ -196,16 +196,16 @@
                                 <td>{{row[0] | website }}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in  mediaPerformance.decorate(row) track by $index">
-                                        <span ng-if="metricValue.type == 'currency'">
+                                        <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
                                             {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                                         </span>
-                                        <span ng-if="metricValue.type == 'percent'">
+                                        <span ng-if="metricValue.type == 'percent' && metricValue.value != undefined">
                                             {{metricValue.value | number}} %
                                         </span>
-                                        <span ng-if="metricValue.type == 'number'">
+                                        <span ng-if="metricValue.type == 'number' && metricValue.value != undefined">
                                             {{metricValue.value | number}}
                                         </span>
-                                        <span ng-if="!metricValue.type">
+                                        <span ng-if="!metricValue.type || metricValue.value == undefined">
                                             -
                                         </span>
 
