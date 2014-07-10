@@ -2,9 +2,7 @@
 
   'use strict';
 
-  var module = angular.module('core/keywords', [
-    'restangular'
-  ]);
+  var module = angular.module('core/keywords');
 
    module.config([
     "$routeProvider",

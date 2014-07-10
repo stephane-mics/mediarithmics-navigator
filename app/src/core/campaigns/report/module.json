@@ -1,0 +1,9 @@
+{"name": "core/campaigns/report",
+  "dependencies": [
+    "restangular",
+    "ngResource",
+    "core/campaigns",
+    "core/adgroups",
+    "ui.bootstrap"
+  ]
+}

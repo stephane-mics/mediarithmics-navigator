@@ -9,6 +9,7 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
@@ -361,10 +362,55 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+    genindex: {
+      config: {
+          src: 'app/src/**/module.json',
+          template:
+            'define([{{requires}}])(function(){' +
+            '"use strict";' +
+              'angular.module("{{{name}}}", [{{dependencies}}]);' +
+            '})();'
+      }
+
+
     }
+
   });
 
+  grunt.registerMultiTask('genindex', function () {
+    var fs = require('fs');
+    var path = require('path');
+    var Mustache = require('mustache');
+    var _ = require('lodash');
 
+//    var done = this.async();
+
+    this.filesSrc.forEach(function (filepath) {
+      var content = JSON.parse(fs.readFileSync(filepath));
+      var dirname = path.dirname(filepath);
+      var jsToInclude = _.filter(fs.readdirSync(dirname), function (val) {
+        return val.match(/\.js$/);
+      }).map(function (v) {
+        return "./" + v;
+      });
+
+
+      content.requires = [];
+      content.requires.push(content.dependencies);
+      content.requires.push(jsToInclude);
+      var indexJs = Mustache.render(grunt.config("genindex.config.template"), {name: content.name, dependencies: _.map(content.dependencies, function (v) {
+        return "\"" + v + "\"";
+      }).join(","), requires: _.map(content.requires, function (v) {
+        return "\"" + v + "\"";
+      }).join(",")});
+
+      fs.writeFileSync(dirname + "/index.js", indexJs);
+
+    });
+
+
+  });
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -409,6 +455,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin'
   ]);
+
 
   grunt.registerTask('default', [
     'newer:jshint',

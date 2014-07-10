@@ -1,4 +1,14 @@
-(function () {
+define(['angularAMD', 'vendor',
+  'core/configuration',
+  'core/layout',
+  'core/keywords',
+  'core/adgroups',
+  'core/usergroups',
+  'core/campaigns',
+  'core/creatives',
+  'core/datamart',
+  'core/login',
+  'core/common'], function (angularAMD) {
   'use strict';
 
   /*
@@ -25,7 +35,7 @@
     'core/creatives',
     'core/datamart',
     'core/login',
-    'core/common',
+    'core/common'
   ]);
 
   navigatorApp.factory('lodash', [
@@ -259,4 +269,6 @@
       });
     }
   ]);
-})();
+  angularAMD.bootstrap(navigatorApp);
+  return navigatorApp;
+});

@@ -1,10 +1,1 @@
-(function(){
-
-  'use strict';
-
-  angular.module('core/adgroups', [
-    'restangular',
-    'checklist-model'
-  ]);
-
-})();
+(function(){"use strict";angular.module("core/adgroups", ["restangular","checklist-model","./AssetThumbnailDirective.js,./ChooseAdsController.js,./ChooseExistingAdsController.js,./ListNewCreativesDirective.js,./UploadAdController.js"]);})();

@@ -1,0 +1,13 @@
+{"name": "core/campaigns/expert",
+"dependencies": [
+    "restangular",
+    "core/campaigns",
+    "core/creatives",
+    "core/adgroups",
+    "core/usergroups",
+    "ui.bootstrap",
+    "core/keywords",
+    "core/placementlists",
+    "core/location"
+  ]
+}

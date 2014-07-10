@@ -2,10 +2,7 @@
 
   'use strict';
 
-  var module = angular.module('core/usergroups', [
-    'restangular',
-    'checklist-model'
-  ]);
+  var module = angular.module('core/usergroups');
 
   module.config([
     "$routeProvider",

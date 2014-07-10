@@ -1,0 +1,8 @@
+{"name": "core/campaigns/keywords",
+"dependencies" : [
+    "core/campaigns",
+    "core/creatives",
+    "core/adgroups",
+    "restangular"
+  ]
+}

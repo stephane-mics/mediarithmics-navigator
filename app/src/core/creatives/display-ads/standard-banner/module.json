@@ -1,0 +1,4 @@
+{"name": "core/creatives/display-ads/standard-banner", "dependencies": [
+  "restangular"
+]
+}

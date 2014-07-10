@@ -2,16 +2,7 @@
 
   'use strict';
 
-  var module = angular.module('core/campaigns', [
-    'core/creatives',
-    'core/location',
-    'core/campaigns/expert',
-    'core/campaigns/keywords',
-    'core/campaigns/emails',
-    'core/campaigns/report',
-    'restangular',
-    'ui.bootstrap'
-  ]);
+  var module = angular.module('core/campaigns');
 
   module.config([
     "$routeProvider",
@@ -35,4 +26,4 @@
     }
   ]);
 
-})();
+})

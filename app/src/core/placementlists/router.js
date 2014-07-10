@@ -2,10 +2,7 @@
 
   'use strict';
 
-  var module = angular.module('core/placementlists', [
-    'restangular',
-    'ngTable'
-  ]);
+  var module = angular.module('core/placementlists');
 
    module.config([
     "$routeProvider",
