@@ -1,4 +1,4 @@
-(function () {
+define(['./module.js'], function () {
   'use strict';
 
   var module = angular.module('core/creatives');
@@ -11,7 +11,7 @@
     '$scope', '$location', '$log', 'Restangular', 'core/creatives/DisplayAdService', 'core/common/auth/Session',
 
     function ($scope, $location, $log, Restangular,  DisplayAdService, Session) {
-  
+
       $scope.organisationName = function (id ) { return Session.getOrganisationName(id);};
       $scope.administrator = Session.getCurrentWorkspace().administrator;
 
@@ -54,4 +54,4 @@
     }
   ]);
 
-})();
+});

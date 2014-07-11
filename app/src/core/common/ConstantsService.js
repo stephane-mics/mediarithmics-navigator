@@ -1,4 +1,4 @@
-(function () {
+define(['./module.js'], function () {
   "use strict";
 
   var constants = {
@@ -41,7 +41,7 @@
       return result;
     };
   });
-})();
+});
   
 
 

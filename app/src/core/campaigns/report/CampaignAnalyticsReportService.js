@@ -1,6 +1,6 @@
 /* global _ */
 
-(function () {
+define(['./module.js'], function () {
 
   'use strict';
 
@@ -299,4 +299,4 @@
       }]);
 
 
-})();
+});

@@ -9,7 +9,7 @@
 
       $log.debug("RememberMeController called !");
 
-      AuthenticationService.createAccessToken().then(function(){
+      AuthenticationService.createAccessToken().thendefine(['./module.js'], function () {
         // success  redirect to the pending path
         $location.path(AuthenticationService.popPendingPath());
 
@@ -20,5 +20,5 @@
     }
   ]);
 
-})();
+});
 

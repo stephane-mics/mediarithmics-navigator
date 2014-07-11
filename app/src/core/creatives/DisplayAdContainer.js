@@ -1,4 +1,4 @@
-(function () {
+define(['./module.js'], function () {
   'use strict';
 
   var module = angular.module('core/creatives');
@@ -176,5 +176,5 @@
       return DisplayAdContainer;
     }
   ]);
-})();
+});
 

@@ -367,10 +367,11 @@ module.exports = function (grunt) {
       config: {
           src: 'app/src/**/module.json',
           template:
-            'define([{{requires}}])(function(){' +
+            'define([{{{requires}}}],function(){});',
+          templateModule: 'define(["angular"],function(){' +
             '"use strict";' +
-              'angular.module("{{{name}}}", [{{dependencies}}]);' +
-            '})();'
+            'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
+            '});'
       }
 
 
@@ -389,23 +390,34 @@ module.exports = function (grunt) {
     this.filesSrc.forEach(function (filepath) {
       var content = JSON.parse(fs.readFileSync(filepath));
       var dirname = path.dirname(filepath);
-      var jsToInclude = _.filter(fs.readdirSync(dirname), function (val) {
+      var jsToInclude = _.without(_.filter(fs.readdirSync(dirname), function (val) {
         return val.match(/\.js$/);
       }).map(function (v) {
         return "./" + v;
-      });
+      }), "./index.js", "./module.js");
+
+      content.requiresJs = content.dependencies.concat(jsToInclude);
+      var models =  {
+        name: content.name,
+        dependencies: _.map(content.dependencies, function (v) {
+          return "\"" + v + "\"";
+        }).join(","),
+        requires: _.map(content.requiresJs, function (v) {
+          if (!v.match(/\.js$/)) {
+            if(v.match(/^core/)) {
+              return "\"/src/" + v + "/index.js\"";
+            }
+          }
+          return "\"" + v + "\"";
+
+        }).join(",") + ",\"angular\""}
 
 
-      content.requires = [];
-      content.requires.push(content.dependencies);
-      content.requires.push(jsToInclude);
-      var indexJs = Mustache.render(grunt.config("genindex.config.template"), {name: content.name, dependencies: _.map(content.dependencies, function (v) {
-        return "\"" + v + "\"";
-      }).join(","), requires: _.map(content.requires, function (v) {
-        return "\"" + v + "\"";
-      }).join(",")});
+      var indexJs = Mustache.render(grunt.config("genindex.config.template"), models);
+      var moduleJs = Mustache.render(grunt.config("genindex.config.templateModule"), models);
 
       fs.writeFileSync(dirname + "/index.js", indexJs);
+      fs.writeFileSync(dirname + "/module.js", moduleJs);
 
     });
 

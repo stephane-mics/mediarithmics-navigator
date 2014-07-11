@@ -8,6 +8,7 @@
     "ui.bootstrap",
     "core/keywords",
     "core/placementlists",
+    "core/common/properties",
     "core/location"
   ]
 }

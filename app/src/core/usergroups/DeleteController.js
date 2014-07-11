@@ -1,4 +1,4 @@
-(function(){
+define(['./module.js'], function () {
   'use strict';
 
   var module = angular.module('core/usergroups');
@@ -21,7 +21,7 @@
 
     }
   ]);
-})();
+});
 
 
 

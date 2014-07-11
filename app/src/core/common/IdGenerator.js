@@ -1,4 +1,4 @@
-(function(){
+define(['./module.js'], function () {
   'use strict';
 
   /* Services */
@@ -18,5 +18,5 @@
 
     return service;
   });
-})();
+});
 

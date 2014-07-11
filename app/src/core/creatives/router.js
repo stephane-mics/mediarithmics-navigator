@@ -1,11 +1,8 @@
-(function(){
+define(['./module.js'], function () {
   'use strict';
 
   /* Services */
-  var module = angular.module('core/creatives',[
-    'restangular',
-    'core/creatives/display-ads/standard-banner'
-  ]);
+  var module = angular.module('core/creatives');
 
 
   module.config([
@@ -20,7 +17,7 @@
 
         // create a new creative
         .when('/creatives/select-creative-template', {
-          templateUrl:'src/core/creatives/create.html',
+          templateUrl: 'src/core/creatives/create.html',
           topbar : false
         })
 
@@ -35,5 +32,5 @@
   ]);
 
 
-})();
+});
 

@@ -1,4 +1,4 @@
-(function () {
+define(['./module.js', "autofill-event"], function () {
   'use strict';
 
   var module = angular.module('core/login');
@@ -49,13 +49,12 @@
         } else {
 
           // authentication without creation of refresh token
-          AuthenticationService.createAccessToken($scope.user.email, $scope.user.password).then(function(){
-
+          AuthenticationService.createAccessToken($scope.user.email, $scope.user.password).then(function() {
             Session.init().then(initSession, showSimpleError);
           }, showSimpleError);
         }
       };
     }
   ]);
-})();
+});
 

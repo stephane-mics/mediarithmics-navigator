@@ -1,5 +1,5 @@
  /* global nv, d3 */
-  
+define(['d3', 'nv.d3'], function (d3, nv) {
 
 
 nv.models.doubleLineChart = function() {
@@ -624,3 +624,4 @@ nv.models.doubleLineChart = function() {
 
   return chart;
 };
+});

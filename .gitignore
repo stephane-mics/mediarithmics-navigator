@@ -6,3 +6,4 @@ app/bower_components
 .idea
 .editorconfig
 index.js
+module.js

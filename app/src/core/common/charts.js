@@ -1,5 +1,5 @@
 /* global nv, d3 */
-(function(){
+define(['./module.js', 'nv.d3', 'src/nvd3-templates/doubleLineChart'], function (m) {
 
   'use strict';
 
@@ -54,8 +54,7 @@
 
 
 
-  angular.module('core/common')
-  .directive('nvd3DoubleLineChart', [function(){
+  angular.module('core/common').directive('nvd3DoubleLineChart', [function(){
     return {
       restrict: 'EA',
       scope: {
@@ -161,4 +160,4 @@
 
   }]);
 
-})();
+});

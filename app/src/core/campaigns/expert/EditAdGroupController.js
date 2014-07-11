@@ -1,4 +1,4 @@
-(function(){
+define(['./module.js'], function () {
   'use strict';
 
   /*
@@ -146,5 +146,5 @@ $scope.uploader.init();
     }
   ]);
 
-})();
+});
 

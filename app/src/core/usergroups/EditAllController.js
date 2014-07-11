@@ -1,4 +1,4 @@
-(function(){
+define(['./module.js'], function () {
 
   'use strict';
 
@@ -45,6 +45,6 @@
     }
   ]);
 
-})();
+});
 
 

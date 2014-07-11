@@ -1,9 +1,9 @@
-(function(){
+define(['./module.js'], function () {
   'use strict';
 
   var module = angular.module('core/location');
 
-  module.controller('core/location/postalcodes/AddPostalCodeListController', [
+  module.controller('core/location/AddPostalCodeListController', [
             '$scope', '$modalInstance', '$document', '$log',  "Restangular", 'core/common/auth/Session', 'core/common/IdGenerator',
     function($scope, $modalInstance, $document, $log,  Restangular, Session, IdGenerator) {
 
@@ -41,6 +41,6 @@
 
     }
   ]);
-})();
+});
 
 

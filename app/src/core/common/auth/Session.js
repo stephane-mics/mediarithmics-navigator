@@ -1,6 +1,6 @@
 /* global _ */
 
-(function(){
+define(['./module.js'], function () {
   'use strict';
 
   var authModule = angular.module('core/common/auth');
@@ -88,4 +88,4 @@
       return service;
     }
   ]);
-})();
+});

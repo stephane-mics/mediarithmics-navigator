@@ -1,5 +1,5 @@
 /* global _, moment */
-(function () {
+define(['./module.js'], function () {
   'use strict';
 
   var module = angular.module('core/campaigns/report');
@@ -168,4 +168,4 @@
     }
   ]);
 
-})();
+});
