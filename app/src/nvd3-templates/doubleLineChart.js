@@ -1,9 +1,9 @@
- /* global nv, d3 */
-define(['d3', 'nv.d3'], function (d3, nv) {
-
-
-nv.models.doubleLineChart = function() {
+/* global nv */
+define(['d3','nv.d3'], function (d3, ignore) {
   "use strict";
+
+  nv.models.doubleLineChart = function() {
+
   //============================================================
   // Public Variables with Default Settings
   //------------------------------------------------------------

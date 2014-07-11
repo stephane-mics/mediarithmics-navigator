@@ -1,4 +1,4 @@
-define(['./module.js', "plupload"], function () {
+define(['./module', "plupload"], function () {
 
   'use strict';
 

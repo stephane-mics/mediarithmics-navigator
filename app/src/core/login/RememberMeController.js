@@ -1,4 +1,4 @@
-(function () {
+define(['./module', "autofill-event"], function () {
   'use strict';
 
   var module = angular.module('core/login');
@@ -9,7 +9,7 @@
 
       $log.debug("RememberMeController called !");
 
-      AuthenticationService.createAccessToken().thendefine(['./module.js'], function () {
+      AuthenticationService.createAccessToken().then(function () {
         // success  redirect to the pending path
         $location.path(AuthenticationService.popPendingPath());
 

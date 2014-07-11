@@ -1,4 +1,4 @@
-define(['./module.js', "autofill-event"], function () {
+define(['./module', "autofill-event"], function () {
   'use strict';
 
   var module = angular.module('core/login');

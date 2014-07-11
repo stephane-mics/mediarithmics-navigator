@@ -18,6 +18,9 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -45,9 +48,14 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']
       },
+      genRequireJsFiles: {
+        files: ['/app/**/module.json'],
+        tasks: ['genRequireJsFiles:config']
+      },
 
       gruntfile: {
-        files: ['Gruntfile.js']
+        files: ['Gruntfile.js'],
+        tasks: ['genRequireJsFiles:config']
       },
       livereload: {
         options: {
@@ -244,7 +252,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '.tmp/concat/scripts',
           src: '*.js',
-          dest: '.tmp/concat/scripts'
+          dest: '<%= yeoman.dist %>/scripts'
         }]
       }
     },
@@ -363,9 +371,9 @@ module.exports = function (grunt) {
         singleRun: true
       }
     },
-    genindex: {
+    genRequireJsFiles: {
       config: {
-          src: 'app/src/**/module.json',
+          src: '<%= yeoman.app %>/src/**/module.json',
           template:
             'define([{{{requires}}}],function(){});',
           templateModule: 'define(["angular"],function(){' +
@@ -373,13 +381,23 @@ module.exports = function (grunt) {
             'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
             '});'
       }
+    },
 
-
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: "app/src",
+          mainConfigFile: "app/main.js",
+          name: "app",
+          out: ".tmp/concat/scripts/app.js"
+        }
+      }
     }
+
 
   });
 
-  grunt.registerMultiTask('genindex', function () {
+  grunt.registerMultiTask('genRequireJsFiles', function () {
     var fs = require('fs');
     var path = require('path');
     var Mustache = require('mustache');
@@ -393,7 +411,7 @@ module.exports = function (grunt) {
       var jsToInclude = _.without(_.filter(fs.readdirSync(dirname), function (val) {
         return val.match(/\.js$/);
       }).map(function (v) {
-        return "./" + v;
+        return "./" + v.replace(/\.js$/g, '');
       }), "./index.js", "./module.js");
 
       content.requiresJs = content.dependencies.concat(jsToInclude);
@@ -405,16 +423,16 @@ module.exports = function (grunt) {
         requires: _.map(content.requiresJs, function (v) {
           if (!v.match(/\.js$/)) {
             if(v.match(/^core/)) {
-              return "\"/src/" + v + "/index.js\"";
+              return "\"" + v + "/index\"";
             }
           }
           return "\"" + v + "\"";
 
-        }).join(",") + ",\"angular\""}
+        }).join(",") + ",\"angular\""};
 
 
-      var indexJs = Mustache.render(grunt.config("genindex.config.template"), models);
-      var moduleJs = Mustache.render(grunt.config("genindex.config.templateModule"), models);
+      var indexJs = Mustache.render(grunt.config("genRequireJsFiles.config.template"), models);
+      var moduleJs = Mustache.render(grunt.config("genRequireJsFiles.config.templateModule"), models);
 
       fs.writeFileSync(dirname + "/index.js", indexJs);
       fs.writeFileSync(dirname + "/module.js", moduleJs);
@@ -430,6 +448,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'genRequireJsFiles:config',
       'bowerInstall',
       'concurrent:server',
       'autoprefixer',
@@ -445,6 +464,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'genRequireJsFiles:config',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
@@ -455,6 +475,8 @@ module.exports = function (grunt) {
     'clean:dist',
     'bowerInstall',
     'useminPrepare',
+    'genRequireJsFiles:config',
+    'requirejs',
     'concurrent:dist',
     'autoprefixer',
     'concat',

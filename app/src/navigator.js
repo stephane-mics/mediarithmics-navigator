@@ -1,5 +1,5 @@
-define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'moment', "angularAMD"], function (angularAMD, navigatorApp, lodash, async, jquery, plupload, d3, moment) {
-
+define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'moment'], function (angularAMD, navigatorApp, lodash, async, jquery, plupload, d3, moment) {
+  "use strict";
 
   navigatorApp.factory('lodash', [
     function () {

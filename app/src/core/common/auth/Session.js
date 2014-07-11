@@ -1,6 +1,6 @@
 /* global _ */
 
-define(['./module.js'], function () {
+define(['./module'], function () {
   'use strict';
 
   var authModule = angular.module('core/common/auth');

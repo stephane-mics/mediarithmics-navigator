@@ -1,5 +1,5 @@
 require.config({
-
+  baseUrl: "/src",
   paths: {
     "jquery": "../bower_components/jquery/jquery",
     "angular": "../bower_components/angular/angular",
@@ -52,20 +52,17 @@ require.config({
     'nvd3ChartDirectives': ['angular', 'd3'],
     'bootstrap': ['jquery'],
     'jqCookie': ['jquery'],
-    'jqDaterangepicker': ['jquery'],
+    'jqDaterangepicker': ['jquery', 'moment'],
     "autofill-event": ['jquery'],
     'ngBootstrap': ['angular', 'bootstrap', 'jqDaterangepicker'],
     'ui': ['angular'],
     'ngTable': ['angular'],
     'core/configuration': ['angular'],
-    'plupload': {deps:[ 'moxie'], "exports": "plupload"},
-    "nv.d3": {deps: ['d3.global'], "exports": "nv"},
+    'plupload': {deps: ['moxie'], "exports": "plupload"},
+
+    "nv.d3": {deps: ['nvd3-templates/d3.global']},
     'ngload': ['angularAMD']
   },
   deps: ['navigator']
 });
 
-// workaround for nvd3 using global d3
-define("d3.global", ["d3"], function (_) {
-  d3 = _;
-});

@@ -22,8 +22,14 @@
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
     <link rel="stylesheet" href="styles/font/stylesheet.css">
-    <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
+
+
+      <!--&lt;!&ndash; build:js scripts/vendor.js &ndash;&gt;-->
+        <!--<script src="bower_components/d3/d3.js"></script>-->
+      <!--&lt;!&ndash; endbuild &ndash;&gt;-->
+    <script data-main="scripts/app.js" src="bower_components/requirejs/require.js"></script>
   </head>
   <body class="mcs-app">
     <!--[if lt IE 7]>
@@ -41,36 +47,6 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-
-    <!--<script src="../bower_components/jquery-cookie/jquery.cookie.js"></script>-->
-    <!--<script src="../bower_components/angular-resource/angular-resource.js"></script>-->
-    <!--<script src="../bower_components/angular-cookies/angular-cookies.js"></script>-->
-    <!--<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>-->
-    <!--<script src="../bower_components/angular-route/angular-route.js"></script>-->
-    <!--<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>-->
-    <!--<script src="../bower_components/lodash/dist/lodash.compat.js"></script>-->
-    <!--<script src="../bower_components/restangular/dist/restangular.js"></script>-->
-    <!--<script src="../bower_components/d3/d3.js"></script>-->
-    <!--<script src="../bower_components/nvd3/nv.d3.js"></script>-->
-    <!--<script src="../bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js"></script>-->
-    <!--<script src="../bower_components/momentjs/moment.js"></script>-->
-    <!--<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>-->
-    <!--<script src="../bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker.js"></script>-->
-    <!--<script src="../bower_components/autofill-event/src/autofill-event.js"></script>-->
-    <!--<script src="../bower_components/angular-ui-utils/ui-utils.js"></script>-->
-    <!--<script src="../bower_components/checklist-model/checklist-model.js"></script>-->
-    <!--<script src="../bower_components/ng-table/ng-table.js"></script>-->
-    <!--&lt;!&ndash; endbower &ndash;&gt;-->
-    <!--<script src="bower_components/async/lib/async.js"></script>-->
-    <!--<script src="bower_components/plupload/js/moxie.js"></script>-->
-    <!--<script src="bower_components/plupload/js/plupload.dev.js"></script>-->
-
-    <!--<script type="text/javascript" src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>-->
-
-    <!-- endbuild -->
 
 
 
