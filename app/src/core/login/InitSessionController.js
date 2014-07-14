@@ -4,8 +4,8 @@ define(['./module'], function () {
   var module = angular.module('core/login');
 
   module.controller('core/login/InitSessionController', [
-    '$location', '$log', '$rootScope', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/login/constants',
-    function($location, $log, $rootScope, Session, AuthenticationService, LoginConstants) {
+    '$location', '$log', '$rootScope', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/login/constants','$state',
+    function($location, $log, $rootScope, Session, AuthenticationService, LoginConstants, $state) {
 
       $log.debug("InitSessionController called !");
 
@@ -21,7 +21,7 @@ define(['./module'], function () {
         $rootScope.$broadcast(LoginConstants.LOGIN_FAILURE);
 
         // failure : go back to login page
-        $location.path('/login');
+        $location.path('login');
 
       });
 

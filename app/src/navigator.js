@@ -39,81 +39,80 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
 
 // configure the application
   navigatorApp.config([
-    "$routeProvider", "$logProvider",
-    function ($routeProvider, $logProvider) {
+    "$stateProvider", "$logProvider","$urlRouterProvider",
+    function ($stateProvider, $logProvider, $urlRouterProvider) {
 
-      $routeProvider
-        .when('/', {
-          redirectTo: '/campaigns',
-          publicUrl: true
-        })
-        .when('/login', {
+      $stateProvider
+        .state('login', {
+          url:'/login',
           templateUrl: 'src/core/login/main.html',
           publicUrl: true,
           sidebar: false
         })
-        .when('/logout', {
+        .state('logout', {
+          url:'/logout',
           templateUrl: 'src/core/login/logout.html',
           publicUrl: true,
           sidebar: false
         })
-        .when('/remember-me', {
+        .state('remember-me', {
+          url:'/remember-me',
           templateUrl: 'src/core/login/remember-me.html',
           publicUrl: true,
           sidebar: false
         })
-        .when('/init-session', {
+        .state('init-session', {
+          url:'/init-session',
           templateUrl: 'src/core/login/init-session.html',
+          controller:'core/login/InitSessionController',
           publicUrl: true,
           sidebar: false
         });
 
-      $routeProvider
-        .when('/home', {
-          redirectTo: '/campaigns'
-        })
-        .when('/route-not-found', {
-        });
+$urlRouterProvider.when('/home', '/campaigns');
+        
 
       // TODO: move these to non-public and authenticate
-      $routeProvider
-        .when('/datamart/overview', {
+      $stateProvider
+        .state('datamart/overview', {
+          url:'/datamart/overview',
           templateUrl: 'src/core/datamart/index.html',
           publicUrl: true
         })
-        .when('/datamart/items', {
+        .state('datamart/items', {
+          url:'/datamart/items',
           templateUrl: 'src/core/datamart/items/view.all.html',
           publicUrl: true
         })
-        .when('/datamart/items/:itemId', {
+        .state('datamart/items/:itemId', {
+          url:'/datamart/items/:itemId',
           templateUrl: 'src/core/datamart/items/view.one.html',
           publicUrl: true
         })
-        .when('/datamart/categories/', {
+        .state('datamart/categories/', {
+          url:'/datamart/categories',
           templateUrl: 'src/core/datamart/categories/browse.html',
           publicUrl: true
         })
-        .when('/datamart/categories/:categoryId', {
+        .state('datamart/categories/:categoryId', {
+          url:'/datamart/categories/:categoryId',
           templateUrl: 'src/core/datamart/categories/browse.html',
           publicUrl: true
         })
-        .when('/datamart/users', {
+        .state('datamart/users', {
+          url:'/datamart/users',
           templateUrl: 'src/core/datamart/users/view.all.html',
           publicUrl: true
         })
-        .when('/datamart/users/:userId', {
+        .state('datamart/users/:userId', {
+          url:'/datamart/users/:userId',
           templateUrl: 'src/core/datamart/users/view.one.html',
           publicUrl: true
         });
 
-      $routeProvider
-        .otherwise({
-          publicUrl: true,
-          templateUrl: 'src/core/layout/route-not-found.html'
-        });
+      
+      $stateProvider.state("admin/home",
 
-      $routeProvider.when(
-        "/admin/home",
         angularAMD.route({
             templateUrl: 'src/admin/views/organisation-list.html',
             controller:'OrganisationListController',
@@ -177,8 +176,8 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
 // secured part of the app
 
   navigatorApp.run([
-    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
-    function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
+    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants","$state",
+    function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants, $state) {
 
       var defaults = _.partialRight(_.assign, function (a, b) {
         return typeof a === 'undefined' ? b : a;
@@ -191,9 +190,9 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
       $rootScope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
       $rootScope.$on(LoginConstants.LOGIN_SUCCESS, updateWorkspaces);
 
-      $rootScope.$on('$routeChangeStart', function (event, next, current) {
+      $rootScope.$on('$stateChangeStart', function (event, next, current) {
 
-        $log.debug("$routeChangeStart  next : ", next);
+        $log.debug("$stateChangeSuccess  next : ", next);
 
 
         var options = defaults(next, {
@@ -207,7 +206,7 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
           $rootScope.category = urlMatch[1];
         }
         $rootScope.topbar = options.topbar;
-        if (!options.publicUrl) {
+          if (!options.publicUrl) {
 
           if (AuthenticationService.hasAccessToken()) {
 
@@ -234,6 +233,8 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
           }
         }
       });
+
+            
     }
   ]);
 

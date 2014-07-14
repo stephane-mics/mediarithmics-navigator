@@ -29,10 +29,10 @@ define(['./module'], function () {
     return _.rest(statRow, _.findLastIndex(stats.columns_headers, notMetrics) + 1);
   };
 
-  var updateStatistics = function ($scope, CampaignAnalyticsReportService, $routeParams) {
+  var updateStatistics = function ($scope, CampaignAnalyticsReportService, $stateParams) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
 
-    var campaignId = $routeParams.campaign_id;
+    var campaignId = $stateParams.campaign_id;
 
     $scope.xaxisdomain = [CampaignAnalyticsReportService.getStartDate().toDate().getTime(),
       CampaignAnalyticsReportService.getEndDate().toDate().getTime()
@@ -77,14 +77,14 @@ define(['./module'], function () {
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
-    function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
+    '$scope', '$location', '$log', '$stateParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
+    function ($scope, $location, $log, $stateParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
       $scope.valTo = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
 
-      $log.debug("fetching " + $routeParams.campaign_id);
-      DisplayCampaignService.getDeepCampaignView($routeParams.campaign_id).then(function (campaign) {
+      $log.debug("fetching " + $stateParams.campaign_id);
+      DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
         $scope.adgroups = campaign.ad_groups;
         $scope.ads = _.unique(_.flatten(_.map(campaign.ad_groups, "ads")), "creative_id");
@@ -94,10 +94,10 @@ define(['./module'], function () {
 
 
         $scope.$watch('reportDateRange', function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams);
+          updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
         });
         $scope.refresh = function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams);
+          updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
         };
 
       });

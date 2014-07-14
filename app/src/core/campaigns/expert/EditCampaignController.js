@@ -12,9 +12,9 @@ define(['./module'], function () {
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditCampaignController', [
-    '$scope', 'lodash', '$log', '$location', '$routeParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
-    function ($scope, _, $log, $location, $routeParams, DisplayCampaignService, CampaignPluginService) {
-      var campaignId = $routeParams.campaign_id;
+    '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
+    function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService) {
+      var campaignId = $stateParams.campaign_id;
 
       function initView() {
         $scope.campaign = DisplayCampaignService.getCampaignValue();

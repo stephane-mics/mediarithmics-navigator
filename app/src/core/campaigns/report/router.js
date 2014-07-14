@@ -6,10 +6,11 @@ define(['./module'], function () {
 
 
   module.config([
-    "$routeProvider",
-    function ($routeProvider) {
-      $routeProvider
-        .when('/campaigns/display/report/:campaign_id/:template', {
+    "$stateProvider",
+    function ($stateProvider) {
+      $stateProvider
+        .state('/campaigns/display/report', {
+          url:"/campaigns/display/report/:campaign_id/:template",
           templateUrl:'src/core/campaigns/report/show-report.html'
         });
     }
