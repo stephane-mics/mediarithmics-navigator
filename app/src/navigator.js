@@ -111,11 +111,20 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
           publicUrl: true,
           templateUrl: 'src/core/layout/route-not-found.html'
         });
+
+      $routeProvider.when(
+        "/admin/home",
+        angularAMD.route({
+            templateUrl: 'src/admin/views/organisation-list.html',
+            controller:'OrganisationListController',
+            controllerUrl: 'admin/controllers/organisation'
+        })
+    );
       $logProvider.debugEnabled(true);
     }
   ]);
-
-
+   
+   
 // configure the Restangular Service
   navigatorApp.config([
     'RestangularProvider', 'core/configuration',
@@ -228,5 +237,6 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
     }
   ]);
 
-  return angularAMD.bootstrap(navigatorApp, true, document.body);
+var r = angularAMD.bootstrap(navigatorApp, true, document.body);
+  return  navigatorApp;
 });
