@@ -388,8 +388,8 @@ module.exports = function (grunt) {
         options: {
           baseUrl: "app/src",
           mainConfigFile: "app/main.js",
-          name: "app",
-          out: ".tmp/concat/scripts/app.js"
+          name: "navigator",
+          out: ".tmp/concat/scripts/main.js"
         }
       }
     }
@@ -412,7 +412,7 @@ module.exports = function (grunt) {
         return val.match(/\.js$/);
       }).map(function (v) {
         return "./" + v.replace(/\.js$/g, '');
-      }), "./index.js", "./module.js");
+      }), "./index", "./module");
 
       content.requiresJs = content.dependencies.concat(jsToInclude);
       var models =  {
@@ -428,7 +428,7 @@ module.exports = function (grunt) {
           }
           return "\"" + v + "\"";
 
-        }).join(",") + ",\"angular\""};
+        }).join(",")};
 
 
       var indexJs = Mustache.render(grunt.config("genRequireJsFiles.config.template"), models);

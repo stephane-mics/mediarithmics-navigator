@@ -10,6 +10,8 @@ define(
     'nvd3ChartDirectives',
     'ngBootstrap',
     'ui',
+    // 'ui.router',
+    // 'ui.router.extras',
     'lodash',
     'core/configuration',
     'core/keywords/index',
@@ -36,6 +38,8 @@ define(
       'ngBootstrap',
       'ui.keypress',
       'ui.unique',
+      // 'ui.router',
+      // 'ct.ui.router.extras',
 
       'core/configuration',
       'core/layout',
@@ -44,6 +48,7 @@ define(
       'core/usergroups',
       'core/campaigns',
       'core/creatives',
+
 //    'core/datamart',
       'core/login',
       'core/common'

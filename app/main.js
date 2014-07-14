@@ -12,7 +12,7 @@ require.config({
 
     "lodash": "../bower_components/lodash/dist/lodash.compat",
     "d3": "../bower_components/d3/d3",
-    "nv.d3": "../bower_components/nvd3/nv.d3",
+    "nv.d3": "nvd3-templates/nv.d3",
 
     "moment": "../bower_components/momentjs/moment",
     "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap",
@@ -33,6 +33,8 @@ require.config({
     "ngRoute": "../bower_components/angular-route/angular-route",
     "restangular": "../bower_components/restangular/dist/restangular",
     "ui": "../bower_components/angular-ui-utils/ui-utils",
+    "ui.router": "../bower_components/angular-ui-router/release/angular-ui-router",
+    "ui.router.extras": "../bower_components/ui-router-extras/release/ct-ui-router-extras",
     "ngBootstrap": "../bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker",
     "ngTable": "../bower_components/ng-table/ng-table",
     "checklist-model": "../bower_components/checklist-model/checklist-model",
@@ -59,6 +61,8 @@ require.config({
     'ngTable': ['angular'],
     'core/configuration': ['angular'],
     'plupload': {deps: ['moxie'], "exports": "plupload"},
+    "ui.router":["angular"],
+    "ui.router.extras":["angular","ui.router"],
 
     "nv.d3": {deps: ['nvd3-templates/d3.global']},
     'ngload': ['angularAMD']

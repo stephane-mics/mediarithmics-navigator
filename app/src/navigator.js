@@ -44,7 +44,7 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
 
       $routeProvider
         .when('/', {
-          redirectTo: '/home',
+          redirectTo: '/campaigns',
           publicUrl: true
         })
         .when('/login', {
@@ -228,5 +228,5 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
     }
   ]);
 
-  return angular.bootstrap(document.body, ['navigatorApp']);
+  return angularAMD.bootstrap(navigatorApp, true, document.body);
 });
