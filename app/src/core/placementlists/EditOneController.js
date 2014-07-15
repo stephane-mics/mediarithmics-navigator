@@ -36,8 +36,7 @@
         getData: function($defer, params) {
           Restangular.one('placement_lists', placementListId).all('placement_descriptors').getList({
             first_result: (params.page() - 1) * params.count(),
-            max_results: params.count(),
-            organisation_id: Session.getCurrentWorkspace().organisation_id
+            max_results: params.count()
           }).then(function (descriptors) {
             // update table params
             params.total(descriptors.metadata.paging.count);
@@ -64,7 +63,7 @@
       }
       $scope.pluploadOptions = {
         multi_selection: true,
-        url : $location.protocol() + ":" +  Restangular.one('placement_lists', placementListId).one("placement_descriptors").one("batch").getRestangularUrl() + "?organisation_id=" + Session.getCurrentWorkspace().organisation_id,
+        url : $location.protocol() + ":" +  Restangular.one('placement_lists', placementListId).one("placement_descriptors").one("batch").getRestangularUrl(),
         filters : {
           mime_types: [
             {title : "CSV files", extensions : "csv,txt"}
@@ -101,7 +100,7 @@
       };
 
       $scope.downloadCSV = function () {
-        var dlUrl = Restangular.one('placement_lists', placementListId).one("placement_descriptors").one("csv").getRestangularUrl() + "?organisation_id=" + Session.getCurrentWorkspace().organisation_id + "&access_token=" + encodeURIComponent(AuthenticationService.getAccessToken());
+        var dlUrl = Restangular.one('placement_lists', placementListId).one("placement_descriptors").one("csv").getRestangularUrl() + "?access_token=" + encodeURIComponent(AuthenticationService.getAccessToken());
         $window.location = dlUrl;
       };
       $scope.deletePlacement = function (placement) {
