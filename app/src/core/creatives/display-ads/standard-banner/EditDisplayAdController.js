@@ -15,12 +15,12 @@ define(['./module', 'app'], function () {
                      
   module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
     
-    '$scope', '$sce', '$log', '$location', '$routeParams', 'core/creatives/DisplayAdService',
+    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService',
 
-    function ($scope, $sce, $log, $location, $routeParams, DisplayAdService) {
+    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService) {
 
       
-      var creativeId = $routeParams.creative_id;
+      var creativeId = $stateParams.creative_id;
 
 
       

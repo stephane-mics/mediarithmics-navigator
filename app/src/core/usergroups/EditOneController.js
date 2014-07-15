@@ -8,10 +8,10 @@ define(['./module'], function () {
   // TODO retreive and use angular.module('keywords') instead ?
 
   module.controller('core/usergroups/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$routeParams', '$location',
-    function($scope, $log, Restangular, Session, _, $routeParams, $location) {
-      var userGroupId = $routeParams.usergroup_id;
-      var type = $routeParams.type;
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location',
+    function($scope, $log, Restangular, Session, _, $stateParams, $location) {
+      var userGroupId = $stateParams.usergroup_id;
+      var type = $stateParams.type;
 
       $scope.isCreationMode = !userGroupId;
 

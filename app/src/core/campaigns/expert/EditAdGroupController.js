@@ -12,11 +12,11 @@ define(['./module'], function () {
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditAdGroupController', [
-    '$scope', '$location', '$routeParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService','core/common/ConstantsService', 'lodash',
-    function($scope, $location, $routeParams, $modal, $log, DisplayCampaignService, ConstantsService, _) {
+    '$scope', '$location', '$stateParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService','core/common/ConstantsService', 'lodash',
+    function($scope, $location, $stateParams, $modal, $log, DisplayCampaignService, ConstantsService, _) {
 
-      var adGroupId = $routeParams.ad_group_id;
-      var campaignId = $routeParams.campaign_id;
+      var adGroupId = $stateParams.ad_group_id;
+      var campaignId = $stateParams.campaign_id;
       if(!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
         $location.path("/campaigns/display/expert/edit/"+campaignId);
       }
@@ -26,7 +26,7 @@ define(['./module'], function () {
       $scope.campaignName = DisplayCampaignService.getCampaignValue().name;
 
       // get campaign
-      $scope.adGroup = DisplayCampaignService.getAdGroupValue($routeParams.ad_group_id);
+      $scope.adGroup = DisplayCampaignService.getAdGroupValue(adGroupId);
 
       // fo the keywords controller
       // $scope.keywordsList =

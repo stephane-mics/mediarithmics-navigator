@@ -5,16 +5,22 @@ define(['./module'], function () {
   var module = angular.module('core/usergroups');
 
   module.config([
-    "$routeProvider",
-    function ($routeProvider) {
-      $routeProvider
-      .when('/library/usergroups', {
+    "$stateProvider",
+    function ($stateProvider) {
+      $stateProvider
+      .state('library/usergroups', {
+          url: '/library/usergroups',
         templateUrl: 'src/core/usergroups/view.all.html'
       })
-      .when('/library/usergroups/:type/:usergroup_id?', {
-        templateUrl: 'src/core/usergroups/edit.one.html',
-        topbar : false
-      });
+        .state('library/usergroups/edit', {
+          url: '/library/usergroups/:type/:usergroup_id',
+          templateUrl: 'src/core/usergroups/edit.one.html',
+          topbar : false
+        }).state('library/usergroups/create', {
+          url: '/library/usergroups/:type',
+          templateUrl: 'src/core/usergroups/edit.one.html',
+          topbar : false
+        });
     }
   ]);
 

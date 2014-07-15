@@ -69,8 +69,9 @@ define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'momen
           sidebar: false
         });
 
+$urlRouterProvider.when('/', '/home');
 $urlRouterProvider.when('/home', '/campaigns');
-        
+
 
       // TODO: move these to non-public and authenticate
       $stateProvider
@@ -110,7 +111,7 @@ $urlRouterProvider.when('/home', '/campaigns');
           publicUrl: true
         });
 
-      
+
       $stateProvider.state("admin/home",
 
         angularAMD.route({
@@ -234,7 +235,6 @@ $urlRouterProvider.when('/home', '/campaigns');
         }
       });
 
-            
     }
   ]);
 

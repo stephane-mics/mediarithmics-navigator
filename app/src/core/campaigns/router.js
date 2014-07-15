@@ -18,7 +18,7 @@ define(['./module'], function () {
           templateUrl:'src/core/campaigns/expert/edit-campaign.html',
           topbar : false
         })
-        .state('campaigns/display/expert/edit/:campaign_id/edit-ad-group/:ad_group_id', {
+        .state('campaigns/display/expert/edit/campaign/edit-ad-group', {
           url:'/campaigns/display/expert/edit/:campaign_id/edit-ad-group/:ad_group_id',
           templateUrl:'src/core/campaigns/expert/edit-ad-group.html',
           topbar : false

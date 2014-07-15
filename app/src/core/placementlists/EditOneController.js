@@ -6,10 +6,10 @@ define(['./module'], function () {
 
 
   module.controller('core/placementlists/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$routeParams', '$location', 'core/configuration', 'ngTableParams', '$window', 'core/common/auth/AuthenticationService', "$modal",
-    function($scope, $log, Restangular, Session, _, $routeParams, $location, configuration, NgTableParams, $window, AuthenticationService, $modal) {
-      var placementListId = $routeParams.placementlist_id;
-      var type = $routeParams.type;
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', 'core/configuration', 'ngTableParams', '$window', 'core/common/auth/AuthenticationService', "$modal",
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, configuration, NgTableParams, $window, AuthenticationService, $modal) {
+      var placementListId = $stateParams.placementlist_id;
+      var type = $stateParams.type;
 
       $scope.isCreationMode = !placementListId;
 

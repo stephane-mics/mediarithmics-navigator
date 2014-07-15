@@ -6,11 +6,11 @@ define(['./module'], function () {
   var module = angular.module('core/keywords');
 
   module.controller('core/keywords/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal', '$routeParams', 'core/keywords/KeywordListContainer', '$location',
-    function($scope, $log, Restangular, Session, _, $modal, $routeParams, KeywordListContainer, $location) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal', '$stateParams', 'core/keywords/KeywordListContainer', '$location',
+    function($scope, $log, Restangular, Session, _, $modal, $stateParams, KeywordListContainer, $location) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
 
-      var keywordslistId = $routeParams.keywordslist_id;
+      var keywordslistId = $stateParams.keywordslist_id;
 
       $scope.isCreationMode = !keywordslistId;
 
