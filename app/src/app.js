@@ -28,7 +28,7 @@ define(
      * Application Module
      */
 
-    var navigatorApp = angular.module('navigatorApp', [
+    var navigator = angular.module('navigator', [
       'ngCookies',
       'ngResource',
       'ngSanitize',
@@ -39,9 +39,10 @@ define(
       'ui.keypress',
       'ui.unique',
       'ui.router',
-       // 'ct.ui.router.extras',
+      'ct.ui.router.extras',
 
       'core/configuration',
+      'core/common/plugins',
       'core/layout',
       'core/keywords',
       'core/adgroups',
@@ -54,5 +55,5 @@ define(
       'core/common'
     ]);
 
-    return navigatorApp;
+    return navigator;
   });

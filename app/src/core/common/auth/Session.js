@@ -1,14 +1,14 @@
 /* global _ */
 
-define(['./module'], function () {
+define(['./module', 'navigator'], function (module, navigator) {
   'use strict';
 
   var authModule = angular.module('core/common/auth');
 
   /* define the Authentication service */
   authModule.factory('core/common/auth/Session', [
-    '$q', '$location', '$log', '$rootScope','Restangular', 'core/login/constants',
-    function($q,$location , $log, $rootScope, Restangular, LoginConstants) {
+    '$q', '$location', '$log', '$rootScope','Restangular', 'core/login/constants', 'core/common/plugins/pluginService',
+    function($q,$location , $log, $rootScope, Restangular, LoginConstants, pluginService ) {
 
       var service = {};
       service.initialized = false;
@@ -17,7 +17,7 @@ define(['./module'], function () {
         return this.initialized;
       };
 
-      service.init = function() {
+      service.init = function () {
 
         var defered = $q.defer();
         var self = this;
@@ -37,6 +37,10 @@ define(['./module'], function () {
           self.userProfile = userProfile;
           self.currentWorkspace = userProfile.default_workspace;
           self.initialized = true;
+
+          pluginService.registerPlugin("admin", 'http://localhost:9001', "/admin");
+
+
           defered.resolve();
           $log.debug("User Profile :", userProfile);
         }, defered.reject);

@@ -1,44 +1,44 @@
-define(['angularAMD','app', 'lodash', 'async', 'jquery','plupload', 'd3', 'moment'], function (angularAMD, navigatorApp, lodash, async, jquery, plupload, d3, moment) {
+define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports','module'], function (angularAMD, navigator, lodash, async, jquery, plupload, d3, moment,uiRouterExtras, exports, module) {
   "use strict";
 
-  navigatorApp.factory('lodash', [
+  navigator.factory('lodash', [
     function () {
       return lodash;
     }
   ]);
 
-  navigatorApp.factory('async', [
+  navigator.factory('async', [
     function () {
       return async;
     }
   ]);
 
-  navigatorApp.factory('jquery', [
+  navigator.factory('jquery', [
     function () {
       return jquery;
     }
   ]);
 
-  navigatorApp.factory('plupload', [
+  navigator.factory('plupload', [
     function () {
       return plupload;
     }
   ]);
 
-  navigatorApp.factory('d3', [
+  navigator.factory('d3', [
     function () {
       return d3;
     }
   ]);
 
-  navigatorApp.factory('moment', [
+  navigator.factory('moment', [
     function () {
       return moment;
     }
   ]);
 
 // configure the application
-  navigatorApp.config([
+  navigator.config([
     "$stateProvider", "$logProvider","$urlRouterProvider",
     function ($stateProvider, $logProvider, $urlRouterProvider) {
 
@@ -112,21 +112,13 @@ $urlRouterProvider.when('/home', '/campaigns');
         });
 
 
-      $stateProvider.state("admin/home",
-
-        angularAMD.route({
-            templateUrl: 'src/admin/views/organisation-list.html',
-            controller:'OrganisationListController',
-            controllerUrl: 'admin/controllers/organisation'
-        })
-    );
       $logProvider.debugEnabled(true);
     }
   ]);
    
    
 // configure the Restangular Service
-  navigatorApp.config([
+  navigator.config([
     'RestangularProvider', 'core/configuration',
     function (RestangularProvider, configuration) {
 
@@ -170,13 +162,31 @@ $urlRouterProvider.when('/home', '/campaigns');
     }
   ]);
 
+  navigator.config([
+    '$futureStateProvider',
+    function ($futureStateProvider) {
+      function ngloadStateFactory($q, futureState) {
+        var ngloadDeferred = $q.defer();
+        require([ "ngload!" + futureState.src , 'ngload', 'angularAMD'],
+          function ngloadCallback(result, ngload, angularAMD) {
+            angularAMD.processQueue();
+            ngloadDeferred.resolve(result.entryState);
+          });
+        return ngloadDeferred.promise;
+      }
+
+      $futureStateProvider.stateFactory('ngload', ngloadStateFactory);
+
+      navigator.$futureStateProvider = $futureStateProvider;
+    }]);
+
 
   /* work to be performed after module loading */
 
 // add an event listener on $routeChangeStart to restrict access to
 // secured part of the app
 
-  navigatorApp.run([
+  navigator.run([
     '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants","$state",
     function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants, $state) {
 
@@ -238,6 +248,8 @@ $urlRouterProvider.when('/home', '/campaigns');
     }
   ]);
 
-var r = angularAMD.bootstrap(navigatorApp, true, document.body);
-  return  navigatorApp;
+  var r = angularAMD.bootstrap(navigator, true, document.body);
+  exports.app = navigator;
+
+
 });
