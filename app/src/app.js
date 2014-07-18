@@ -1,7 +1,8 @@
 define(
   ['angularAMD',
-    'ngCookies',
+    'moment',
     'jqCookie',
+    'ngCookies',
     'ngResource',
     'ngRoute',
     'restangular',
@@ -12,6 +13,7 @@ define(
     'ui',
     'ui.router',
     'ui.router.extras',
+    'ngload',
     'lodash',
     'core/configuration',
     'core/keywords/index',
@@ -42,7 +44,7 @@ define(
       'ct.ui.router.extras',
 
       'core/configuration',
-      'core/common/plugins',
+      'core/configuration',
       'core/layout',
       'core/keywords',
       'core/adgroups',

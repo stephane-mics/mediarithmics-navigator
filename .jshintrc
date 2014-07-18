@@ -16,6 +16,7 @@
   "smarttabs": true,
   "globals": {
     "angular": false,
-    "define": false
+    "define": false,
+    "require": false
   }
 }

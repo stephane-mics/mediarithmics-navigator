@@ -6,16 +6,16 @@ require.config({
     'angularAMD': '../bower_components/angularAMD/angularAMD',
     'ngload': '../bower_components/angularAMD/ngload',
     "jqCookie": "../bower_components/jquery-cookie/jquery.cookie",
-    'core/configuration': '../conf/app-configuration',
-    "jqDaterangepicker": "../bower_components/bootstrap-daterangepicker/daterangepicker",
+    "moment": "../bower_components/momentjs/moment",
+
 
 
     "lodash": "../bower_components/lodash/dist/lodash.compat",
     "d3": "../bower_components/d3/d3",
     "nv.d3": "nvd3-templates/nv.d3",
 
-    "moment": "../bower_components/momentjs/moment",
     "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap",
+    "jqDaterangepicker": "../bower_components/bootstrap-daterangepicker/daterangepicker",
 
     "autofill-event": "../bower_components/autofill-event/src/autofill-event",
 
@@ -42,7 +42,7 @@ require.config({
 
   },
   shim: {
-    'angular': {'exports': 'angular'},
+    'angular': {'deps': ['jquery'], 'exports': 'angular'},
     'angularAMD': ['angular'],
     "ngCookies": ['angular'],
     'ngResource': ['angular'],
@@ -69,4 +69,3 @@ require.config({
   },
   deps: ['navigator']
 });
-

@@ -24,10 +24,11 @@
     <!-- endbuild -->
 
     <link rel="stylesheet" href="styles/font/stylesheet.css">
-    <script type="text/javascript">
-
-    </script>
+      <script>
+          var require = {  paths: {  'core/configuration': '../conf/app-configuration'}};
+      </script>
     <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
+
   </head>
   <body class="mcs-app">
     <!--[if lt IE 7]>
