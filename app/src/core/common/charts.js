@@ -1,5 +1,5 @@
-/* global nv, d3 */
-define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart'], function (m) {
+/* global nv */
+define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (m, nv, ignore, d3) {
 
   'use strict';
 
