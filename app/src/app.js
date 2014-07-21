@@ -23,6 +23,7 @@ define(
     'core/campaigns/index',
     'core/placementlists/index',
     'core/login/index',
+    'core/datamart/index',
     'core/layout/index'], function (angularAMD) {
     'use strict';
 
@@ -52,7 +53,7 @@ define(
       'core/campaigns',
       'core/creatives',
 
-//    'core/datamart',
+      'core/datamart',
       'core/login',
       'core/common'
     ]);

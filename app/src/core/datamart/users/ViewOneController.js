@@ -1,8 +1,7 @@
-(function(){
+define(['./module'], function (module) {
 
   'use strict';
 
-  var module = angular.module('core/datamart');
 
   module.controller('core/datamart/users/ViewOneController', [
     '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
@@ -133,4 +132,4 @@
     }
   ]);
 
-})();
+});

@@ -1,8 +1,8 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
-  var module = angular.module('core/datamart');
+  var module = angular.module('core/datamart/categories');
 
   module.controller('core/datamart/categories/BrowseController', [
     '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
@@ -92,4 +92,4 @@
     }
   ]);
 
-})();
+});
