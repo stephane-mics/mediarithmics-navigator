@@ -216,7 +216,7 @@ $urlRouterProvider.when('/home', '/campaigns');
             Session.updateWorkspace(toParams.organisation_id);
         }
         $rootScope.sidebar = options.sidebar;
-        var urlMatch = $location.url().match(/\/([^\/]+)\/?/);
+        var urlMatch = toState.name.match(/\/?(\w+)\/?/);
         if (urlMatch) {
           $rootScope.category = urlMatch[1];
         }
