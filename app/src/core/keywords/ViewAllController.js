@@ -20,7 +20,7 @@ define(['./module'], function () {
           $event.stopPropagation();
         }
 
-        $location.path("/library/keywordslists/" + keywordsList.id);
+        $location.path( '/' + organisationId + "/library/keywordslists/" + keywordsList.id);
       };
 
       $scope.deleteKeywordsList = function (keywordsList, $event) {

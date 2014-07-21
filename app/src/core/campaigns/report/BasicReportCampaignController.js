@@ -150,7 +150,7 @@ define(['./module'], function () {
         $log.debug("> editCampaign for campaignId=", campaign.id);
 
         CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
-          var location = template.editor.edit_path.replace(/{id}/g, campaign.id);
+          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/,campaign.organisation_id);
           $location.path(location);
         });
       };

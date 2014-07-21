@@ -13,13 +13,13 @@ define(['./module'], function () {
 
         // list creatives 
         .state('creatives', {
-            url: '/creatives',
+            url:'/{organisation_id}/creatives',
           templateUrl: 'src/core/creatives/list.html'
         })
 
         // create a new creative
         .state('creatives/select-creative-template', {
-          url: 'creatives/select-creative-template',
+            url:'/{organisation_id}/creatives/select-creative-template',
           templateUrl: 'src/core/creatives/create.html',
           topbar : false
         });

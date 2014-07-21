@@ -10,7 +10,7 @@ define(['./module'], function () {
     function ($stateProvider) {
       $stateProvider
         .state('/campaigns/display/report', {
-          url:"/campaigns/display/report/:campaign_id/:template",
+          url:'/{organisation_id}/campaigns/display/report/:campaign_id/:template',
           templateUrl:'src/core/campaigns/report/show-report.html'
         });
     }

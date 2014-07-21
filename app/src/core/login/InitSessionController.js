@@ -11,7 +11,6 @@ define(['./module'], function () {
 
       Session.init().then(function() {
         $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
-
         var path = AuthenticationService.popPendingPath();
         $log.debug("redirect to :", path);
         // success : redirect to the pending path

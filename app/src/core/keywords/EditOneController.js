@@ -20,14 +20,14 @@ define(['./module'], function () {
       }
 
       $scope.cancel = function () {
-        $location.path("/library/keywordslists");
+        $location.path( '/' + organisationId + "/library/keywordslists");
       };
 
       $scope.next = function () {
         var promise = $scope.keywordsList.save();
         promise.then(function success(keywordListContainer){
           $log.info("success");
-          $location.path("/library/keywordslists");
+          $location.path( '/' + organisationId + "/library/keywordslists");
         }, function failure(){
           $log.info("failure");
         });

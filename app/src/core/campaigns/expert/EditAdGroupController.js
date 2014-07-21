@@ -16,9 +16,10 @@ define(['./module'], function () {
     function($scope, $location, $stateParams, $modal, $log, DisplayCampaignService, ConstantsService, _) {
 
       var adGroupId = $stateParams.ad_group_id;
+      var organisationId = $stateParams.organisation_id;
       var campaignId = $stateParams.campaign_id;
       if(!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
-        $location.path("/campaigns/display/expert/edit/"+campaignId);
+        $location.path("/"+organisationId+"/campaigns/display/expert/edit/"+campaignId);
       }
 
       $scope.visibilityValues = ConstantsService.getValues("adgroup_visibility");
@@ -99,7 +100,7 @@ define(['./module'], function () {
         $log.debug("Editing Ad Group done! :", $scope.adGroup);
 
         DisplayCampaignService.setAdGroupValue(adGroupId, $scope.adGroup);
-        $location.path('/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
+        $location.path('/' +  DisplayCampaignService.getCampaignValue().organisation_id  +'/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
 
       };
 
@@ -112,7 +113,7 @@ define(['./module'], function () {
         DisplayCampaignService.resetAdGroup(adGroupId);
 
         //DisplayCampaignService.resetAdGroupValue();
-        $location.path('/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
+        $location.path('/' +  DisplayCampaignService.getCampaignValue().organisation_id+ '/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
 
       };
 

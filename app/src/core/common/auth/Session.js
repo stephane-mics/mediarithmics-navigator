@@ -38,6 +38,7 @@ define(['./module', 'navigator'], function (module, navigator) {
           self.currentWorkspace = userProfile.default_workspace;
           self.initialized = true;
 
+
           pluginService.registerPlugin("admin", 'http://localhost:9001', "/admin");
 
 
@@ -73,11 +74,21 @@ define(['./module', 'navigator'], function (module, navigator) {
 
       };
 
+      service.updateWorkspace = function(organisationId) {
+
+         for (var i = 0; i < this.userProfile.workspaces.length ; i++) {
+          if(this.userProfile.workspaces[i].organisation_id === organisationId) {
+            this.currentWorkspace = i;
+          }
+        }
+        $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
+
+      };
 
       service.switchWorkspace = function(workspaceIndex) {
         this.currentWorkspace = workspaceIndex;
         $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
-        $location.path('/home');
+        $location.path(this.getCurrentWorkspace().organisation_id+'/campaigns');
       };
 
       /**

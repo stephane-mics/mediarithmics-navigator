@@ -64,14 +64,14 @@ define(['./module', 'app'], function () {
       $scope.save = function () {
         $log.debug("save display ad : ", $scope.display_ad);
         DisplayAdService.save().then(function (displayAdContainer) {
-          $location.path('/creatives');
+          $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
         });
       };
 
       // back button
       $scope.cancel = function () {
         DisplayAdService.reset();
-        $location.path('/creatives');
+        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
 
       };
     

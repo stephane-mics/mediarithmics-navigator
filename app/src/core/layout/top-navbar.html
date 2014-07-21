@@ -16,14 +16,14 @@
 
       <ul class="nav navbar-nav mcs-main-nav">
         <li ng-class="category == 'datamart' ? 'active' : ''" ><a href="#datamart/users">Audience</a></li>
-        <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#campaigns" >Campaigns</a></li>
-        <li ng-class="category == 'creatives' ? 'active' : ''"><a href="#creatives">Creatives</a></li>
+        <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#/{{organisationId}}/campaigns" >Campaigns</a></li>
+        <li ng-class="category == 'creatives' ? 'active' : ''"><a href="#/{{organisationId}}/creatives">Creatives</a></li>
         <li ng-class="category == 'library' ? 'active' : ''" class="dropdown">
           <a href="#" class="dropdown-toggle">Library</a>
           <ul class="dropdown-menu">
-            <li><a href="#library/usergroups">User Groups</a></li>
-            <li><a href="#library/placementlists">Placement Lists</a></li>
-            <li><a href="#library/keywordslists">Keywords Lists</a></li>
+            <li><a href="#/{{organisationId}}/library/usergroups">User Groups</a></li>
+            <li><a href="#/{{organisationId}}/library/placementlists">Placement Lists</a></li>
+            <li><a href="#/{{organisationId}}/library/keywordslists">Keywords Lists</a></li>
           </ul>
         </li>
       </ul>

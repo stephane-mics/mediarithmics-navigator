@@ -31,7 +31,7 @@ define(['./module'], function () {
       };
 
       $scope.cancel = function() {
-        $location.path('/creatives');
+        $location.path("/"+ organisationId +'/creatives');
       };
 
     }

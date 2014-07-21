@@ -13,7 +13,7 @@ define(['./module'], function () {
       });
 
       $scope.createPlacementList = function (type) {
-        $location.path("/library/placementlists/" + type);
+        $location.path( '/' + organisationId + "/library/placementlists/" + type);
       };
 
       $scope.editPlacementList = function (placementList, $event) {
@@ -22,7 +22,7 @@ define(['./module'], function () {
           $event.stopPropagation();
         }
 
-        $location.path("/library/placementlists/" + placementList.group_type + "/" + placementList.id);
+        $location.path( '/' + organisationId + "/library/placementlists/" + placementList.group_type + "/" + placementList.id);
       };
 
       $scope.deletePlacementList = function (placementList, $event) {

@@ -9,20 +9,20 @@ define(['./module'], function () {
     function ($stateProvider) {
       $stateProvider
         .state('library/keywordslists', {
-          url: '/library/keywordslists',
+          url:'/{organisation_id}/library/keywordslists',
           templateUrl: 'src/core/keywords/view.all.html'
         })
         .state('library/keywordslists/new', {
-          url: '/library/keywordslists/new',
+          url:'/{organisation_id}/library/keywordslists/new',
           templateUrl: 'src/core/keywords/edit.one.html',
           topbar: false
         })
         .state('library/keywordslists/edit', {
-          url: '/library/keywordslists/:keywordslist_id',
+          url:'/{organisation_id}/library/keywordslists/:keywordslist_id',
           templateUrl: 'src/core/keywords/edit.one.html',
           topbar: false
         }).state('library/keywordslists/create', {
-          url: '/library/keywordslists',
+          url:'/{organisation_id}/library/keywordslists',
           templateUrl: 'src/core/keywords/edit.one.html',
           topbar: false
         });

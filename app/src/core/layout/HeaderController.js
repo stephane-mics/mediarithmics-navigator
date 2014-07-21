@@ -23,6 +23,7 @@ define(['./module'], function () {
 
         function updateWorkspaces() {
           $scope.workspaces = Session.getWorkspaces();
+          $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
         }
 
 

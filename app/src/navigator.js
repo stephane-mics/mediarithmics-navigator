@@ -201,16 +201,20 @@ $urlRouterProvider.when('/home', '/campaigns');
       $rootScope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
       $rootScope.$on(LoginConstants.LOGIN_SUCCESS, updateWorkspaces);
 
-      $rootScope.$on('$stateChangeStart', function (event, next, current) {
+      $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-        $log.debug("$stateChangeSuccess  next : ", next);
+        $log.debug("$stateChangeSuccess  toState : ", toState);
 
 
-        var options = defaults(next, {
+        var options = defaults(toState, {
           publicUrl: false,
           sidebar: true,
           topbar: true
         });
+
+        if (Session.isInitialized()) {
+            Session.updateWorkspace(toParams.organisation_id);
+        }
         $rootScope.sidebar = options.sidebar;
         var urlMatch = $location.url().match(/\/([^\/]+)\/?/);
         if (urlMatch) {

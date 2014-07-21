@@ -12,7 +12,7 @@ define(['./module'], function () {
         // Display Ads Templates
         // expert template
         .state('creatives/display-ads/standard-banner/edit', {
-          url: '/creatives/display-ads/standard-banner/edit/:creative_id',
+          url:'/{organisation_id}/creatives/display-ads/standard-banner/edit/:creative_id',
           templateUrl: 'src/core/creatives/display-ads/standard-banner/edit-display-ad.html',
           topbar: false
         });
