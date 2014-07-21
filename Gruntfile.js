@@ -500,7 +500,7 @@ module.exports = function (grunt) {
       'genRequireJsFiles:config',
       'bowerInstall',
       'concurrent:server',
-      'autoprefixer',
+//      'autoprefixer',
       'connect:livereload',
       'watch'
     ]);
@@ -515,7 +515,7 @@ module.exports = function (grunt) {
     'clean:server',
     'genRequireJsFiles:config',
     'concurrent:test',
-    'autoprefixer',
+//    'autoprefixer',
     'connect:test',
     'karma'
   ]);
