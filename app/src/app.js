@@ -16,6 +16,7 @@ define(
     'ngload',
     'lodash',
     'core/configuration',
+    'core/adblock/index',
     'core/keywords/index',
     'core/creatives/index',
     'core/adgroups/index',
@@ -45,6 +46,7 @@ define(
       'ct.ui.router.extras',
 
       'core/configuration',
+      'core/adblock',
       'core/layout',
       'core/keywords',
       'core/adgroups',

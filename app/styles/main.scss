@@ -83,6 +83,15 @@ $navbar-inverse-link-color: $body-bg;
   margin-left:120px;
 }
 
+.top-warning {
+  padding: 5px;
+  color: $mcs-red-not;
+  font-weight: bold;
+  background: $mcs-red;
+  z-index: 2000;
+  position: relative;
+}
+
 .mcs-app .daterangepicker {
   .calendar-date, td, th, .ranges .input-mini {
     border-radius: 0;
