@@ -14,6 +14,8 @@ define(['./module'], function () {
       });
 
 
+      $scope.organisationId = organisationId;
+
       $scope.editKeywordsList = function (keywordsList, $event) {
         if ($event) {
           $event.preventDefault();

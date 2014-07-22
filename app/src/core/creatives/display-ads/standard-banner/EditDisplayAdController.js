@@ -15,9 +15,9 @@ define(['./module', 'app'], function () {
                      
   module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
     
-    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService',
+    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session',
 
-    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService) {
+    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session) {
 
       
       var creativeId = $stateParams.creative_id;

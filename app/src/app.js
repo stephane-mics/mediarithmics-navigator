@@ -45,7 +45,6 @@ define(
       'ct.ui.router.extras',
 
       'core/configuration',
-      'core/configuration',
       'core/layout',
       'core/keywords',
       'core/adgroups',

@@ -31,7 +31,7 @@ define(['./module'], function () {
       };
 
       $scope.cancel = function() {
-        $location.path("/"+ organisationId +'/creatives');
+        $location.path("/"+ Session.getCurrentWorkspace().organisation_id +'/creatives');
       };
 
     }
