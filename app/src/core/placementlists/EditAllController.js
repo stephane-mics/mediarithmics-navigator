@@ -12,18 +12,7 @@ define(['./module'], function () {
         $scope.placementLists = placementLists;
       });
 
-      $scope.createPlacementList = function (type) {
-        $location.path( '/' + organisationId + "/library/placementlists/" + type);
-      };
-
-      $scope.editPlacementList = function (placementList, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
-
-        $location.path( '/' + organisationId + "/library/placementlists/" + placementList.group_type + "/" + placementList.id);
-      };
+      $scope.organisationId = organisationId;
 
       $scope.deletePlacementList = function (placementList, $event) {
         if ($event) {
