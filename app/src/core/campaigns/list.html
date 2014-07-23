@@ -4,7 +4,15 @@
     </div>
     <div class="campaign-list-content">
         <div class="campaign-list-heading">
-            <h1>All Campaigns</h1>
+            <h1>
+              All Campaigns
+              <div class="pull-right">
+                <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
+                  <span class="glyphicon glyphicon-refresh"></span>
+                  Refresh
+                </button>
+              </div>
+            </h1>
         </div>
         <div class="campaign-list-controller">
 
@@ -16,9 +24,6 @@
             <div class="campaign-list-date-controller">
                 <form class="form-inline" role="form">
                     <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L">
-                    <button type="button" class="mics-btn mics-btn-action" ng-click="refresh()"><span class="glyphicon glyphicon-refresh"></span>
-                        Refresh
-                    </button>
                 </form>
             </div>
         </div>
