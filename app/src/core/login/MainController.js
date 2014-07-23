@@ -7,9 +7,11 @@ define(['./module', "autofill-event"], function () {
     '$scope', '$location', '$log', '$rootScope', 'jquery', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
     function($scope, $location, $log, $rootScope, $, AuthenticationService, Session, LoginConstants) {
       $scope.user = {email:"", password:""};
+
       setTimeout(function() {
-        $("#loginEmail").checkAndTriggerAutoFillEvent();
-      } ,0);
+        $("#loginEmail,#loginPassword").checkAndTriggerAutoFillEvent();
+      } ,200);
+
       function showSimpleError() {
         $scope.authError = true;
         // failure : display an error message
