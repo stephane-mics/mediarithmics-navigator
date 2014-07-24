@@ -112,6 +112,9 @@ a, *[ng-click] {
   cursor:default;
 }
 
+input[type=daterange] {
+  cursor:pointer; /* the plugin will display a custom component */
+}
 .mcs-top-navbar {
 
 //    margin-bottom: 0px !important;
@@ -790,6 +793,7 @@ form.mcs-full-page-form {
 .edit-campaign-expert {
   .selected-display-network {
     margin: 0 5px 5px 0;
+    display: inline-block;
   }
 }
 
