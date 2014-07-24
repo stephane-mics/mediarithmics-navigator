@@ -68,7 +68,11 @@ define(['./module', 'navigator'], function (module, navigator) {
       service.getWorkspaces = function () {
         var result = [];
         for (var i = 0; i < this.userProfile.workspaces.length ; i++) {
-          result.push({idx: i, organisationName: this.userProfile.workspaces[i].organisation_name});
+          result.push({
+            idx: i,
+            organisationName: this.userProfile.workspaces[i].organisation_name,
+            organisationId : this.userProfile.workspaces[i].organisation_id
+          });
         }
         return result;
 

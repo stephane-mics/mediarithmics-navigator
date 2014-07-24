@@ -196,6 +196,7 @@ $urlRouterProvider.when('/home', '/campaigns');
 
       function updateWorkspaces() {
         $rootScope.currentOrganisation = Session.getCurrentWorkspace().organisation_name;
+        $rootScope.currentOrganisationId = Session.getCurrentWorkspace().organisation_id;
       }
 
       $rootScope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
