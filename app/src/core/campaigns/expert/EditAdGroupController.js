@@ -19,7 +19,7 @@ define(['./module'], function () {
       var organisationId = $stateParams.organisation_id;
       var campaignId = $stateParams.campaign_id;
       if(!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
-        $location.path("/"+organisationId+"/campaigns/display/expert/edit/"+campaignId);
+        return $location.path("/"+organisationId+"/campaigns/display/expert/edit/"+campaignId);
       }
 
       $scope.visibilityValues = ConstantsService.getValues("adgroup_visibility");

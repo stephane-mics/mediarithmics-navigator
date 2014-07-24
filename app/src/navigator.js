@@ -64,7 +64,6 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
         .state('init-session', {
           url:'/init-session',
           templateUrl: 'src/core/login/init-session.html',
-          controller:'core/login/InitSessionController',
           publicUrl: true,
           sidebar: false
         });
