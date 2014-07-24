@@ -56,8 +56,7 @@
         <td>
           {{creative.name}}
         </td>
-        <td>
-          {{creativeProperties["destination_url"] | rendererProperty }}
+        <td pretty-print-url="creativeProperties['destination_url'] | rendererProperty">
         </td>
         <td>
           {{creative.creation_date|date:'shortDate'}}

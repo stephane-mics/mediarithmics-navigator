@@ -215,6 +215,27 @@ input[type=daterange] {
   }
 }
 
+.pretty-print-url {
+  .url-search-item {
+    display:block;
+  }
+  .key {
+    color:blue;
+  }
+  .separator {
+    color:black;
+  }
+  .value {
+    font-weight:bold;
+  }
+  .toggle {
+    margin: 0 5px;
+  }
+  .url {
+    float:right;
+  }
+}
+
 @mixin mics-button-variant($background) {
   $color : #fff;
   @include button-variant($color, $background, $background);
