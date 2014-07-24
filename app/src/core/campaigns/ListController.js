@@ -44,7 +44,7 @@ define(['./module'], function () {
       });
 
       $scope.newCampaign = function () {
-        $location.path('/campaigns/select-campaign-template');
+        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/campaigns/select-campaign-template');
       };
 
       $scope.showCampaign = function (campaign, $event) {
