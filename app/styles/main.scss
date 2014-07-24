@@ -36,6 +36,8 @@ $text-color: $dark-blue;
 $input-border: $mcs-light-blue;
 $dropdown-link-color: $dark-blue;
 
+$table-bg: white;
+
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
 $brand-info: #0BA3DE;
@@ -179,7 +181,7 @@ a, *[ng-click] {
       td.actions {
         @extend .text-right;
         .mics-btn {
-          @extend .btn-sm;
+          @extend .btn-xs;
           margin-left:8px;
           margin-bottom:8px;
         }
@@ -188,13 +190,24 @@ a, *[ng-click] {
   }
 }
 
-.mics-table-auto-hiding-actions {
-  tbody {
-    tr .actions > * {
-      visibility:hidden;
+.mics-table.js-auto-hide-actions {
+  thead {
+    th.actions {
+      display:none;
     }
-    tr:hover .actions > * {
-      visibility:visible;
+  }
+  tbody {
+    td.actions {
+      display:none;
+    }
+
+
+    > tr:nth-child(odd) > td.actions {
+      background-color: $table-bg-accent;
+    }
+    /* the td overlap in this case, we need to set a background */
+    > tr:nth-child(even) > td.actions {
+      background-color: $table-bg;
     }
   }
 }
@@ -488,9 +501,7 @@ form.mcs-full-page-form {
   /* override right and width to the good values but keep the overall behavior */
   @include make-xs-column(3);
   width:20% !important;
-  @include make-xs-column-push(9);
-  /* right: 20% !important; */
-  left: 80% !important;
+  float:right;
   ul {
     @extend .nav;
     @extend .nav-pills;
@@ -524,8 +535,6 @@ form.mcs-full-page-form {
 
 .mcs-default-content {
   /* override right and width to the good values but keep the overall behavior */
-  @include make-xs-column-pull(3);
-  right: 20% !important;
   @include make-xs-column(9, 100px);
   width:80% !important;
 }
