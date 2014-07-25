@@ -1,0 +1,13 @@
+<div class="campaign-status campaign-status-{{campaign.status}}">
+  <button data-toggle="dropdown" class="campaign-status-state mics-btn btn-xs">
+    <span></span>
+    {{campaign.status}}
+    &nbsp;
+    <span class="caret"></span>
+  </button>
+  <ul role="menu" class="dropdown-menu">
+    <li><a ng-click="activateCampaign(campaign)">Activate Campaign</a></li>
+    <li><a ng-click="pauseCampaign(campaign)">Pause Campaign</a></li>
+  </ul>
+</div>
+

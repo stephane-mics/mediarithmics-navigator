@@ -43,6 +43,10 @@ define(['./module'], function () {
         updateStatistics($scope, CampaignAnalyticsReportService,  Session.getCurrentWorkspace().organisation_id);
       });
 
+      $scope.getCampaignDashboardUrl = function (campaign) {
+        return "/"+ campaign.organisation_id  +"/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
+      };
+
       $scope.newCampaign = function () {
         $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/campaigns/select-campaign-template');
       };
@@ -53,7 +57,7 @@ define(['./module'], function () {
           $event.stopPropagation();
         }
 
-        $location.path("/"+ campaign.organisation_id  +"/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic");
+        $location.path($scope.getCampaignDashboardUrl(campaign));
       };
       $scope.editCampaign = function (campaign, $event) {
         if ($event) {
