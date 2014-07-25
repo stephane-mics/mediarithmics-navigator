@@ -14,7 +14,8 @@ define(['./module'], function () {
           templateUrl: 'src/core/usergroups/ChooseExistingUserGroups.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/usergroups/ChooseExistingUserGroupsController'
+          controller: 'core/usergroups/ChooseExistingUserGroupsController',
+          size: "lg"
         });
 
         uploadModal.result.then(function () {

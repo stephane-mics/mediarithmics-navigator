@@ -70,7 +70,7 @@
             </tr>
             </tbody>
           </table>
-          <pagination total-items="displayCampaigns.length" page="currentPageDisplayCampaign" items-per-page="itemsPerPage"></pagination>
+          <pagination total-items="displayCampaigns.length" ng-model="currentPageDisplayCampaign" items-per-page="itemsPerPage"></pagination>
 
         </div>
         <div class="campaign-list-area" ng-show="emailCampaigns.length">
@@ -98,7 +98,7 @@
             </tr>
             </tbody>
           </table>
-          <pagination total-items="emailCampaigns.length" page="currentPageEmailCampaign" items-per-page="itemsPerPage"></pagination>
+          <pagination total-items="emailCampaigns.length" ng-model="currentPageEmailCampaign" items-per-page="itemsPerPage"></pagination>
         </div>
 
 

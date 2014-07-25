@@ -33,7 +33,8 @@ define(['./module'], function () {
           templateUrl: 'src/core/adgroups/ChooseExistingAds.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/adgroups/ChooseExistingAdsController'
+          controller: 'core/adgroups/ChooseExistingAdsController',
+          size: "lg"
         });
 
         uploadModal.result.then(function () {

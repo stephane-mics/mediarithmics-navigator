@@ -14,7 +14,8 @@ define(['./module'], function () {
           templateUrl: 'src/core/keywords/ChooseExistingKeywordList.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/keywords/ChooseExistingKeywordListController'
+          controller: 'core/keywords/ChooseExistingKeywordListController',
+          size: "lg"
         });
 
         uploadModal.result.then(function () {

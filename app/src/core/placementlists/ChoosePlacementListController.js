@@ -14,7 +14,8 @@ define(['./module'], function () {
           templateUrl: 'src/core/placementlists/ChooseExistingPlacementList.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/placementlists/ChooseExistingPlacementListController'
+          controller: 'core/placementlists/ChooseExistingPlacementListController',
+          size: "lg"
         });
 
         uploadModal.result.then(function () {
