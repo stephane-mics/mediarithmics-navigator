@@ -87,7 +87,17 @@ define(['./module'], function () {
       DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
         $scope.adgroups = campaign.ad_groups;
-        $scope.ads = _.unique(_.flatten(_.map(campaign.ad_groups, "ads")), "creative_id");
+
+        // bastard object to iterate easily with an ng-repeat
+        $scope.adsWithGroup = [];
+        _.forEach(campaign.ad_groups, function (ad_group) {
+          _.forEach(ad_group.ads, function (ad) {
+            $scope.adsWithGroup.push({
+              ad_group : ad_group,
+              ad : ad
+            });
+          });
+        });
 
 
 

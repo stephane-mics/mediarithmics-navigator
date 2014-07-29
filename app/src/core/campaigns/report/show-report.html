@@ -84,7 +84,7 @@
                             <thead>
 
                             <tr>
-                                <th>Status</th>
+                                <th class="status">Status</th>
                                 <th>Ad name</th>
                                 <th>Format</th>
                                 <th class="metrics" ng-repeat="header in adPerformance.getMetrics()">
@@ -94,16 +94,14 @@
                             </thead>
                             <tbody>
 
-                            <tr ng-repeat="row in ads">
+                            <tr ng-repeat="row in adsWithGroup">
                                 <td>
-                                  <span class="status-{{row.status}}">
-                                    {{row.status}}
-                                  </span>
+                                  <div mics-ad-status="row.ad" ad-group="row.ad_group" campaign="campaign"></div>
                                 </td>
-                                <td>{{row.name}}</td>
-                                <td>{{row.format}}</td>
+                                <td>{{row.ad.name}}</td>
+                                <td>{{row.ad.format}}</td>
                                 <td class="metrics {{metricValue.type}}"
-                                    ng-repeat="metricValue in adPerformance.getRow(row.id) track by $index" ng-class="metricValue.type">
+                                    ng-repeat="metricValue in adPerformance.getRow(row.ad.id) track by $index" ng-class="metricValue.type">
                             <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
                                 {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                             </span>

@@ -190,6 +190,9 @@ input[type=daterange] {
       th.actions {
         background-color: $dark-blue;
       }
+      th.status {
+        width: 130px;
+      }
     }
   }
   td, th {
@@ -820,18 +823,6 @@ form.mcs-full-page-form {
         }
         .breakdown-area {
             @include    make-row();
-                .breakdown {
-                    @extend .nav;
-                    @extend .nav-tabs ;
-                    @extend .nav-justified;
-
-                    .status-ACTIVE {
-                      color:$mcs-green;
-                    }
-                    .status-PAUSED {
-                      color:$mcs-red;
-                    }
-                }
                 .nav-tabs a {
                   @include use-bold-font();
                   color : $dark-blue;
@@ -1401,10 +1392,10 @@ a.category-item {
 
 /* end of datamart */
 
-.campaign-status {
+.updatable-item-status {
   @extend .btn-group;
 
-  button.campaign-status-state {
+  button.updatable-item-status-state {
     @extend .dropdown-toggle;
 
     span:first-child {
@@ -1412,8 +1403,8 @@ a.category-item {
     }
   }
 }
-.campaign-status-PAUSED {
-  button.campaign-status-state {
+.updatable-item-status-PAUSED {
+  button.updatable-item-status-state {
     @extend .btn-warning;
 
     span:first-child {
@@ -1421,8 +1412,8 @@ a.category-item {
     }
   }
 }
-.campaign-status-PENDING {
-  button.campaign-status-state {
+.updatable-item-status-PENDING {
+  button.updatable-item-status-state {
     @extend .btn-info;
 
     span:first-child {
@@ -1430,8 +1421,8 @@ a.category-item {
     }
   }
 }
-.campaign-status-ACTIVE {
-  button.campaign-status-state {
+.updatable-item-status-ACTIVE {
+  button.updatable-item-status-state {
     @extend .btn-success;
 
     span:first-child {
