@@ -8,13 +8,13 @@
     <div class="mics-table-toolbar">
       <div class ="col-md-6">
         <div class="dropdown">
-          <a href="#/library/keywordslists/new" class="mics-btn mics-btn-add">
+          <a href="#/{{organisationId}}/library/keywordslists/new" class="mics-btn mics-btn-add">
             New Keywords List
           </a>
         </div>
       </div>
     </div>
-    <table class="mics-table mics-table-auto-hiding-actions" ng-show="keywordsLists.length">
+    <table class="mics-table js-auto-hide-actions" ng-show="keywordsLists.length">
       <thead>
         <tr>
           <th>Name</th>

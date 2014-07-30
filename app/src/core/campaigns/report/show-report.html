@@ -6,21 +6,11 @@
     <div class="report mcs-default-content">
         <div class="campaign-heading">
 
-            <h3>
+            <h2>
 
               <span>{{campaign.name}}</span>
-              <div class="campaign-status campaign-status-{{campaign.status}}">
-                  <button data-toggle="dropdown" class="campaign-status-state">
-                      <span></span>
-                      {{campaign.status}}
-                      &nbsp;
-                      <span class="caret"></span>
-                    </button>
-                    <ul role="menu" class="dropdown-menu">
-                        <li><a ng-click="activateCampaign(campaign)">Activate Campaign</a></li>
-                        <li><a ng-click="pauseCampaign(campaign)">Pause Campaign</a></li>
-                    </ul>
-                </div>
+              <div mics-campaign-status="campaign"></div>
+
               <div class="pull-right">
                 <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
                   <span class="glyphicon glyphicon-refresh"></span>
@@ -28,7 +18,7 @@
                 </button>
               </div>
 
-            </h3>
+            </h2>
 
 
         </div>
@@ -36,7 +26,7 @@
             <div class="report-type-controller">
                 <ul class="nav nav-pills">
                     <li class="active"><a>Overview</a></li>
-                    <li class=""><a href="#">Intraday</a></li>
+                    <!-- <li class=""><a href="#">Intraday</a></li> -->
                     <!-- <li><a href="#">Trading Reports</a></li> -->
                 </ul>
             </div>
@@ -94,7 +84,7 @@
                             <thead>
 
                             <tr>
-                                <th>Status</th>
+                                <th class="status">Status</th>
                                 <th>Ad name</th>
                                 <th>Format</th>
                                 <th class="metrics" ng-repeat="header in adPerformance.getMetrics()">
@@ -104,16 +94,14 @@
                             </thead>
                             <tbody>
 
-                            <tr ng-repeat="row in ads">
+                            <tr ng-repeat="row in adsWithGroup">
                                 <td>
-                                  <span class="status-{{row.status}}">
-                                    {{row.status}}
-                                  </span>
+                                  <div mics-ad-status="row.ad" ad-group="row.ad_group" campaign="campaign"></div>
                                 </td>
-                                <td>{{row.name}}</td>
-                                <td>{{row.format}}</td>
+                                <td>{{row.ad.name}}</td>
+                                <td>{{row.ad.format}}</td>
                                 <td class="metrics {{metricValue.type}}"
-                                    ng-repeat="metricValue in adPerformance.getRow(row.id) track by $index" ng-class="metricValue.type">
+                                    ng-repeat="metricValue in adPerformance.getRow(row.ad.id) track by $index" ng-class="metricValue.type">
                             <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
                                 {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                             </span>
@@ -144,7 +132,7 @@
                             <thead>
 
                             <tr>
-                                <!--<th>Status</th>-->
+                                <th class="status">Status</th>
                                 <th>Adgroup name</th>
                                 <th class="metrics" ng-repeat="header in adGroupPerformance.getMetrics()">
                                     {{ adPerformance.getMetricName(header) }}
@@ -154,7 +142,9 @@
                             <tbody>
 
                             <tr ng-repeat="row in adgroups">
-                                <!--<td>{{row.status}}</td>-->
+                                <td>
+                                  <div mics-ad-group-status="row" campaign="campaign"></div>
+                                </td>
                                 <td>{{row.name}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index" >

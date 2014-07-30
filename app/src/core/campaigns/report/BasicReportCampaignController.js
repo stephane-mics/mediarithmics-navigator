@@ -1,5 +1,5 @@
 /* global _, moment */
-(function () {
+define(['./module'], function () {
   'use strict';
 
   var module = angular.module('core/campaigns/report');
@@ -29,10 +29,10 @@
     return _.rest(statRow, _.findLastIndex(stats.columns_headers, notMetrics) + 1);
   };
 
-  var updateStatistics = function ($scope, CampaignAnalyticsReportService, $routeParams) {
+  var updateStatistics = function ($scope, CampaignAnalyticsReportService, $stateParams) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
 
-    var campaignId = $routeParams.campaign_id;
+    var campaignId = $stateParams.campaign_id;
 
     $scope.xaxisdomain = [CampaignAnalyticsReportService.getStartDate().toDate().getTime(),
       CampaignAnalyticsReportService.getEndDate().toDate().getTime()
@@ -77,27 +77,37 @@
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$routeParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
-    function ($scope, $location, $log, $routeParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
+    '$scope', '$location', '$log', '$stateParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
+    function ($scope, $location, $log, $stateParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
       $scope.valTo = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
 
-      $log.debug("fetching " + $routeParams.campaign_id);
-      DisplayCampaignService.getDeepCampaignView($routeParams.campaign_id).then(function (campaign) {
+      $log.debug("fetching " + $stateParams.campaign_id);
+      DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
         $scope.adgroups = campaign.ad_groups;
-        $scope.ads = _.unique(_.flatten(_.map(campaign.ad_groups, "ads")), "creative_id");
+
+        // bastard object to iterate easily with an ng-repeat
+        $scope.adsWithGroup = [];
+        _.forEach(campaign.ad_groups, function (ad_group) {
+          _.forEach(ad_group.ads, function (ad) {
+            $scope.adsWithGroup.push({
+              ad_group : ad_group,
+              ad : ad
+            });
+          });
+        });
 
 
 
 
 
         $scope.$watch('reportDateRange', function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams);
+          updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
         });
         $scope.refresh = function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $routeParams);
+          updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
         };
 
       });
@@ -128,29 +138,13 @@
       };
 
 
-      var updateCampaignStatus = function (campaign, status) {
-        Restangular.one("display_campaigns", campaign.id).customPUT({
-          status : status,
-          type : "DISPLAY" // XXX this is used server side to find the right subclass of CampaignResource
-        }).then(function(returnedCampaign) {
-          campaign.status = returnedCampaign.status;
-        });
-      };
-
-      $scope.activateCampaign = function (campaign) {
-        updateCampaignStatus(campaign, "ACTIVE");
-      };
-
-      $scope.pauseCampaign = function (campaign) {
-        updateCampaignStatus(campaign, "PAUSED");
-      };
 
       $scope.editCampaign = function (campaign) {
 
         $log.debug("> editCampaign for campaignId=", campaign.id);
 
         CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
-          var location = template.editor.edit_path.replace(/{id}/g, campaign.id);
+          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/,campaign.organisation_id);
           $location.path(location);
         });
       };
@@ -168,4 +162,4 @@
     }
   ]);
 
-})();
+});

@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -14,13 +14,15 @@
       });
 
 
+      $scope.organisationId = organisationId;
+
       $scope.editKeywordsList = function (keywordsList, $event) {
         if ($event) {
           $event.preventDefault();
           $event.stopPropagation();
         }
 
-        $location.path("/library/keywordslists/" + keywordsList.id);
+        $location.path( '/' + organisationId + "/library/keywordslists/" + keywordsList.id);
       };
 
       $scope.deleteKeywordsList = function (keywordsList, $event) {
@@ -43,5 +45,5 @@
     }
   ]);
 
-})();
+});
 

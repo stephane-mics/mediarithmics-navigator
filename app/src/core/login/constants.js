@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   'use strict';
 
   var module = angular.module('core/login');
@@ -9,4 +9,4 @@
     LOGIN_FAILURE : "core/login/constants/LOGIN_FAILURE",
     LOGOUT : "core/login/constants/LOGOUT"
   });
-})();
+});

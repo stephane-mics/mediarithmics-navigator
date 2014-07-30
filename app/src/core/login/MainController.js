@@ -1,4 +1,4 @@
-(function () {
+define(['./module', "autofill-event"], function () {
   'use strict';
 
   var module = angular.module('core/login');
@@ -7,9 +7,11 @@
     '$scope', '$location', '$log', '$rootScope', 'jquery', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
     function($scope, $location, $log, $rootScope, $, AuthenticationService, Session, LoginConstants) {
       $scope.user = {email:"", password:""};
+
       setTimeout(function() {
-        $("#loginEmail").checkAndTriggerAutoFillEvent();
-      } ,0);
+        $("#loginEmail,#loginPassword").checkAndTriggerAutoFillEvent();
+      } ,200);
+
       function showSimpleError() {
         $scope.authError = true;
         // failure : display an error message
@@ -49,13 +51,12 @@
         } else {
 
           // authentication without creation of refresh token
-          AuthenticationService.createAccessToken($scope.user.email, $scope.user.password).then(function(){
-
+          AuthenticationService.createAccessToken($scope.user.email, $scope.user.password).then(function() {
             Session.init().then(initSession, showSimpleError);
           }, showSimpleError);
         }
       };
     }
   ]);
-})();
+});
 

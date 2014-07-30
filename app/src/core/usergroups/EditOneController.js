@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -8,10 +8,10 @@
   // TODO retreive and use angular.module('keywords') instead ?
 
   module.controller('core/usergroups/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$routeParams', '$location',
-    function($scope, $log, Restangular, Session, _, $routeParams, $location) {
-      var userGroupId = $routeParams.usergroup_id;
-      var type = $routeParams.type;
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location',
+    function($scope, $log, Restangular, Session, _, $stateParams, $location) {
+      var userGroupId = $stateParams.usergroup_id;
+      var type = $stateParams.type;
 
       $scope.isCreationMode = !userGroupId;
 
@@ -34,16 +34,16 @@
       $scope.goToCampaign = function (campaign) {
         switch(campaign.type) {
           case "DISPLAY":
-            $location.path("/campaigns/display/report/" + campaign.id + "/basic");
+            $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaign.id + "/basic");
             break;
           default:
-            $location.path("/campaigns");
+            $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns");
             break;
         }
       };
 
       $scope.cancel = function () {
-        $location.path("/library/usergroups");
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/usergroups");
       };
 
       $scope.next = function () {
@@ -55,12 +55,12 @@
         }
         promise.then(function success(campaignContainer){
           $log.info("success");
-          $location.path("/library/usergroups");
+          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/usergroups");
         }, function failure(){
           $log.info("failure");
         });
       };
     }
   ]);
-})();
+});
 

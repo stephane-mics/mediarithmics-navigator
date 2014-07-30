@@ -1,13 +1,13 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
   var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/MainController', [
-    "$scope", 'core/campaigns/DisplayCampaignContainer', 'core/campaigns/DisplayCampaignService', '$routeParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', 'core/keywords/KeywordListContainer',
-    function ($scope, DisplayCampaignContainer, DisplayCampaignService, $routeParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
-      var campaignId = $routeParams.campaign_id;
+    "$scope", 'core/campaigns/DisplayCampaignContainer', 'core/campaigns/DisplayCampaignService', '$stateParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', 'core/keywords/KeywordListContainer',
+    function ($scope, DisplayCampaignContainer, DisplayCampaignService, $stateParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
+      var campaignId = $stateParams.campaign_id;
 
       function initView (displayNetworkCampaigns) {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
@@ -76,6 +76,6 @@
       };
     }
   ]);
-})();
+});
 
 

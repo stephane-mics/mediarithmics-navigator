@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   "use strict";
 
 
@@ -97,14 +97,14 @@
   module.filter('currencyWithSymbol', function () {
     return function (input, currencyCode) {
       input = input || '';
-      var currency = safeCurrency(currencyCode);
+      var currency = safeCurrency(currencyCode) || "";
       //FIXME very naive approach, use js-world or something like this
       var out = input + currency;
 
       return out;
     };
   });
-})();
+});
   
 
 

@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
   'use strict';
 
   /*
@@ -23,7 +23,8 @@
           templateUrl: 'src/core/common/properties/asset-upload.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/common/properties/AssetUploadController'
+          controller: 'core/common/properties/AssetUploadController',
+          size: "lg"
         });
 
         uploadModal.result.then(function (assetValue) {
@@ -45,4 +46,4 @@
 
     }]);  
 
-})();
+});

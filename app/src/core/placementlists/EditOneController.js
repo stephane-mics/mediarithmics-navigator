@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -6,10 +6,10 @@
 
 
   module.controller('core/placementlists/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$routeParams', '$location', 'core/configuration', 'ngTableParams', '$window', 'core/common/auth/AuthenticationService', "$modal",
-    function($scope, $log, Restangular, Session, _, $routeParams, $location, configuration, NgTableParams, $window, AuthenticationService, $modal) {
-      var placementListId = $routeParams.placementlist_id;
-      var type = $routeParams.type;
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', 'core/configuration', 'ngTableParams', '$window', 'core/common/auth/AuthenticationService', "$modal",
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, configuration, NgTableParams, $window, AuthenticationService, $modal) {
+      var placementListId = $stateParams.placementlist_id;
+      var type = $stateParams.type;
 
       $scope.isCreationMode = !placementListId;
 
@@ -91,7 +91,7 @@
       $scope.goToCampaign = function (campaign) {
         switch(campaign.type) {
           case "DISPLAY":
-            $location.path("/campaigns/display/report/" + campaign.id + "/basic");
+            $location.path( '/' + campaign.organisation_id + "/campaigns/display/report/" + campaign.id + "/basic");
             break;
           default:
             $location.path("/campaigns");
@@ -110,7 +110,7 @@
       };
 
       $scope.cancel = function () {
-        $location.path("/library/placementlists");
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/placementlists");
       };
 
       $scope.next = function () {
@@ -122,12 +122,12 @@
         }
         promise.then(function success(campaignContainer){
           $log.info("success");
-          $location.path("/library/placementlists");
+          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/placementlists");
         }, function failure(){
           $log.info("failure");
         });
       };
     }
   ]);
-})();
+});
 

@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -33,7 +33,8 @@
           templateUrl: 'src/core/adgroups/ChooseExistingAds.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/adgroups/ChooseExistingAdsController'
+          controller: 'core/adgroups/ChooseExistingAdsController',
+          size: "lg"
         });
 
         uploadModal.result.then(function () {
@@ -45,4 +46,4 @@
 
     }
   ]);
-})();
+});

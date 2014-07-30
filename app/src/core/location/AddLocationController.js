@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -11,10 +11,10 @@
       $scope.addPostalCodeList = function () {
         // display pop-up
         var uploadModal = $modal.open({
-          templateUrl: 'src/core/location/postalcodes/AddPostalCodeList.html',
+          templateUrl: 'src/core/location/AddPostalCodeList.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/location/postalcodes/AddPostalCodeListController'
+          controller: 'core/location/AddPostalCodeListController'
         });
 
         uploadModal.result.then(function () {
@@ -26,5 +26,5 @@
 
     }
   ]);
-})();
+});
 

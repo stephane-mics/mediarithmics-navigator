@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   'use strict';
 
   /*
@@ -12,9 +12,9 @@
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditCampaignController', [
-    '$scope', 'lodash', '$log', '$location', '$routeParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
-    function ($scope, _, $log, $location, $routeParams, DisplayCampaignService, CampaignPluginService) {
-      var campaignId = $routeParams.campaign_id;
+    '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
+    function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService) {
+      var campaignId = $stateParams.campaign_id;
 
       function initView() {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
@@ -108,12 +108,12 @@
         // new Ad Group
         $scope.newAdGroup = function () {
           var adGroupId = DisplayCampaignService.addAdGroup();
-          $location.path('/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroupId);
+          $location.path( '/' +  $scope.campaign.organisation_id + '/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroupId);
         };
 
         // edit Ad Group
         $scope.editAdGroup = function (adGroup) {
-          $location.path('/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroup.id);
+          $location.path('/' +  $scope.campaign.organisation_id + '/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroup.id);
         };
 
 
@@ -126,7 +126,7 @@
           $log.debug("save campaign : ", $scope.campaign);
           DisplayCampaignService.save().then(function (campaignContainer) {
             DisplayCampaignService.reset();
-            $location.path('/campaigns/display/report/' + campaignContainer.id + '/basic');
+            $location.path('/' +  $scope.campaign.organisation_id+'/campaigns/display/report/' + campaignContainer.id + '/basic');
           });
         };
 
@@ -134,9 +134,9 @@
         $scope.cancel = function () {
           DisplayCampaignService.reset();
           if ($scope.campaign && $scope.campaign.id) {
-            $location.path('/campaigns/display/report/' + $scope.campaign.id + '/basic');
+            $location.path('/' +  $scope.campaign.organisation_id+'/campaigns/display/report/' + $scope.campaign.id + '/basic');
           } else {
-            $location.path('/campaigns');
+            $location.path('/' +  $scope.campaign.organisation_id+'/campaigns');
           }
 
         };
@@ -145,5 +145,5 @@
       });
     }
   ]);
-})();
+});
 

@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -13,7 +13,7 @@
       });
 
       $scope.createUserGroup = function (type) {
-        $location.path("/library/usergroups/" + type);
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/usergroups/" + type);
       };
 
       $scope.editUserGroup = function (userGroup, $event) {
@@ -22,7 +22,7 @@
           $event.stopPropagation();
         }
 
-        $location.path("/library/usergroups/" + userGroup.group_type + "/" + userGroup.id);
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/usergroups/" + userGroup.group_type + "/" + userGroup.id);
       };
 
       $scope.deleteUserGroup = function (userGroup, $event) {
@@ -45,6 +45,6 @@
     }
   ]);
 
-})();
+});
 
 

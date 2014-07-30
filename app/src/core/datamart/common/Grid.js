@@ -1,8 +1,8 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
-  var module = angular.module('core/datamart');
+  var module = angular.module('core/datamart/common');
 
   module.directive('micsDatamartGrid', [ 'core/datamart/common/Common', function(Common) {
     return {
@@ -108,4 +108,4 @@
     };
   }]);
 
-})();
+});

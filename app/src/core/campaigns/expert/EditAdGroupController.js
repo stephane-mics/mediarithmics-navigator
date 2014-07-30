@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
   'use strict';
 
   /*
@@ -12,13 +12,14 @@
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditAdGroupController', [
-    '$scope', '$location', '$routeParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService','core/common/ConstantsService', 'lodash',
-    function($scope, $location, $routeParams, $modal, $log, DisplayCampaignService, ConstantsService, _) {
+    '$scope', '$location', '$stateParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService','core/common/ConstantsService', 'lodash',
+    function($scope, $location, $stateParams, $modal, $log, DisplayCampaignService, ConstantsService, _) {
 
-      var adGroupId = $routeParams.ad_group_id;
-      var campaignId = $routeParams.campaign_id;
+      var adGroupId = $stateParams.ad_group_id;
+      var organisationId = $stateParams.organisation_id;
+      var campaignId = $stateParams.campaign_id;
       if(!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
-        $location.path("/campaigns/display/expert/edit/"+campaignId);
+        return $location.path("/"+organisationId+"/campaigns/display/expert/edit/"+campaignId);
       }
 
       $scope.visibilityValues = ConstantsService.getValues("adgroup_visibility");
@@ -26,7 +27,7 @@
       $scope.campaignName = DisplayCampaignService.getCampaignValue().name;
 
       // get campaign
-      $scope.adGroup = DisplayCampaignService.getAdGroupValue($routeParams.ad_group_id);
+      $scope.adGroup = DisplayCampaignService.getAdGroupValue(adGroupId);
 
       // fo the keywords controller
       // $scope.keywordsList =
@@ -99,7 +100,7 @@
         $log.debug("Editing Ad Group done! :", $scope.adGroup);
 
         DisplayCampaignService.setAdGroupValue(adGroupId, $scope.adGroup);
-        $location.path('/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
+        $location.path('/' +  DisplayCampaignService.getCampaignValue().organisation_id  +'/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
 
       };
 
@@ -112,7 +113,7 @@
         DisplayCampaignService.resetAdGroup(adGroupId);
 
         //DisplayCampaignService.resetAdGroupValue();
-        $location.path('/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
+        $location.path('/' +  DisplayCampaignService.getCampaignValue().organisation_id+ '/campaigns/display/expert/edit/'+DisplayCampaignService.getCampaignId());
 
       };
 
@@ -146,5 +147,5 @@ $scope.uploader.init();
     }
   ]);
 
-})();
+});
 

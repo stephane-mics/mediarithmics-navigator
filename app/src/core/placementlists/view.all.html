@@ -8,19 +8,13 @@
     <div class="mics-table-toolbar">
       <div class ="col-md-6">
         <div class="dropdown">
-          <button class="mics-btn mics-btn-add dropdown-toggle" type="button" data-toggle="dropdown">
+          <a class="mics-btn mics-btn-add" href="#/{{organisationId}}/library/placementlists/new">
             New Placement List
-            <!-- <span class="caret"></span> -->
-          </button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="New Placement List">
-            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="createPlacementList('CAMPAIGN_FEED')">
-              Fed by campaign
-            </a></li>
-          </ul>
+          </a>
         </div>
       </div>
     </div>
-    <table class="mics-table mics-table-auto-hiding-actions" ng-show="placementLists.length">
+    <table class="mics-table js-auto-hide-actions" ng-show="placementLists.length">
       <thead>
         <tr>
           <th>Name</th>
@@ -35,7 +29,7 @@
         <td>{{placementList.technical_name}}</td>
         <td>{{placementList.group_type}}</td>
         <td class="actions">
-          <a class="mics-btn mics-btn-action" ng-click="editPlacementList(placementList, $event)">Edit</a>
+          <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/placementlists/{{placementList.id}}">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deletePlacementList(placementList, $event)">Delete</a>
         </td>
       </tr>

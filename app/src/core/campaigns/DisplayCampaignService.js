@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   'use strict';
 
 
@@ -282,4 +282,4 @@
       return service;
     }
   ]);
-})();
+});

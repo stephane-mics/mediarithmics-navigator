@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   'use strict';
 
   var module = angular.module('core/creatives');
@@ -31,10 +31,10 @@
       };
 
       $scope.cancel = function() {
-        $location.path('/creatives');
+        $location.path("/"+ Session.getCurrentWorkspace().organisation_id +'/creatives');
       };
 
     }
   ]);
 
-})();
+});

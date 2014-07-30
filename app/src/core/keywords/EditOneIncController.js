@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -68,7 +68,8 @@
           templateUrl: 'src/core/keywords/ImportList.html',
           scope : childScope,
           backdrop : 'static',
-          controller: 'core/keywords/ImportListController'
+          controller: 'core/keywords/ImportListController',
+          size: "lg"
         });
       };
 
@@ -84,4 +85,4 @@
       });
     }
   ]);
-})();
+});

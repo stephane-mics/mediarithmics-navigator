@@ -1,4 +1,4 @@
-(function(){
+define(['./module', "plupload"], function () {
 
   'use strict';
 
@@ -134,4 +134,4 @@
       };
     }
   ]);
-})();
+});

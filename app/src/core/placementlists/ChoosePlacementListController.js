@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -14,7 +14,8 @@
           templateUrl: 'src/core/placementlists/ChooseExistingPlacementList.html',
           scope : $scope,
           backdrop : 'static',
-          controller: 'core/placementlists/ChooseExistingPlacementListController'
+          controller: 'core/placementlists/ChooseExistingPlacementListController',
+          size: "lg"
         });
 
         uploadModal.result.then(function () {
@@ -26,5 +27,5 @@
 
     }
   ]);
-})();
+});
 

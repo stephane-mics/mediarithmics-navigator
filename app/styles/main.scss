@@ -20,8 +20,10 @@ $mcs-green-not: #fff;
 $mcs-orange: #FE8F10;
 $mcs-orange-not: #fff;
 $mcs-light-grey: #E6E6E6;
+$mcs-grey: #CBCBCB;
 $body-bg:#fff;
 
+$font-size-base:12px;
 
 $nav-tabs-active-link-hover-color: $mcs-light-blue-not;
 $nav-tabs-active-link-hover-bg: $mcs-light-blue;
@@ -35,6 +37,8 @@ $breadcrumb-padding-horizontal: 0;
 $text-color: $dark-blue;
 $input-border: $mcs-light-blue;
 $dropdown-link-color: $dark-blue;
+
+$table-bg: white;
 
 //$brand-primary: #0BA3DE;
 $brand-success: #00AB67;
@@ -60,6 +64,24 @@ $navbar-inverse-bg: $dark-blue;
 $navbar-inverse-color: $body-bg;
 $navbar-inverse-link-color: $body-bg;
 
+@mixin mics-button-variant($background) {
+  $color : #fff;
+  @include button-variant($color, $background, $background);
+
+  /* no darken() on hover */
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    background-color: $background;
+    border-color: $background;
+  }
+
+  .dropdown.open & {
+    background-color: $background;
+    border-color: $background;
+  }
+}
 
 @import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
 
@@ -83,6 +105,15 @@ $navbar-inverse-link-color: $body-bg;
   margin-left:120px;
 }
 
+.top-warning {
+  padding: 5px;
+  color: $mcs-red-not;
+  font-weight: bold;
+  background: $mcs-red;
+  z-index: 2000;
+  position: relative;
+}
+
 .mcs-app .daterangepicker {
   .calendar-date, td, th, .ranges .input-mini {
     border-radius: 0;
@@ -101,6 +132,9 @@ a, *[ng-click] {
   cursor:default;
 }
 
+input[type=daterange] {
+  cursor:pointer; /* the plugin will display a custom component */
+}
 .mcs-top-navbar {
 
 //    margin-bottom: 0px !important;
@@ -150,11 +184,14 @@ a, *[ng-click] {
     tr {
       th {
         /* if I play with the line-height, I might get strange results with multilines headers */
-        padding-top: 16px;
-        padding-bottom: 16px;
+        padding-top: 11px;
+        padding-bottom: 11px;
       }
       th.actions {
         background-color: $dark-blue;
+      }
+      th.status {
+        width: 130px;
       }
     }
   }
@@ -170,44 +207,79 @@ a, *[ng-click] {
       td.actions {
         @extend .text-right;
         .mics-btn {
-          @extend .btn-sm;
+          @extend .btn-xs;
           margin-left:8px;
           margin-bottom:8px;
         }
       }
+      /* &:not(:hover) td.actions .mics-btn { */
+        /* @include mics-button-variant($mcs-grey); */
+      /* } */
     }
   }
 }
 
-.mics-table-auto-hiding-actions {
+.mics-table.js-auto-hide-actions {
+  thead {
+    th.actions {
+      display:none;
+    }
+  }
   tbody {
-    tr .actions > * {
-      visibility:hidden;
+    td.actions {
+      display:none;
     }
-    tr:hover .actions > * {
-      visibility:visible;
+
+
+    > tr:nth-child(odd) > td.actions {
+      background-color: $table-bg-accent;
+    }
+    /* the td overlap in this case, we need to set a background */
+    > tr:nth-child(even) > td.actions {
+      background-color: $table-bg;
     }
   }
 }
 
-@mixin mics-button-variant($background) {
-  $color : #fff;
-  @include button-variant($color, $background, $background);
+.mics-table-preface {
+  background: $mcs-light-grey;
+  padding: 21px;
 
-  /* no darken() on hover */
-  &:hover,
-  &:focus,
-  &:active,
-  &.active {
-    background-color: $background;
-    border-color: $background;
+  .form-group {
+    margin-bottom : 0; /* that's ok, we add our own padding */
   }
 
-  .dropdown.open & {
-    background-color: $background;
-    border-color: $background;
+  > div {
+    float: left;
+  }
+
+  > span {
+    font-size: ceil(($font-size-base * 1.5));
+    margin-left: 10px;
   }
 }
+
+.pretty-print-url {
+  .url-search-item {
+    display:block;
+  }
+  .key {
+    color:blue;
+  }
+  .separator {
+    color:black;
+  }
+  .value {
+    font-weight:bold;
+  }
+  .toggle {
+    margin: 0 5px;
+  }
+  .url {
+    float:right;
+  }
+}
+
 
 .mics-btn {
   @extend .btn;
@@ -215,6 +287,8 @@ a, *[ng-click] {
   &.btn-lg, &.btn-sm, &.btn-xs {
     border-radius: $border-radius-force-round !important;
   }
+
+  @include button-size($padding-xs-vertical, $padding-base-horizontal, ceil(($font-size-base * 1.4)), $line-height-base, $border-radius-base);
 
   &:hover,
   &:focus,
@@ -226,6 +300,11 @@ a, *[ng-click] {
   .btn-group & + & {
     margin-left:5px;
   }
+}
+
+/* mics-btn override sizes and btn-xs is not enough to override the override. */
+.mics-btn.btn-xs {
+  @extend .btn-xs;
 }
 
 .mics-btn-delete, .mics-btn-cancel {
@@ -479,9 +558,7 @@ form.mcs-full-page-form {
   /* override right and width to the good values but keep the overall behavior */
   @include make-xs-column(3);
   width:20% !important;
-  @include make-xs-column-push(9);
-  /* right: 20% !important; */
-  left: 80% !important;
+  float:right;
   ul {
     @extend .nav;
     @extend .nav-pills;
@@ -515,8 +592,6 @@ form.mcs-full-page-form {
 
 .mcs-default-content {
   /* override right and width to the good values but keep the overall behavior */
-  @include make-xs-column-pull(3);
-  right: 20% !important;
   @include make-xs-column(9, 100px);
   width:80% !important;
 }
@@ -553,6 +628,7 @@ form.mcs-full-page-form {
                     background-color: $mcs-light-blue;
                     color: $mcs-light-blue-not;
                     @include use-bold-font();
+                    font-size : ceil(($font-size-base * 1.5));
                 }
                 @extend .text-right;
             }
@@ -600,7 +676,7 @@ form.mcs-full-page-form {
         .campaign-heading {
           @extend .mcs-default-heading;
           margin-bottom: 0px;
-          h3 {
+          h2 {
             &>span {
              @include use-bold-font();
              margin-right: 20px;
@@ -628,7 +704,7 @@ form.mcs-full-page-form {
                 padding:0;
                 .nav-pills {
                   @include use-bold-font();
-                  font-size : $font-size-large;
+                  font-size : ceil(($font-size-base * 1.5));
                   a {
                     padding: 4px 15px;
                     color: $dark-blue;
@@ -648,6 +724,7 @@ form.mcs-full-page-form {
                     background-color: $mcs-light-blue;
                     color: $mcs-light-blue-not;
                     @include use-bold-font();
+                    font-size : ceil(($font-size-base * 1.5));
                 }
                 @extend .text-right;
             }
@@ -681,7 +758,7 @@ form.mcs-full-page-form {
 
                 .kpi-legend {
                   dd {
-                    font-size: $font-size-h3;
+                    font-size: 24px;
                     margin-top: 10px;
                   }
                   dt {
@@ -725,7 +802,7 @@ form.mcs-full-page-form {
                   }
                   .y1-legend:before, .y2-legend:before {
                     content:' \25CF';
-                    font-size: $font-size-small;
+                    /* font-size: $font-size-small; */
                     display: inline-block;
                     margin-top: -3px;
                     margin-right: 5px;
@@ -746,18 +823,6 @@ form.mcs-full-page-form {
         }
         .breakdown-area {
             @include    make-row();
-                .breakdown {
-                    @extend .nav;
-                    @extend .nav-tabs ;
-                    @extend .nav-justified;
-
-                    .status-ACTIVE {
-                      color:$mcs-green;
-                    }
-                    .status-PAUSED {
-                      color:$mcs-red;
-                    }
-                }
                 .nav-tabs a {
                   @include use-bold-font();
                   color : $dark-blue;
@@ -772,6 +837,7 @@ form.mcs-full-page-form {
 .edit-campaign-expert {
   .selected-display-network {
     margin: 0 5px 5px 0;
+    display: inline-block;
   }
 }
 
@@ -805,12 +871,12 @@ table.fragment-list-creatives {
     padding:0;
     border : none;
     background-color:transparent;
+    @extend .text-center;
     img {
       max-width : 50px;
       max-height : 50px;
     }
     .caption {
-      @extend .text-center;
       font-size : $font-size-small;
       padding : 0;
     }
@@ -1326,12 +1392,10 @@ a.category-item {
 
 /* end of datamart */
 
-.campaign-status {
+.updatable-item-status {
   @extend .btn-group;
 
-  button.campaign-status-state {
-    @extend .mics-btn;
-    @extend .btn-xs;
+  button.updatable-item-status-state {
     @extend .dropdown-toggle;
 
     span:first-child {
@@ -1339,8 +1403,8 @@ a.category-item {
     }
   }
 }
-.campaign-status-PAUSED {
-  button.campaign-status-state {
+.updatable-item-status-PAUSED {
+  button.updatable-item-status-state {
     @extend .btn-warning;
 
     span:first-child {
@@ -1348,8 +1412,8 @@ a.category-item {
     }
   }
 }
-.campaign-status-PENDING {
-  button.campaign-status-state {
+.updatable-item-status-PENDING {
+  button.updatable-item-status-state {
     @extend .btn-info;
 
     span:first-child {
@@ -1357,8 +1421,8 @@ a.category-item {
     }
   }
 }
-.campaign-status-ACTIVE {
-  button.campaign-status-state {
+.updatable-item-status-ACTIVE {
+  button.updatable-item-status-state {
     @extend .btn-success;
 
     span:first-child {

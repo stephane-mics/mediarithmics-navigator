@@ -1,12 +1,12 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
-  var module = angular.module('core/datamart');
+  var module = angular.module('core/datamart/common');
 
   module.factory('core/datamart/common/Common', [
-    '$route',
-    function($route) {
+    '$state',
+    function($state) {
 
       /* Utility methods for collections */
 
@@ -30,7 +30,7 @@
       ];
 
       locations.isCurrent = function(location) {
-        return $route.current.$$route.originalPath.search(location.href) > -1;
+        return $state.current.url.search(location.href) > -1;
       };
 
       locations.set = function(location) {
@@ -38,7 +38,7 @@
       };
 
       locations.refresh = function() {
-        var path = $route.current.$$route.originalPath;
+        var path = $state.current.url;
         for (var i=0; i<locations.all.length; i++) {
           if (locations.all[i].href === path && locations.current !== locations.all[i]) {
             locations.current = locations.all[i];
@@ -69,4 +69,4 @@
     }
   ]);
 
-})();
+});

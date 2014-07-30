@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   'use strict';
 
   var module = angular.module('core/campaigns');
@@ -43,8 +43,12 @@
         updateStatistics($scope, CampaignAnalyticsReportService,  Session.getCurrentWorkspace().organisation_id);
       });
 
+      $scope.getCampaignDashboardUrl = function (campaign) {
+        return "/"+ campaign.organisation_id  +"/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
+      };
+
       $scope.newCampaign = function () {
-        $location.path('/campaigns/select-campaign-template');
+        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/campaigns/select-campaign-template');
       };
 
       $scope.showCampaign = function (campaign, $event) {
@@ -53,7 +57,7 @@
           $event.stopPropagation();
         }
 
-        $location.path("/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic");
+        $location.path($scope.getCampaignDashboardUrl(campaign));
       };
       $scope.editCampaign = function (campaign, $event) {
         if ($event) {
@@ -62,7 +66,7 @@
         }
 
         CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
-          var location = template.editor.edit_path.replace(/{id}/g, campaign.id);
+          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
           $location.path(location);
         });
         return false;
@@ -86,4 +90,4 @@
     }
   ]);
 
-})();
+});

@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   'use strict';
 
   var module = angular.module('core/campaigns');
@@ -20,7 +20,7 @@
         var organisationId = Session.getCurrentWorkspace().organisation_id;
         DisplayCampaignService.reset();
         DisplayCampaignService.initCreateCampaign(template, organisationId).then(function(campaignId){
-          var location = template.editor.create_path.replace(/{id}/g, campaignId);
+          var location = template.editor.create_path.replace(/{id}/g, campaignId).replace(/{organisation_id}/, organisationId);
           $log.debug("campaign init , campaign_id = ", campaignId);
           $location.path(location);
         });
@@ -36,4 +36,4 @@
     }
   ]);
 
-})();
+});

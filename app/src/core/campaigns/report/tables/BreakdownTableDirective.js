@@ -1,4 +1,4 @@
-(function () {
+define(['../module'], function () {
 
   'use strict';
   var module = angular.module('core/campaigns/report');
@@ -40,4 +40,4 @@
 
   });
 
-})();
+});

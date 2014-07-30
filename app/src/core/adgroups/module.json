@@ -1,0 +1,7 @@
+{
+  "name": "core/adgroups",
+  "dependencies": [
+    "restangular",
+    "checklist-model"
+  ]
+}

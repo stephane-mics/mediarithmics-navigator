@@ -1,5 +1,5 @@
 /* global _ */
-(function () {
+define(['./module', 'app'], function () {
   'use strict';
 
   /*
@@ -10,20 +10,17 @@
    *
    */
 
-  //console.debug("core/creatives/display-ads/standard-banner CREATED !")
 
   var module = angular.module('core/creatives/display-ads/standard-banner');
                      
-  //module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
-
   module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
     
-    '$scope', '$sce', '$log', '$location', '$routeParams', 'core/creatives/DisplayAdService',
+    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session',
 
-    function ($scope, $sce, $log, $location, $routeParams, DisplayAdService) {
+    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session) {
 
       
-      var creativeId = $routeParams.creative_id;
+      var creativeId = $stateParams.creative_id;
 
 
       
@@ -67,14 +64,14 @@
       $scope.save = function () {
         $log.debug("save display ad : ", $scope.display_ad);
         DisplayAdService.save().then(function (displayAdContainer) {
-          $location.path('/creatives');
+          $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
         });
       };
 
       // back button
       $scope.cancel = function () {
         DisplayAdService.reset();
-        $location.path('/creatives');
+        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
 
       };
     
@@ -82,5 +79,5 @@
     }
   ]);
 
-})();
+});
 

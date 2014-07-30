@@ -1,4 +1,4 @@
-(function () {
+define(['./module'], function () {
   'use strict';
 
   var module = angular.module('core/common');
@@ -11,4 +11,4 @@
       return input.slice(start);
     };
   });
-}());
+});

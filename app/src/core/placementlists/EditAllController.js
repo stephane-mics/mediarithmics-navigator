@@ -1,4 +1,4 @@
-(function(){
+define(['./module'], function () {
 
   'use strict';
 
@@ -12,18 +12,7 @@
         $scope.placementLists = placementLists;
       });
 
-      $scope.createPlacementList = function (type) {
-        $location.path("/library/placementlists/" + type);
-      };
-
-      $scope.editPlacementList = function (placementList, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
-
-        $location.path("/library/placementlists/" + placementList.group_type + "/" + placementList.id);
-      };
+      $scope.organisationId = organisationId;
 
       $scope.deletePlacementList = function (placementList, $event) {
         if ($event) {
@@ -45,6 +34,6 @@
     }
   ]);
 
-})();
+});
 
 

@@ -30,8 +30,11 @@
       </select>
     </div>
 
-    <h4>Ads</h4>
-    <div ng-include="'src/core/adgroups/choose-ads.html'"></div>
+    <div class="mcs-form-group">
+    <div class="mics-table-preface">
+      <div ng-include="'src/core/adgroups/choose-ads.html'"></div>
+      <span>Select ads</span>
+    </div>
     <table class="fragment-list-creatives list-ads" ng-show="getAds(adGroup.id).length">
       <thead>
         <tr>
@@ -56,23 +59,26 @@
         <td>
           {{creative.name}}
         </td>
-        <td>
-          {{creativeProperties["destination_url"] | rendererProperty }}
+        <td pretty-print-url="creativeProperties['destination_url'] | rendererProperty">
         </td>
         <td>
           {{creative.creation_date|date:'shortDate'}}
         </td>
 
         <td class="actions">
-          <button class="mics-btn mics-btn-delete" ng-click="deleteAd(ad.id)">Delete</button>
+          <button class="mics-btn mics-btn-delete" ng-click="deleteAd(ad.id)">Remove</button>
         </td>
       </tr>
       </tbody>
     </table>
+    </div>
 
-    <h4>Visitor Groups</h4>
+    <!-- <h4>Visitor Groups</h4> -->
     <div class="mcs-form-group">
-      <div ng-include="'src/core/usergroups/choose-user-groups.html'"></div>
+      <div class="mics-table-preface">
+        <div ng-include="'src/core/usergroups/choose-user-groups.html'"></div>
+        <span>Select visitor groups</span>
+      </div>
 
       <table class="fragment-list-user-groups" ng-show="getUserGroups(adGroup.id).length">
         <thead>
@@ -97,7 +103,7 @@
             <span ng-show="!userGroup.exclude">Target</span>
           </td>
           <td class="actions">
-            <button class="mics-btn mics-btn-delete" ng-click="deleteUserGroup(userGroup.id)">Delete</button>
+            <button class="mics-btn mics-btn-delete" ng-click="deleteUserGroup(userGroup.id)">Remove</button>
           </td>
         </tr>
         </tbody>
@@ -105,9 +111,11 @@
     </div>
 
 
-    <h4>Keywords lists</h4>
     <div class="mcs-form-group">
-      <div ng-include="'src/core/keywords/choose-keyword-list.html'"></div>
+      <div class="mics-table-preface">
+        <div ng-include="'src/core/keywords/choose-keyword-list.html'"></div>
+        <span>Select keywords lists</span>
+      </div>
 
       <table class="fragment-list-keyword-list" ng-show="getKeywordLists(adGroup.id).length">
         <thead>
@@ -129,16 +137,18 @@
             </span>
           </td>
           <td class="actions">
-            <button class="mics-btn mics-btn-delete" ng-click="deleteKeywordList(keywordListSelection)">Delete</button>
+            <button class="mics-btn mics-btn-delete" ng-click="deleteKeywordList(keywordListSelection)">Remove</button>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
 
-      <h4>Placements lists</h4>
-      <div class="mcs-form-group">
-          <div ng-include="'src/core/placementlists/choose-placement-list.html'"></div>
+    <div class="mcs-form-group">
+      <div class="mics-table-preface">
+        <div ng-include="'src/core/placementlists/choose-placement-list.html'"></div>
+        <span>Select placements lists</span>
+      </div>
 
           <table class="fragment-list-keyword-list" ng-show="getPlacementLists(adGroup.id).length">
               <thead>
@@ -162,7 +172,7 @@
                       <span ng-show="!userGroup.exclude">Target</span>
                   </td>
                   <td class="actions">
-                      <button class="mics-btn mics-btn-delete" ng-click="deletePlacementList(placementListSelection)">Delete</button>
+                      <button class="mics-btn mics-btn-delete" ng-click="deletePlacementList(placementListSelection)">Remove</button>
                   </td>
               </tr>
               </tbody>
@@ -171,7 +181,7 @@
 
     <!-- save or cancel -->
     <div class="mcs-actions-group">
-      <button class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
+      <button class="mics-btn mics-btn-finish" ng-click="done()">Return to the campaign</button>
       <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
 
