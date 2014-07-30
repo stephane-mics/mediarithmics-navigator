@@ -2,6 +2,7 @@ define(
   ['angularAMD',
     'moment',
     'jqCookie',
+    'jqDaterangepicker',
     'ngCookies',
     'ngResource',
     'ngRoute',
