@@ -184,7 +184,7 @@ module.exports = function (grunt) {
         '<%= yeoman.dist %>/*.html'
       ],
       css: ['<%= yeoman.dist %>/styles/**/*.css'],
-      js: ['<%= yeoman.dist %>/scripts/scripts.js'],
+      js: ['<%= yeoman.dist %>/scripts/*.js'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>'],
         root: '<%= yeoman.dist %>',
