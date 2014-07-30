@@ -132,7 +132,7 @@
                             <thead>
 
                             <tr>
-                                <!--<th>Status</th>-->
+                                <th class="status">Status</th>
                                 <th>Adgroup name</th>
                                 <th class="metrics" ng-repeat="header in adGroupPerformance.getMetrics()">
                                     {{ adPerformance.getMetricName(header) }}
@@ -142,7 +142,9 @@
                             <tbody>
 
                             <tr ng-repeat="row in adgroups">
-                                <!--<td>{{row.status}}</td>-->
+                                <td>
+                                  <div mics-ad-group-status="row" campaign="campaign"></div>
+                                </td>
                                 <td>{{row.name}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index" >

@@ -28,8 +28,8 @@ define(['./module'], function (module) {
               updateAdStatus(ad, "ACTIVE");
             };
 
-            $scope.pauseAd = function (campaign) {
-              updateAdStatus(campaign, "PAUSED");
+            $scope.pauseAd = function (ad) {
+              updateAdStatus(ad, "PAUSED");
             };
 
           }

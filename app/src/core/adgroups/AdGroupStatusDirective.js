@@ -1,0 +1,42 @@
+define(['./module'], function (module) {
+  'use strict';
+
+  module.directive("micsAdGroupStatus", [
+    function () {
+      return {
+        restrict: 'EA',
+        replace: true,
+        templateUrl: "src/core/adgroups/adGroupStatusTemplate.html",
+        scope : {
+          "adGroup" : "=micsAdGroupStatus",
+          "campaign" : "="
+        },
+        controller : [
+          "$scope", "Restangular",
+          function ($scope, Restangular) {
+
+            var updateAdGroupStatus = function (adGroup, status) {
+              Restangular.one("display_campaigns", $scope.campaign.id).one('ad_groups', adGroup.id).customPUT({
+                status : status,
+              }).then(function(returnedAdGroup) {
+                adGroup.status = returnedAdGroup.status;
+              });
+            };
+
+            $scope.activateAdGroup = function (adGroup) {
+              updateAdGroupStatus(adGroup, "ACTIVE");
+            };
+
+            $scope.pauseAdGroup = function (adGroup) {
+              updateAdGroupStatus(adGroup, "PAUSED");
+            };
+
+          }
+        ]
+      };
+    }
+  ]);
+});
+
+
+
