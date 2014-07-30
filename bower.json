@@ -17,7 +17,7 @@
     "plupload": "2.1.1",
     "angularjs-nvd3-directives": "v0.0.7",
     "bootstrap-sass": "git://github.com/twbs/bootstrap-sass.git#~3.1.1",
-    "ng-bs-daterangepicker": "~0.0.3",
+    "ng-bs-daterangepicker": "https://github.com/sagivf/ng-bs-daterangepicker.git#05d8efaa7ea6b04cc9f875cf9ebef522dff3d376",
     "autofill-event": "~1.0.0",
     "angular-ui-utils": "~0.1.1",
     "checklist-model": "~0.1.3",

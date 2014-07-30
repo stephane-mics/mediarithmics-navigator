@@ -226,6 +226,13 @@ define(['./module'], function () {
               });
 
           },
+          'getDefaultDateRanges': function () {
+            return {
+                'Today': [moment(), moment()],
+                'Last 7 Days': [moment().subtract('days', 6), moment()],
+                'Last 30 Days': [moment().subtract('days', 29), moment()]
+            };
+          },
           'getDateRange': function () {
             return range;
           },

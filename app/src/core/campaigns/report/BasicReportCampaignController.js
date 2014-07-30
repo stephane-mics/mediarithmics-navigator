@@ -82,6 +82,7 @@ define(['./module'], function () {
       $scope.valTo = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
+      $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
 
       $log.debug("fetching " + $stateParams.campaign_id);
       DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {

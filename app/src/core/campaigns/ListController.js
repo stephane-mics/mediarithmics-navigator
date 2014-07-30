@@ -25,6 +25,7 @@ define(['./module'], function () {
       $scope.itemsPerPage = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
+      $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
       $scope.organisationName = function (id ){ return Session.getOrganisationName(id);};
 
       $scope.administrator = Session.getCurrentWorkspace().administrator;
