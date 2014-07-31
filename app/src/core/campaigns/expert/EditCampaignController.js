@@ -12,8 +12,8 @@ define(['./module'], function () {
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditCampaignController', [
-    '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
-    function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService) {
+    '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService', "core/common/WaitingService", "core/common/ErrorService",
+    function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService, waitingService, errorService) {
       var campaignId = $stateParams.campaign_id;
 
       function initView() {
@@ -124,9 +124,18 @@ define(['./module'], function () {
         // save button
         $scope.save = function () {
           $log.debug("save campaign : ", $scope.campaign);
+          waitingService.showWaitingModal();
           DisplayCampaignService.save().then(function (campaignContainer) {
+            waitingService.hideWaitingModal();
             DisplayCampaignService.reset();
             $location.path('/' +  $scope.campaign.organisation_id+'/campaigns/display/report/' + campaignContainer.id + '/basic');
+          }, function failure(response) {
+            waitingService.hideWaitingModal();
+            errorService.showErrorModal({
+              errorId : response.data.error_id
+            }).then(null, function (){
+              DisplayCampaignService.reset();
+            });
           });
         };
 

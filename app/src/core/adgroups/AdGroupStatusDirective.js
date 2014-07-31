@@ -12,14 +12,19 @@ define(['./module'], function (module) {
           "campaign" : "="
         },
         controller : [
-          "$scope", "Restangular",
-          function ($scope, Restangular) {
+          "$scope", "Restangular", "core/common/ErrorService",
+          function ($scope, Restangular, errorService) {
 
             var updateAdGroupStatus = function (adGroup, status) {
               Restangular.one("display_campaigns", $scope.campaign.id).one('ad_groups', adGroup.id).customPUT({
                 status : status,
               }).then(function(returnedAdGroup) {
                 adGroup.status = returnedAdGroup.status;
+              }, function failure(response) {
+                errorService.showErrorModal({
+                  errorId : response.data.error_id,
+                  messageType:"simple"
+                });
               });
             };
 

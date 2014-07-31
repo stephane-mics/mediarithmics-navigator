@@ -11,8 +11,8 @@ define(['./module'], function (module) {
           "campaign" : "=micsCampaignStatus"
         },
         controller : [
-          "$scope", "Restangular",
-          function ($scope, Restangular) {
+          "$scope", "Restangular", "core/common/ErrorService",
+          function ($scope, Restangular, errorService) {
 
             var updateCampaignStatus = function (campaign, status) {
               Restangular.one("display_campaigns", campaign.id).customPUT({
@@ -20,6 +20,11 @@ define(['./module'], function (module) {
                 type : "DISPLAY" // XXX this is used server side to find the right subclass of CampaignResource
               }).then(function(returnedCampaign) {
                 campaign.status = returnedCampaign.status;
+              }, function failure(response) {
+                errorService.showErrorModal({
+                  errorId : response.data.error_id,
+                  messageType:"simple"
+                });
               });
             };
 

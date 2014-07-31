@@ -5,8 +5,8 @@ define(['./module'], function () {
   var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/Step4Controller', [
-    "$scope", "$window", "lodash", "core/common/auth/Session", 'core/campaigns/DisplayCampaignService', "$log", "$location", "$q", "Restangular", "async",
-    function ($scope, $window, _, Session, DisplayCampaignService, $log, $location, $q, Restangular, async) {
+    "$scope", "$window", "lodash", "core/common/auth/Session", 'core/campaigns/DisplayCampaignService', "$log", "$location", "$q", "Restangular", "async", "core/common/WaitingService", "core/common/ErrorService",
+    function ($scope, $window, _, Session, DisplayCampaignService, $log, $location, $q, Restangular, async, waitingService, errorService) {
 
       function handleKeywordList(campaignContainer, keywordsListContainer) {
         keywordsListContainer.keywordList.name = campaignContainer.name;
@@ -42,15 +42,20 @@ define(['./module'], function () {
 
         var promise = handleKeywordList(campaign, $scope.keywordsList).then(_.bind(DisplayCampaignService.save, DisplayCampaignService));
 
+        waitingService.showWaitingModal();
         promise.then(function success(campaignContainer){
-          $log.info("success");
+          waitingService.hideWaitingModal();
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaignContainer.id + "/basic");
           DisplayCampaignService.reset();
-        }, function failure(){
-          $log.info("failure");
+        }, function failure(response){
+          waitingService.hideWaitingModal();
+          errorService.showErrorModal({
+              errorId : response.data.error_id
+          }).then(null, function (){
+            DisplayCampaignService.reset();
+          });
         });
 
-        // $window.alert("DONE");
       };
     }
   ]);

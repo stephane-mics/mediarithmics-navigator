@@ -6,27 +6,13 @@ define(['./module'], function () {
 
 
   module.controller('core/placementlists/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', 'core/configuration', 'ngTableParams', '$window', 'core/common/auth/AuthenticationService', "$modal",
-    function($scope, $log, Restangular, Session, _, $stateParams, $location, configuration, NgTableParams, $window, AuthenticationService, $modal) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', 'core/configuration', 'ngTableParams', '$window', 'core/common/auth/AuthenticationService', "core/common/WaitingService",
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, configuration, NgTableParams, $window, AuthenticationService, waitingService) {
       var placementListId = $stateParams.placementlist_id;
       var type = $stateParams.type;
 
       $scope.isCreationMode = !placementListId;
 
-      function showWaitingModal() {
-        $scope.waitingModal = $modal.open({
-          templateUrl: 'src/core/common/waiting.html',
-          scope : $scope,
-          backdrop : 'static',
-          keyboard : false
-        });
-      }
-      function hideWaitingModal() {
-        if($scope.waitingModal) {
-          $scope.waitingModal.close();
-          $scope.waitingModal = null;
-        }
-      }
 
       $scope.tableParams = new NgTableParams({
         page: 1,            // show first page
@@ -73,15 +59,15 @@ define(['./module'], function () {
         init: {
           FileUploaded: function () {
             $scope.tableParams.reload();
-            hideWaitingModal();
+            waitingService.hideWaitingModal();
           },
           FilesAdded: function () {
-            showWaitingModal();
+            waitingService.showWaitingModal();
             $scope.uploadError = null;
             $scope.$apply();
           },
           Error: function(up, err) {
-            hideWaitingModal();
+            waitingService.hideWaitingModal();
             $scope.uploadError = err.message;
             $scope.$apply();
           }
