@@ -118,12 +118,6 @@ define(['./module'], function () {
 
       $scope.xAxisTickFormat = function () {
         return function (d) {
-          return d3.time.format('%d %b')(new Date(d));
-        };
-      };
-
-      $scope.xAxisTickFormat = function () {
-        return function (d) {
           return d3.time.format('%d %b')(new Date(d)); //uncomment for date format
         };
       };

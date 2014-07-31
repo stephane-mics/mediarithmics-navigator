@@ -242,6 +242,25 @@ define(['./module'], function () {
           'getStartDate': function () {return startDate();},
           'getEndDate': function () {return endDate();},
           'dayPerformance': function (campaignId, leftMetric, rightMetric) {
+
+            /**
+             * If the axis only has one point, d3 will show a single point.
+             * In that case, we want a continue line : we duplicate the point.
+             * @param {Array} yAxis the axis to check.
+             */
+            var duplicatePointsIfNecessary = function(yAxis) {
+              if(yAxis.length === 1) {
+                var date = moment(yAxis[0].x);
+                // the date starts at 0:00, we add 23 points to cover all the day
+                // d3 can do that but I don't want to change the default behavior for the other ranges.
+                for(var i = 1; i<24; i+=1) {
+                  yAxis.push({
+                    x: date.clone().add('hours', i),
+                    y: yAxis[0].y
+                  });
+                }
+              }
+            };
             var mapStatsToNvd3 = function (response) {
               var report =new ReportWrapper(response.report_view);
 
@@ -266,6 +285,9 @@ define(['./module'], function () {
                 }
                 dateIter = dateIter.add(1, 'day');
               }
+
+              duplicatePointsIfNecessary(y1);
+              duplicatePointsIfNecessary(y2);
 
 //              response.report_view.rows.forEach(function (row) {
 //
