@@ -44,7 +44,7 @@ define(['./module'], function () {
 
         promise.then(function success(campaignContainer){
           $log.info("success");
-          $location.path("/campaigns/display/report/" + campaignContainer.id + "/basic");
+          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaignContainer.id + "/basic");
           DisplayCampaignService.reset();
         }, function failure(){
           $log.info("failure");
