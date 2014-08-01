@@ -159,9 +159,6 @@ input[type=daterange] {
   /* we don't have the navbar, but we want some space */
   margin-bottom: 20px;
 }
-.mcs-content {
-
-}
 
 .input-group-addon {
   background-color:$mcs-light-blue;
@@ -170,7 +167,7 @@ input[type=daterange] {
 }
 
 .mics-table-toolbar {
-    
+
     @include make-row();
     margin-bottom: 20px;
 }
@@ -189,6 +186,7 @@ input[type=daterange] {
       }
       th.actions {
         background-color: $dark-blue;
+        text-align: right;
       }
       th.status {
         width: 130px;
@@ -406,7 +404,7 @@ form.mcs-full-page-form {
       font-weight: normal;
     }
 
-    input, select {
+    input[type=text], input[type=password], select {
       @extend .form-control;
       @include use-bold-font();
       color: $dark-blue;
@@ -548,7 +546,6 @@ form.mcs-full-page-form {
 
 
 .mcs-default-container {
-  @extend .mcs-content;
   @include make-row();
 }
 
@@ -881,7 +878,7 @@ table.fragment-list-creatives {
       padding : 0;
     }
   }
-  input {
+  input[type=text] {
     @extend .form-control;
   }
 }
@@ -1434,3 +1431,60 @@ a.category-item {
 .ng-table-pagination, .ng-table-counts {
   margin: 0 0 20px 0;
 }
+
+
+
+@import "compass/css3/border-radius";
+@import "compass/css3/transition";
+@import "compass/css3/images";
+
+.mics-toggle-block {
+  .toggle-text-target {
+    color: $mcs-green;
+  }
+  .toggle-text-exclude {
+    color: $mcs-red;
+  }
+
+  &>* {
+    display:inline-block;
+  }
+  .mics-toggle {
+    width: 50px;
+    height: 24px;
+    position: relative;
+    @include border-radius( 50px );
+    label {
+      display: block;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      z-index: 1;
+      background: #fff;
+      @include border-radius( 100% );
+      @include transition( all .4s ease );
+
+      &:hover {
+        background: $dark-blue;
+      }
+    }
+    input[type=checkbox] {
+      visibility: hidden;
+      &:checked + label {
+        left: 29px;
+      }
+    }
+
+    &.mics-toggle-checked {
+      background: $mcs-red;
+    }
+
+    &.mics-toggle-unchecked {
+      background: $mcs-green;
+    }
+  }
+}
+

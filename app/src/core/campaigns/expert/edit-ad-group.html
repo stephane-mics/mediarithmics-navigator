@@ -96,11 +96,7 @@
           <!-- <td>{{userGroup.totalUsers}}</td> -->
           <!-- <td>{{userGroup.duration}}</td> -->
           <td>
-            <!-- TODO -->
-            <input type="checkbox" ng-model="userGroup.exclude" />
-
-            <span ng-show="userGroup.exclude">Exclude</span>
-            <span ng-show="!userGroup.exclude">Target</span>
+            <div mics-exclude-toggle="userGroup.exclude"></div>
           </td>
           <td class="actions">
             <button class="mics-btn mics-btn-delete" ng-click="deleteUserGroup(userGroup.id)">Remove</button>
@@ -165,11 +161,7 @@
                   <td>{{placementList.name}}</td>
 
                   <td>
-                      <!-- TODO -->
-                      <input type="checkbox" ng-model="userGroup.exclude" />
-
-                      <span ng-show="userGroup.exclude">Exclude</span>
-                      <span ng-show="!userGroup.exclude">Target</span>
+                    <div mics-exclude-toggle="placementListSelection.exclude"></div>
                   </td>
                   <td class="actions">
                       <button class="mics-btn mics-btn-delete" ng-click="deletePlacementList(placementListSelection)">Remove</button>

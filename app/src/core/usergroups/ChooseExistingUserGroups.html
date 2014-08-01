@@ -19,9 +19,7 @@
             {{availableUserGroup.name}}
           </td>
           <td>
-            <input type="checkbox" ng-model="availableUserGroup.exclude">
-            <span ng-show="availableUserGroup.exclude">Exclude</span>
-            <span ng-show="!availableUserGroup.exclude">Target</span>
+            <div mics-exclude-toggle="availableUserGroup.exclude"></div>
           </td>
         </tr>
       </tbody>

@@ -19,9 +19,7 @@
             {{availablePlacementList.name}}
           </td>
             <td>
-                <input type="checkbox" ng-model="availablePlacementList.exclude">
-                <span ng-show="availablePlacementList.exclude">Exclude</span>
-                <span ng-show="!availablePlacementList.exclude">Target</span>
+              <div mics-exclude-toggle="availablePlacementList.exclude"></div>
             </td>
         </tr>
       </tbody>
