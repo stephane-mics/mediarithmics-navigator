@@ -18,7 +18,8 @@ define(['./module'], function () {
         for (var i = 0; i < $scope.selectedPlacementLists.length; i++) {
           placementList = $scope.selectedPlacementLists[i];
           $scope.$emit("mics-placement-list:selected", {
-            placementList : placementList
+            placementList : placementList,
+            exclude : placementList.exclude
           });
         }
         $modalInstance.close();

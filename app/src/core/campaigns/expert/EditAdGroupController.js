@@ -84,7 +84,8 @@ define(['./module'], function () {
 
       $scope.$on("mics-placement-list:selected", function (event, params) {
         DisplayCampaignService.addPlacementList(adGroupId, {
-          placement_list_id : params.placementList.id
+          placement_list_id : params.placementList.id,
+          exclude : params.exclude
         });
       });
 
