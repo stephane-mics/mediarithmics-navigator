@@ -59,8 +59,8 @@ define(['./module'], function () {
         return DisplayCampaignService.removePlacementList(adGroupId, placementList);
       };
 
-      $scope.deleteUserGroup = function (userGroupId) {
-        return DisplayCampaignService.removeUserGroup(adGroupId, userGroupId);
+      $scope.deleteUserGroup = function (userGroup) {
+        return DisplayCampaignService.removeUserGroup(adGroupId, userGroup);
       };
 
       $scope.$on("mics-user-group:selected", function (event, params) {

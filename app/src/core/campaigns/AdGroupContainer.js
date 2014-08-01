@@ -168,13 +168,13 @@ define(['./module'], function () {
         return userGroupSelection.id;
       };
 
-      AdGroupContainer.prototype.removeUserGroup = function removeUserGroup(userGroupId) {
+      AdGroupContainer.prototype.removeUserGroup = function removeUserGroup(userGroup) {
 
         for (var i = 0; i < this.userGroups.length; i++) {
-          if (this.userGroups[i].id === userGroupId) {
+          if (this.userGroups[i].user_group_id === userGroup.user_group_id) {
             this.userGroups.splice(i, 1);
-            if (userGroupId.indexOf("T") === -1) {
-              this.removedUserGroups.push(userGroupId);
+            if (userGroup.id && userGroup.id.indexOf("T") === -1) {
+              this.removedUserGroups.push(userGroup);
             }
             return;
           }

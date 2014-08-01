@@ -187,8 +187,8 @@ define(['./module'], function () {
         return this.campaignCtn.getAdGroup(adGroupId).addUserGroup(usergroup);
       };
 
-      service.removeUserGroup = function(adGroupId, userGroupId) {
-        this.campaignCtn.getAdGroup(adGroupId).removeUserGroup(userGroupId);
+      service.removeUserGroup = function(adGroupId, userGroup) {
+        this.campaignCtn.getAdGroup(adGroupId).removeUserGroup(userGroup);
       };
 
 
