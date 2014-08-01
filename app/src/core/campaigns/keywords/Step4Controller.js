@@ -50,7 +50,7 @@ define(['./module'], function () {
         }, function failure(response){
           waitingService.hideWaitingModal();
           errorService.showErrorModal({
-              errorId : response.data.error_id
+              error: response
           }).then(null, function (){
             DisplayCampaignService.reset();
           });

@@ -14,7 +14,12 @@ define(['./module'], function (module) {
 
         options = options || {};
         scope.messageType = options.messageType || "full";
-        scope.errorId = options.errorId;
+
+        if (options.error instanceof Error) {
+          console.error(options.error);
+        } else if (options.error && options.error.data) {
+          scope.errorId = options.error.data.error_id;
+        }
         errorModal = $modal.open({
           scope: scope,
           templateUrl: 'src/core/common/error.html',

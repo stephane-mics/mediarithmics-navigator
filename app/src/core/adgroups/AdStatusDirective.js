@@ -23,7 +23,7 @@ define(['./module'], function (module) {
                 ad.status = returnedAd.status;
               }, function failure(response) {
                 errorService.showErrorModal({
-                  errorId : response.data.error_id,
+                  error: response,
                   messageType:"simple"
                 });
               });
