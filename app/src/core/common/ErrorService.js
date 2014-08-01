@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   "use strict";
 
   module.factory('core/common/ErrorService', [
-    "$modal", "$rootScope",
-    function ($modal, $rootScope) {
+    "$modal", "$rootScope", "$log",
+    function ($modal, $rootScope, $log) {
       var service = {};
 
       var errorModal = null;
@@ -16,7 +16,7 @@ define(['./module'], function (module) {
         scope.messageType = options.messageType || "full";
 
         if (options.error instanceof Error) {
-          console.error(options.error);
+          $log.error(options.error);
         } else if (options.error && options.error.data) {
           scope.errorId = options.error.data.error_id;
         }
