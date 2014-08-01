@@ -178,7 +178,7 @@ define(['./module'], function () {
           adGroup[action](self.id).then(function(result) {
             callback(null, result);
           }, function(reason) {
-            callback(new Error(reason));
+            callback(reason, null);
           });
 
 

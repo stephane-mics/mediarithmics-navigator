@@ -150,9 +150,7 @@ define(['./module'], function () {
                 callback(null, result);
 
               }, function(reason) {
-
-                callback(new Error(reason));
-
+                callback(reason, null);
               });
 
 
