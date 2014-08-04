@@ -1,8 +1,8 @@
 <div ng-show="parser.host" class="pretty-print-url">
   <span ng-click="toggleExpand()">
-    {{parser.protocol}}//{{parser.host}}{{parser.pathname}}<span class="ellipsis" ng-show="!expand">...</span>
-    <span ng-show="!expand" class="toggle">more<span class="caret"></span></span>
-    <span ng-show="expand"  class="toggle dropup">less<span class="caret"></span></span>
+    {{parser.protocol}}//{{parser.host}}{{parser.pathname}}<span class="ellipsis" ng-show="!expand && params.length">...</span>
+    <span ng-show="!expand && params.length" class="toggle">more<span class="caret"></span></span>
+    <span ng-show="expand && params.length"  class="toggle dropup">less<span class="caret"></span></span>
   </span>
   <a class="url" href="{{url}}">direct link</a>
 
