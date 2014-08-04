@@ -23,13 +23,6 @@ define(['./module'], function () {
                 }
                 var placementList = Restangular.one("placement_lists", newValue);
                 $scope[exposedVar] = placementList.get().$object;
-                if (withExpressions) {
-                  Restangular.one("placement_lists", newValue).all("placement_expressions").getList()
-                  .then(function (properties) {
-                    $scope[exposedVar + "Expressions"] = properties;
-                  }
-                  );
-                }
               });
             };
           }

@@ -157,7 +157,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="placementListSelection in getPlacementLists(adGroup.id)" fetch-placement-list="placementListSelection.placement_list_id as placementList with expressions">
+              <tr ng-repeat="placementListSelection in getPlacementLists(adGroup.id)" fetch-placement-list="placementListSelection.placement_list_id as placementList">
                   <td>{{placementList.name}}</td>
 
                   <td>
