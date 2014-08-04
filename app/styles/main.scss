@@ -404,7 +404,7 @@ form.mcs-full-page-form {
       font-weight: normal;
     }
 
-    input[type=text], input[type=password], select {
+    input[type=text], input[type=password], input[type=number], select {
       @extend .form-control;
       @include use-bold-font();
       color: $dark-blue;
