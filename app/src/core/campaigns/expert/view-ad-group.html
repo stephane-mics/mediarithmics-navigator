@@ -1,5 +1,8 @@
 <div class="show-ad-group">
-  <a ng-click="editAdGroup(adGroup)" class="pull-right mics-btn mics-btn-action">Edit</a>
+  <div class="btn-group pull-right">
+    <a ng-click="editAdGroup(adGroup)" class="mics-btn mics-btn-action">Edit</a>
+    <a ng-click="removeAdGroup(adGroup)" class="mics-btn mics-btn-delete">Delete</a>
+  </div>
   <h4>{{adGroup.name}} ({{adGroup.visibility | constant:'adgroup_visibility'}})</h4>
 
   <div class="ad-group-component">

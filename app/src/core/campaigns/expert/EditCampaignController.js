@@ -125,6 +125,12 @@ define(['./module'], function () {
           $location.path('/' +  $scope.campaign.organisation_id + '/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroup.id);
         };
 
+        $scope.removeAdGroup = function (adGroup) {
+          DisplayCampaignService.removeAdGroup(adGroup.id);
+          // TODO find a way to let angular handle that automatically.
+          $scope.adGroups = DisplayCampaignService.getAdGroupValues();
+        };
+
 
         /*
          * Campaign Edition

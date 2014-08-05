@@ -147,10 +147,10 @@ define(['./module'], function () {
 
         for(var i=0; i < this.adGroups.length; i++){
           if (this.adGroups[i].id === id) {
-            this.adGroups.splice(i, 1);
             if (id.indexOf("T") === -1) {
-              this.removedAdGroups.push(id);
+              this.removedAdGroups.push(this.adGroups[i]);
             }
+            this.adGroups.splice(i, 1);
             return;
           }
         }
@@ -158,40 +158,73 @@ define(['./module'], function () {
       };
 
 
-
-      var saveAdGroups = function (self, adGroups) {
-
-        var defered = $q.defer();
-        async.mapSeries(adGroups, function(adGroup, callback) {
+      /**
+       * Create a task (to be used by async.series) to save the given ad group container.
+       * @param {Object} campaignContainer the campaign container binded to the ad group container.
+       * @param {Object} adGroupContainer the ad group container to save.
+       * @return {Function} the task.
+       */
+      function saveAdGroupTask(campaignContainer, adGroupContainer) {
+        return function (callback) {
+          $log.info("saving adGroup", adGroupContainer.id);
+          var promise;
           var action;
 
-          if (adGroup.id.indexOf('T') === -1) {
+          if (adGroupContainer.id.indexOf('T') === -1) {
             action = "update";
           } else {
             action = "persist";
             // reuse the name of the campaign for the ad group
-            if (!adGroup.value.name) {
-              adGroup.value.name = self.value.name;
+            if (!adGroupContainer.value.name) {
+              adGroupContainer.value.name = campaignContainer.value.name;
             }
           }
 
-          adGroup[action](self.id).then(function(result) {
-            callback(null, result);
-          }, function(reason) {
-            callback(reason, null);
-          });
+          promise = adGroupContainer[action](campaignContainer.id);
+
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
 
 
-        }, function(err, results){
+      /**
+       * Create a task (to be used by async.series) to delete the given ad group container.
+       * @param {Object} adGroupContainer the ad group container to delete.
+       * @return {Function} the task.
+       */
+      function deleteAdGroupTask(adGroupContainer) {
+        return function (callback) {
+          $log.info("deleting adGroup", adGroupContainer.id);
+
+          // the container does everything
+          var promise = adGroupContainer.remove();
+
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+
+      var saveAdGroups = function (self, adGroups) {
+
+        var deferred = $q.defer(), tasks = [], i;
+        for(i = 0; i < self.adGroups.length ; i++) {
+          tasks.push(saveAdGroupTask(self, self.adGroups[i]));
+        }
+        for(i = 0; i < self.removedAdGroups.length ; i++) {
+          tasks.push(deleteAdGroupTask(self.removedAdGroups[i]));
+        }
+
+        async.series(tasks, function (err, res) {
           if (err) {
-            defered.reject(err);
+            deferred.reject(err);
           } else {
-            $log.info("ad groups saved");
-            defered.resolve(self);
+            $log.info(res.length + " ad groups saved");
+            // return the campaign container as the promise results
+            deferred.resolve(self);
           }
-        });
 
-        return defered.promise;
+        });
+        return deferred.promise;
       };
 
       /**
@@ -258,7 +291,7 @@ define(['./module'], function () {
           if (err) {
             deferred.reject(err);
           } else {
-            $log.info("ad group saved");
+            $log.info("inventory source saved");
             // return the ad group container as the promise results
             deferred.resolve(self);
           }
@@ -332,7 +365,7 @@ define(['./module'], function () {
           if (err) {
             deferred.reject(err);
           } else {
-            $log.info("ad group saved");
+            $log.info("location saved");
             // return the ad group container as the promise results
             deferred.resolve(self);
           }

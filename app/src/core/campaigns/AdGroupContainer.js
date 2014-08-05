@@ -44,7 +44,7 @@ define(['./module'], function () {
 
         var self = this;
 
-        var defered = $q.defer();
+        var deferred = $q.defer();
         var list = [pValue, pAds, pUserGroups, pKeywords, pPlacements];
 
         $q.all(list)
@@ -58,15 +58,15 @@ define(['./module'], function () {
             self.placementLists = result[4];
 
             // return the loaded container
-            defered.resolve(self);
+            deferred.resolve(self);
 
           }, function (reason) {
 
-            defered.reject(reason);
+            deferred.reject(reason);
           });
 
         // return the promise
-        return defered.promise;
+        return deferred.promise;
 
       };
 
@@ -375,7 +375,7 @@ define(['./module'], function () {
       }
 
 
-      function persistDependencies(campaignId, adGroupContainer, adGroup, defered) {
+      function persistDependencies(campaignId, adGroupContainer, adGroup, deferred) {
         var i;
         // update/persist ads
         var pAds = [];
@@ -421,18 +421,20 @@ define(['./module'], function () {
 
         async.series(pList, function (err, res) {
           if (err) {
-            defered.reject(err);
+            deferred.reject(err);
           } else {
-            $log.info("ad group saved");
+            $log.info(res.length + " ad group dependencies saved");
             // return the ad group container as the promise results
-            defered.resolve(adGroupContainer);
+            deferred.resolve(adGroupContainer);
           }
         });
+
+        return deferred.promise;
       }
 
       AdGroupContainer.prototype.persist = function persist(campaignId) {
 
-        var defered = $q.defer();
+        var deferred = $q.defer();
 
         var self = this;
 
@@ -441,17 +443,17 @@ define(['./module'], function () {
 
             self.id = adGroup.id;
 
-            persistDependencies.call(null, campaignId, self, adGroup, defered);
+            persistDependencies(campaignId, self, adGroup, deferred);
 
           }, function (reason) {
-            defered.reject(reason);
+            deferred.reject(reason);
           });
 
-        return defered.promise;
+        return deferred.promise;
       };
       AdGroupContainer.prototype.update = function update(campaignId) {
 
-        var defered = $q.defer();
+        var deferred = $q.defer();
 
         var self = this;
 
@@ -460,12 +462,42 @@ define(['./module'], function () {
 
             self.id = adGroup.id;
 
-            persistDependencies.call(null, campaignId, self, adGroup, defered);
+            persistDependencies(campaignId, self, adGroup, deferred);
           }, function (reason) {
-            defered.reject(reason);
+            deferred.reject(reason);
           });
 
-        return defered.promise;
+        return deferred.promise;
+      };
+
+      AdGroupContainer.prototype.remove = function remove(campaignId) {
+
+        var deferred = $q.defer();
+
+        if (!this.value.id || this.value.id.indexOf("T") !== -1) {
+          // the ad group doesn't exist server side, no need to do anything
+          deferred.resolve(null);
+          return deferred.promise;
+        }
+
+        this.removedAds = this.removedAds.concat(this.ads);
+        this.ads = [];
+
+        this.removedUserGroups = this.removedUserGroups.concat(this.userGroups);
+        this.userGroups = [];
+
+        this.removedKeywordLists = this.removedKeywordLists.concat(this.keywordLists);
+        this.keywordLists = [];
+
+        this.removedPlacementLists = this.removedPlacementLists.concat(this.placementLists);
+        this.placementLists = [];
+
+
+        var self = this;
+        return persistDependencies(campaignId, self, self.value, deferred).then(function () {
+          return self.value.remove();
+        });
+
       };
 
       return AdGroupContainer;
