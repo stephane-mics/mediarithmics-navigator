@@ -492,7 +492,7 @@ form.mcs-full-page-form {
   min-height: 300px;
 }
 
-.dropdown-toggle.mics-btn-add {
+[dropdown-toggle].mics-btn-add {
   & + ul.dropdown-menu {
     padding:0;
 
@@ -1406,8 +1406,6 @@ a.category-item {
   @extend .btn-group;
 
   button.updatable-item-status-state {
-    @extend .dropdown-toggle;
-
     span:first-child {
       @extend .glyphicon;
     }

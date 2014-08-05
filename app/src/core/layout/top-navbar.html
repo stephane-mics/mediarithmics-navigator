@@ -24,7 +24,7 @@
         <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#/{{organisationId}}/campaigns" >Campaigns</a></li>
         <li ng-class="category == 'creatives' ? 'active' : ''"><a href="#/{{organisationId}}/creatives">Creatives</a></li>
         <li ng-class="category == 'library' ? 'active' : ''" class="dropdown">
-          <a href="#" class="dropdown-toggle">Library</a>
+          <a href="#" dropdown-toggle>Library</a>
           <ul class="dropdown-menu">
             <li><a href="#/{{organisationId}}/library/usergroups">User Groups</a></li>
             <li><a href="#/{{organisationId}}/library/placementlists">Placement Lists</a></li>
@@ -35,7 +35,7 @@
 
       <ul class="nav navbar-nav navbar-right">
           <li class="dropdown" ng-if="workspaces.length > 1">
-              <a href="#" class="dropdown-toggle mcs-workspace-label" data-toggle="dropdown">{{currentOrganisation}}<b class="caret"></b></a>
+              <a href="#" class="mcs-workspace-label" dropdown-toggle>{{currentOrganisation}}<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li ng-repeat="workspace in workspaces" ng-if="workspace.organisationId != currentOrganisationId"><a ng-click="switchWorkspace(workspace.idx)">{{workspace.organisationName}}</a></li>
               </ul>
