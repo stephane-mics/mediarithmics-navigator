@@ -9,6 +9,10 @@ $font-family-sans-serif: "LLCircularWeb-Book", "Source Sans Pro", Helvetica, Ari
   font-family : "LLCircularWeb-Medium", "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 
+@mixin use-normal-font() {
+  font-family : $font-family-sans-serif;
+}
+
 $dark-blue: #092f56;
 $dark-blue-not : #ffffff;
 $mcs-red : #fe5858;
@@ -1488,3 +1492,70 @@ a.category-item {
   }
 }
 
+
+.edit-campaign-expert .show-ad-group {
+
+  $ad-container-margin : 30px;
+  $ad-container-max-img-size : 120px;
+  h4 {
+    @include use-bold-font();
+    font-size: ceil(($font-size-base * 2));
+    margin-bottom:16px;
+  }
+  .ad-group-component + .ad-group-component {
+      border-top: none;
+  }
+  .ad-group-component {
+    border: 2px solid $mcs-light-blue;
+    padding: 21px $ad-container-margin;
+
+    h5 {
+      @include use-bold-font();
+      font-size: ceil(($font-size-base * 1.5));
+      display:inline-block;
+      padding-bottom: 8px;
+      margin:0;
+      border-bottom: 1px solid $dark-blue;
+    }
+
+    .ad-container {
+      margin-left: -$ad-container-margin;
+      margin-right: -$ad-container-margin;
+    }
+    .ad-container:after {
+      clear:both;
+      display:table;
+      content:" ";
+    }
+    .img-box {
+      width:$ad-container-max-img-size;
+      height:$ad-container-max-img-size;
+      vertical-align: bottom;
+      display: table-cell;
+    }
+    .thumbnail {
+      float:left;
+      position: relative;
+      border:none;
+      margin:28px; /* 4 images in 1024 and 5 images in 1250 : perfect */
+      padding:0;
+      & img {
+        margin:0;
+        max-width:$ad-container-max-img-size;
+        max-height:$ad-container-max-img-size;
+      }
+      .caption {
+        padding: 5px 0;
+      }
+    }
+
+    .badge {
+      @include use-normal-font();
+      background: $mcs-red;
+      font-size: $font-size-base;
+      padding: 5px 8px;
+      margin-left:5px;
+    }
+  }
+  margin-bottom: 30px;
+}

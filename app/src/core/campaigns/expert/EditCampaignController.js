@@ -47,6 +47,15 @@ define(['./module'], function () {
         $scope.getAds = function (adGroupId) {
           return DisplayCampaignService.getAds(adGroupId);
         };
+        $scope.getUserGroups = function (adGroupId) {
+          return DisplayCampaignService.getUserGroups(adGroupId);
+        };
+        $scope.getKeywordLists = function (adGroupId) {
+          return DisplayCampaignService.getKeywordLists(adGroupId);
+        };
+        $scope.getPlacementLists = function (adGroupId) {
+          return DisplayCampaignService.getPlacementLists(adGroupId);
+        };
 
         $scope.availableInventorySources = DisplayCampaignService.getDisplayNetworkCampaign();
 

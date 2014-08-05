@@ -1,25 +1,47 @@
-<div class="panel panel-default">
-    <div class="panel-heading"><h4>{{adGroup.name}} <small><a ng-click="editAdGroup(adGroup)">Edit</a></small></h4></div>
-    <div class="panel-body">
-        <div class="row">
+<div class="show-ad-group">
+  <a ng-click="editAdGroup(adGroup)" class="pull-right mics-btn mics-btn-action">Edit</a>
+  <h4>{{adGroup.name}} ({{adGroup.visibility | constant:'adgroup_visibility'}})</h4>
 
-            <div class="col-xs-6 col-md-2" ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative" >
+  <div class="ad-group-component">
+    <h5>Ads <span class="badge">{{getAds(adGroup.id).length}}</span></h5>
+    <div class="ad-container">
 
-                <div class="thumbnail">
-                    <img creative-thumbnail="creative.id"/>
-                    <div class="caption">
-                        {{creative.name}} ({{creative.format}})
-                    </div>
-                </div>
+      <div class="thumbnail" ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative" >
 
-
-
-                </div>
-
-
-            </div>
-            <div class="col-xs-12 col-md-12" >Visibility : {{adGroup.visibility | constant:'adgroup_visibility'}}</div>
+        <div class="img-box">
+          <img creative-thumbnail="creative.id"/>
         </div>
-
+          <div class="caption">
+            {{creative.format}}
+          </div>
+      </div>
     </div>
+  </div>
+  <!--
+  <div class="ad-group-component">
+    <h5>user groups <span class="badge">{{getUserGroups(adGroup.id).length}}</span></h5>
+    <div>
+      <span ng-repeat="userGroup in getUserGroups(adGroup.id)">
+        {{userGroup.name}}, exclude = {{userGroup.exclude}}
+      </span>
+    </div>
+  </div>
+  <div class="ad-group-component">
+    <h5>keywords lists <span class="badge">{{getKeywordLists(adGroup.id).length}}</span></h5>
+    <div>
+      <span ng-repeat="keywordList in getKeywordLists(adGroup.id)">
+        {{keywordList.name}}
+      </span>
+    </div>
+  </div>
+  <div class="ad-group-component">
+    <h5>Placements <span class="badge">{{getPlacementLists(adGroup.id).length}}</span></h5>
+    <div>
+      <span ng-repeat="placement in getPlacementLists(adGroup.id)">
+        {{placement.name}}, exclude = {{placement.exclude}}
+      </span>
+    </div>
+  </div>
+  -->
+
 </div>
