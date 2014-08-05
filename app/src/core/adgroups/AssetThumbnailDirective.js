@@ -16,7 +16,7 @@ define(['./module'], function () {
         link: function (scope, iElement, iAttrs) {
           scope.showPreview = function (asset) {
             if (asset.mime_type === "application/x-shockwave-flash") {
-              return "images/Adobe-swf_icon.png";
+              return "images/flash/Adobe-swf_icon.png";
             } else {
               return configuration.ASSETS_URL + asset.file_path;
             }

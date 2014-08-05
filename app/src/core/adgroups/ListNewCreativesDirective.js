@@ -18,7 +18,7 @@ define(['./module'], function () {
         link: function (scope, iElement, iAttrs) {
           scope.showPreview = function (crea) {
             if (crea.mime_type === "application/x-shockwave-flash") {
-              return "images/Adobe-swf_icon.png";
+              return "images/flash/Adobe-swf_icon.png";
             } else {
               return configuration.ASSETS_URL + crea.file_path;
             }

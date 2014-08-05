@@ -12,7 +12,7 @@
       <div class="thumbnail" ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative" >
 
         <div class="img-box">
-          <img creative-thumbnail="creative.id"/>
+          <img creative-thumbnail="creative.id" creative-format="creative.format"/>
         </div>
           <div class="caption">
             {{creative.format}}

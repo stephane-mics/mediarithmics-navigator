@@ -40,10 +40,16 @@ define(['./module'], function () {
             }
             Restangular.one("creatives", value).one("thumbnail").get().then(
               function (creative) {
+                var format = scope.$eval(attrs.creativeFormat);
+
                 if (creative.asset_path) {
                   attrs.$set("src", configuration.ASSETS_URL + creative.asset_path);
                 } else if (creative.icon_id === "flash") {
-                  attrs.$set("src", "images/Adobe-swf_icon.png");
+                  if(format) {
+                    attrs.$set("src", "images/flash/Adobe-swf_icon_" + format + ".png");
+                  } else {
+                    attrs.$set("src", "images/flash/Adobe-swf_icon.png");
+                  }
                 } else if (creative.icon_id === "image") {
                   attrs.$set("src", "images/Unknown_file.png");
                 } else if (creative.url) {

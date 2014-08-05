@@ -1548,6 +1548,7 @@ a.category-item {
       padding:0;
       & img {
         margin:0;
+        border: 2px solid black;
         max-width:$ad-container-max-img-size;
         max-height:$ad-container-max-img-size;
       }
