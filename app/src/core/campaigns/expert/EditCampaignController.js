@@ -12,8 +12,8 @@ define(['./module'], function () {
   var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditCampaignController', [
-    '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService', "core/common/WaitingService", "core/common/ErrorService",
-    function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService, waitingService, errorService) {
+    '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService', "core/common/WaitingService", "core/common/ErrorService", "$modal",
+    function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService, waitingService, errorService, $modal) {
       var campaignId = $stateParams.campaign_id;
 
       function initView() {
@@ -57,8 +57,6 @@ define(['./module'], function () {
           return DisplayCampaignService.getPlacementLists(adGroupId);
         };
 
-        $scope.availableInventorySources = DisplayCampaignService.getDisplayNetworkCampaign();
-
         $scope.isInInventorySources = function (elem) {
           var displayNetworkCampaigns = _.map($scope.inventorySources, function (elem) {
             return "" + elem.display_network_campaign_id;
@@ -66,16 +64,26 @@ define(['./module'], function () {
           return !_.contains(displayNetworkCampaigns, elem.id);
         };
 
-        $scope.addDisplayNetwork = function (elem) {
-          if (elem === undefined) {
-            return;
-          }
-          var newInventorySource = {display_network_campaign_id: elem.id, display_network_name: elem.display_network_name};
-          $scope.displayNetwork = undefined;
-          DisplayCampaignService.addInventorySource(newInventorySource);
-
+        $scope.chooseDisplayNetworks = function() {
+          $modal.open({
+            templateUrl: 'src/core/campaigns/ChooseExistingDisplayNetwork.html',
+            scope : $scope,
+            backdrop : 'static',
+            controller: 'core/campaigns/ChooseExistingDisplayNetworkController',
+            size: "lg"
+          });
         };
 
+        $scope.removeInventorySource = function (source) {
+          DisplayCampaignService.removeInventorySource(source);
+        };
+
+        $scope.$on("mics-inventory-source:selected", function (event, inventorySource) {
+          DisplayCampaignService.addInventorySource({
+            display_network_campaign_id : inventorySource.id,
+            display_network_name : inventorySource.display_network_name
+          });
+        });
 
         $scope.$on("mics-location:postal-code-added", function (event, params) {
           DisplayCampaignService.addPostalCodeLocation(params);

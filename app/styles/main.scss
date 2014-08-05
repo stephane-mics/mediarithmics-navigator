@@ -139,6 +139,11 @@ a, *[ng-click] {
 input[type=daterange] {
   cursor:pointer; /* the plugin will display a custom component */
 }
+
+label {
+  font-weight: normal;
+}
+
 .mcs-top-navbar {
 
 //    margin-bottom: 0px !important;
@@ -243,7 +248,7 @@ input[type=daterange] {
   }
 }
 
-.mics-table-preface {
+.mics-block-heading {
   background: $mcs-light-grey;
   padding: 21px;
 
@@ -259,6 +264,10 @@ input[type=daterange] {
     font-size: ceil(($font-size-base * 1.5));
     margin-left: 10px;
   }
+}
+.mics-default-block {
+  padding:15px;
+  border: 1px solid $mcs-light-grey;
 }
 
 .pretty-print-url {
@@ -1558,4 +1567,15 @@ a.category-item {
     }
   }
   margin-bottom: 30px;
+}
+
+
+.display-network-list .label {
+  font-size: $font-size-base;
+  font-weight: normal;
+  background-color: $mcs-light-blue;
+  > a {
+    margin-left: 5px;
+    line-height: 0.8;
+  }
 }

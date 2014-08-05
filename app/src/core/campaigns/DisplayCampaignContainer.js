@@ -7,8 +7,8 @@ define(['./module'], function () {
    */
 
   module.factory("core/campaigns/DisplayCampaignContainer", [
-    "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log", 'core/common/promiseUtils',
-    function($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils) {
+    "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log", 'core/common/promiseUtils', "lodash",
+    function($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _) {
 
 
       var DisplayCampaignContainer = function DisplayCampaignContainer(templateGroupId, templateArtifactId) {
@@ -100,9 +100,28 @@ define(['./module'], function () {
 
 
       DisplayCampaignContainer.prototype.addInventorySource = function (inventorySource) {
-        this.inventorySources.push(inventorySource);
+        var found = _.find(this.inventorySources, function (source) {
+          return source.display_network_campaign_id === inventorySource.display_network_campaign_id;
+        });
+        if(!found) {
+          inventorySource.id = IdGenerator.getId();
+          this.inventorySources.push(inventorySource);
+        }
+
+        return inventorySource.id || found.id;
       };
 
+      DisplayCampaignContainer.prototype.removeInventorySource = function (inventorySource) {
+        for (var i = 0; i < this.inventorySources.length; i++) {
+          if (this.inventorySources[i].display_network_campaign_id === inventorySource.display_network_campaign_id) {
+            this.inventorySources.splice(i, 1);
+            if (inventorySource.id && inventorySource.id.indexOf("T") === -1) {
+              this.removedInventorySources.push(inventorySource);
+            }
+            return;
+          }
+        }
+      };
 
       DisplayCampaignContainer.prototype.addPostalCodeLocation = function (location) {
         this.locations.push(location);
@@ -291,7 +310,7 @@ define(['./module'], function () {
           if (err) {
             deferred.reject(err);
           } else {
-            $log.info("inventory source saved");
+            $log.info(res.length + " inventory sources saved");
             // return the ad group container as the promise results
             deferred.resolve(self);
           }
@@ -365,7 +384,7 @@ define(['./module'], function () {
           if (err) {
             deferred.reject(err);
           } else {
-            $log.info("location saved");
+            $log.info(res.length + " locations saved");
             // return the ad group container as the promise results
             deferred.resolve(self);
           }

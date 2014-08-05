@@ -231,9 +231,11 @@ define(['./module'], function () {
       };
 
       service.addInventorySource = function (inventorySource) {
-
-        $log.debug("> add inventory source to ", this.campaignCtn, inventorySource);
         return this.campaignCtn.addInventorySource(inventorySource);
+      };
+
+      service.removeInventorySource = function (inventorySource) {
+        return this.campaignCtn.removeInventorySource(inventorySource);
       };
 
       service.getLocations = function () {
