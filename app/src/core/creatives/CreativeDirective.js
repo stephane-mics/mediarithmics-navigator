@@ -46,7 +46,7 @@ define(['./module'], function () {
                   attrs.$set("src", configuration.ASSETS_URL + creative.asset_path);
                 } else if (creative.icon_id === "flash") {
                   if(format) {
-                    attrs.$set("src", "images/flash/Adobe-swf_icon_" + format + ".png");
+                    attrs.$set("src", "images/flash/generated/Adobe-swf_icon_" + format + ".png");
                   } else {
                     attrs.$set("src", "images/flash/Adobe-swf_icon.png");
                   }

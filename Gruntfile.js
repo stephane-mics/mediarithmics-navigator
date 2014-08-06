@@ -21,6 +21,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-requirejs');
 
+  grunt.loadNpmTasks('grunt-shell');
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -66,7 +67,7 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/*.html',
           '<%= yeoman.app %>/src/**/*.html',
           '.tmp/styles/{,*/}*.css',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= yeoman.app %>/images/**/*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
     },
@@ -203,7 +204,7 @@ module.exports = function (grunt) {
           {
             expand: true,
             cwd: '<%= yeoman.app %>/images',
-            src: '{,*/}*.{png,jpg,jpeg,gif}',
+            src: '**/*.{png,jpg,jpeg,gif}',
             dest: '<%= yeoman.dist %>/images'
           }
         ]
@@ -290,6 +291,14 @@ module.exports = function (grunt) {
       }
     },
 
+    shell: {
+      iab_placeholder: {
+        command: function () {
+          return "<%= yeoman.app %>/images/generate_iab_placeholders.sh <%= yeoman.app %>/images/flash/Adobe-swf_icon.png";
+        }
+      }
+    },
+
     // Replace Google CDN references
     cdnify: {
       dist: {
@@ -321,6 +330,19 @@ module.exports = function (grunt) {
             cwd: '.tmp/images',
             dest: '<%= yeoman.dist %>/images',
             src: ['generated/*']
+          }
+        ]
+      },
+      generated_iab: {
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.app %>',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              'images/flash/generated/*'
+            ]
           }
         ]
       },
@@ -497,6 +519,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'shell:iab_placeholder',
       'genRequireJsFiles:config',
       'bowerInstall',
       'concurrent:server',
@@ -522,6 +545,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'shell:iab_placeholder',
     'bowerInstall',
     'useminPrepare',
     'genRequireJsFiles:config',
@@ -537,6 +561,7 @@ module.exports = function (grunt) {
     'filerev',
     'regex-replace:dist',
     'usemin',
+    'copy:generated_iab',
     'htmlmin'
   ]);
 

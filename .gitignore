@@ -7,3 +7,4 @@ app/bower_components
 .editorconfig
 index.js
 module.js
+generated/
