@@ -1507,13 +1507,13 @@ a.category-item {
   h4 {
     @include use-bold-font();
     font-size: ceil(($font-size-base * 2));
-    margin-bottom:16px;
+    /* margin-bottom:16px; */
+    margin-top:30px;
   }
-  .ad-group-component + .ad-group-component {
-      border-top: none;
+  .ad-group-components {
+    border: 2px solid $mcs-light-blue;
   }
   .ad-group-component {
-    border: 2px solid $mcs-light-blue;
     padding: 21px $ad-container-margin;
 
     h5 {
@@ -1548,7 +1548,7 @@ a.category-item {
       padding:0;
       & img {
         margin:0;
-        border: 2px solid black;
+        border: 2px solid $dark-blue;
         max-width:$ad-container-max-img-size;
         max-height:$ad-container-max-img-size;
       }
@@ -1565,7 +1565,7 @@ a.category-item {
       margin-left:5px;
     }
   }
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 

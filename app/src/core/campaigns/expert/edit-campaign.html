@@ -115,7 +115,7 @@
         <div class="btn-group">
           <a class="mics-btn mics-btn-add" ng-click="newAdGroup()">Create new Ad Group</a>
         </div>
-        <span>Select ad groups</span>
+        <span>Ad groups</span>
       </div>
       <div ng-repeat="adGroup in adGroups|orderBy:'id'">
         <div ng-include src="'src/core/campaigns/expert/view-ad-group.html'"></div>
@@ -128,7 +128,7 @@
     <div class="mcs-form-group">
       <div class="mics-block-heading">
         <div class="btn-group">
-          <a class="mics-btn mics-btn-create" ng-click="chooseDisplayNetworks()">Choose Display Networks</a>
+          <a class="mics-btn mics-btn-add" ng-click="chooseDisplayNetworks()">Select Display Networks</a>
         </div>
         <span>Display networks</span>
       </div>
