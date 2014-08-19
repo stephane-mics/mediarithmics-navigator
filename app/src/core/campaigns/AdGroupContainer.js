@@ -13,7 +13,10 @@ define(['./module'], function () {
       var AdGroupContainer = function AdGroupContainer(value) {
         if (typeof value === "string") {
           this.id = value;
-          this.value = {id:value};
+          this.value = {
+            id:value,
+            visibility : 'ANY_POSITION'
+          };
         } else {
 
           this.value = value;
