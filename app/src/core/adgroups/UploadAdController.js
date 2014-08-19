@@ -58,11 +58,17 @@ define(['./module'], function () {
 
         var isFlash = userDefinedCreative.asset.mime_type === "application/x-shockwave-flash";
 
-        var groupId = "com.mediarithmics.creative.display";
-        var artifactId = "quick-image-banner";
+        var renderer = {
+          groupId : "com.mediarithmics.creative.display",
+          artifactId : "image-iframe"
+        };
+        var editor = {
+          groupId : "com.mediarithmics.creative.display",
+          artifactId : "basic-editor"
+        };
 
         if (isFlash) {
-          artifactId = "quick-flash-banner";
+          renderer.artifactId = "flash-iframe";
         }
 
         $log.debug("creating creative", userDefinedCreative);
@@ -70,8 +76,10 @@ define(['./module'], function () {
           name : userDefinedCreative.creative.name,
           type : "DISPLAY_AD",
           format : userDefinedCreative.asset.width + "x" + userDefinedCreative.asset.height,
-          template_group_id : groupId,
-          template_artifact_id : artifactId
+          renderer_group_id : renderer.groupId,
+          renderer_artifact_id : renderer.artifactId,
+          editor_group_id : editor.groupId,
+          editor_artifact_id : editor.artifactId
         }, {
           // query params
           organisation_id : Session.getCurrentWorkspace().organisation_id
