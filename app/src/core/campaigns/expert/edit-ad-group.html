@@ -49,7 +49,7 @@
       <tr ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative with rendererProperties">
         <!-- <td mics-asset-thumbnail asset="creative"></td> -->
         <td>
-          <div class="thumbnail">
+          <div class="mics-small-thumbnail">
             <img creative-thumbnail="creative.id"/>
             <div class="caption">
               {{creative.format}}

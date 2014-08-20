@@ -869,28 +869,6 @@ table.fragment-list-creatives {
 
   @extend .mics-table;
 
-  thead th {
-    /* @extend .text-center; */
-  }
-  td {
-    /* padding : 0 5px; */
-    /* line-height : 50px !important; */
-  }
-  .thumbnail {
-    margin : 0;
-    padding:0;
-    border : none;
-    background-color:transparent;
-    @extend .text-center;
-    img {
-      max-width : 50px;
-      max-height : 50px;
-    }
-    .caption {
-      font-size : $font-size-small;
-      padding : 0;
-    }
-  }
   input[type=text] {
     @extend .form-control;
   }
@@ -1576,5 +1554,21 @@ a.category-item {
   > a {
     margin-left: 5px;
     line-height: 0.8;
+  }
+}
+.mics-small-thumbnail {
+  margin : 0;
+  padding:0;
+  border : none;
+  background-color:transparent;
+  @extend .text-center;
+  img {
+    max-width : 50px;
+    max-height : 50px;
+  }
+  .caption {
+    display:block;
+    font-size : $font-size-small;
+    padding : 0;
   }
 }

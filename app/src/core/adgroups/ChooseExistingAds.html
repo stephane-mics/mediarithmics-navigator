@@ -33,7 +33,7 @@
           <tbody>
           <tr ng-repeat="availableCreative in availableCreatives | filter:creativename | filter:creativeformat">
             <td><input type="checkbox" checklist-model="selectedCreatives" checklist-value="availableCreative"></td>
-            <td class="thumbnail">
+            <td class="mics-small-thumbnail">
               <img creative-thumbnail="availableCreative.id" fetch-display-ad-renderer-properties="availableCreative.id as properties" title="{{properties.destination_url.value.url}}" />
               <span class="caption">{{availableCreative.format}}</span>
             </td>
