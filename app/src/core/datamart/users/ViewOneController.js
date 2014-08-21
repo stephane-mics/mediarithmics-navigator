@@ -4,20 +4,20 @@ define(['./module'], function (module) {
 
 
   module.controller('core/datamart/users/ViewOneController', [
-    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
-    function($scope, $routeParams, Restangular, Common, $, Session) {
+    '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
+    function($scope, $stateParams, Restangular, Common, $, Session) {
 
       $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
       $scope.INITIAL_VISITS_PER_AGENT = 1;
 
       $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
 
-      $scope.agentUrl = "#/datamart/users/" + $routeParams.userId + "/agents";
+      $scope.agentUrl = "#/datamart/users/" + $stateParams.userId + "/agents";
       $scope.itemUrl = "#datamart/items/";
 
       // fetch UserAccount
       $scope.activities = [];
-      $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $routeParams.userId);
+      $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $stateParams.userId);
       $scope.userEndpoint.get().then(function (user) {
         $scope.user = user;
         $scope.getAgentsAndVisits($scope.INITIAL_VISITS_PER_AGENT);

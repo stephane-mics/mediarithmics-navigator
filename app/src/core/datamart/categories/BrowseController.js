@@ -5,9 +5,9 @@ define(['./module'], function () {
   var module = angular.module('core/datamart/categories');
 
   module.controller('core/datamart/categories/BrowseController', [
-    '$scope', '$routeParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
+    '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
 
-    function($scope, $routeParams, Restangular, Common, Session) {
+    function($scope, $stateParams, Restangular, Common, Session) {
 
       $scope.baseUrl = '#/datamart/categories';
       $scope.itemUrl = '#/datamart/items';
@@ -15,30 +15,30 @@ define(['./module'], function () {
       $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
       $scope.categoriesPerPage = 10;
 
-      if ($routeParams.categoryId) {
+      if ($stateParams.categoryId) {
         // SINGLE CATEGORY VIEW
 
         $scope.refreshCategories = function () {
           // get parent categories
-          Restangular.one('datamarts', $scope.datamartId).one('categories', $routeParams.categoryId).all('parent_categories').getList({ sameMarket: true, sameLanguage:true }).then(function (result){
+          Restangular.one('datamarts', $scope.datamartId).one('categories', $stateParams.categoryId).all('parent_categories').getList({ sameMarket: true, sameLanguage:true }).then(function (result){
             $scope.parents = result;
             if ($scope.parents.length === 0) {
               $scope.parents = [{ id:'', name:'Catalog' }];
             }
           });
           // get sub-categories
-          Restangular.one('datamarts', $scope.datamartId).one('categories', $routeParams.categoryId).all('sub_categories').getList({ sameMarket: true, sameLanguage:true }).then(function (result){
+          Restangular.one('datamarts', $scope.datamartId).one('categories', $stateParams.categoryId).all('sub_categories').getList({ sameMarket: true, sameLanguage:true }).then(function (result){
             $scope.categories = result;
           });
         };
 
         $scope.refreshDatasheets = function () {
-          Restangular.one('datamarts', $scope.datamartId).one('categories', $routeParams.categoryId).all('datasheets').getList({ sameMarket: true, sameLanguage:true }).then(function (result) {
+          Restangular.one('datamarts', $scope.datamartId).one('categories', $stateParams.categoryId).all('datasheets').getList({ sameMarket: true, sameLanguage:true }).then(function (result) {
             $scope.datasheets = result;
           });
         };
 
-        Restangular.one('datamarts', $scope.datamartId).one('categories', $routeParams.categoryId).get().then(function (result){
+        Restangular.one('datamarts', $scope.datamartId).one('categories', $stateParams.categoryId).get().then(function (result){
           $scope.currentCategory = result;
           $scope.refreshCategories();
           $scope.refreshDatasheets();
