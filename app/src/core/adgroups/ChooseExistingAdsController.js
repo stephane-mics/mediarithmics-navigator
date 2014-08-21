@@ -9,6 +9,7 @@ define(['./module'], function () {
 
       $scope.availableCreatives = Restangular.all("creatives").getList({
         creative_type : "DISPLAY_AD",
+        archived : false,
         organisation_id : Session.getCurrentWorkspace().organisation_id
       }).$object;
 

@@ -7,8 +7,11 @@
       <h1>All Creatives</h1>
     </div>
     <div class="mics-table-toolbar">
-      <div class ="col-md-6">
+      <div class ="col-md-4">
         <button class="mics-btn mics-btn-add" ng-click="newCreative()" >New Creative</button>
+      </div>
+      <div class ="col-md-2">
+        <!-- <label><input type="checkbox" ng-model="displayArchived"> Display archived</label> -->
       </div>
       <div class="form-group col-md-3">
         <select
@@ -34,11 +37,11 @@
           <th>Name</th>
           <th>Type</th>
           <th ng-if="administrator">Organisation</th>
-          <!-- <th class="actions">Actions</th> -->
+          <th class="actions">Actions</th>
         </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="creative in creatives | filter:creativename | filter:creativeformat" ng-click="showCreative(creative)">
+      <tr ng-repeat="creative in creatives | filter:creativename | filter:creativeformat">
         <td class="mics-small-thumbnail">
           <img creative-thumbnail="creative.id" fetch-display-ad-renderer-properties="creative.id as properties" title="{{properties.destination_url.value.url}}" />
           <span class="caption">{{creative.format}}</span>
@@ -46,10 +49,12 @@
         <td>{{creative.name}} </td>
         <td>{{creative.type}}</td>
         <td ng-if="administrator">{{organisationName(creative.organisation_id)}}</td>
-        <!-- <td class="actions"> -->
-          <!-- <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a> -->
-          <!-- <a class="mics-btn mics-btn-delete" ng-click="deleteCampaign(campaign, $event)">Delete</a> -->
-        <!-- </td> -->
+        <td class="actions">
+          <a class="mics-btn mics-btn-action" href="#{{getEditUrlForCreative(creative)}}">Edit</a>
+          <a class="mics-btn mics-btn-create" ng-show="creative.archived" ng-click="unArchiveCreative(creative)">Un-archive</a>
+          <a class="mics-btn mics-btn-delete" ng-show="creative.archived"  ng-click="deleteCreative(creative)">Delete</a>
+          <a class="mics-btn mics-btn-delete" ng-show="!creative.archived" ng-click="archiveCreative(creative)">Archive</a>
+        </td>
       </tr>
       </tbody>
     </table>

@@ -8,9 +8,9 @@ define(['./module'], function () {
    */
 
   module.controller('core/creatives/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'core/creatives/DisplayAdService', 'core/common/auth/Session',
+    '$scope', '$location', '$log', 'Restangular', 'core/creatives/DisplayAdService', 'core/common/auth/Session', '$modal', '$state', '$stateParams',
 
-    function ($scope, $location, $log, Restangular,  DisplayAdService, Session) {
+    function ($scope, $location, $log, Restangular,  DisplayAdService, Session, $modal, $state, $stateParams) {
 
       $scope.organisationName = function (id ) { return Session.getOrganisationName(id);};
       $scope.administrator = Session.getCurrentWorkspace().administrator;
@@ -20,8 +20,15 @@ define(['./module'], function () {
         params = { administration_id: Session.getCurrentWorkspace().organisation_id };
       }
 
-      Restangular.all('creatives').getList(params).then(function (creatives) {
-        $scope.creatives = creatives;
+      $scope.displayArchived = false;
+
+      $scope.$watch('displayArchived', function (newValue, oldValue, scope) {
+        // uncomment to filter archived
+        params.archived = newValue;
+
+        Restangular.all('creatives').getList(params).then(function (creatives) {
+          $scope.creatives = creatives;
+        });
       });
 
       $scope.newCreative = function () {
@@ -29,27 +36,55 @@ define(['./module'], function () {
         $location.path( '/' + Session.getCurrentWorkspace().organisation_id + '/creatives/select-creative-template');
       };
 
-      $scope.showCreative = function (creative) {
-        $log.debug("> showCreative for creativeId=", creative.id);
-
-        // Todo switch on the edit page depending on the creative template editor
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/creatives/display-ads/standard-banner/edit/" + creative.id );
+      $scope.getEditUrlForCreative = function (creative) {
+        switch (creative.editor_group_id + "/" + creative.editor_artifact_id) {
+          case "com.mediarithmics.creative.display/basic-editor":
+            return '/' + Session.getCurrentWorkspace().organisation_id + "/creatives/display-ads/standard-banner/edit/" + creative.id;
+          // break;
+          case "com.mediarithmics.creative.display/default-editor":
+            return '/' + Session.getCurrentWorkspace().organisation_id + "/creatives/display-ads/standard-banner/edit/" + creative.id;
+          // break;
+          default:
+            return '/';
+          // break;
+        }
       };
 
-      $scope.editCreative = function (creative) {
+      $scope.showCreative = function (creative) {
+        $location.path( $scope.getEditUrlForCreative(creative) );
+      };
 
-        $log.debug("> editCreative for creativeId=", creative.id);
-
-        // get creative edit template
-        // this is hardcoded
-        // todo : match the creative template with the editor
-        var editTemplateView = '/' + Session.getCurrentWorkspace().organisation_id + 'display-ads/expert/edit/';
-
-        DisplayAdService.initEditDisplayAd(creative.id).then(function () {
-          $location.path(editTemplateView + creative.id);
+      $scope.deleteCreative = function(creative) {
+        var newScope = $scope.$new(true);
+        newScope.creative = creative;
+        $modal.open({
+          templateUrl: 'src/core/creatives/delete.html',
+          scope : newScope,
+          backdrop : 'static',
+          controller: 'core/creatives/DeleteController'
         });
+      };
 
+      $scope.archiveCreative = function(creative) {
+        var newScope = $scope.$new(true);
+        newScope.creative = creative;
+        $modal.open({
+          templateUrl: 'src/core/creatives/archive.html',
+          scope : newScope,
+          backdrop : 'static',
+          controller: 'core/creatives/ArchiveController'
+        });
+      };
+      $scope.unArchiveCreative = function(creative) {
+        creative.archived = false;
 
+        creative.put().then(function (){
+          // $state.reload();
+          // see https://github.com/angular-ui/ui-router/issues/582
+          $state.transitionTo($state.current, $stateParams, {
+            reload: true, inherit: true, notify: true
+          });
+        });
       };
     }
   ]);
