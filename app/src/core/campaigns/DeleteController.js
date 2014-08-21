@@ -4,13 +4,19 @@ define(['./module'], function () {
   var module = angular.module('core/campaigns');
 
   module.controller('core/campaigns/DeleteController', [
-    '$scope', '$modalInstance', '$location',
-    function($scope, $modalInstance, $location) {
+    '$scope', '$modalInstance', '$location', "core/common/ErrorService",
+    function($scope, $modalInstance, $location, errorService) {
 
       $scope.done = function() {
         $scope.campaign.remove().then(function (){
           $modalInstance.close();
           $location.path("/");
+        }, function failure(response) {
+          $modalInstance.close();
+          errorService.showErrorModal({
+            error: response,
+            messageType:"simple"
+          });
         });
       };
 
