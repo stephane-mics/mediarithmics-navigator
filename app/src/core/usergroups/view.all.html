@@ -12,11 +12,16 @@
             New User Group
             <!-- <span class="caret"></span> -->
           </button>
+
           <ul class="dropdown-menu" role="menu" aria-labelledby="New User Group">
+            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="createUserGroup('VISITOR_FEED')">
+              Visitor Feed
+            </a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="createUserGroup('CAMPAIGN_FEED')">
-              Fed by campaign
+              Campaign Feed
             </a></li>
           </ul>
+
         </div>
       </div>
     </div>
@@ -33,7 +38,7 @@
       <tr ng-repeat="userGroup in userGroups">
         <td>{{userGroup.name}}</td>
         <td>{{userGroup.technical_name}}</td>
-        <td>{{userGroup.group_type}}</td>
+        <td>{{userGroup.type}}</td>
         <td class="actions">
           <a class="mics-btn mics-btn-action" ng-click="editUserGroup(userGroup, $event)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteUserGroup(userGroup, $event)">Delete</a>

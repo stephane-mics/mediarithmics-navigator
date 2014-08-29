@@ -22,7 +22,7 @@ define(['./module'], function () {
           $event.stopPropagation();
         }
 
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/usergroups/" + userGroup.group_type + "/" + userGroup.id);
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/usergroups/" + userGroup.type + "/" + userGroup.id);
       };
 
       $scope.deleteUserGroup = function (userGroup, $event) {

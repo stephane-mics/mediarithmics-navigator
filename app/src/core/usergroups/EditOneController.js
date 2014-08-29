@@ -17,7 +17,7 @@ define(['./module'], function () {
 
       if (!userGroupId) {
         $scope.userGroup = {
-          group_type : type
+          type : type
         };
       } else {
         Restangular.one('user_groups', userGroupId).get().then(function (userGroup) {
