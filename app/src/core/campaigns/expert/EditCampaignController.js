@@ -1,4 +1,4 @@
-define(['./module'], function () {
+define(['./module','moment'], function (m, moment) {
   'use strict';
 
   /*
@@ -23,8 +23,13 @@ define(['./module'], function () {
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
         $scope.locations = DisplayCampaignService.getLocations();
         $scope.locationSelector = $scope.locations.length ? "custom" : "";
-      }
+        $scope.schedule = $scope.campaign.start_date !== null ? "custom" : "";
+        if($scope.campaign.start_date !== null && $scope.campaign.end_date !== null ) {
+          $scope.campaignDateRange = {startDate: moment($scope.campaign.start_date), endDate: moment($scope.campaign.end_date)};
+        }
 
+      }
+      $scope.campaignDateRange = {startDate: moment(), endDate: moment().add(20, 'days')};
       $log.debug('Expert.EditCampaignController called !');
 
       CampaignPluginService.getCampaignTemplate("com.mediarithmics.campaign.display", "default-template").then(function (template) {
@@ -146,6 +151,15 @@ define(['./module'], function () {
 
         // save button
         $scope.save = function () {
+          if ($scope.schedule === 'custom') {
+            $scope.campaign.start_date = $scope.campaignDateRange.startDate.valueOf();
+            $scope.campaign.end_date = $scope.campaignDateRange.endDate.valueOf();
+          } else {
+            $scope.campaign.start_date = null;
+            $scope.campaign.end_date = null;
+          }
+
+
           $log.debug("save campaign : ", $scope.campaign);
           waitingService.showWaitingModal();
           DisplayCampaignService.save().then(function (campaignContainer) {

@@ -32,11 +32,21 @@
 
     <!-- Schedule -->
     <div mcs-form-group="select" label-for="keywords_step1_schedule" label-text="Schedule">
-      <!-- TODO activate -->
-        <select ng-model="schedule" id="keywords_step1_schedule">
-          <option value="">Ongoing (no end date)</option>
-          <!-- <option></option> -->
+
+
+        <select ng-model="$parent.schedule" id="keywords_step1_schedule">
+            <option value="">Ongoing (no end date)</option>
+            <option value="custom">Custom</option>
+
+
         </select>
+        <input ng-show="$parent.schedule === 'custom'"
+               type="daterange"
+               class="form-control range"
+               ng-model="$parent.campaignDateRange"
+               format="L"
+                />
+        {{$parent.schedule }}
     </div>
 
     <!-- Location -->

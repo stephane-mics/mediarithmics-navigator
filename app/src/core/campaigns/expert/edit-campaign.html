@@ -46,22 +46,29 @@
 
     <!-- Schedule -->
     <div mcs-form-group="select" label-for="schedule" label-text="Schedule">
-      <select ng-model="schedule" class="form-control" id="schedule">
+      <select ng-model="$parent.schedule" class="form-control" id="schedule">
         <option value="">Ongoing (no end date)</option>
-        <!--<option value="endDate">With end date</option>-->
+        <option value="custom" ng-selected="campaign.start_date != null ? 'selected' : ''" >Custom</option>
+
+
       </select>
+        <input ng-show="$parent.schedule === 'custom'"
+                type="daterange"
+                 class="form-control range"
+                ng-model="$parent.campaignDateRange"
+                format="L"
+                />
+
     </div>
-    <!--<div class="mcs-form-group" ng-show="schedule === 'endDate'">-->
-    <!--<label for="schedule">End date</label>-->
-    <!--<datepicker ng-model="campaign.end_date" />-->
-    <!--</div>-->
+
+
 
 
     <!-- Location -->
     <div mcs-form-group="select" label-for="location" label-text="Location">
       <select class="form-control"  id="location" ng-model="$parent.locationSelector">
         <option value="" ng-show="!locations.length">Worldwide</option>
-        <option value="custom" selected="locations.length ? 'selected' : ''" >Custom</option >
+        <option value="custom"  ng-selected="locations.length ? 'selected' : ''" >Custom</option >
       </select>
     </div>
     <div>
@@ -141,8 +148,34 @@
       </div>
     </div>
 
+      <div class="panel-group" id="accordion">
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                          Advanced Options
+                      </a>
+                  </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                  <div class="panel-body">
 
-    <!-- save or cancel -->
+                      <div mcs-form-group="" label-for="targeted_devices" label-text="Targeted devices">
+                          <select ng-model="campaign.targeted_devices" type="text" id="targeted_devices">
+                            <option value="ALL">All devices</option>
+                            <option value="ONLY_DESKTOP">Only desktop</option>
+                            <option value="ONLY_MOBILE">Only mobile</option>
+                          </select>
+
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+
+
+      <!-- save or cancel -->
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish" ng-click="save()">Save</button>
       <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
