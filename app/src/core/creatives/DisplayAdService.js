@@ -43,9 +43,19 @@ define(['./module'], function () {
 
         $log.debug("> initEditDisplayAd creativeId = ", creativeId);
 
-        var ctn = new DisplayAdContainer();
+        var ctn = new DisplayAdContainer(null);
         this.displayAdCtn = ctn;
         return ctn.load(creativeId);
+      };
+
+      // initEditDisplayAd : returns a promise on the display ad container
+      service.initCreateDisplayAd = function(options) {
+
+        $log.debug("> initCreateDisplayAd, options=", options);
+
+        var ctn = new DisplayAdContainer(options);
+        ctn.organisationId = Session.getCurrentWorkspace().organisation_id;
+        return (this.displayAdCtn = ctn);
       };
 
 

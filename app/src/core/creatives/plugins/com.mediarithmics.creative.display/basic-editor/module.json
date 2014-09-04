@@ -1,5 +1,6 @@
 {"name": "core/creatives/plugins/com.mediarithmics.creative.display/basic-editor", "dependencies": [
   "restangular",
+  "core/creatives",
   "core/creatives/plugins/com.mediarithmics.creative.display/common"
 ]
 }

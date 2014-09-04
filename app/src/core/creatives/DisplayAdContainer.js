@@ -11,12 +11,23 @@ define(['./module'], function () {
     
     function($q, Restangular, IdGenerator, async, PropertyContainer) {
 
-      var DisplayAdContainer = function DisplayAdContainer() {
+      var DisplayAdContainer = function DisplayAdContainer(options) {
+        this.value = {};
+        this.properties = [];
 
-        this.creationMode = true;
+        if (!options) {
+          return;
+        }
 
-
-        this.value = {type:"DISPLAY", template_group_id: "com.mediarithmics.campaign.display", template_artifact_id:"default-template"};
+        this.value = {
+          name : "",
+          type : "DISPLAY_AD",
+          format : "",
+          renderer_group_id : options.renderer.groupId,
+          renderer_artifact_id : options.renderer.artifactId,
+          editor_group_id : options.editor.groupId,
+          editor_artifact_id : options.editor.artifactId
+        };
       };
 
       DisplayAdContainer.prototype.load = function (creativeId) {
@@ -36,7 +47,6 @@ define(['./module'], function () {
 
         $q.all([creativeResourceP, propertiesP])
         .then( function (result) {
-          self.creationMode = false;
 
           // set the display ad value
           self.value = result[0];
@@ -72,6 +82,23 @@ define(['./module'], function () {
         return defered.promise;
       };
 
+
+
+      DisplayAdContainer.prototype.getOrCreatePropertyValueByTechnicalName = function getProperty(technicalName) {
+
+        for(var i=0; i < this.properties.length; i++){
+          if (this.properties[i].value.technical_name === technicalName) {
+            return this.properties[i].value;
+          }
+        }
+
+        var propContainer = new PropertyContainer({
+          "technical_name" : technicalName,
+          "value": {}
+        });
+        this.properties.push(propContainer);
+        return propContainer.value;
+      };
 
 
       DisplayAdContainer.prototype.getProperty = function getProperty(id) {
@@ -144,24 +171,24 @@ define(['./module'], function () {
           // update properties
           async.mapSeries(properties, function(property, callback) {
 
-              // update the property
-              property.update(self.id).then(function(result) {
+            // update the property
+            property.update(self.id).then(function(result) {
 
-                callback(null, result);
+              callback(null, result);
 
-              }, function(reason) {
-                callback(reason, null);
-              });
-
-
-            }, function(err, results) {
-
-              if (err) {
-                defered.reject(err);
-              } else {
-                defered.resolve(self);
-              }
+            }, function(reason) {
+              callback(reason, null);
             });
+
+
+          }, function(err, results) {
+
+            if (err) {
+              defered.reject(err);
+            } else {
+              defered.resolve(self);
+            }
+          });
 
 
         }, function(reason) {

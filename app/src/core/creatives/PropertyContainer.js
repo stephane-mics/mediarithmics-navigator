@@ -8,7 +8,7 @@ define(['./module'], function () {
 
   module.factory("core/creatives/PropertyContainer", [
     "$q", "Restangular", "core/common/IdGenerator", "async",
-    
+
     function($q, Restangular, IdGenerator, async) {
 
       var PropertyContainer = function PropertyContainer(property) {
@@ -33,11 +33,15 @@ define(['./module'], function () {
           });
 
           return deferred.promise;
-      };      
+      };
+
+      PropertyContainer.prototype.persist = function persist(creativeId) {
+        return Restangular.one("display_ads", creativeId).one("renderer_properties").customPUT([this.value]);
+      };
 
       return PropertyContainer;
     }
-    
+
   ]);
 });
 
