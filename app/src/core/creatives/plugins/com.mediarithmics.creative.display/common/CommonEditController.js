@@ -12,9 +12,9 @@ define(['./module', 'app'], function (module) {
 
   module.controller('core/creatives/plugins/com.mediarithmics.creative.display/common/CommonEditController', [
 
-    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService',
+    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', 'core/configuration',
 
-    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService) {
+    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, configuration) {
 
 
       var creativeId = $stateParams.creative_id;
@@ -44,7 +44,7 @@ define(['./module', 'app'], function (module) {
         $scope.displayAd = DisplayAdService.getDisplayAdValue();
         $scope.properties = DisplayAdService.getProperties();
 
-        $scope.previewUrl = $sce.trustAsResourceUrl("//ads.mediarithmics.com/ads/render?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
+        $scope.previewUrl = $sce.trustAsResourceUrl(configuration.ADS_PREVIEW_URL + "?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
         var sizes = $scope.displayAd.format.split("x");
         $scope.previewWidth = parseInt(sizes[0])+10;
         $scope.previewHeight = parseInt(sizes[1])+10;
