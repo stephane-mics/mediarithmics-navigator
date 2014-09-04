@@ -10,23 +10,18 @@
     <div class="campaign-list-heading">
       <h1>New Creative </h1>
     </div>
-	<div class="row">
-    	
-    	<div class="col-md-3" > 
-    		<img style="" src="">
-    		<h4>Quick Ad Banner</h4>
-    		<button class="mics-btn mics-btn-add" ng-click="create('com.mediarithmics.creatives.displayads.quick')">New</button>
-    	</div>
+    <div class="row">
 
-    	<div  class="col-md-3" >
-    		<img style="" src="">
-    		<h4>Ad Banner with Options</h4>
-			   <button class="mics-btn mics-btn-add" ng-click="create('com.mediarithmics.creatives.displayads.banner')">New</button>
-    	</div>
-	      
-	 </div>
-  	 <div class="mcs-actions-group" style="margin-top:70px">
-  		<button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button><br>
-  	 </div>	
-  	</form>
+      <div class="col-md-3" ng-repeat="template in creativeTemplates">
+        <img style="height:150px" ng-src="{{template.image}}">
+        <h4>{{template.name}}</h4>
+        <a class="mics-btn mics-btn-add" ng-click="create(template)">New</a>
+      </div>
+    </div>
+
+    <div class="mcs-actions-group" style="margin-top:70px">
+      <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button><br>
+    </div>
+  </div>
+</form>
 </div>

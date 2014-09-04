@@ -1,0 +1,4 @@
+{"name": "core/creatives/plugins/com.mediarithmics.creative.display/common", "dependencies": [
+  "restangular"
+]
+}

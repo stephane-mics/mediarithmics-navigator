@@ -46,11 +46,11 @@
           <img creative-thumbnail="creative.id" fetch-display-ad-renderer-properties="creative.id as properties" title="{{properties.destination_url.value.url}}" />
           <span class="caption">{{creative.format}}</span>
         </td>
-        <td>{{creative.name}} </td>
+        <td>{{creative.name}}</td>
         <td>{{creative.type}}</td>
         <td ng-if="administrator">{{organisationName(creative.organisation_id)}}</td>
         <td class="actions">
-          <a class="mics-btn mics-btn-action" href="#{{getEditUrlForCreative(creative)}}">Edit</a>
+          <a class="mics-btn mics-btn-action" href="#{{getEditUrlForCreative(creative).url}}">Edit</a>
           <a class="mics-btn mics-btn-create" ng-show="creative.archived" ng-click="unArchiveCreative(creative)">Un-archive</a>
           <a class="mics-btn mics-btn-delete" ng-show="creative.archived"  ng-click="deleteCreative(creative)">Delete</a>
           <a class="mics-btn mics-btn-delete" ng-show="!creative.archived" ng-click="archiveCreative(creative)">Archive</a>

@@ -8,9 +8,8 @@ define(['./module'], function () {
    */
 
   module.controller('core/creatives/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'core/creatives/DisplayAdService', 'core/common/auth/Session', '$modal', '$state', '$stateParams',
-
-    function ($scope, $location, $log, Restangular,  DisplayAdService, Session, $modal, $state, $stateParams) {
+    '$scope', '$location', '$log', 'Restangular', 'core/creatives/DisplayAdService', 'core/common/auth/Session', '$modal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash',
+    function ($scope, $location, $log, Restangular,  DisplayAdService, Session, $modal, $state, $stateParams, creativePluginService, _) {
 
       $scope.organisationName = function (id ) { return Session.getOrganisationName(id);};
       $scope.administrator = Session.getCurrentWorkspace().administrator;
@@ -36,19 +35,19 @@ define(['./module'], function () {
         $location.path( '/' + Session.getCurrentWorkspace().organisation_id + '/creatives/select-creative-template');
       };
 
-      $scope.getEditUrlForCreative = function (creative) {
-        switch (creative.editor_group_id + "/" + creative.editor_artifact_id) {
-          case "com.mediarithmics.creative.display/basic-editor":
-            return '/' + Session.getCurrentWorkspace().organisation_id + "/creatives/display-ads/standard-banner/edit/" + creative.id;
-          // break;
-          case "com.mediarithmics.creative.display/default-editor":
-            return '/' + Session.getCurrentWorkspace().organisation_id + "/creatives/display-ads/standard-banner/edit/" + creative.id;
-          // break;
-          default:
-            return '/';
-          // break;
-        }
-      };
+      $scope.getEditUrlForCreative = _.memoize(function (creative) {
+        var result = {url:""};
+        var editorPromise = creativePluginService.getEditor(creative.editor_group_id,  creative.editor_artifact_id);
+        editorPromise.then(function success(editor) {
+          result.url = editor.edit_path.replace(/{id}/g, creative.id).replace(/{organisation_id}/, Session.getCurrentWorkspace().organisation_id);
+        }, function failure() {
+          result.url = "/";
+        });
+
+        return result;
+      }, function resolver(creative) {
+        return creative.id;
+      });
 
       $scope.showCreative = function (creative) {
         $location.path( $scope.getEditUrlForCreative(creative) );

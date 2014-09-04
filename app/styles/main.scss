@@ -443,6 +443,10 @@ form.mcs-full-page-form {
     @include make-sm-column(6);
   }
 
+  .mcs-form-group-full {
+    @include make-sm-column(12);
+  }
+
   /* for the actions buttons at the bottom of the page */
   .mcs-actions-group {
     margin-top : 30px;
@@ -655,7 +659,7 @@ form.mcs-full-page-form {
 
 
 .mcs-default-sidebar {
-  .mcs-campaign-type {
+  .mcs-campaign-type, .mcs-creative-type {
     max-width: 200px;
     margin-left: auto;
     margin-right: auto;

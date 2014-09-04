@@ -8,26 +8,19 @@ define(['./module'], function () {
    */
 
   module.controller('core/creatives/CreateController', [
-    '$scope', '$location', '$log', 'core/common/auth/Session','core/creatives/CreativeTemplateService',
+    '$scope', '$location', '$log', 'core/common/auth/Session','core/creatives/CreativeTemplateService', 'core/creatives/CreativePluginService',
 
-    function($scope, $location, $log, Session, CreativeTemplateService) {
+    function($scope, $location, $log, Session, CreativeTemplateService, CreativePluginService) {
 
-      // load creative templates
-
+      CreativePluginService.getAllCreativeTemplates().then(function (templates) {
+        $scope.creativeTemplates = templates;
+      });
 
       // create button
       $scope.create = function(template) {
-
-        var createTemplateView = '/campaigns/display/expert/edit-campaign/';
         var organisationId = Session.getCurrentWorkspace().organisation_id;
-
-       /* 
-        DisplayCampaignService.initCreateCampaign(template, organisationId).then(function(campaignId){
-          $log.debug("campaign init , campaign_id = ", campaignId);
-          $location.path(createTemplateView + campaignId);
-        });
-        */
-        
+        var location = template.editor.create_path.replace(/{id}/g, "").replace(/{organisation_id}/, organisationId);
+        $location.path(location);
       };
 
       $scope.cancel = function() {

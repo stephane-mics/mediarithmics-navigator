@@ -1,5 +1,5 @@
 /* global _ */
-define(['./module', 'app'], function () {
+define(['./module', 'app'], function (module) {
   'use strict';
 
   /*
@@ -11,8 +11,6 @@ define(['./module', 'app'], function () {
    */
 
 
-  var module = angular.module('core/creatives/display-ads/standard-banner');
-                     
   module.controller('core/creatives/display-ads/standard-banner/EditDisplayAdController', [
     
     '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session',

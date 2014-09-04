@@ -2,6 +2,7 @@
   "name": "core/adgroups",
   "dependencies": [
     "restangular",
-    "checklist-model"
+    "checklist-model",
+    "core/creatives/plugins/com.mediarithmics.creative.display/basic-editor"
   ]
 }

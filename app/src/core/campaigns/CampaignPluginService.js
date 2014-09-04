@@ -44,7 +44,7 @@ define(['./module'], function () {
       CampaignPluginService.prototype = {
 
         /**
-         * Get all the campain templates, asynchronously.
+         * Get all the campaign templates, asynchronously.
          * @return {$q.promise} the promise with the templates.
          */
         getAllCampaignTemplates : function () {

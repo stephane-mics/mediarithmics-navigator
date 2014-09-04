@@ -1,9 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  /* Services */
-  var module = angular.module('core/creatives');
-
 
     module.config([
       "$stateProvider",

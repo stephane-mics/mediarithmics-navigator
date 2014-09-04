@@ -5,8 +5,8 @@ define(['./module'], function () {
   var module = angular.module('core/adgroups');
 
   module.controller("core/adgroups/ChooseAdsController", [
-    "$scope", "$modal", "$log",
-    function($scope, $modal, $log) {
+    "$scope", "$modal", "$log", "$q",
+    function($scope, $modal, $log, $q) {
       // upload new Ad
       $scope.uploadNewAd = function(adGroup) {
 

@@ -1,4 +1,5 @@
 {"name": "core/creatives", "dependencies": [
   "restangular",
-  "core/creatives/display-ads/standard-banner"
+  "core/creatives/plugins/com.mediarithmics.creative.display/default-editor",
+  "core/creatives/plugins/com.mediarithmics.creative.display/basic-editor"
 ]}

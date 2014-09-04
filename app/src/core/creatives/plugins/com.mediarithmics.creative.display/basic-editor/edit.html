@@ -1,0 +1,65 @@
+<div class="mcs-default-container" ng-controller='core/creatives/plugins/com.mediarithmics.creative.display/basic-editor/EditController'>
+  <div class="mcs-default-sidebar">
+    <div class="organisation-name-block">
+      {{currentOrganisation}}
+    </div>
+    <div class="mcs-creative-type">
+      <h4>{{getRendererTitle(displayAd)}}</h4>
+    </div>
+  </div>
+  <form role="form" class="mcs-default-content mcs-full-page-form">
+    <div class="mcs-default-heading">
+      <h1>Display Ad</h1>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-8">
+
+        <!-- Name -->
+        <div mcs-form-group="full" label-for="name" label-text="Ad name">
+          <input  ng-model="displayAd.name" type="text" class="form-control input-lg" id="name">
+        </div>
+
+      </div>
+
+      <div class="col-md-4">
+
+        <!-- Format -->
+        <div mcs-form-group="full" label-for="format" label-text="Format">
+          <input disabled ng-model="displayAd.format" type="text" class="form-control input-lg" id="format">
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+
+      <div class="col-md-12">
+        <h4>Preview</h4>
+        <iframe width="{{previewWidth}}" height="{{previewHeight}}" ng-src="{{previewUrl}}"></iframe>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-12">
+        <h4>Properties</h4>
+
+        <div ng-repeat="property in properties|filter:propertiesFilter">
+          <mcs-url-property property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
+          <mcs-asset-property property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
+        </div>
+      </div>
+    </div>
+
+    <!-- save or cancel -->
+    <div class="mcs-actions-group">
+      <button class="mics-btn mics-btn-finish" ng-click="save()">Done</button>
+      <button class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
+      <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
+    </div>
+
+  </form>
+
+</div>
