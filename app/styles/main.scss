@@ -846,9 +846,11 @@ form.mcs-full-page-form {
                 }
             .badge.creative-audit-notification-alert {
               background-color: red;
+              cursor: help;
             }
             .badge.creative-audit-notification-warning {
               background-color: orange;
+              cursor: help;
             }
         }
     }

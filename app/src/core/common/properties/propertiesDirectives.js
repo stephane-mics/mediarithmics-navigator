@@ -10,7 +10,8 @@ define(['./module'], function () {
         scope: {
           labelText: "@",
           labelFor: '@',
-          property: "=property"
+          property: "=property",
+          ngDisabled: "="
         },
         templateUrl: '/src/core/common/properties/url-property.html',
         link: function (scope, ele, attrs, c) {
@@ -31,7 +32,8 @@ define(['./module'], function () {
         scope: {
           labelText: '@',
           labelFor: '@',
-          property: '=property'
+          property: '=property',
+          ngDisabled: "="
         },
         controller: 'core/common/properties/AssetPropertyController',
         templateUrl: '/src/core/common/properties/asset-property.html',

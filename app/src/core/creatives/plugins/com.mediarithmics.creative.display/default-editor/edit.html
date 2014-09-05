@@ -18,7 +18,7 @@
 
         <!-- Name -->
         <div mcs-form-group="full" label-for="name" label-text="Ad name">
-          <input  ng-model="displayAd.name" type="text" class="form-control input-lg" id="name">
+          <input ng-disabled="disabledEdition" ng-model="displayAd.name" type="text" class="form-control input-lg" id="name">
         </div>
 
       </div>
@@ -27,7 +27,7 @@
 
         <!-- Format -->
         <div mcs-form-group="full" label-for="format" label-text="Format">
-          <select ng-model="displayAd.format" ng-options="iabAdSize for iabAdSize in iabAdSizes" id="format"></select>
+          <select ng-disabled="disabledEdition" ng-model="displayAd.format" ng-options="iabAdSize for iabAdSize in iabAdSizes" id="format"></select>
         </div>
 
       </div>
@@ -47,16 +47,16 @@
         <h4>Properties</h4>
 
         <div ng-repeat="property in properties">
-          <mcs-url-property property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
-          <mcs-asset-property property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
+          <mcs-url-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
+          <mcs-asset-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
         </div>
       </div>
     </div>
 
     <!-- save or cancel -->
     <div class="mcs-actions-group">
-      <button class="mics-btn mics-btn-finish" ng-click="save()">Done</button>
-      <button class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
+      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="save()">Done</button>
+      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
     </div>
 

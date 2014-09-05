@@ -16,7 +16,6 @@ define(['./module', 'app'], function (module) {
 
     function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, configuration) {
 
-
       var creativeId = $stateParams.creative_id;
 
       $scope.getRendererTitle = function (displayAd) {
@@ -43,6 +42,8 @@ define(['./module', 'app'], function (module) {
 
         $scope.displayAd = DisplayAdService.getDisplayAdValue();
         $scope.properties = DisplayAdService.getProperties();
+
+        $scope.disabledEdition = $scope.displayAd.audit_status !== "NOT_AUDITED";
 
         $scope.previewUrl = $sce.trustAsResourceUrl(configuration.ADS_PREVIEW_URL + "?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
         var sizes = $scope.displayAd.format.split("x");
