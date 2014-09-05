@@ -844,6 +844,12 @@ form.mcs-full-page-form {
                 .nav-tabs .active a {
                   color : $dark-blue-not;
                 }
+            .badge.creative-audit-notification-alert {
+              background-color: red;
+            }
+            .badge.creative-audit-notification-warning {
+              background-color: orange;
+            }
         }
     }
 }
