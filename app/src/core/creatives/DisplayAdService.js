@@ -38,6 +38,10 @@ define(['./module'], function () {
 
       };
 
+      service.getAudits = function() {
+        return this.displayAdCtn.audits;
+      };
+
       // initEditDisplayAd : returns a promise on the display ad container
       service.initEditDisplayAd = function(creativeId) {
 
@@ -69,6 +73,10 @@ define(['./module'], function () {
         }
 
 
+      };
+
+      service.makeAuditAction = function (action) {
+        return this.displayAdCtn.makeAuditAction(action);
       };
 
       return service;

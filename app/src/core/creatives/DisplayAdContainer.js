@@ -40,12 +40,15 @@ define(['./module'], function () {
         // get the properties
         var propertiesP = root.getList('renderer_properties');
 
+        // get the audits
+        var auditsP = root.getList('audits');
+
         var self = this;
         self.properties = [];
 
         var defered = $q.defer();
 
-        $q.all([creativeResourceP, propertiesP])
+        $q.all([creativeResourceP, propertiesP, auditsP])
         .then( function (result) {
 
           // set the display ad value
@@ -53,6 +56,9 @@ define(['./module'], function () {
           self.id = self.value.id;
 
           var properties = result[1];
+
+          // this is a read-only value, no need to use a wrapper
+          self.audits = result[2];
 
           var propertiesP = [];
           if (properties.length > 0) {
@@ -196,6 +202,15 @@ define(['./module'], function () {
         });
 
         return defered.promise;
+      };
+
+      DisplayAdContainer.prototype.makeAuditAction = function makeAuditAction(action) {
+        return Restangular
+        .one('display_ads', this.id)
+        .all("action")
+        .customPOST({
+          audit_action : action
+        });
       };
 
       return DisplayAdContainer;

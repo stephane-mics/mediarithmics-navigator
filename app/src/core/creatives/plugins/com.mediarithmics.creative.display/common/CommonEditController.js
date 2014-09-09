@@ -12,9 +12,9 @@ define(['./module', 'app'], function (module) {
 
   module.controller('core/creatives/plugins/com.mediarithmics.creative.display/common/CommonEditController', [
 
-    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', 'core/configuration',
+    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', 'core/configuration', '$state',
 
-    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, configuration) {
+    function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, configuration, $state) {
 
       var creativeId = $stateParams.creative_id;
 
@@ -33,6 +33,17 @@ define(['./module', 'app'], function (module) {
         }
       };
 
+      $scope.doAction = function (action) {
+        console.log(DisplayAdService.makeAuditAction);
+        DisplayAdService.makeAuditAction(action).then(function () {
+          // $state.reload();
+          // see https://github.com/angular-ui/ui-router/issues/582
+          $state.transitionTo($state.current, $stateParams, {
+            reload: true, inherit: true, notify: true
+          });
+        });
+      };
+
       CreativePluginService.getCreativeTemplateFromEditor("com.mediarithmics.creative.display", "basic-editor").then(function (template) {
         $scope.creativeTemplate = template;
       });
@@ -42,6 +53,7 @@ define(['./module', 'app'], function (module) {
 
         $scope.displayAd = DisplayAdService.getDisplayAdValue();
         $scope.properties = DisplayAdService.getProperties();
+        $scope.audits = DisplayAdService.getAudits();
 
         $scope.disabledEdition = $scope.displayAd.audit_status !== "NOT_AUDITED";
 

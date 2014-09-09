@@ -36,6 +36,7 @@
           <th></th>
           <th>Name</th>
           <th>Type</th>
+          <th>Audit Status</th>
           <th ng-if="administrator">Organisation</th>
           <th class="actions">Actions</th>
         </tr>
@@ -48,6 +49,7 @@
         </td>
         <td>{{creative.name}}</td>
         <td>{{creative.type}}</td>
+        <td>{{creative.audit_status}}</td>
         <td ng-if="administrator">{{organisationName(creative.organisation_id)}}</td>
         <td class="actions">
           <a class="mics-btn mics-btn-action" href="#{{getEditUrlForCreative(creative).url}}">Edit</a>
