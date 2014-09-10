@@ -35,7 +35,7 @@
 
       <ul class="nav navbar-nav navbar-right">
           <li class="dropdown" ng-if="workspaces.length > 1">
-              <a href="#" class="mcs-workspace-label" dropdown-toggle>{{currentOrganisation}}<b class="caret"></b></a>
+              <a href="#" class="mcs-workspace-label" dropdown-toggle >{{currentOrganisation}}<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li ng-repeat="workspace in workspaces" ng-if="workspace.organisationId != currentOrganisationId"><a ng-click="switchWorkspace(workspace.idx)">{{workspace.organisationName}}</a></li>
               </ul>
@@ -44,13 +44,29 @@
             <a class="mcs-workspace-label">{{currentOrganisation}}</a>
           </li>
 
-        <li><a href="#logout">Logout</a></li>
+        <li class="dropdown">
+          <a href="#" dropdown-toggle ><span class="glyphicon glyphicon-user"></span></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-header">{{firstName}} ; {{lastName}}</li>
+            <li><a href="#/{{organisationId}}/">Log out</a></li>
+            <li><a href="#/{{organisationId}}/">User settings</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Organisation account</li>
+            <li><a href="#/{{organisationId}}/">Users</a></li>
+            <li><a href="#/{{organisationId}}/">Organisations</a></li>
+            <li><a href="#/{{organisationId}}/">Billing</a></li>        
+            <li><a href="#/{{organisationId}}/">Financial Status</a></li>            
+            <li><a href="#/{{organisationId}}/">Bills</a></li>            
+          </ul>
+        </li>
       </ul>
     </div>
+    <!--
     <div class="navbar-collapse collapse" ng-if="!isLoggued">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#login">Log in</a></li>
       </ul>
     </div>
+    -->
   </div>
 </div>

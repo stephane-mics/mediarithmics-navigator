@@ -11,7 +11,10 @@ define(['./module'], function () {
 
         function isLoggued() {
           $scope.isLoggued = Session.isInitialized();
-
+          if ($scope.isLoggued) {
+            $scope.firstName = Session.getUserProfile().first_name;
+            $scope.lastName = Session.getUserProfile().last_name;          
+          }
         }
 
         isLoggued();
@@ -24,6 +27,7 @@ define(['./module'], function () {
         function updateWorkspaces() {
           $scope.workspaces = Session.getWorkspaces();
           $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
+
         }
 
 
