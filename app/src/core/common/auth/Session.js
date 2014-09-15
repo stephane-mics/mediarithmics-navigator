@@ -50,7 +50,7 @@ define(['./module', 'navigator'], function (module, navigator) {
       };
 
       service.getUserProfile = function() {
-        return this.user;
+        return this.userProfile;
       };
 
       service.getCurrentWorkspace = function() {

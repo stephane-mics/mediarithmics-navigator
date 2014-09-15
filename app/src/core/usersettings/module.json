@@ -1,0 +1,7 @@
+{
+  "name":"core/usersettings",
+  "dependencies": [
+    "restangular",
+    "ui.bootstrap"
+  ]
+}

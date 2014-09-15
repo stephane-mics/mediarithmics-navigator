@@ -1,0 +1,29 @@
+<div class="mcs-default-container" ng-Controller="core/usersettings/EditUserSettingsController">
+
+  <div class="mcs-default-sidebar ">
+
+    <div class="organisation-name-block">
+      {{userOrganisation}}
+    </div>
+  </div>
+
+  <form role="form" class="mcs-default-content mcs-full-page-form">
+    
+    <!-- User Settings edition form -->
+    <div class="mcs-default-heading">
+      <h3>Editing user settings</h3>
+    </div>
+
+
+    <div >
+      <h3>{{firstName}} {{lastName}}</h5>
+      <h3>login: {{email}}<h5/>
+      <h3>password   <div class="btn-group">
+        <a ng-click="changePassword()" class="mics-btn mics-btn-action">Change</a>
+      </div>
+    </h3>  
+
+    </div>
+
+  </form>
+</div>

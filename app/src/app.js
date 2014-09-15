@@ -26,7 +26,8 @@ define(
     'core/placementlists/index',
     'core/login/index',
     'core/datamart/index',
-    'core/layout/index'], function (angularAMD) {
+    'core/layout/index',
+    'core/usersettings/index'], function (angularAMD) {
     'use strict';
 
     /*
@@ -54,6 +55,7 @@ define(
       'core/usergroups',
       'core/campaigns',
       'core/creatives',
+      'core/usersettings',
 
       'core/datamart',
       'core/login',

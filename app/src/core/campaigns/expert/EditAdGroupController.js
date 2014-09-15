@@ -2,9 +2,7 @@ define(['./module'], function () {
   'use strict';
 
   /*
-   * Display Campaign Template Module
-   *
-   * Template : Expert
+   * Edit AdGroup Controller
    *
    *
    */
