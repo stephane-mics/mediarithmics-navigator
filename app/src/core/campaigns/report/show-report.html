@@ -99,6 +99,12 @@
                                   <div mics-ad-status="row.ad" ad-group="row.ad_group" campaign="campaign"></div>
                                   <span
                                     class="badge creative-audit-notification-warning"
+                                    popover="The creative has the status {{row.ad.creative_audit_status}} : the audit will take some time."
+                                    popover-trigger="mouseenter"
+                                    ng-if="row.ad.creative_audit_status == 'NOT_AUDITED'"
+                                    >?</span>
+                                  <span
+                                    class="badge creative-audit-notification-warning"
                                     popover="The creative has the status {{row.ad.creative_audit_status}} and will be used as soon as the audit finish."
                                     popover-trigger="mouseenter"
                                     ng-if="row.ad.creative_audit_status == 'AUDIT_PENDING'"
@@ -110,7 +116,7 @@
                                     ng-if="row.ad.creative_audit_status == 'AUDIT_FAILED' || row.ad.creative_audit_status == 'AUDIT_PARTIALLY_PASSED'"
                                     >!</span>
                                 </td>
-                                <td>{{row.ad.name}}</td>
+                                <td><a href="#{{getUrlForCreative(row.ad)}}">{{row.ad.name}}</a></td>
                                 <td>{{row.ad.format}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adPerformance.getRow(row.ad.id) track by $index" ng-class="metricValue.type">

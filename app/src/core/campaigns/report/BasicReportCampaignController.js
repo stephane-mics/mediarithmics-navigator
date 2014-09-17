@@ -77,8 +77,8 @@ define(['./module'], function () {
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$stateParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
-    function ($scope, $location, $log, $stateParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
+    '$scope', '$location', '$log', '$stateParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal', 'core/common/auth/Session',
+    function ($scope, $location, $log, $stateParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal, Session) {
       $scope.valTo = 10;
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
@@ -102,6 +102,9 @@ define(['./module'], function () {
 
 
 
+        $scope.getUrlForCreative = function (ad) {
+          return "/" + Session.getCurrentWorkspace().organisation_id + "/creatives/" + ad.creative_editor_group_id + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
+        };
 
 
         $scope.$watch('reportDateRange', function () {
