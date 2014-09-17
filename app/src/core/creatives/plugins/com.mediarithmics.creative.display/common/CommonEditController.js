@@ -34,7 +34,6 @@ define(['./module', 'app'], function (module) {
       };
 
       $scope.doAction = function (action) {
-        console.log(DisplayAdService.makeAuditAction);
         DisplayAdService.makeAuditAction(action).then(function () {
           // $state.reload();
           // see https://github.com/angular-ui/ui-router/issues/582
