@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/plugins/com.mediarithmics.creative.display/basic-editor/UploadCreativeController', [
-    '$scope', '$document', '$log', "Restangular", 'core/common/auth/Session', 'core/configuration', 'lodash', '$q', "core/creatives/DisplayAdService",
-    function($scope, $document, $log, Restangular, Session, configuration, _, $q, DisplayAdService) {
+    '$scope', '$document', '$log', "Restangular", 'core/common/auth/Session', 'core/configuration', 'lodash', '$q', "core/creatives/DisplayAdService", "core/common/ErrorService",
+    function($scope, $document, $log, Restangular, Session, configuration, _, $q, DisplayAdService, errorService) {
 
       $log.debug('Init UploadAdController');
 
@@ -78,10 +78,14 @@ define(['./module'], function (module) {
         }
 
         $log.debug("creating creative", userDefinedCreative);
-        return creativeContainer.persist().then(function() {
+        return creativeContainer.persist().then(function success() {
           $log.warn("emit mics-creative:selected", creativeContainer.value);
           $scope.$emit("mics-creative:selected", {
             creative : creativeContainer
+          });
+        }, function failure(response) {
+          errorService.showErrorModal({
+            error: response
           });
         });
       }
