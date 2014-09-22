@@ -60,6 +60,7 @@ define(['./module'], function () {
 
         $location.path($scope.getCampaignDashboardUrl(campaign));
       };
+
       $scope.editCampaign = function (campaign, $event) {
         if ($event) {
           $event.preventDefault();
@@ -72,6 +73,7 @@ define(['./module'], function () {
         });
         return false;
       };
+
       $scope.deleteCampaign = function (campaign, $event) {
         if ($event) {
           $event.preventDefault();

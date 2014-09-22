@@ -38,9 +38,7 @@ define(['./module', 'navigator'], function (module, navigator) {
           self.currentWorkspace = userProfile.default_workspace;
           self.initialized = true;
 
-
           pluginService.registerPlugin("admin", 'http://localhost:9001', "/admin");
-
 
           defered.resolve();
           $log.debug("User Profile :", userProfile);

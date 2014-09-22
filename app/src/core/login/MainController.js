@@ -23,7 +23,7 @@ define(['./module', "autofill-event"], function () {
         Session.init().then(function() {
           $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
           var newPath = AuthenticationService.popPendingPath();
-          $log.debug("redirect to : "+newPath);
+          $log.debug("Redirecting to : "+newPath);
           // success : redirect to the pending path
           $location.path(newPath);
 
@@ -37,7 +37,7 @@ define(['./module', "autofill-event"], function () {
         
         // check that email & password are not empty
         if  ( !$scope.user.email || !$scope.user.password ) {
-          
+
         }
 
         if ($scope.rememberMe) {

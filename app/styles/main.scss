@@ -146,24 +146,24 @@ label {
 
 .mcs-top-navbar {
 
-//    margin-bottom: 0px !important;
-    background-color: $dark-blue;
-    border-color: white;
+  //    margin-bottom: 0px !important;
+  background-color: $dark-blue;
+  border-color: white;
 
-    .mcs-workspace-label {
-      color :$dark-blue-not;
-      font-size : 15px;
-      @include use-bold-font();
-    }
+  .mcs-workspace-label {
+    color :$dark-blue-not;
+    font-size : 15px;
+    @include use-bold-font();
+  }
 
-    > .active > a {
-      background-color: white;
-    }
- }
+  > .active > a {
+    background-color: white;
+  }
+}
 
 .navbar {
-
 }
+
 .no-navbar {
   /* we don't have the navbar, but we want some space */
   margin-bottom: 20px;
@@ -177,8 +177,8 @@ label {
 
 .mics-table-toolbar {
 
-    @include make-row();
-    margin-bottom: 20px;
+  @include make-row();
+  margin-bottom: 20px;
 }
 
 .mics-table {
@@ -220,7 +220,7 @@ label {
         }
       }
       /* &:not(:hover) td.actions .mics-btn { */
-        /* @include mics-button-variant($mcs-grey); */
+      /* @include mics-button-variant($mcs-grey); */
       /* } */
     }
   }
@@ -361,23 +361,20 @@ input[type=daterange] + *{
  * Sign-in
  */
 
- .mcs-form-signin {
+.mcs-form-signin {
 
-    max-width:340px;
-    padding: 15px;
-    margin: 0 auto;
+  max-width:340px;
+  padding: 15px;
+  margin: 0 auto;
 
- }
+}
 
- /*
-  * nav bar
-  */
+/*
+ * nav bar
+ */
 
 .navbar-brand {
-	padding-top : 6px;
-	padding-bottom : 6px;
-	padding-left: 20px;
-	padding-right: 20px;
+  padding: 6px 20px;
 }
 
 .breadcrumb > li:before {
@@ -580,15 +577,14 @@ form.mcs-full-page-form {
 
   }
   .organisation-name-block {
-      text-align:right;
-      color :$dark-blue-not;
-      background-color:$dark-blue;
-      font-size : 15px;
-      line-height: $line-height-computed;
-      @include use-bold-font();
-      padding: 15px 15px 15px 0;
-      padding-top: 15px;
-      margin: -20px -15px 15px;
+    text-align:right;
+    color :$dark-blue-not;
+    background-color:$dark-blue;
+    font-size : 15px;
+    line-height: $line-height-computed;
+    @include use-bold-font();
+    padding: 35px 15px 15px 0;
+    margin: -20px -15px 15px;
   }
 }
 
@@ -620,10 +616,10 @@ form.mcs-full-page-form {
 }
 
 .campaign-list {
-     @extend .mcs-default-container;
-      .campaign-sidebar {
-        @extend .mcs-default-sidebar;
-    }
+  @extend .mcs-default-container;
+  .campaign-sidebar {
+    @extend .mcs-default-sidebar;
+  }
   .campaign-list-content {
     @extend .mcs-default-content;
     .campaign-list-heading {
@@ -632,20 +628,20 @@ form.mcs-full-page-form {
     .campaign-list-controller {
       @include make-row();
       .campaign-list-actions {
-            @include make-sm-column(6);
+        @include make-sm-column(6);
       }
       .campaign-list-date-controller {
-                @include make-sm-column(6);
-                min-width: 270px;
-                input.range {
-                    width: 240px;
-                    background-color: $mcs-light-blue;
-                    color: $mcs-light-blue-not;
-                    @include use-bold-font();
-                    font-size : ceil(($font-size-base * 1.5));
-                }
-                @extend .text-right;
-            }
+        @include make-sm-column(6);
+        min-width: 270px;
+        input.range {
+          width: 240px;
+          background-color: $mcs-light-blue;
+          color: $mcs-light-blue-not;
+          @include use-bold-font();
+          font-size : ceil(($font-size-base * 1.5));
+        }
+        @extend .text-right;
+      }
       margin-bottom: 20px;
     }
     .campaign-list-area {
@@ -675,185 +671,185 @@ form.mcs-full-page-form {
 
 
 .campaign-report {
-    .report-top-tab {
-        .organisation-name {
-            @include make-md-column(12)
-        }
+  .report-top-tab {
+    .organisation-name {
+      @include make-md-column(12)
     }
-    .report-sidebar {
-        > .mics-btn {
-          margin-top: $line-height-computed; /* same as h2 to align with it */
+  }
+  .report-sidebar {
+    > .mics-btn {
+      margin-top: $line-height-computed; /* same as h2 to align with it */
+    }
+  }
+
+  .report {
+    .campaign-heading {
+      @extend .mcs-default-heading;
+      margin-bottom: 0px;
+      h2 {
+        &>span {
+          @include use-bold-font();
+          margin-right: 20px;
         }
+        margin-top: 12px;
+        padding: 0;
+      }
+      border-bottom: none; /* this one has no border... */
+
+      /* compensate the bootstrap margin */
+      margin:0;
     }
 
-    .report {
-        .campaign-heading {
-          @extend .mcs-default-heading;
-          margin-bottom: 0px;
-          h2 {
-            &>span {
-             @include use-bold-font();
-             margin-right: 20px;
-            }
-            margin-top: 12px;
-            padding: 0;
+    .chart-controller {
+      @include make-row();
+
+      /* compensate the bootstrap margin */
+      margin:0;
+
+      padding: 8px 0;
+      border-top: 1px solid $dark-blue;
+      border-bottom: 1px solid $dark-blue;
+      .report-type-controller {
+        @include make-md-column(4);
+        padding:0;
+        .nav-pills {
+          @include use-bold-font();
+          font-size : ceil(($font-size-base * 1.5));
+          a {
+            padding: 4px 15px;
+            color: $dark-blue;
           }
-          border-bottom: none; /* this one has no border... */
-
-          /* compensate the bootstrap margin */
-          margin:0;
+          .active a {
+            color: $dark-blue-not;
+            background-color : $dark-blue;
+          }
         }
-
-        .chart-controller {
-            @include make-row();
-
-            /* compensate the bootstrap margin */
-            margin:0;
-
-            padding: 8px 0;
-            border-top: 1px solid $dark-blue;
-            border-bottom: 1px solid $dark-blue;
-            .report-type-controller {
-                @include make-md-column(4);
-                padding:0;
-                .nav-pills {
-                  @include use-bold-font();
-                  font-size : ceil(($font-size-base * 1.5));
-                  a {
-                    padding: 4px 15px;
-                    color: $dark-blue;
-                  }
-                  .active a {
-                    color: $dark-blue-not;
-                    background-color : $dark-blue;
-                  }
-                }
-            }
-            .report-date-controller {
-                @include make-md-column(8);
-                min-width: 270px;
-                padding:0;
-                input.range {
-                    width: 240px;
-                    background-color: $mcs-light-blue;
-                    color: $mcs-light-blue-not;
-                    @include use-bold-font();
-                    font-size : ceil(($font-size-base * 1.5));
-                }
-                @extend .text-right;
-            }
+      }
+      .report-date-controller {
+        @include make-md-column(8);
+        min-width: 270px;
+        padding:0;
+        input.range {
+          width: 240px;
+          background-color: $mcs-light-blue;
+          color: $mcs-light-blue-not;
+          @include use-bold-font();
+          font-size : ceil(($font-size-base * 1.5));
         }
-        .chart-area {
-            @include    make-row();
-            .kpi-area {
-                @include make-md-column(2);
-
-                dl {
-                  margin-bottom:0;
-                }
-
-                dt {
-                  @extend .text-left;
-                  color: $mcs-light-blue;
-                    font-weight: normal;
-                    margin-top: 7px;
-                    padding-top: 7px;
-                    @include use-bold-font();
-                    font-size: 12px;
-                }
-                dd {
-                @extend .text-right;
-                    font-size: 37px;
-                    @include use-bold-font();
-                }
-                dd + dt {
-                  border-top: 1px solid $mcs-light-grey;
-                }
-
-                .kpi-legend {
-                  dd {
-                    font-size: 24px;
-                    margin-top: 10px;
-                  }
-                  dt {
-                    border-top: 1px solid $mcs-light-grey;
-                  }
-                  margin-bottom: 20px;
-                }
-            }
-
-            .medium-chart {
-              margin-top: 16px;
-                @include make-md-column(10);
-                .chart {
-                    height: 300px;
-                    position: static;
-
-                    svg {
-                      .nv-x {
-                        text {
-                          fill:$dark-blue;
-                        }
-                      }
-
-                      .nv-y1, .nv-y2 {
-                        text {
-                          fill:$mcs-light-blue;
-                        }
-                      }
-                    }
-                }
-                .chart-legend {
-
-                  /* align it with the chart */
-                  padding: 20px 0 0 60px;
-
-                  .y1-legend:before {
-                    color: #00AC67;
-                  }
-                  .y2-legend:before {
-                    color: #FE5858;
-                  }
-                  .y1-legend:before, .y2-legend:before {
-                    content:' \25CF';
-                    /* font-size: $font-size-small; */
-                    display: inline-block;
-                    margin-top: -3px;
-                    margin-right: 5px;
-                    vertical-align: middle;
-                  }
-                  .y1-legend, .y2-legend {
-                    margin-right: 20px;
-                  }
-                }
-            }
-            .big-chart {
-                @include make-md-column(12);
-                .chart {
-                    height: 250px;
-                    position: static;
-                }
-            }
-        }
-        .breakdown-area {
-            @include    make-row();
-                .nav-tabs a {
-                  @include use-bold-font();
-                  color : $dark-blue;
-                }
-                .nav-tabs .active a {
-                  color : $dark-blue-not;
-                }
-            .badge.creative-audit-notification-alert {
-              background-color: red;
-              cursor: help;
-            }
-            .badge.creative-audit-notification-warning {
-              background-color: orange;
-              cursor: help;
-            }
-        }
+        @extend .text-right;
+      }
     }
+    .chart-area {
+      @include    make-row();
+      .kpi-area {
+        @include make-md-column(2);
+
+        dl {
+          margin-bottom:0;
+        }
+
+        dt {
+          @extend .text-left;
+          color: $mcs-light-blue;
+          font-weight: normal;
+          margin-top: 7px;
+          padding-top: 7px;
+          @include use-bold-font();
+          font-size: 12px;
+        }
+        dd {
+          @extend .text-right;
+          font-size: 37px;
+          @include use-bold-font();
+        }
+        dd + dt {
+          border-top: 1px solid $mcs-light-grey;
+        }
+
+        .kpi-legend {
+          dd {
+            font-size: 24px;
+            margin-top: 10px;
+          }
+          dt {
+            border-top: 1px solid $mcs-light-grey;
+          }
+          margin-bottom: 20px;
+        }
+      }
+
+      .medium-chart {
+        margin-top: 16px;
+        @include make-md-column(10);
+        .chart {
+          height: 300px;
+          position: static;
+
+          svg {
+            .nv-x {
+              text {
+                fill:$dark-blue;
+              }
+            }
+
+            .nv-y1, .nv-y2 {
+              text {
+                fill:$mcs-light-blue;
+              }
+            }
+          }
+        }
+        .chart-legend {
+
+          /* align it with the chart */
+          padding: 20px 0 0 60px;
+
+          .y1-legend:before {
+            color: #00AC67;
+          }
+          .y2-legend:before {
+            color: #FE5858;
+          }
+          .y1-legend:before, .y2-legend:before {
+            content:' \25CF';
+            /* font-size: $font-size-small; */
+            display: inline-block;
+            margin-top: -3px;
+            margin-right: 5px;
+            vertical-align: middle;
+          }
+          .y1-legend, .y2-legend {
+            margin-right: 20px;
+          }
+        }
+      }
+      .big-chart {
+        @include make-md-column(12);
+        .chart {
+          height: 250px;
+          position: static;
+        }
+      }
+    }
+    .breakdown-area {
+      @include    make-row();
+      .nav-tabs a {
+        @include use-bold-font();
+        color : $dark-blue;
+      }
+      .nav-tabs .active a {
+        color : $dark-blue-not;
+      }
+      .badge.creative-audit-notification-alert {
+        background-color: red;
+        cursor: help;
+      }
+      .badge.creative-audit-notification-warning {
+        background-color: orange;
+        cursor: help;
+      }
+    }
+  }
 }
 
 .edit-campaign-expert {
@@ -949,6 +945,7 @@ table.fragment-list-placement-list {
     overflow: auto;
   }
 }
+
 /*
  * Datamart
  * --------
@@ -1219,7 +1216,7 @@ a.category-item {
 }
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header h2 {
-    margin-top: 0px;
+  margin-top: 0px;
 }
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header h2 description {
