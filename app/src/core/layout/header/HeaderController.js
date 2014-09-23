@@ -3,14 +3,13 @@ define(['./module'], function (module) {
 
 	/* Searches for the right navbar */
 	module.controller('core/layout/header/HeaderController', [
-		'$scope', '$state', '$location', '$log',
-		function ($scope, $state, $location, $log) {
+		'$scope', '$state', '$log',
+		function ($scope, $state, $log) {
 			$scope.allNavbars = {};
 
 //          Admin
-			$scope.allNavbars['/admin'] = 'src/core/layout/header/navbar/admin-navbar/admin-navbar.html';
-			$scope.allNavbars['/admin/home'] = 'src/core/layout/header/navbar/admin-navbar/admin-navbar.html';
-			$scope.allNavbars['/admin/organisations'] = 'src/core/layout/header/navbar/admin-navbar/admin-navbar.html';
+			$scope.allNavbars['/admin/organisations/new-organisation'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
+			$scope.allNavbars['/admin/organisations/:id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
 
 //			Basic editor
 			$scope.allNavbars['/{organisation_id}/creatives/com.mediarithmics.creative.display/basic-editor/create'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
@@ -50,11 +49,13 @@ define(['./module'], function (module) {
 			$scope.allNavbars['/{organisation_id}/library/usergroups/:type'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
 
 			$scope.findNavbar = function() {
-				$log.debug($state.current.url);
-				if(typeof $scope.allNavbars[$state.current.url] == 'undefined')
-					return 'src/core/layout/header/navbar/navigator-navbar/navigator-navbar.html';
-				else
+				var checkAdmin = $state.current.url;
+				if (typeof $scope.allNavbars[$state.current.url] != 'undefined')
 					return $scope.allNavbars[$state.current.url];
+				if (checkAdmin.split('/')[1] == 'admin')
+					return 'src/core/layout/header/navbar/admin-navbar/admin-navbar.html';
+				else
+					return 'src/core/layout/header/navbar/navigator-navbar/navigator-navbar.html';
 			}
 		}
 	]);

@@ -19,9 +19,8 @@
 		<div class="navbar-collapse collapse" ng-if="isLogged">
 
 			<ul class="nav navbar-nav mcs-main-nav">
-				<li><a href="#/datamart/users">Directory</a></li>
-				<li><a href="#/{{organisationId}}/campaigns" >Datamart</a></li>
-				<li><a href="#/{{organisationId}}/creatives">Display Ads</a></li>
+				<li><a href="#/admin/organisations">Directory</a></li>
+				<li><a href="#/admin/services" >Services</a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right">
@@ -35,7 +34,8 @@
 					<a class="mcs-workspace-label">{{currentOrganisation}}</a>
 				</li>
 
-				<li><a href="#logout">Log out</a></li>
+				<li><a href="#/admin/home">ADMINISTRATOR</a></li>
+				<li><a href="#/">Log out</a></li>
 			</ul>
 		</div>
 		<div class="navbar-collapse collapse" ng-if="!isLogged">

@@ -11,14 +11,14 @@ define(['./module', 'navigator'], function (module, navigator) {
 
 			pluginService.registerPlugin = function (moduleName, pluginBase, url) {
 				navigator.app.$futureStateProvider.futureState({src: pluginBase + '/main.js', type: "ngload", "stateName": moduleName,
-					"urlPrefix": url + "/home", properties: {"hello": "test"}});
+					"urlPrefix": url + "/home", properties: { "hello": "test" }});
 
 				define(moduleName + '.conf', [], function () {
 					var data = {};
 
 					var pluginService = {};
 
-					data.properties = {"hello": "test"};
+					data.properties = { "hello": "test" };
 					data.pluginBase = pluginBase;
 					data.baseUrl = url;
 
@@ -37,7 +37,7 @@ define(['./module', 'navigator'], function (module, navigator) {
 						return {
 							name: name,
 							url: pluginService.getBaseUrl() + url,
-							templateUrl: pluginService.getBaseTemplateUrl() + template,
+							templateUrl: pluginService.getBaseTemplateUrl() + template
 						};
 					};
 					return pluginService;
