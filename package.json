@@ -1,6 +1,7 @@
 {
   "name": "mediarithmicsnavigator",
   "version": "1.0.0",
+  "private": true,
   "dependencies": {
     "mustache": "^0.8.2",
     "lodash": "^2.4.1",
