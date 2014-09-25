@@ -9,8 +9,27 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+/**
+ * Read the ivy credentials on jenkins and return the content as a hash.
+ * That way we can push the generated zip file at the place as the other scala dist files.
+ * @return {Object} the hash containing the credentials.
+ */
+function readIvyCredentials() {
+  var fs = require("fs");
+  var path = require("path");
+  var properties = require("properties");
+
+  var credsFile = path.join(process.env.HOME, ".ivy2", ".credentials");
+  try {
+    return properties.parse(fs.readFileSync(credsFile).toString());
+  } catch(e) {
+    return {};
+  }
+}
 
 module.exports = function (grunt) {
+
+  var nexusCreds = readIvyCredentials();
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -23,6 +42,9 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-shell');
 
+  var version = grunt.file.readJSON("package.json").version;
+  var isSnapshot = version.indexOf("SNAPSHOT") !== -1;
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -31,6 +53,37 @@ module.exports = function (grunt) {
       // configurable paths
       app: require('./bower.json').appPath || 'app',
       dist: 'dist'
+    },
+
+    compress: {
+      main: {
+        options: {
+          archive: 'navigator.zip'
+        },
+        expand: true,
+        src: ['**/*'],
+        dest: './',
+        cwd: 'dist',
+        pretty: true
+      }
+    },
+
+    nexusDeployer: {
+      release: {
+        options: {
+          groupId: "com.mediarithmics",
+          artifactId: "navigator",
+          version: version,
+          packaging: 'zip',
+          auth: {
+            username:nexusCreds.user,
+            password:nexusCreds.password
+          },
+          pomDir: 'generated/pom',
+          url: 'https://' + nexusCreds.host + '/content/repositories/' + (isSnapshot ? 'snapshots' : 'releases'),
+          artifact: 'navigator.zip'
+        }
+      }
     },
 
     // Watches files for changes and runs tasks based on the changed files
@@ -132,6 +185,7 @@ module.exports = function (grunt) {
             dot: true,
             src: [
               '.tmp',
+              'navigator.zip',
               '<%= yeoman.dist %>/*',
               '!<%= yeoman.dist %>/.git*'
             ]
@@ -562,9 +616,14 @@ module.exports = function (grunt) {
     'regex-replace:dist',
     'usemin',
     'copy:generated_iab',
-    'htmlmin'
+    'htmlmin',
+    'compress'
   ]);
 
+  grunt.registerTask('publish', [
+    'build',
+    'nexusDeployer'
+  ]);
 
   grunt.registerTask('default', [
     'newer:jshint',
