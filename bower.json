@@ -1,6 +1,6 @@
 {
   "name": "mediarithmics-navigator",
-  "version": "0.0.1",
+  "version": "1.0.0-SNAPSHOT",
   "private": true,
   "dependencies": {
     "angular": "1.2.6",
