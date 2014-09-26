@@ -15,14 +15,42 @@
     </div>
 
 
-    <div >
-      <h3>{{firstName}} {{lastName}}</h5>
-      <h3>login: {{email}}<h5/>
-      <h3>password   <div class="btn-group">
+    <div mcs-form-group="" label-for="firstName" label-text="Firstname">
+      <input  ng-model="userSettings.first_name" type="text" class="form-control input-lg" format="L"  id="firstName">        
+    </div>
+
+    <div mcs-form-group="" label-for="lastName" label-text="Lastname">
+      <input  ng-model="userSettings.last_name" type="text" class="form-control input-lg" id="lastName">        
+    </div>
+
+    <div mcs-form-group="" label-for="email" label-text="Email">
+      <input  ng-model="userSettings.email" type="text" class="form-control input-lg" id="email">        
+    </div>
+
+
+    <div mcs-form-group="" label-for="preferredLanguage" label-text="Preferred language">
+      <select ng-model="userSettings.language" class="input-lg">
+        <option value="en">English</option>
+        <option value="fr">Français</option>        
+      </select>      
+    </div>
+
+    <!--
+    <div mcs-form-group="" label-for="role" label-text="Role">
+      <div class="mcs-form-control-static" id="role">Administrator</div>
+    </div>  
+    -->
+
+    <div mcs-form-group="" label-for="password" label-text="Password">
+      <div class="btn-group" id="password">
         <a ng-click="changePassword()" class="mics-btn mics-btn-action">Change</a>
       </div>
-    </h3>  
-
+    </div>
+    
+      <!-- save or cancel -->
+    <div class="mcs-actions-group">
+      <button class="mics-btn mics-btn-finish" ng-click="save()">Save</button>
+      <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
 
   </form>

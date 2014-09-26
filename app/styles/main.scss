@@ -25,6 +25,7 @@ $mcs-orange: #FE8F10;
 $mcs-orange-not: #fff;
 $mcs-light-grey: #E6E6E6;
 $mcs-grey: #CBCBCB;
+$mcs-dark-grey: #777;
 $body-bg:#fff;
 
 $font-size-base:12px;
@@ -40,6 +41,9 @@ $breadcrumb-padding-horizontal: 0;
 
 $text-color: $dark-blue;
 $input-border: $mcs-light-blue;
+$input-border-focus : $mcs-light-blue;
+$input-read-only-border : $mcs-grey;
+$input-read-only-color : $mcs-dark-grey;
 $dropdown-link-color: $dark-blue;
 
 $table-bg: white;
@@ -363,11 +367,27 @@ input[type=daterange] + *{
 
  .mcs-form-signin {
 
-    max-width:340px;
-    padding: 15px;
+    max-width:400px;
+    padding: 30px;
     margin: 0 auto;
 
+
+    .form-group {
+      margin-bottom : 20px;
+    }
+
+    .form-control {
+      height : 50px;
+      //line-height : px;      
+      font-size : 16px;
+      padding-top : 8px;
+      padding-bottom : 8px;
+    }
+
  }
+
+
+
 
  /*
   * nav bar
@@ -402,6 +422,19 @@ input[type=daterange] + *{
   }
 
   border-bottom: 1px solid $breadcrumb-active-color;
+}
+
+/*
+ * Forms
+ */
+
+.mcs-form-control-static {
+    @extend .mcs-form-control-static;
+    border-width : 1px;
+    border-style : solid;
+    border-color : $input-read-only-border;
+    padding: 10px 16px 10px 16px;
+    color : $input-read-only-color;
 }
 
 form.mcs-full-page-form {

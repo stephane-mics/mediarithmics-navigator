@@ -9,16 +9,21 @@ define(['./module'], function () {
   var module = angular.module('core/usersettings');
 
   module.controller('core/usersettings/EditUserSettingsController', [
-    '$scope', '$location', '$stateParams', '$modal', '$log', 'lodash', 'core/common/auth/Session',
+    '$scope', '$location', '$stateParams', '$modal', '$log', 'Restangular', 'lodash', 'core/common/auth/Session',
 
-    function($scope, $location, $stateParams, $modal, $log, _, Session) {
+    function($scope, $location, $stateParams, $modal, $log, Restangular, _, Session) {
 
       var userProfile = Session.getUserProfile();
 
-      $log.info(userProfile)
+      $log.info(userProfile);
 
-      $scope.firstName = userProfile.first_name;
-      $scope.lastName = userProfile.last_name;
+      $scope.userSettings = {
+          first_name : userProfile.first_name,
+          last_name : userProfile.last_name,
+          email : userProfile.email,
+          language : userProfile.language,
+      };
+
 
 
       // change password event listener
@@ -38,6 +43,36 @@ define(['./module'], function () {
           $log.info('Modal dismissed at: ' + new Date());
         });
       };
+
+      // save action
+      $scope.save = function () {
+        $log.debug("save user settings : ", $scope.userSettings);
+
+        var promise = Restangular.one('users').customPUT($scope.userSettings, userProfile.id);
+        
+        promise.then(function success(response) {
+
+          // update the sessions service
+          Session.updateProfile(userSettings)
+
+        }, function failure(response) {
+          errorService.showErrorModal({
+            error: response
+          }).then(null, function (){
+            
+          });
+        });
+
+      };
+
+      // Back / Cancel action
+      $scope.cancel = function () {
+          window.history.back();        
+
+      };
+
+
+
 
     }
   ]);

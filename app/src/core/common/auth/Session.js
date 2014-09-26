@@ -53,6 +53,15 @@ define(['./module', 'navigator'], function (module, navigator) {
         return this.userProfile;
       };
 
+
+      service.updateUserProfile = function (userSettings) {
+        this.userProfile.last_name = userSettings.last_name;
+        this.userProfile.first_name = userSettings.first_name;
+        this.userProfile.language = userSettings.language;
+        this.userProfile.email = userSettings.email;
+        
+      }
+
       service.getCurrentWorkspace = function() {
         return this.userProfile.workspaces[this.currentWorkspace];
       };
