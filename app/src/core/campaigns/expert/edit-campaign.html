@@ -49,9 +49,8 @@
       <select ng-model="$parent.schedule" class="form-control" id="schedule">
         <option value="">Ongoing (no end date)</option>
         <option value="custom" ng-selected="campaign.start_date != null ? 'selected' : ''" >Custom</option>
-
-
       </select>
+
         <input ng-show="$parent.schedule === 'custom'"
                 type="daterange"
                  class="form-control range"

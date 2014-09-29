@@ -1,10 +1,9 @@
 define(['./module'], function () {
 	'use strict';
 
-	/* Service */
 	var module = angular.module('core/layout/header/navbar/admin-navbar');
 
-	module.controller('core/layout/header/navbar/AdminController', [
+	module.controller('AdminNavbarController', [
 		'$scope', '$log', 'core/common/auth/Session', 'core/login/constants', '$location',
 		function ($scope, $log, Session, LoginConstants, $location) {
 			function isLogged() {

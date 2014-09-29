@@ -3,7 +3,7 @@
 		{{msg}}
 	</div>
 </div>
-<div class="navbar navbar-default navbar-static-top  mcs-top-navbar navbar-inverse" role="navigation" ng-controller="core/layout/header/navbar/navigator-navbar/NavigatorNavbarController" ng-show="topbar">
+<div class="navbar navbar-default navbar-static-top  mcs-top-navbar navbar-inverse" role="navigation" ng-controller="AdminNavbarController" ng-show="topbar">
 	<div class="container-fluid ">
 
 		<div class="navbar-header">
@@ -17,7 +17,6 @@
 		</div>
 
 		<div class="navbar-collapse collapse" ng-if="isLogged">
-
 			<ul class="nav navbar-nav mcs-main-nav">
 				<li><a href="#/admin/organisations">Directory</a></li>
 				<li><a href="#/admin/services" >Services</a></li>
@@ -34,7 +33,7 @@
 					<a class="mcs-workspace-label">{{currentOrganisation}}</a>
 				</li>
 
-				<li><a href="#/admin/home">ADMINISTRATOR</a></li>
+				<li><a>ADMINISTRATOR</a></li>
 				<li><a href="#/">Log out</a></li>
 			</ul>
 		</div>

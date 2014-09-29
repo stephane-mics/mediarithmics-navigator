@@ -2,14 +2,16 @@ define(['./module'], function (module) {
 	'use strict';
 
 	/* Searches for the right navbar */
-	module.controller('core/layout/header/HeaderController', [
+	module.controller('HeaderController', [
 		'$scope', '$state', '$log',
 		function ($scope, $state, $log) {
 			$scope.allNavbars = {};
 
 //          Admin
 			$scope.allNavbars['/admin/organisations/new-organisation'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-			$scope.allNavbars['/admin/organisations/:id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
+			$scope.allNavbars['/admin/organisations/{id}'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
+			$scope.allNavbars['/admin/users/new-user'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
+			$scope.allNavbars['/admin/users/{id}'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
 
 //			Basic editor
 			$scope.allNavbars['/{organisation_id}/creatives/com.mediarithmics.creative.display/basic-editor/create'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
@@ -50,9 +52,9 @@ define(['./module'], function (module) {
 
 			$scope.findNavbar = function() {
 				var checkAdmin = $state.current.url;
-				if (typeof $scope.allNavbars[$state.current.url] != 'undefined')
+				if (typeof $scope.allNavbars[$state.current.url] !== 'undefined')
 					return $scope.allNavbars[$state.current.url];
-				if (checkAdmin.split('/')[1] == 'admin')
+				else if (checkAdmin.split('/')[1] == 'admin')
 					return 'src/core/layout/header/navbar/admin-navbar/admin-navbar.html';
 				else
 					return 'src/core/layout/header/navbar/navigator-navbar/navigator-navbar.html';
