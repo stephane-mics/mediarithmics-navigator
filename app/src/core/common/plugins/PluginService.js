@@ -3,9 +3,8 @@ define(['./module', 'navigator'], function (module, navigator) {
 
 	var plugins = angular.module('core/common/plugins');
 
-	plugins.factory('core/common/plugins/pluginService', [ '$q', '$log', '$document', 'Restangular', "jquery",
+	plugins.factory('core/common/plugins/pluginService', [ '$q', '$log', '$document', 'Restangular', 'jquery',
 		function ($q, $log, $document, Restangular, $) {
-
 
 			var pluginService = {};
 
@@ -29,6 +28,7 @@ define(['./module', 'navigator'], function (module, navigator) {
 					pluginService.getBaseTemplateUrl = function () {
 						return data.pluginBase;
 					};
+
 					pluginService.getBaseUrl = function () {
 						return data.baseUrl;
 					};

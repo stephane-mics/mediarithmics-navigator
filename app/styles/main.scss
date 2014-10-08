@@ -1599,3 +1599,11 @@ a.administration-links {
     }
   }
 }
+
+.select-organisation {
+  .modal-body .filtered-content {
+    @include make-sm-column(12);
+    max-height : 300px; /* TODO : arbitrary value */
+    overflow: auto;
+  }
+}

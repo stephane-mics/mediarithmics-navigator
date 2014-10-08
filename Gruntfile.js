@@ -295,8 +295,8 @@ module.exports = function (grunt) {
       }
     },
 
-    // Allow the use of non-minsafe AngularJS files. Automatically makes it
-    // minsafe compatible so Uglify does not destroy the ng references
+// Allow the use of non-minsafe AngularJS files. Automatically makes it
+// minsafe compatible so Uglify does not destroy the ng references
 //    ngmin: {
 //      dist: {
 //        files: [{
@@ -512,9 +512,9 @@ module.exports = function (grunt) {
         src: '<%= yeoman.app %>/src/**/module.json',
         template: 'define([{{{requires}}}],function(){});',
         templateModule: 'define(["angular"],function(){' +
-          '"use strict";' +
-          'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
-          '});'
+        '"use strict";' +
+        'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
+        '});'
       }
     }
 

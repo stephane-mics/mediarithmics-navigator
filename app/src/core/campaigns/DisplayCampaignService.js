@@ -2,12 +2,9 @@ define(['./module'], function () {
   'use strict';
 
 
-  /*
-   *
+  /**
    * DISPLAY CAMPAIGN SERVICE
-   *
    */
-
   var module = angular.module('core/campaigns');
 
   /* define the Authentication service */
@@ -18,10 +15,9 @@ define(['./module'], function () {
       var idCounter = 1;
       var service = {};
 
-      /*
+      /**
        *  Init methods
        */
-
       service.getDisplayNetworkCampaign = function () {
         return this.getDisplayNetworkCampaignPromise().$object;
       };
@@ -32,8 +28,8 @@ define(['./module'], function () {
 
       service.getDeepCampaignView = function (campaignId) {
         var root = Restangular.one('display_campaigns', campaignId);
-          // send requests to get the value and the list of
-          // ad group ids
+        // send requests to get the value and the list of
+        // ad group ids
         return root.get({view: "deep"});
       };
 
@@ -60,11 +56,9 @@ define(['./module'], function () {
         return campaignCtn.load(campaignId);
       };
 
-      /*
+      /**
        * Campaign methods
-       *
        */
-
       service.getCampaignValue = function() {
 
         $log.debug("> getCampaignValue, campaignCtn=", this.campaignCtn);
@@ -95,11 +89,9 @@ define(['./module'], function () {
         return this.campaignCtn.id;
       };
 
-      /*
+      /**
        * Ad Group methods
-       *
        */
-
       service.addAdGroup = function() {
 
         return this.campaignCtn.addAdGroup();
@@ -145,11 +137,9 @@ define(['./module'], function () {
         }
       };
 
-
-      /*
+      /**
        * Ad methods
        */
-
       service.addAd = function(adGroupId, ad) {
         return this.campaignCtn.getAdGroup(adGroupId).addAd(ad);
       };
@@ -176,7 +166,7 @@ define(['./module'], function () {
         this.campaignCtn.getAdGroup(adGroupId).removeAd(adId);
       };
 
-      /*
+      /**
        * User group methods
        */
       service.getUserGroups = function(adGroupId) {
@@ -193,7 +183,7 @@ define(['./module'], function () {
 
 
 
-      /*
+      /**
        * Keyword list methods
        */
       service.getKeywordLists = function(adGroupId) {
@@ -208,7 +198,7 @@ define(['./module'], function () {
         this.campaignCtn.getAdGroup(adGroupId).removeKeywordList(keywordList);
       };
 
-      /*
+      /**
        * Keyword list methods
        */
       service.getPlacementLists = function(adGroupId) {
@@ -257,19 +247,16 @@ define(['./module'], function () {
 
 
 
-
-
       // save the campaign
       service.save = function() {
-
         if (this.campaignCtn.id.indexOf('T') === -1 ) {
           return this.campaignCtn.update();
         } else {
           return this.campaignCtn.persist();
         }
-
-
       };
+
+
 
       // reset method
       service.reset = function () {
