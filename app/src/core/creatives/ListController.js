@@ -8,13 +8,26 @@ define(['./module'], function () {
    */
 
   module.controller('core/creatives/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'core/creatives/DisplayAdService', 'core/common/auth/Session', '$modal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash',
-    function ($scope, $location, $log, Restangular,  DisplayAdService, Session, $modal, $state, $stateParams, creativePluginService, _) {
+    '$scope', '$location', '$log', 'Restangular', 'core/creatives/DisplayAdService', 'core/common/auth/Session', '$modal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter',
+    function ($scope, $location, $log, Restangular,  DisplayAdService, Session, $modal, $state, $stateParams, creativePluginService, _, $filter) {
+
+      $scope.currentPageCreative = 1;
+      $scope.itemsPerPage = 10;
+
+      $scope.filteredCreatives = function () {
+        var list1 = $filter('filter')($scope.creatives, $scope.creativename);
+        var list2 = $filter('filter')(list1, $scope.creativeformat);
+
+        return list2;
+      };
 
       $scope.organisationName = function (id ) { return Session.getOrganisationName(id);};
       $scope.administrator = Session.getCurrentWorkspace().administrator;
 
-      var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
+      var params = {
+        max_results : 200,
+        organisation_id: Session.getCurrentWorkspace().organisation_id
+      };
       if (Session.getCurrentWorkspace().administrator) {
         params = { administration_id: Session.getCurrentWorkspace().organisation_id };
       }
