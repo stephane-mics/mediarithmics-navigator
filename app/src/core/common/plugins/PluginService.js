@@ -37,9 +37,17 @@ define(['./module', 'navigator'], function (module, navigator) {
 						return {
 							name: name,
 							url: pluginService.getBaseUrl() + url,
-							templateUrl: pluginService.getBaseTemplateUrl() + template
+              templateUrl: pluginService.getBaseTemplateUrl() + template
 						};
 					};
+
+          pluginService.loadCss = function(template) {
+            var link = document.createElement("link");
+            link.type = "text/css";
+            link.rel = "stylesheet";
+            link.href = pluginService.getBaseTemplateUrl() + template;
+            document.getElementsByTagName("head")[0].appendChild(link);
+          };
 					return pluginService;
 				});
 			};

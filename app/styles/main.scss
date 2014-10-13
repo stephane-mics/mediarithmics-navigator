@@ -1580,30 +1580,3 @@ a.category-item {
     padding : 0;
   }
 }
-
-// Admin
-
-a.administration-links {
-  padding-right: 20px;
-}
-
-.admin-list {
-  @extend .mcs-default-container;
-  .admin-sidebar {
-    @extend .mcs-default-sidebar;
-  }
-  .admin-list-content {
-    @extend .mcs-default-content;
-    .admin-list-heading {
-      @extend .mcs-default-heading;
-    }
-  }
-}
-
-.select-organisation {
-  .modal-body .filtered-content {
-    @include make-sm-column(12);
-    max-height : 300px; /* TODO : arbitrary value */
-    overflow: auto;
-  }
-}
