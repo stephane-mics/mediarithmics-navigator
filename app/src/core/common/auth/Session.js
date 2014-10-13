@@ -78,7 +78,7 @@ define(['./module', 'navigator'], function (module, navigator) {
 
       service.updateWorkspace = function(organisationId) {
 
-         for (var i = 0; i < this.userProfile.workspaces.length ; i++) {
+        for (var i = 0; i < this.userProfile.workspaces.length ; i++) {
           if(this.userProfile.workspaces[i].organisation_id === organisationId) {
             this.currentWorkspace = i;
           }

@@ -3,66 +3,66 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Mediarithmics</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Mediarithmics</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <!-- build:css styles/vendor.css -->
-    <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
-    <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css">
-    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
-    <!-- endbuild -->
+  <!-- build:css styles/vendor.css -->
+  <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
+  <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css">
+  <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
+  <!-- endbuild -->
 
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
+  <!-- build:css({.tmp,app}) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
 
-    <link rel="stylesheet" href="styles/font/stylesheet.css">
-      <script>
-          var require = {  paths: {  'core/configuration': '../conf/app-configuration'}};
-      </script>
-    <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
-    <script>
-      // this warning is for developers : if a plugin can't load a dependency, I don't really want to throw an `alert`...
-      requirejs.onError = function (err) {
-        // if (err.requireType === 'scripterror')
-        console.error("the scripts " + err.requireModules + " couldn't be loaded. Do you have an ad blocker ?");
-        throw err;
-      };
-    </script>
+  <link rel="stylesheet" href="styles/font/stylesheet.css">
+  <script>
+    var require = {  paths: {  'core/configuration': '../conf/app-configuration'}};
+  </script>
+  <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
+  <script>
+    // this warning is for developers : if a plugin can't load a dependency, I don't really want to throw an `alert`...
+    requirejs.onError = function (err) {
+      // if (err.requireType === 'scripterror')
+      console.error("the scripts " + err.requireModules + " couldn't be loaded. Do you have an ad blocker ?");
+      throw err;
+    };
+  </script>
 
-  </head>
-  <body class="mcs-app">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+</head>
+<body class="mcs-app">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
 
-    <div ng-include src="'src/core/layout/header/header.html'"></div>
+<div ng-include src="'src/core/layout/header/header.html'"></div>
 
-    <div class="sidebar-placeholder" ng-show="sidebar"></div>
-    <!-- Add your site or application content here -->
-    <div ui-view="" class="container-fluid"></div>
+<div class="sidebar-placeholder" ng-show="sidebar"></div>
+<!-- Add your site or application content here -->
+<div ui-view="" class="container-fluid"></div>
 
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
 
 
-    <noscript>
-      <h1>Mediarithmics navigator</h1>
-      <h2>This website requires javascript to work properly.</h2>
-      <p>
-      If you don't know how to enable javascript in your browser, please see <a href="http://www.enable-javascript.com/" target="_blank">here</a>.
-      </p>
-      <p>
-      TODO : explain why our website is awesome and you should allow js here to manage your campaigns.
-      </p>
-    </noscript>
+<noscript>
+  <h1>Mediarithmics navigator</h1>
+  <h2>This website requires javascript to work properly.</h2>
+  <p>
+    If you don't know how to enable javascript in your browser, please see <a href="http://www.enable-javascript.com/" target="_blank">here</a>.
+  </p>
+  <p>
+    TODO : explain why our website is awesome and you should allow js here to manage your campaigns.
+  </p>
+</noscript>
 
-    </body>
+</body>
 </html>

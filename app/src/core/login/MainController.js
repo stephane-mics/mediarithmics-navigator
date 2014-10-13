@@ -34,7 +34,7 @@ define(['./module', "autofill-event"], function () {
       }
 
       $scope.submit = function() {
-        
+
         // check that email & password are not empty
         if  ( !$scope.user.email || !$scope.user.password ) {
 

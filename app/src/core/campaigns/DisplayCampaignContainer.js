@@ -42,28 +42,28 @@ define(['./module'], function () {
 
 
         $q.all([campaignResourceP, AdGroupsListP, inventorySourcesP, locationsP])
-        .then( function (result) {
-          self.creationMode = false;
-          self.value = result[0];
+          .then( function (result) {
+            self.creationMode = false;
+            self.value = result[0];
 //          self.value.ad_groups = function () {
 //            return _.map(self.ad_groups(), "value");
 //          }
-          self.id = self.value.id;
-          var adGroups = result[1];
-          self.inventorySources = result[2];
-          self.locations = result[3];
+            self.id = self.value.id;
+            var adGroups = result[1];
+            self.inventorySources = result[2];
+            self.locations = result[3];
 
-          var adGroupsP = [];
-          if (adGroups.length > 0) {
+            var adGroupsP = [];
+            if (adGroups.length > 0) {
 
-            for(var i=0; i < adGroups.length; i++) {
-              // load the ad group container corresponding to the id list in ad groups
-              var adGroupCtn = new AdGroupContainer(adGroups[i]);
+              for(var i=0; i < adGroups.length; i++) {
+                // load the ad group container corresponding to the id list in ad groups
+                var adGroupCtn = new AdGroupContainer(adGroups[i]);
 
-              self.adGroups.push(adGroupCtn);
-            }
+                self.adGroups.push(adGroupCtn);
+              }
 
-            defered.resolve(self);
+              defered.resolve(self);
 
 //            $q.all(adGroupsP).then(function(result) {
 //
@@ -77,18 +77,18 @@ define(['./module'], function () {
 //              defered.reject(reason);
 //            });
 
-          } else {
-            // return the loaded container
-            defered.resolve(self);
-          }
+            } else {
+              // return the loaded container
+              defered.resolve(self);
+            }
 
 
 
 
-        }, function(reason) {
+          }, function(reason) {
 
-          defered.reject(reason);
-        });
+            defered.reject(reason);
+          });
 
         // return the promise
         return defered.promise;
@@ -289,8 +289,8 @@ define(['./module'], function () {
 
           } else {
             promise = Restangular
-            .one('display_campaigns', campaignId)
-            .post('inventory_sources', inventorySource);
+              .one('display_campaigns', campaignId)
+              .post('inventory_sources', inventorySource);
           }
           promiseUtils.bindPromiseCallback(promise, callback);
         };
@@ -409,17 +409,17 @@ define(['./module'], function () {
         var self = this;
 
         Restangular.all('display_campaigns').post(this.value, {organisation_id: this.organisationId})
-        .then(angular.bind(this, function(campaign) {
+          .then(angular.bind(this, function(campaign) {
 
-          self.id = campaign.id;
+            self.id = campaign.id;
 
-          persistDependencies.call(null, self, campaign.id, self.adGroups).then(function() {
-            deferred.resolve(campaign);
-          }, deferred.reject);
+            persistDependencies.call(null, self, campaign.id, self.adGroups).then(function() {
+              deferred.resolve(campaign);
+            }, deferred.reject);
 
-        }), function(reason) {
-          deferred.reject(reason);
-        });
+          }), function(reason) {
+            deferred.reject(reason);
+          });
 
         return deferred.promise;
       };

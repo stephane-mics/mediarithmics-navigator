@@ -1,55 +1,55 @@
 <div class="campaign-list" ng-Controller="core/campaigns/ListController">
-    <div class="campaign-sidebar">
+  <div class="campaign-sidebar">
+  </div>
+  <div class="campaign-list-content">
+    <div class="campaign-list-heading">
+      <h1>
+        All Campaigns
+        <div class="pull-right">
+          <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
+            <span class="glyphicon glyphicon-refresh"></span>
+            Refresh
+          </button>
+        </div>
+      </h1>
     </div>
-    <div class="campaign-list-content">
-        <div class="campaign-list-heading">
-            <h1>
-              All Campaigns
-              <div class="pull-right">
-                <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
-                  <span class="glyphicon glyphicon-refresh"></span>
-                  Refresh
-                </button>
-              </div>
-            </h1>
-        </div>
-        <div class="campaign-list-controller">
+    <div class="campaign-list-controller">
 
-            <div class="campaign-list-actions">
-	            <button class="mics-btn mics-btn-add" ng-click="newCampaign()">New Campaign</button>
-            </div>
-            <div class="campaign-list-date-controller">
-                <form class="form-inline" role="form">
-                    <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L" ranges="reportDefaultDateRanges" opens="'left'">
-                </form>
-            </div>
-        </div>
-        <div class="campaign-list-area" ng-show="displayCampaigns.length">
-          <h2>Display Campaigns</h2>
-          <table class="campaign-list-table js-auto-hide-actions">
-            <thead>
-              <tr>
-                <th class="status">Status</th>
-                <th>Name</th>
-                <th ng-if="administrator">Organisation</th>
-                <th class="metrics" ng-repeat="metric in displayCampaignsStatistics.getMetrics()">
-                  {{displayCampaignsStatistics.getMetricName(metric) }}
-                </th>
-                <th class="actions">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="campaign in displayCampaigns | offset: (currentPageDisplayCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
-              <td>
-                <div mics-campaign-status="campaign"></div>
-              </td>
-              <td>
-                <a href="#{{getCampaignDashboardUrl(campaign)}}">{{campaign.name}}</a>
-              </td>
-              <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
-              <td class="metrics " ng-repeat="metricValue in displayCampaignsStatistics.getRow(campaign.id) track by $index">
+      <div class="campaign-list-actions">
+        <button class="mics-btn mics-btn-add" ng-click="newCampaign()">New Campaign</button>
+      </div>
+      <div class="campaign-list-date-controller">
+        <form class="form-inline" role="form">
+          <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L" ranges="reportDefaultDateRanges" opens="'left'">
+        </form>
+      </div>
+    </div>
+    <div class="campaign-list-area" ng-show="displayCampaigns.length">
+      <h2>Display Campaigns</h2>
+      <table class="campaign-list-table js-auto-hide-actions">
+        <thead>
+        <tr>
+          <th class="status">Status</th>
+          <th>Name</th>
+          <th ng-if="administrator">Organisation</th>
+          <th class="metrics" ng-repeat="metric in displayCampaignsStatistics.getMetrics()">
+            {{displayCampaignsStatistics.getMetricName(metric) }}
+          </th>
+          <th class="actions">
+            Actions
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="campaign in displayCampaigns | offset: (currentPageDisplayCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
+          <td>
+            <div mics-campaign-status="campaign"></div>
+          </td>
+          <td>
+            <a href="#{{getCampaignDashboardUrl(campaign)}}">{{campaign.name}}</a>
+          </td>
+          <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
+          <td class="metrics " ng-repeat="metricValue in displayCampaignsStatistics.getRow(campaign.id) track by $index">
                 <span ng-if="metricValue.type == 'currency'">
                   {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                 </span>
@@ -62,48 +62,48 @@
                 <span ng-if="!metricValue.type">
                   -
                 </span>
-              </td>
-              <td class="actions">
-                <a class="mics-btn mics-btn-action" ng-click="showCampaign(campaign, $event)">Show Details</a>
-                <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a>
-                <a class="mics-btn mics-btn-delete" ng-click="deleteCampaign(campaign, $event)">Delete</a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <pagination total-items="displayCampaigns.length" ng-model="currentPageDisplayCampaign" items-per-page="itemsPerPage"></pagination>
+          </td>
+          <td class="actions">
+            <a class="mics-btn mics-btn-action" ng-click="showCampaign(campaign, $event)">Show Details</a>
+            <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a>
+            <a class="mics-btn mics-btn-delete" ng-click="deleteCampaign(campaign, $event)">Delete</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <pagination total-items="displayCampaigns.length" ng-model="currentPageDisplayCampaign" items-per-page="itemsPerPage"></pagination>
 
-        </div>
-        <div class="campaign-list-area" ng-show="emailCampaigns.length">
-          <h2>Email Campaigns</h2>
-          <table class="campaign-list-table js-auto-hide-actions">
-            <thead>
-              <tr>
-                <th class="status">Status</th>
-                <th>Name</th>
-                <th ng-if="administrator">Organisation</th>
-                <th class="actions">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="campaign in emailCampaigns | offset: (currentPageEmailCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
-              <td>
-                <div mics-campaign-status="campaign"></div>
-              </td>
-              <td>{{campaign.name}} </td>
-              <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
-              <td class="actions">
-                <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a>
-                <a class="mics-btn mics-btn-delete" ng-click="deleteCampaign(campaign, $event)">Delete</a>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-          <pagination total-items="emailCampaigns.length" ng-model="currentPageEmailCampaign" items-per-page="itemsPerPage"></pagination>
-        </div>
-
-
-      </div>
     </div>
+    <div class="campaign-list-area" ng-show="emailCampaigns.length">
+      <h2>Email Campaigns</h2>
+      <table class="campaign-list-table js-auto-hide-actions">
+        <thead>
+        <tr>
+          <th class="status">Status</th>
+          <th>Name</th>
+          <th ng-if="administrator">Organisation</th>
+          <th class="actions">
+            Actions
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="campaign in emailCampaigns | offset: (currentPageEmailCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
+          <td>
+            <div mics-campaign-status="campaign"></div>
+          </td>
+          <td>{{campaign.name}} </td>
+          <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
+          <td class="actions">
+            <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a>
+            <a class="mics-btn mics-btn-delete" ng-click="deleteCampaign(campaign, $event)">Delete</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <pagination total-items="emailCampaigns.length" ng-model="currentPageEmailCampaign" items-per-page="itemsPerPage"></pagination>
+    </div>
+
+
+  </div>
+</div>

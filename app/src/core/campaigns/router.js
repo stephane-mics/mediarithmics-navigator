@@ -24,10 +24,10 @@ define(['./module'], function () {
           url:'/{organisation_id}/campaigns',
           templateUrl: 'src/core/campaigns/list.html'
         })
-      .state('allCampaigns', {
-        url:'/campaigns',
-        templateUrl: 'src/core/campaigns/list.html'
-      });
+        .state('allCampaigns', {
+          url:'/campaigns',
+          templateUrl: 'src/core/campaigns/list.html'
+        });
     }
   ]);
 

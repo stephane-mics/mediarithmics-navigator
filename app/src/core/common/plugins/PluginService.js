@@ -1,45 +1,45 @@
 define(['./module', 'navigator'], function (module, navigator) {
-	'use strict';
+  'use strict';
 
-	var plugins = angular.module('core/common/plugins');
+  var plugins = angular.module('core/common/plugins');
 
-	plugins.factory('core/common/plugins/pluginService', [ '$q', '$log', '$document', 'Restangular', 'jquery',
-		function ($q, $log, $document, Restangular, $) {
+  plugins.factory('core/common/plugins/pluginService', [ '$q', '$log', '$document', 'Restangular', 'jquery',
+    function ($q, $log, $document, Restangular, $) {
 
-			var pluginService = {};
+      var pluginService = {};
 
-			pluginService.registerPlugin = function (moduleName, pluginBase, url) {
-				navigator.app.$futureStateProvider.futureState({src: pluginBase + '/main.js', type: "ngload", "stateName": moduleName,
-					"urlPrefix": url + "/home", properties: { "hello": "test" }});
+      pluginService.registerPlugin = function (moduleName, pluginBase, url) {
+        navigator.app.$futureStateProvider.futureState({src: pluginBase + '/main.js', type: "ngload", "stateName": moduleName,
+          "urlPrefix": url + "/home", properties: { "hello": "test" }});
 
-				define(moduleName + '.conf', [], function () {
-					var data = {};
+        define(moduleName + '.conf', [], function () {
+          var data = {};
 
-					var pluginService = {};
+          var pluginService = {};
 
-					data.properties = { "hello": "test" };
-					data.pluginBase = pluginBase;
-					data.baseUrl = url;
+          data.properties = { "hello": "test" };
+          data.pluginBase = pluginBase;
+          data.baseUrl = url;
 
-					pluginService.getProperties = function () {
-						return data.properties;
-					};
+          pluginService.getProperties = function () {
+            return data.properties;
+          };
 
-					pluginService.getBaseTemplateUrl = function () {
-						return data.pluginBase;
-					};
+          pluginService.getBaseTemplateUrl = function () {
+            return data.pluginBase;
+          };
 
-					pluginService.getBaseUrl = function () {
-						return data.baseUrl;
-					};
+          pluginService.getBaseUrl = function () {
+            return data.baseUrl;
+          };
 
-					pluginService.createState = function (name, url, template) {
-						return {
-							name: name,
-							url: pluginService.getBaseUrl() + url,
+          pluginService.createState = function (name, url, template) {
+            return {
+              name: name,
+              url: pluginService.getBaseUrl() + url,
               templateUrl: pluginService.getBaseTemplateUrl() + template
-						};
-					};
+            };
+          };
 
           pluginService.loadCss = function(template) {
             var link = document.createElement("link");
@@ -48,12 +48,12 @@ define(['./module', 'navigator'], function (module, navigator) {
             link.href = pluginService.getBaseTemplateUrl() + template;
             document.getElementsByTagName("head")[0].appendChild(link);
           };
-					return pluginService;
-				});
-			};
-			return pluginService;
-		}
-	]);
+          return pluginService;
+        });
+      };
+      return pluginService;
+    }
+  ]);
 
 
 });
