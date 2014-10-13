@@ -6,6 +6,8 @@ define(['./module'], function () {
   module.controller('core/adgroups/ChooseExistingAdsController', [
     '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
     function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
+      $scope.currentPageDisplayCampaign = 1;
+      $scope.itemsPerPage = 10;
 
       $scope.availableCreatives = Restangular.all("creatives").getList({
         creative_type : "DISPLAY_AD",

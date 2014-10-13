@@ -902,6 +902,10 @@ table.fragment-list-creatives {
     @extend .form-control;
   }
 
+  .modal-pagination {
+    padding-left: 15px;
+  }
+
   .modal-body .filtered-content {
     @include make-sm-column(12);
     max-height : 300px; /* TODO : arbitrary value */
