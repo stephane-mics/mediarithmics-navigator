@@ -1,1 +1,1 @@
-{"name":"core/layout/header", "dependencies": ["core/layout/header/navbar/navigator-navbar", "core/layout/header/navbar/admin-navbar"]}
+{"name":"core/layout/header", "dependencies": ["core/layout/header/navbar/navigator-navbar"]}

@@ -8,7 +8,7 @@ define(['./module', 'navigator'], function (module, navigator) {
   /* define the Authentication service */
   authModule.factory('core/common/auth/Session', [
     '$q', '$location', '$log', '$rootScope','Restangular', 'core/login/constants', 'core/common/plugins/pluginService',
-    function($q,$location , $log, $rootScope, Restangular, LoginConstants, pluginService ) {
+    function($q,$location , $log, $rootScope, Restangular, LoginConstants, pluginService) {
 
       var service = {};
       service.initialized = false;
@@ -35,6 +35,7 @@ define(['./module', 'navigator'], function (module, navigator) {
           }
 
           self.userProfile = userProfile;
+          self.currentWorkspace = userProfile.default_workspace;
           self.currentWorkspace = userProfile.default_workspace;
           self.initialized = true;
 

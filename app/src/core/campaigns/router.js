@@ -10,15 +10,18 @@ define(['./module'], function () {
       $stateProvider
         .state('campaigns/select-campaign-template', {
           url:'/{organisation_id}/campaigns/select-campaign-template',
-          templateUrl:'src/core/campaigns/create.html'
+          templateUrl:'src/core/campaigns/create.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         })
         .state('campaigns/display/expert/edit', {
           url:'/{organisation_id}/campaigns/display/expert/edit/{campaign_id}',
-          templateUrl:'src/core/campaigns/expert/edit-campaign.html'
+          templateUrl:'src/core/campaigns/expert/edit-campaign.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         })
         .state('campaigns/display/expert/edit/campaign/edit-ad-group', {
           url:'/{organisation_id}/campaigns/display/expert/edit/:campaign_id/edit-ad-group/:ad_group_id',
-          templateUrl:'src/core/campaigns/expert/edit-ad-group.html'
+          templateUrl:'src/core/campaigns/expert/edit-ad-group.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         })
         .state('campaigns', {
           url:'/{organisation_id}/campaigns',

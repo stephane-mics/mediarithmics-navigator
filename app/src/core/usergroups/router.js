@@ -14,11 +14,13 @@ define(['./module'], function () {
         })
         .state('library/usergroups/edit', {
           url:'/{organisation_id}/library/usergroups/:type/:usergroup_id',
-          templateUrl: 'src/core/usergroups/edit.one.html'
+          templateUrl: 'src/core/usergroups/edit.one.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         })
         .state('library/usergroups/create', {
           url:'/{organisation_id}/library/usergroups/:type',
-          templateUrl: 'src/core/usergroups/edit.one.html'
+          templateUrl: 'src/core/usergroups/edit.one.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         });
     }
   ]);

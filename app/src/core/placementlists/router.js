@@ -14,11 +14,13 @@ define(['./module'], function () {
         })
         .state('library/placementlists/new', {
           url:'/{organisation_id}/library/placementlists/new',
-          templateUrl: 'src/core/placementlists/edit.one.html'
+          templateUrl: 'src/core/placementlists/edit.one.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         })
         .state('library/placementlists/edit', {
           url:'/{organisation_id}/library/placementlists/:placementlist_id',
-          templateUrl: 'src/core/placementlists/edit.one.html'
+          templateUrl: 'src/core/placementlists/edit.one.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         });
     }
   ]);

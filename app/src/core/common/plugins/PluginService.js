@@ -3,9 +3,7 @@ define(['./module', 'navigator'], function (module, navigator) {
 
   var plugins = angular.module('core/common/plugins');
 
-  plugins.factory('core/common/plugins/pluginService', [ '$q', '$log', '$document', 'Restangular', 'jquery',
-    function ($q, $log, $document, Restangular, $) {
-
+  plugins.factory('core/common/plugins/pluginService', [ function () {
       var pluginService = {};
 
       pluginService.registerPlugin = function (moduleName, pluginBase, url) {
@@ -33,11 +31,13 @@ define(['./module', 'navigator'], function (module, navigator) {
             return data.baseUrl;
           };
 
-          pluginService.createState = function (name, url, template) {
+          pluginService.createState = function (name, url, template, navbar) {
+            //$log.debug("Creating: " + name + ", navbar: " + navbar);
             return {
               name: name,
               url: pluginService.getBaseUrl() + url,
-              templateUrl: pluginService.getBaseTemplateUrl() + template
+              templateUrl: pluginService.getBaseTemplateUrl() + template,
+              data: { navbar: pluginService.getBaseTemplateUrl() + navbar }
             };
           };
 

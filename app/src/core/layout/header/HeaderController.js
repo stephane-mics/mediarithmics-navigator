@@ -3,64 +3,12 @@ define(['./module'], function (module) {
 
   /* Searches for the right navbar */
   module.controller('HeaderController', [
-    '$scope', '$state', '$log',
-    function ($scope, $state, $log) {
-      $scope.allNavbars = {};
-
-//          Admin
-      $scope.allNavbars['/admin/organisations/new-organisation'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/admin/organisations/{id}'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/admin/users/new-user'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/admin/users/{id}'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//			Basic editor
-      $scope.allNavbars['/{organisation_id}/creatives/com.mediarithmics.creative.display/basic-editor/create'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/creatives/com.mediarithmics.creative.display/basic-editor/edit/:creative_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//			Default editor
-      $scope.allNavbars['/{organisation_id}/creatives/com.mediarithmics.creative.display/default-editor/create'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/creatives/com.mediarithmics.creative.display/default-editor/edit/:creative_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//			core/campaigns
-      $scope.allNavbars['/{organisation_id}/campaigns/select-campaign-template'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/campaigns/display/expert/edit/{campaign_id}'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/campaigns/display/expert/edit/:campaign_id/edit-ad-group/:ad_group_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//			core/keywords
-      $scope.allNavbars['/{organisation_id}/library/keywordslists/new'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/library/keywordslists/:keywordslist_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/library/keywordslists'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//          core/campaigns/emails
-      $scope.allNavbars['/{organisation_id}/campaigns/email/expert/:campaign_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/campaigns/email/expert'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//			core/campaigns/keywords
-      $scope.allNavbars['/{organisation_id}/campaigns/display/keywords/:campaign_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/campaigns/display/keywords'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//          core/creatives
-      $scope.allNavbars['/{organisation_id}/creatives/select-creative-template'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//          core/placementlists
-      $scope.allNavbars['/{organisation_id}/library/placementlists/new'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/library/placementlists/:placementlist_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
-//          core/usergroups
-      $scope.allNavbars['/{organisation_id}/library/usergroups/:type/:usergroup_id'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-      $scope.allNavbars['/{organisation_id}/library/usergroups/:type'] = 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html';
-
+    '$scope', '$state', '$stateParams', '$log',
+    function ($scope, $state) {
       $scope.findNavbar = function() {
-        var checkAdmin = $state.current.url;
-        if (typeof $scope.allNavbars[$state.current.url] !== 'undefined') {
-          return $scope.allNavbars[$state.current.url];
-        }
-        else if (checkAdmin.split('/')[1] === 'admin') {
-          return 'src/core/layout/header/navbar/admin-navbar/admin-navbar.html';
-        }
-        else {
+        if (typeof $state.current.data === 'undefined')
           return 'src/core/layout/header/navbar/navigator-navbar/navigator-navbar.html';
-        }
+        return $state.current.data.navbar;
       };
     }
   ]);
