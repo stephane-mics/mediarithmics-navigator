@@ -901,7 +901,7 @@ table.fragment-list-creatives {
   select, input[type=text] {
     @extend .form-control;
   }
-
+  
   .modal-body .filtered-content {
     @include make-sm-column(12);
     max-height : 300px; /* TODO : arbitrary value */
