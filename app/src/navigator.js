@@ -68,8 +68,8 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           sidebar: false
         });
 
-$urlRouterProvider.when('/', '/home');
-$urlRouterProvider.when('/home', '/campaigns');
+      $urlRouterProvider.when('/', '/home');
+      $urlRouterProvider.when('/home', '/campaigns');
 
 
       // TODO: move these to non-public and authenticate
@@ -114,8 +114,8 @@ $urlRouterProvider.when('/home', '/campaigns');
       $logProvider.debugEnabled(true);
     }
   ]);
-   
-   
+
+
 // configure the Restangular Service
   navigator.config([
     'RestangularProvider', 'core/configuration',
@@ -213,7 +213,7 @@ $urlRouterProvider.when('/home', '/campaigns');
         });
 
         if (Session.isInitialized()) {
-            Session.updateWorkspace(toParams.organisation_id);
+          Session.updateWorkspace(toParams.organisation_id);
         }
         $rootScope.sidebar = options.sidebar;
         var urlMatch = toState.name.match(/\/?(\w+)\/?/);
@@ -221,30 +221,22 @@ $urlRouterProvider.when('/home', '/campaigns');
           $rootScope.category = urlMatch[1];
         }
         $rootScope.topbar = options.topbar;
-          if (!options.publicUrl) {
+        if (!options.publicUrl) {
 
           if (AuthenticationService.hasAccessToken()) {
-
             if (!Session.isInitialized()) {
-
               AuthenticationService.pushPendingPath($location.url());
               $location.path('/init-session');
             }
-
-
           } else if (AuthenticationService.hasRefreshToken()) {
-
             // keep the current path in memory
             AuthenticationService.pushPendingPath($location.url());
 
             // redirect to the remember-me page
             $location.path('/remember-me');
-
           } else {
-
             // redirect to login
             $location.path('/login');
-
           }
         }
       });

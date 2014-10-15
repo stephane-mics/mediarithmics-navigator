@@ -1,5 +1,5 @@
-define(
-  ['angularAMD',
+define([
+    'angularAMD',
     'moment',
     'jqCookie',
     'jqDaterangepicker',
@@ -26,13 +26,13 @@ define(
     'core/placementlists/index',
     'core/login/index',
     'core/datamart/index',
-    'core/layout/index'], function (angularAMD) {
+    'core/layout/index'
+  ], function () {
     'use strict';
 
     /*
      * Application Module
      */
-
     var navigator = angular.module('navigator', [
       'ngCookies',
       'ngResource',
@@ -61,4 +61,5 @@ define(
     ]);
 
     return navigator;
-  });
+  }
+);

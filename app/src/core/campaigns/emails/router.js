@@ -11,11 +11,12 @@ define(['./module'], function () {
         .state('campaigns/email/expert/edit', {
           url:'/{organisation_id}/campaigns/email/expert/:campaign_id',
           templateUrl: 'src/core/campaigns/emails/index.html',
-          topbar : false
-        }).state('campaigns/email/expert/create', {
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
+        })
+        .state('campaigns/email/expert/create', {
           url:'/{organisation_id}/campaigns/email/expert',
           templateUrl: 'src/core/campaigns/emails/index.html',
-          topbar : false
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         });
     }
   ]);

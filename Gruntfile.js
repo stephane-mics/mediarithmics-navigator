@@ -228,7 +228,7 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: '<%= yeoman.app %>/index.html',
       options: {
-        dest: '<%= yeoman.dist %>',
+        dest: '<%= yeoman.dist %>'
       }
     },
 
@@ -264,6 +264,7 @@ module.exports = function (grunt) {
         ]
       }
     },
+
     svgmin: {
       dist: {
         files: [
@@ -276,6 +277,7 @@ module.exports = function (grunt) {
         ]
       }
     },
+
     htmlmin: {
       dist: {
         options: {
@@ -295,8 +297,8 @@ module.exports = function (grunt) {
       }
     },
 
-    // Allow the use of non-minsafe AngularJS files. Automatically makes it
-    // minsafe compatible so Uglify does not destroy the ng references
+// Allow the use of non-minsafe AngularJS files. Automatically makes it
+// minsafe compatible so Uglify does not destroy the ng references
 //    ngmin: {
 //      dist: {
 //        files: [{
@@ -417,6 +419,7 @@ module.exports = function (grunt) {
         src: '{,*/}*.css'
       }
     },
+
     'regex-replace': {
       dist: {
         src: ['<%= yeoman.dist %>/index.html'],
@@ -435,7 +438,6 @@ module.exports = function (grunt) {
         ]
       }
     },
-
 
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
@@ -561,11 +563,9 @@ module.exports = function (grunt) {
 
       fs.writeFileSync(dirname + "/index.js", indexJs);
       fs.writeFileSync(dirname + "/module.js", moduleJs);
-
     });
-
-
   });
+
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -575,9 +575,7 @@ module.exports = function (grunt) {
       'clean:server',
       'shell:iab_placeholder',
       'genRequireJsFiles:config',
-      'bowerInstall',
       'concurrent:server',
-//      'autoprefixer',
       'connect:livereload',
       'watch'
     ]);
@@ -592,7 +590,6 @@ module.exports = function (grunt) {
     'clean:server',
     'genRequireJsFiles:config',
     'concurrent:test',
-//    'autoprefixer',
     'connect:test',
     'karma'
   ]);
@@ -600,15 +597,12 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'shell:iab_placeholder',
-    'bowerInstall',
     'useminPrepare',
     'genRequireJsFiles:config',
     'requirejs',
     'concurrent:dist',
     'concat',
-//    'ngmin',
     'copy:dist',
-//    'copy:require',
     'cdnify',
     'cssmin',
     'uglify',

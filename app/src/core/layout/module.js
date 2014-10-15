@@ -1,1 +1,1 @@
-define(["angular"],function(){"use strict";return angular.module("core/layout", ["core/common"]);});
+define(["angular"],function(){"use strict";return angular.module("core/layout", ["core/common","core/layout/header"]);});
