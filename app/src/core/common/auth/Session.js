@@ -7,8 +7,8 @@ define(['./module', 'navigator'], function (module, navigator) {
 
   /* define the Authentication service */
   authModule.factory('core/common/auth/Session', [
-    '$q', '$location', '$log', '$rootScope','Restangular', 'core/login/constants', 'core/common/plugins/pluginService',
-    function($q,$location , $log, $rootScope, Restangular, LoginConstants, pluginService) {
+    '$q', '$location', '$log', '$rootScope','Restangular', 'core/login/constants', 'core/common/plugins/pluginService', 'core/configuration',
+    function($q, $location , $log, $rootScope, Restangular, LoginConstants, pluginService, coreConfig) {
 
       var service = {};
       service.initialized = false;
@@ -39,7 +39,7 @@ define(['./module', 'navigator'], function (module, navigator) {
           self.currentWorkspace = userProfile.default_workspace;
           self.initialized = true;
 
-          pluginService.registerPlugin("admin", 'http://localhost:9001', "/admin");
+          pluginService.registerPlugin("admin", coreConfig.ADMIN_PLUGIN_URL, "/admin");
 
           defered.resolve();
           $log.debug("User Profile :", userProfile);

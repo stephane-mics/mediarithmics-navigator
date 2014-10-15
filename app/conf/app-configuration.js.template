@@ -3,6 +3,7 @@
   'use strict';
 
   angular.module('core/configuration', []).constant("core/configuration", {
+    "ADMIN_PLUGIN_URL" : "http://127.0.0.1:9001/",
     "WS_URL" : "http://127.0.0.1:9004/public/v1",
     "ADS_UPLOAD_URL" : "http://127.0.0.1:9004/public/v1/asset_files",
     "ADS_PREVIEW_URL" : "//ads.mediarithmics.local/ads/render",
