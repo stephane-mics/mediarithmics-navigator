@@ -199,7 +199,7 @@ define(['./module'], function () {
       };
 
       /**
-       * Keyword list methods
+       * Placement list methods
        */
       service.getPlacementLists = function(adGroupId) {
         return this.campaignCtn.getAdGroup(adGroupId).placementLists;
@@ -213,6 +213,13 @@ define(['./module'], function () {
         this.campaignCtn.getAdGroup(adGroupId).removePlacementList(placementList);
       };
 
+
+      /**
+       * Bid Optimizer methods
+       */
+      service.getBidOptimizer = function(adGroupId) {
+        return this.campaignCtn.getAdGroup(adGroupId).bidOptimizer;
+      };
 
 
 

@@ -1,0 +1,25 @@
+<div ng-controller="core/bidOptimizer/ChooseBidOptimizerController">
+<div class="dropdown">
+  <button class="mics-btn mics-btn-add" dropdown-toggle type="button">
+    change
+  </button>
+  <ul class="dropdown-menu" role="menu" aria-labelledby="change bid optimizer">
+    <li role="presentation">
+      <a role="menuitem" ng-click="bidOptimizerChooseFromLibrary(adGroup)" dropdown-toggle>
+        Choose from library
+      </a>
+    </li>
+    <li role="presentation">
+      <a role="menuitem" ng-click="bidOptimizerCreateNew(adGroup)" dropdown-toggle>
+        Create New
+      </a>
+    </li>
+    <li role="presentation">
+      <a role="menuitem" ng-click="bidOptimizerSetToDefault(adGroup)" dropdown-toggle>
+        Set To Default
+      </a>
+    </li>
+  </ul>
+</div>
+</div>
+

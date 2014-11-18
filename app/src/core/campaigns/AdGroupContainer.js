@@ -35,6 +35,7 @@ define(['./module'], function () {
         this.placementLists = [];
         this.removedPlacementLists = [];
 
+        this.bidOptimizer = null;
       };
 
 
