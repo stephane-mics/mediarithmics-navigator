@@ -28,9 +28,6 @@ define(['./module'], function () {
         max_results : 200,
         organisation_id: Session.getCurrentWorkspace().organisation_id
       };
-      if (Session.getCurrentWorkspace().administrator) {
-        params = { administration_id: Session.getCurrentWorkspace().organisation_id };
-      }
 
       $scope.displayArchived = false;
 
