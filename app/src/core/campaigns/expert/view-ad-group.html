@@ -24,6 +24,22 @@
     <div class="ad-group-component">
       <h5>Visibility : {{adGroup.visibility | constant:'adgroup_visibility'}}</h5>
     </div>
+    <div
+         class="ad-group-component"
+         ng-show="adGroup.bid_optimizer_id"
+         fetch-bid-optimizer="adGroup.bid_optimizer_id as bidOptimizer"
+         fetch-plugin-from-version="bidOptimizer.engine_version_id as engine"
+         fetch-plugin-properties="engine.id as engineProperties"
+    >
+      <h5>
+        Bid Strategy :
+        {{bidOptimizer.name}}  (
+          {{engineProperties['name'].value}}
+          by
+          {{engineProperties['provider'].value}}
+        ) - {{adGroup.bid_optimization_objective_type}} {{adGroup.bid_optimization_objective_value}} &euro;
+      </h5>
+    </div>
     <div class="ad-group-component" ng-show="getUserGroups(adGroup.id).length">
       <h5>user groups <span class="badge">{{getUserGroups(adGroup.id).length}}</span></h5>
       <div>
