@@ -23,12 +23,6 @@ define(['./module'], function (module) {
           controller: 'core/bidOptimizer/CreateController',
           size: "lg"
         });
-
-        uploadModal.result.then(function () {
-
-        }, function () {
-          $log.info('Modal dismissed at: ' + new Date());
-        });
       };
       $scope.bidOptimizerSetToDefault = function (adGroup) {
         $scope.$emit("mics-bid-optimizer:selected", {
