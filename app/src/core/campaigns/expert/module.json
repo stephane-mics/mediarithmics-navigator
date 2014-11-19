@@ -4,6 +4,8 @@
     "core/campaigns",
     "core/creatives",
     "core/adgroups",
+    "core/bidOptimizer",
+    "core/plugin",
     "core/usergroups",
     "ui.bootstrap",
     "core/keywords",

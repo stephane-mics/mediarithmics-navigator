@@ -944,6 +944,13 @@ table.fragment-list-placement-list {
     overflow: auto;
   }
 }
+table.fragment-list-bid-optimizer {
+  @extend .mics-table;
+}
+table.fragment-list-bid-optimizer-engine {
+  @extend .mics-table;
+}
+
 
 /*
  * Datamart

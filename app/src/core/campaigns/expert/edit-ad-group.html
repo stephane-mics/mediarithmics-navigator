@@ -171,6 +171,55 @@
           </table>
       </div>
 
+      <div
+        class="mcs-form-group panel panel-default"
+        fetch-bid-optimizer="adGroup.bid_optimizer_id as bidOptimizer"
+        fetch-plugin-from-version="bidOptimizer.engine_version_id as engine"
+        fetch-plugin-properties="engine.id as engineProperties"
+      >
+        <div class="mics-block-heading">
+          <span>
+            Bid Strategy :
+            <span ng-show="!adGroup.bid_optimizer_id">Default - Fixed bid price</span>
+            <span ng-show="adGroup.bid_optimizer_id">
+              {{bidOptimizer.name}}  (
+                {{engineProperties['name'].value}}
+                by
+                {{engineProperties['provider'].value}}
+              ) - {{adGroup.bid_optimization_objective_type}} {{adGroup.bid_optimization_objective_value}} &euro;
+            </span>
+          </span>
+          <a class="pull-right mics-btn mics-btn-action" data-toggle="collapse" data-parent="#accordion" data-target="#bidOptimizerPanel">
+            More
+          </a>
+        </div>
+
+        <div id="bidOptimizerPanel" class="panel-collapse collapse">
+          <div class="panel-body form-inline">
+            Bid Optimizer :
+            <span ng-show="!adGroup.bid_optimizer_id">Default</span>
+            <span ng-show="adGroup.bid_optimizer_id">
+              {{bidOptimizer.name}}  (
+                {{engineProperties['name'].value}}
+                by
+                {{engineProperties['provider'].value}}
+              )
+            </span>
+
+            <div ng-include="'src/core/bidOptimizer/choose-bid-optimizer.html'" class="form-group"></div>
+
+            <div ng-show="adGroup.bid_optimizer_id" class="form-inline">
+              Objective<br>
+              <select ng-model="adGroup.bid_optimization_objective_type">
+                <option value="CPC">CPC</option>
+                <option value="CPA">CPA</option>
+              </select>
+              <input ng-model="adGroup.bid_optimization_objective_value" class="form-control" /> &euro;
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!-- save or cancel -->
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish" ng-click="done()">Return to the campaign</button>

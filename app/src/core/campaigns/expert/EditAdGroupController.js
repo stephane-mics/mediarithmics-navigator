@@ -43,16 +43,16 @@ define(['./module'], function () {
         return DisplayCampaignService.getUserGroups(adGroupId);
       };
 
-      $scope.getKeywordLists = function (keywordListId) {
-        return DisplayCampaignService.getKeywordLists(keywordListId);
+      $scope.getKeywordLists = function (adGroupId) {
+        return DisplayCampaignService.getKeywordLists(adGroupId);
       };
 
       $scope.deleteKeywordList = function (keywordList) {
         return DisplayCampaignService.removeKeywordList(adGroupId, keywordList);
       };
 
-      $scope.getPlacementLists = function (placementListId) {
-        return DisplayCampaignService.getPlacementLists(placementListId);
+      $scope.getPlacementLists = function (adGroupId) {
+        return DisplayCampaignService.getPlacementLists(adGroupId);
       };
 
       $scope.deletePlacementList = function (placementList) {
@@ -61,6 +61,10 @@ define(['./module'], function () {
 
       $scope.deleteUserGroup = function (userGroup) {
         return DisplayCampaignService.removeUserGroup(adGroupId, userGroup);
+      };
+
+      $scope.getBidOptimizer = function (adGroupId) {
+        return DisplayCampaignService.getBidOptimizer(adGroupId);
       };
 
       $scope.$on("mics-user-group:selected", function (event, params) {
@@ -80,6 +84,16 @@ define(['./module'], function () {
         DisplayCampaignService.addKeywordList(adGroupId, {
           keyword_list_id : params.keywordList.id
         });
+      });
+
+      $scope.$on("mics-bid-optimizer:selected", function (event, params) {
+        if(params.bidOptimizer === null) {
+          $scope.adGroup.bid_optimization_objective_value = null;
+          $scope.adGroup.bid_optimization_objective_type = null;
+          $scope.adGroup.bid_optimizer_id = null;
+        } else {
+          $scope.adGroup.bid_optimizer_id = params.bidOptimizer.id;
+        }
       });
 
       $scope.$on("mics-placement-list:selected", function (event, params) {

@@ -6,8 +6,9 @@ define(['./module'], function (module) {
     '$scope', '$state', '$stateParams', '$log',
     function ($scope, $state) {
       $scope.findNavbar = function() {
-        if (typeof $state.current.data === 'undefined')
+        if (typeof $state.current.data === 'undefined') {
           return 'src/core/layout/header/navbar/navigator-navbar/navigator-navbar.html';
+        }
         return $state.current.data.navbar;
       };
     }
