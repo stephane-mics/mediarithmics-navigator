@@ -4,11 +4,11 @@ define(['./module'], function (module) {
 
 
   module.controller('core/datamart/users/ViewOneController', [
-    '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
-    function($scope, $stateParams, Restangular, Common, $, Session) {
+    '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session','lodash',
+    function($scope, $stateParams, Restangular, Common, $, Session, lodash) {
 
       $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
-      $scope.INITIAL_VISITS_PER_AGENT = 1;
+      $scope.INITIAL_VISITS = 10;
 
       $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
 
@@ -20,7 +20,7 @@ define(['./module'], function (module) {
       $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $stateParams.userId);
       $scope.userEndpoint.get().then(function (user) {
         $scope.user = user;
-        $scope.getAgentsAndVisits($scope.INITIAL_VISITS_PER_AGENT);
+        $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
       });
 
       // prevent dropdown from closing on checkbox interaction
@@ -35,30 +35,46 @@ define(['./module'], function (module) {
         // fetch UserAgents
         $scope.userEndpoint.all('agents').getList().then(function (agents){
           $scope.agents = agents;
-          for (var i = 0; i < $scope.agents.length; i++) {
-            $scope.agents[i].visible = true;
-            // fetch visits of each agent and call handler
-            Restangular.one('datamarts', $scope.datamartId).one('agents', $scope.agents[i].id).all('visits').getList({ limit: visitLimit }).then($scope.handleVisits);
-          }
+        });
+        $scope.userEndpoint.all('timeline').getList().then(function (timeline){
+          $scope.timeline = timeline
+          $scope.handleVisits(timeline)
         });
       };
 
-      // Handles the loaded visits by constructing an activity for each visit, then loads all actions for each
-      $scope.handleVisits = function(visits) {
+      // Handles the loaded timeline by constructing an activity for each visit, then loads all actions for each
+      $scope.handleVisits = function(timeline) {
         // if there are more visits avaialble, but a limit is set, show the 'load more' button
-        if (visits.metadata.paging.count > visits.metadata.paging.limit) {
-          $scope.showLoadMore = true;
-        }
+
+        $scope.showLoadMore = true;
+
         // store visits in parent agent
-        var agent = Common.collections.findById($scope.agents, visits.parentResource.id);
-        agent.visits = visits;
         // iterate visits
-        for (var j = 0; j < visits.length; j++) {
+        for (var j = 0; j < timeline.length; j++) {
           // assemble an activity and a composite id for it
-          var activity = { id: agent.id + '_' + visits[j].id, agent: agent, visit: visits[j] };
-          $scope.activities.push(activity);
+          var event = timeline[j]
+          var agent = lodash.find($scope.agents,  {'user_agent_id':  event.agent_id});
+          var activity = { id: agent.id + '_' + event.id, agent: agent, visit: event };
+
+            activity.actions = [];
+                    activity.expanded = false;
+                    for (var k = 0; k < event.items.length; k++) {
+                      var action = event.items[k];
+                      // fetch action
+                      if (action.$type === 'performed_action') {
+                        action.details = Restangular.one('datamarts', $scope.datamartId).one('actions', action.action_id).get().$object;
+                      }
+                      // fetch item
+                      if (action.$type === '$added_to_cart' || action.$type === '$viewed') {
+                        activity.with_purchase = true;
+//                        action.item = Restangular.one('datamarts', $scope.datamartId).one('items', action.datasheet_id).get().$object;
+                      }
+                      activity.actions.push(action);
+                    }
+
+            $scope.activities.push(activity);
           // fetch actions of each visit
-          Restangular.one('datamarts', $scope.datamartId).one('agents', visits.parentResource.id).one('visits', visits[j].id).all('activity').getList().then($scope.handleActions);
+//          Restangular.one('datamarts', $scope.datamartId).one('agents', visits.parentResource.id).one('visits', visits[j].id).all('activity').getList().then($scope.handleActions);
         }
       };
 
@@ -66,23 +82,8 @@ define(['./module'], function (module) {
       $scope.handleActions = function(actions) {
         // find activity by id
         var activity = Common.collections.findById($scope.activities, actions.parentResource.parentResource.id + '_' + actions.parentResource.id);
-        if (activity) {
-          activity.actions = [];
-          activity.expanded = false;
-          for (var k = 0; k < actions.length; k++) {
-            var action = actions[k];
-            // fetch action
-            if (action.activity_type === 'performed_action') {
-              action.details = Restangular.one('datamarts', $scope.datamartId).one('actions', action.action_id).get().$object;
-            }
-            // fetch item
-            if (action.activity_type === 'purchase_item' || action.activity_type === 'view_item') {
-              activity.with_purchase = true;
-              action.item = Restangular.one('datamarts', $scope.datamartId).one('items', action.datasheet_id).get().$object;
-            }
-            activity.actions.push(action);
-          }
-        }
+
+
       };
 
       // Reloads all agents,visits,actions without any limit
