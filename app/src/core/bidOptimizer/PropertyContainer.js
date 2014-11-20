@@ -1,11 +1,7 @@
 define(['./module'], function (module) {
   'use strict';
 
-  /*
-   * Display Ad Property Container
-   */
-
-  module.factory("core/creatives/PropertyContainer", [
+  module.factory("core/bidOptimizer/PropertyContainer", [
     "$q", "Restangular",
 
     function($q, Restangular) {
@@ -35,7 +31,7 @@ define(['./module'], function (module) {
       };
 
       PropertyContainer.prototype.persist = function persist(creativeId) {
-        return Restangular.one("display_ads", creativeId).one("renderer_properties").customPUT([this.value]);
+        return Restangular.one("bid_optimizers", creativeId).one("properties").customPUT([this.value]);
       };
 
       return PropertyContainer;
@@ -43,5 +39,6 @@ define(['./module'], function (module) {
 
   ]);
 });
+
 
 

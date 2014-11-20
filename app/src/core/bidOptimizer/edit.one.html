@@ -15,21 +15,16 @@
       <input required class="input-lg" ng-model="bidOptimizer.name" type="text" id="bid_optimizer_name">
     </div>
 
-    <!--
     <div class="row">
 
       <div class="col-md-12">
         <h4>Properties</h4>
 
         <div ng-repeat="property in properties">
-          <div>
-            {{property|json}}
-          </div>
-          <mcs-data-file-property property="property.value" ng-if="property.value.property_type == 'DATA'"></mcs-data-file-property>
+          <mcs-data-file-property property="property.value" ng-if="property.value.property_type == 'DATA_FILE'"></mcs-data-file-property>
         </div>
       </div>
     </div>
-    -->
 
     <div class="mcs-actions-group">
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
