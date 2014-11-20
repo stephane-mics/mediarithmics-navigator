@@ -47,5 +47,27 @@ define(['./module'], function () {
     }
   ]);
 
+  // data file property
+  module.directive('mcsDataFileProperty', [
+    function () {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: '@',
+          labelFor: '@',
+          property: '=property',
+          ngDisabled: "="
+        },
+        templateUrl: '/src/core/common/properties/data-file-property.html',
+        link: function (scope, ele, attrs, c) {
+
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
+      };
+    }
+  ]);
+
 
 });
