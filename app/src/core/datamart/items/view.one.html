@@ -77,10 +77,10 @@
           <td><strong>{{ datasheet.market }}</strong> in <strong>{{ languageMapping.map(datasheet.language) }}</strong></td>
         </tr>
         <tr>
-          <td>Catgories</td>
+          <td>Categories</td>
           <td>
             <span ng-repeat="category in categories">
-              <a ng-href="{{ categoryUrl + '/' + category.id }}">{{ category.name }}</a><span ng-hide="$last">,</span>
+              <a ng-href="{{ categoryUrl + '/' + category.category_id }}">{{ category.name }}</a><span ng-hide="$last">,</span>
             </span>
           </td>
         </tr>
