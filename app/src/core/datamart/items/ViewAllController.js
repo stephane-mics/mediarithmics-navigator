@@ -32,7 +32,7 @@ define(['./module'], function (module) {
           $scope.language = null;
         }
 
-        Restangular.one('datamarts', $scope.datamartId).all('datasheets/search/').getList({ terms: $scope.searchTerms, market: market, language: $scope.language, offset: offset, limit: limit})
+        Restangular.one('datamarts', $scope.datamartId).all('itemInCatalogs/search/').getList({ terms: $scope.searchTerms, market: market, language: $scope.language, offset: offset, limit: limit})
           .then(function (result) {
             $scope.datasheets = result;
           });

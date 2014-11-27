@@ -33,7 +33,7 @@ define(['./module'], function () {
         };
 
         $scope.refreshDatasheets = function () {
-          Restangular.one('datamarts', $scope.datamartId).one('categories', $stateParams.categoryId).all('datasheets').getList({ sameMarket: true, sameLanguage:true }).then(function (result) {
+          Restangular.one('datamarts', $scope.datamartId).one('categories', $stateParams.categoryId).all('itemInCatalogs').getList({ sameMarket: true, sameLanguage:true }).then(function (result) {
             $scope.datasheets = result;
           });
         };
@@ -65,7 +65,7 @@ define(['./module'], function () {
 
         // in catalog view, show all items
         $scope.refreshDatasheets = function (offset, limit) {
-          Restangular.one('datamarts', $scope.datamartId).all('datasheets/search/').getList({ offset: offset, limit: limit }).then(function (result) {
+          Restangular.one('datamarts', $scope.datamartId).all('itemInCatalogs/search/').getList({ offset: offset, limit: limit }).then(function (result) {
             $scope.datasheets = result;
           });
         };
