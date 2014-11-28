@@ -80,7 +80,7 @@
           <td>Categories</td>
           <td>
             <span ng-repeat="category in categories">
-              <a ng-href="{{ categoryUrl + '/' + category.category_id }}">{{ category.name }}</a><span ng-hide="$last">,</span>
+              <a ng-href="{{ categoryUrl + '/' + category.category_id }}">{{ category.category_id }}</a><span ng-hide="$last">,</span>
             </span>
           </td>
         </tr>

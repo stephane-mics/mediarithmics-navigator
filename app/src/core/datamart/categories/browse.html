@@ -49,7 +49,7 @@
               <div class="pull-left">
                 <label class="blue">Current category</label>
                 <div class="category-item">
-                  {{ currentCategory.name }}
+                  {{ currentCategory.category_id }}
                 </div>
               </div>
               
@@ -59,7 +59,7 @@
                   <label class="blue">Parents</label>
                 </div>
                 <div class="category-list">
-                  <a href="{{ baseUrl + element.id }}" ng-repeat="element in parents" class="category-item">{{ element.name }}</a>
+                  <a href="{{ baseUrl  + '/'+ element.category_id }}" ng-repeat="element in parents" class="category-item">{{ element.category_id }}</a>
                 </div>
               </div>
             </div>    
