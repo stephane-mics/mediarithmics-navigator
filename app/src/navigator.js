@@ -89,13 +89,13 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           templateUrl: 'src/core/datamart/items/view.one.html',
           publicUrl: true
         })
-        .state('datamart/categories/', {
-          url:'/datamart/categories',
+        .state('datamart/categories/:catalogId', {
+          url:'/datamart/categories/:catalogId',
           templateUrl: 'src/core/datamart/categories/browse.html',
           publicUrl: true
         })
-        .state('datamart/categories/:categoryId', {
-          url:'/datamart/categories/:categoryId',
+        .state('datamart/categories/:catalogId/:categoryId', {
+          url:'/datamart/categories/:catalogId/:categoryId',
           templateUrl: 'src/core/datamart/categories/browse.html',
           publicUrl: true
         })
