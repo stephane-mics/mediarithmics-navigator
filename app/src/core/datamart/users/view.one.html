@@ -73,13 +73,13 @@
 
               <!-- view_item -->
               <span class="badge" ng-show="item.$type == '$viewed' || item.$type == '$added_to_cart'">{{ item.$count }}</span>
-              <span ng-show="item.$type == '$viewed'">Viewed item <a href="{{ itemUrl + item.$item_id }}">{{ item.$item_id }}</a></span>
-              <span ng-show="item.$type == '$added_to_cart'">Added item <a href="{{ itemUrl + item.$item_id }}">{{ item.$item_id }}</a> to cart</span>
+              <span ng-show="item.$type == '$viewed'">Viewed item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>
+              <span ng-show="item.$type == '$added_to_cart'">Added item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">item.$catalog_id}}</a> to cart</span>
 
 
               <!-- purchase_item -->
               <span class="badge" ng-show="item.$type == '$purchased'">{{ item.$count }}</span>
-              <span ng-show="item.$type == '$purchased'">Purchased item <a href="{{ itemUrl + item.$item_id }}">{{ item.$item_id }}</a></span>
+              <span ng-show="item.$type == '$purchased'">Purchased item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>
             </li>
           </ul>
           <!-- expand/collapse switch -->

@@ -84,8 +84,8 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           templateUrl: 'src/core/datamart/items/view.all.html',
           publicUrl: true
         })
-        .state('datamart/items/:itemId', {
-          url:'/datamart/items/:itemId',
+        .state('datamart/items/:catalogId/:itemId', {
+          url:'/datamart/items/:catalogId/:itemId',
           templateUrl: 'src/core/datamart/items/view.one.html',
           publicUrl: true
         })

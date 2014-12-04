@@ -5,9 +5,9 @@ define(['./module'], function () {
   var module = angular.module('core/datamart/categories');
 
   module.controller('core/datamart/categories/BrowseController', [
-    '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
+    '$scope', '$location','$stateParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session', 'lodash',
 
-    function($scope, $stateParams, Restangular, Common, Session) {
+    function($scope, $location, $stateParams, Restangular, Common, Session, lodash) {
 
       $scope.catalogBase = '#/datamart/categories/'
       $scope.baseUrl = '#/datamart/categories/'+$stateParams.catalogId;
@@ -16,7 +16,7 @@ define(['./module'], function () {
       $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
       $scope.categoriesPerPage = 10;
 
-      if ($stateParams.categoryId) {
+      if ($stateParams.categoryId && $stateParams.catalogId) {
         // SINGLE CATEGORY VIEW
 
         $scope.refreshCategories = function () {
@@ -45,7 +45,7 @@ define(['./module'], function () {
           $scope.refreshDatasheets();
         });
 
-      } else {
+      } else if ($stateParams.catalogId){
         // CATALOG VIEW
 
         $scope.currentCategory = null;
@@ -65,18 +65,30 @@ define(['./module'], function () {
         };
 
         // fetch market definitions
-         Restangular.one('datamarts', $scope.datamartId).all('catalogs').getList().then(function (catalogs) {
-                  // attach watchers: query with resetting the paging also
-//                  $scope.$watchCollection('[market, language]', function() {
-//                    $scope.refreshCategories(0, $scope.categoriesPerPage);
-//                  });
-          $scope.catalogs = catalogs
-                  $scope.refreshCategories(0, $scope.categoriesPerPage);
-                  $scope.refreshDatasheets(0, 10);
-                });
+         $scope.refreshCategories(0, $scope.categoriesPerPage);
+         $scope.refreshDatasheets(0, 10);
 
+      } else {
 
+        $scope.currentCategory = null;
       }
+
+      Restangular.one('datamarts', $scope.datamartId).all('catalogs').getList().then(function (catalogs) {
+         $scope.catalogs = catalogs
+         if($stateParams.catalogId) {
+          $scope.catalog = lodash.find(catalogs, {"$catalog_id": $stateParams.catalogId})
+         }
+
+//         $scope.refreshCategories(0, $scope.categoriesPerPage);
+//         $scope.refreshDatasheets(0, 10);
+      });
+
+      $scope.changeCatalog =  function() {
+        if($scope.catalog) {
+          $location.path('/datamart/categories/'+$scope.catalog.$catalog_id)
+        }
+      }
+
 
       // add languageMapping controls
       $scope.languageMapping = Common.languageMapping;
