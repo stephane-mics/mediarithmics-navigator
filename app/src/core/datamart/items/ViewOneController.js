@@ -12,11 +12,11 @@ define(['./module'], function (module) {
 
       // pass datamartId from other controller
       var datamartId = Session.getCurrentWorkspace().datamart_id;
-      var datasheets = Restangular.one('datamarts', datamartId).one('items', $stateParams.itemId).all('itemInCatalogs');
+      var datasheets = Restangular.one('datamarts', datamartId).one('items', $stateParams.itemId).all('catalog_items');
       datasheets.getList({"catalog_id": $stateParams.catalogId}).then(function (result) {
         $scope.datasheet = result[0];
 //.('categories').getList().then(function (result) {
-        Restangular.one('datamarts', datamartId).one('catalogs', $stateParams.catalogId).one('itemInCatalogs', result[0].item_in_catalog_id).all('categories').getList().then(function (result) {
+        Restangular.one('datamarts', datamartId).one('catalogs', $stateParams.catalogId).one('catalog_items', result[0].item_in_catalog_id).all('categories').getList().then(function (result) {
           $scope.categories = result;
         });
       });

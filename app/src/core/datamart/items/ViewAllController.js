@@ -14,7 +14,7 @@ define(['./module'], function (module) {
 
       $scope.refreshDatasheets = function refreshDatasheets(offset, limit) {
 
-        Restangular.one('datamarts', $scope.datamartId).one('catalogs', $scope.catalog.$catalog_id).all('itemInCatalogs/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit})
+        Restangular.one('datamarts', $scope.datamartId).one('catalogs', $scope.catalog.$catalog_id).all('catalog_items/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit})
           .then(function (result) {
             $scope.datasheets = result;
           });
