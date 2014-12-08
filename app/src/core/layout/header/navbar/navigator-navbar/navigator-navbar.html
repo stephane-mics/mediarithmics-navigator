@@ -37,7 +37,7 @@
         <li class="dropdown" ng-if="workspaces.length > 1">
           <a href="#" class="mcs-workspace-label" dropdown-toggle>{{currentOrganisation}}<b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li ng-repeat="workspace in workspaces" ng-if="workspace.organisationId != currentOrganisationId"><a ng-click="switchWorkspace(workspace.idx)">{{workspace.organisationName}}</a></li>
+            <li ng-repeat="workspace in workspaces" ng-if="workspace.organisationId != currentOrganisationId"><a ng-click="switchWorkspace(workspace.organisationId)">{{workspace.organisationName}}</a></li>
           </ul>
         </li>
         <li ng-if="workspaces.length <= 1">

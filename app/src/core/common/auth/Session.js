@@ -35,8 +35,8 @@ define(['./module', 'navigator'], function (module, navigator) {
           }
 
           self.userProfile = userProfile;
-          self.currentWorkspace = userProfile.default_workspace;
-          self.currentWorkspace = userProfile.default_workspace;
+          self.currentWorkspace = userProfile.workspaces[userProfile.default_workspace];
+
           self.initialized = true;
 
           pluginService.registerPlugin("admin", coreConfig.ADMIN_PLUGIN_URL, "/admin");
@@ -53,7 +53,7 @@ define(['./module', 'navigator'], function (module, navigator) {
       };
 
       service.getCurrentWorkspace = function() {
-        return this.userProfile.workspaces[this.currentWorkspace];
+        return this.currentWorkspace;
       };
 
       service.getOrganisationName = function(id) {
@@ -78,20 +78,25 @@ define(['./module', 'navigator'], function (module, navigator) {
       };
 
       service.updateWorkspace = function(organisationId) {
-
-        for (var i = 0; i < this.userProfile.workspaces.length ; i++) {
-          if(this.userProfile.workspaces[i].organisation_id === organisationId) {
-            this.currentWorkspace = i;
-          }
+        if(organisationId) {
+          service.switchWorkspace(organisationId)
+        } else {
+          service.switchWorkspace(service.getCurrentWorkspace().organisation_id)
         }
-        $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
 
       };
 
-      service.switchWorkspace = function(workspaceIndex) {
-        this.currentWorkspace = workspaceIndex;
-        $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
-        $location.path(this.getCurrentWorkspace().organisation_id+'/campaigns');
+      service.switchWorkspace = function(organisationId) {
+        var self = this;
+        if(organisationId != self.currentWorkspace.organisation_id) {
+        var promise = Restangular.one('organisations', organisationId).one('workspace').get()
+          promise.then(function (result) {
+            self.currentWorkspace = result;
+            $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
+            $location.path(result.organisation_id+'/campaigns');
+          })
+        }
+
       };
 
       /**

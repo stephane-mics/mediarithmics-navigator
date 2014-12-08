@@ -12,8 +12,8 @@ define(['./module'], function () {
 
       isLogged();
 
-      $scope.switchWorkspace = function (idx) {
-        Session.switchWorkspace(idx);
+      $scope.switchWorkspace = function (organisationId) {
+        Session.switchWorkspace(organisationId);
       };
 
       function updateWorkspaces() {
