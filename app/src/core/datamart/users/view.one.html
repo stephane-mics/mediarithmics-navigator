@@ -18,9 +18,9 @@
           <td>Email</td>
           <td>{{ user.email }}</td>
         </tr>
-        <tr ng-hide="user.account_id == null">
+        <tr ng-hide="user.user_account_id == null">
           <td>Account ID</td>
-          <td><code>{{ user.account_id }}</code></td>
+          <td><code>{{ user.user_account_id }}</code></td>
         </tr>
         <tr ng-hide="user.gender == null">
           <td>Gender</td>
@@ -40,55 +40,69 @@
   <div class="col-md-6 col-xs-9">    
 
     <ul class="datamart-timeline">
-      <!-- timeline item -->
-      <li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.visible:true} | orderBy:orderByVisitStartDate:!newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">
+      <li  ng-repeat="timelineEvent in timeline  " class="with_purchase">
 
         <!-- datetime -->
-        <time class="datamart-timeline-datetime" datetime="{{ activity.visit.start_date | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
-          <span>{{ activity.visit.start_date | date : 'MMMM d' }}</span>
-          <span>{{ activity.visit.start_date | date : 'shortTime' }}</span>
+        <time class="datamart-timeline-datetime" datetime="{{ timelineEvent.$start | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
+          <span>{{ timelineEvent.$start | date : 'mediumDate' }}</span>
+          <span>{{ timelineEvent.$start | date : 'shortTime' }}</span>
         </time>
-
+        <!--User account : {{timelineEvent.$user_account_id  }}-->
+        <!--User agent : {{timelineEvent.$user_agent_id  }}-->
         <!-- icon -->
         <div class="datamart-timeline-icon">
-          <img src="images/datamart/device_phone.svg" width="24" height="24" ng-show="activity.agent.device_type == 'smartphone'" />
-          <img src="images/datamart/device_tablet.svg" width="24" height="24" ng-show="activity.agent.device_type == 'tablet'" />
-          <img src="images/datamart/device_pc.svg" width="24" height="24" ng-show="activity.agent.device_type != 'smartphone' && activity.agent.device_type != 'tablet' " />
+          <!--<img src="images/datamart/device_phone.svg" width="24" height="24" ng-show="activity.agent.device_type == 'smartphone'" />-->
+          <!--<img src="images/datamart/device_tablet.svg" width="24" height="24" ng-show="activity.agent.device_type == 'tablet'" />-->
+          <img src="images/datamart/device_pc.svg" width="24" height="24"  />
         </div>
 
-        <!-- content -->
+        <!--&lt;!&ndash; content -->
         <div class="datamart-timeline-content">
-          <div class="datamart-timeline-content-header">
-            <h2>{{ activity.agent.device_type }}<description>{{ activity.agent.user_agent_type }}, {{ activity.agent.operating_system }}</description></h2>
-            Duration: {{ toHumanReadableDuration(activity.visit.duration) }}
-          </div>
-          
-          <!-- actions during visit -->  
-          <div class="datamart-timeline-content-details" ng-show="activity.actions && activity.actions.length > 0">
-            <ul class="list-group">
-              <li class="list-group-item" ng-repeat="action in activity.actions | limitTo:getLimit(activity)">
-                <!-- perfomed_action -->
-                <span ng-show="action.activity_type == 'performed_action'">{{ action.details.name }}</span>
+        <div class="datamart-timeline-content-header">
+        <h2>{{ activity.agent.device_type }}<description>{{ activity.agent.user_agent_type }}, {{ activity.agent.operating_system }}</description></h2>
+        Duration: {{ toHumanReadableDuration(timelineEvent.$duration) }}
+        </div>
 
-                <!-- view_item -->
-                <span class="badge" ng-show="action.activity_type == 'view_item'">{{ action.view_count }}</span>
-                <span ng-show="action.activity_type == 'view_item'">Viewed item <a href="{{ itemUrl + action.datasheet_id }}">{{ action.item.item_id }}</a></span>
+        <!-- actions during visit -->
+        <div class="datamart-timeline-content-details" >
+          <ul class="list-group">
+            <li class="list-group-item" ng-repeat="item in timelineEvent.$items">
 
-                <!-- purchase_item -->
-                <span class="badge" ng-show="action.activity_type == 'purchase_item'">{{ action.purchase_count }}</span>
-                <span ng-show="action.activity_type == 'purchase_item'">Purchased item <a href="{{ itemUrl + action.datasheet_id }}">{{ action.item.item_id }}</a></span>
-              </li>
-            </ul>
-            <!-- expand/collapse switch -->
-            <div class="clearfix" ng-show="activity.actions && activity.actions.length > INITIAL_ACTIONS_PER_ACTIVITY">
-              <a href class="mics-btn mics-btn-edit pull-right" ng-click="activity.expanded = !activity.expanded">
-                <span ng-hide="activity.expanded">Expand</span>
-                <span ng-show="activity.expanded">Collapse</span>
-              </a>
-            </div>
+              <!-- perfomed_action -->
+              <span ng-show="item.$$type == '$performed_action'">{{ item.$details.name }}</span>
+
+              <!-- view_item -->
+              <span class="badge" ng-show="item.$type == '$viewed' || item.$type == '$added_to_cart'">{{ item.$count }}</span>
+              <span ng-show="item.$type == '$viewed'">Viewed item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>
+              <span ng-show="item.$type == '$added_to_cart'">Added item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">item.$catalog_id}}</a> to cart</span>
+
+
+              <!-- purchase_item -->
+              <span class="badge" ng-show="item.$type == '$purchased'">{{ item.$count }}</span>
+              <span ng-show="item.$type == '$purchased'">Purchased item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>
+            </li>
+          </ul>
+          <!-- expand/collapse switch -->
+          <div class="clearfix" ng-show="activity.actions && activity.actions.length > INITIAL_ACTIONS_PER_ACTIVITY">
+            <a href class="mics-btn mics-btn-edit pull-right" ng-click="activity.expanded = !activity.expanded">
+              <span ng-hide="activity.expanded">Expand</span>
+              <span ng-show="activity.expanded">Collapse</span>
+            </a>
           </div>
+        </div>
+
         </div>
       </li>
+      <!-- timeline item -->
+      <!--<li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.visible:true} | orderBy:orderByVisitStartDate:!newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">-->
+
+
+
+
+
+
+
+      <!--</li>-->
 
       <li class="datamart-timeline-footer-node" ng-show="showLoadMore">
         <div class="datamart-timeline-icon">

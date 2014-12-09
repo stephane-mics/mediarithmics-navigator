@@ -1205,9 +1205,7 @@ a.category-item {
   transition: left 0.2s;
 }
 
-.datamart-timeline > li:hover .datamart-timeline-content {
-  left: 6px;
-}
+
 
 .datamart-timeline > li.with_action .datamart-timeline-content {
   border-left: 6px solid $mcs-light-blue;

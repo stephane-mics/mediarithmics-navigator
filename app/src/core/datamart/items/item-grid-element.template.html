@@ -1,5 +1,5 @@
 <!-- List element -->
-<a href="{{urlPrefix + '/' + element.id}}" class="list-group-item" ng-repeat="element in data">
+<a href="{{urlPrefix + '/' + element.catalog_id+'/' + element.item_id}}" class="list-group-item" ng-repeat="element in data">
   <div class="clearfix">
     <!-- image -->
     <img ng-src="{{ element.images !== null && element.images }}" width="100" height="100" alt="" class="pull-left" style="margin-right:10px">
@@ -10,7 +10,7 @@
       <div>Price: <strong>{{ element.price }}</strong></div>
       <div>{{ element.description }}</div>
       <div>
-        Defined for: <strong>{{ element.market }}</strong> in <strong>{{ languageMapping.map(element.language) }}</strong>
+        Defined for: Catalog {{ element.catalog_id }}
       </div>
     </div>
   </div>
