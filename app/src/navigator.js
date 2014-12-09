@@ -61,12 +61,17 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           publicUrl: true,
           sidebar: false
         })
-        .state('init-session', {
-          url:'/init-session',
-          templateUrl: 'src/core/login/init-session.html',
-          publicUrl: true,
-          sidebar: false
-        });
+          .state('init-session/withOrganisation', {
+            url:'/init-session/:organisationId',
+            templateUrl: 'src/core/login/init-session.html',
+            publicUrl: true,
+            sidebar: false
+          }).state('init-session/withoutOrganisation', {
+            url:'/init-session',
+            templateUrl: 'src/core/login/init-session.html',
+            publicUrl: true,
+            sidebar: false
+          });
 
       $urlRouterProvider.when('/', '/home');
       $urlRouterProvider.when('/home', '/campaigns');
@@ -76,38 +81,31 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
       $stateProvider
         .state('datamart/overview', {
           url:'/datamart/overview',
-          templateUrl: 'src/core/datamart/index.html',
-          publicUrl: true
+          templateUrl: 'src/core/datamart/index.html'
         })
         .state('datamart/items', {
           url:'/datamart/items',
-          templateUrl: 'src/core/datamart/items/view.all.html',
-          publicUrl: true
+          templateUrl: 'src/core/datamart/items/view.all.html'
         })
         .state('datamart/items/:catalogId/:itemId', {
           url:'/datamart/items/:catalogId/:itemId',
-          templateUrl: 'src/core/datamart/items/view.one.html',
-          publicUrl: true
+          templateUrl: 'src/core/datamart/items/view.one.html'
         })
         .state('datamart/categories/:catalogId', {
           url:'/datamart/categories/:catalogId',
-          templateUrl: 'src/core/datamart/categories/browse.html',
-          publicUrl: true
+          templateUrl: 'src/core/datamart/categories/browse.html'
         })
         .state('datamart/categories/:catalogId/:categoryId', {
           url:'/datamart/categories/:catalogId/:categoryId',
-          templateUrl: 'src/core/datamart/categories/browse.html',
-          publicUrl: true
+          templateUrl: 'src/core/datamart/categories/browse.html'
         })
         .state('datamart/users', {
           url:'/datamart/users',
-          templateUrl: 'src/core/datamart/users/view.all.html',
-          publicUrl: true
+          templateUrl: 'src/core/datamart/users/view.all.html'
         })
         .state('datamart/users/:userId', {
           url:'/datamart/users/:userId',
-          templateUrl: 'src/core/datamart/users/view.one.html',
-          publicUrl: true
+          templateUrl: 'src/core/datamart/users/view.one.html'
         });
 
 
@@ -212,7 +210,7 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           topbar: true
         });
 
-        if (Session.isInitialized()) {
+        if (Session.isInitialized() && Session.getCurrentWorkspace().organisation_id !== toParams.organisation_id) {
           Session.updateWorkspace(toParams.organisation_id);
         }
         $rootScope.sidebar = options.sidebar;
@@ -226,7 +224,12 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           if (AuthenticationService.hasAccessToken()) {
             if (!Session.isInitialized()) {
               AuthenticationService.pushPendingPath($location.url());
-              $location.path('/init-session');
+              if(toParams.organisation_id) {
+                $location.path('/init-session/'+toParams.organisation_id);
+              } else {
+                $location.path('/init-session');
+
+              }
             }
           } else if (AuthenticationService.hasRefreshToken()) {
             // keep the current path in memory
@@ -235,6 +238,8 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
             // redirect to the remember-me page
             $location.path('/remember-me');
           } else {
+
+            AuthenticationService.pushPendingPath($location.url());
             // redirect to login
             $location.path('/login');
           }

@@ -10,7 +10,7 @@ define(['./module'], function (module) {
       $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
       $scope.INITIAL_VISITS = 10;
 
-      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
+      $scope.datamartId = Session.getCurrentDatamartId();
 
       $scope.agentUrl = "#/datamart/users/" + $stateParams.userId + "/agents";
       $scope.itemUrl = "#datamart/items/";

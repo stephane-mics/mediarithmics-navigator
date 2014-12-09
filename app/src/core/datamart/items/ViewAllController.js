@@ -9,7 +9,7 @@ define(['./module'], function (module) {
 
       $scope.baseUrl = '#' + Common.locations.current.href;
 
-      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
+      $scope.datamartId = Session.getCurrentDatamartId();
 
 
       $scope.refreshDatasheets = function refreshDatasheets(offset, limit) {

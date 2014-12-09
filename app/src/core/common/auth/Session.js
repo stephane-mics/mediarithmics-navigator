@@ -17,32 +17,37 @@ define(['./module', 'navigator'], function (module, navigator) {
         return this.initialized;
       };
 
-      service.init = function () {
+      service.init = function (organisationId) {
 
         var defered = $q.defer();
         var self = this;
 
         Restangular.one('connected_user').get().then(function(userProfile){
 
-          // TODO : remove this hack
-          for(var i = 0; i < userProfile.workspaces.length; i++) {
-            var workspace = userProfile.workspaces[i];
-            if (workspace.organisation_id === "501") {
-              workspace.datamart_id = "8";
-            } else {
-              workspace.datamart_id = "0";
-            }
-          }
+          $log.debug("User Profile :", userProfile);
 
           self.userProfile = userProfile;
-          self.currentWorkspace = userProfile.workspaces[userProfile.default_workspace];
+          if(organisationId) {
+            $log.debug("fetching organisation : ", organisationId)
+            service.updateWorkspace(organisationId).then(function() {
+              self.initialized = true;
 
-          self.initialized = true;
 
+              defered.resolve();
+            })
+          } else {
+
+            self.currentWorkspace = userProfile.workspaces[userProfile.default_workspace];
+            $log.debug("use default : ", self.currentWorkspace)
+            self.initialized = true;
+
+
+            defered.resolve();
+          }
           pluginService.registerPlugin("admin", coreConfig.ADMIN_PLUGIN_URL, "/admin");
 
-          defered.resolve();
-          $log.debug("User Profile :", userProfile);
+
+
         }, defered.reject);
 
         return defered.promise;
@@ -57,11 +62,7 @@ define(['./module', 'navigator'], function (module, navigator) {
       };
 
       service.getOrganisationName = function(id) {
-        var w = _.select(this.userProfile.workspaces, function (w) {
-          return w.organisation_id === id;
-        })[0];
-
-        return w.organisation_name;
+        return this.getCurrentWorkspace().organisation_name;
       };
 
       service.getWorkspaces = function () {
@@ -76,26 +77,38 @@ define(['./module', 'navigator'], function (module, navigator) {
         return result;
 
       };
+      service.getCurrentDatamartId = function () {
+        return service.getCurrentWorkspace().datamarts[0].datamart_id;
+      }
+
+      service.hasDatamart = function () {
+        return service.getCurrentWorkspace().datamarts.length > 0;
+      }
 
       service.updateWorkspace = function(organisationId) {
         if(organisationId) {
-          service.switchWorkspace(organisationId)
+          return service.setWorkspace(organisationId, true);
         } else {
-          service.switchWorkspace(service.getCurrentWorkspace().organisation_id)
+          return service.setWorkspace(service.getCurrentWorkspace().organisation_id, true);
         }
 
       };
 
-      service.switchWorkspace = function(organisationId) {
+      service.setWorkspace = function(organisationId, noredirect) {
+        $log.debug("setWorkspace: ", organisationId);
         var self = this;
-        if(organisationId != self.currentWorkspace.organisation_id) {
+        if(!self.currentWorkspace || organisationId != self.currentWorkspace.organisation_id) {
         var promise = Restangular.one('organisations', organisationId).one('workspace').get()
           promise.then(function (result) {
             self.currentWorkspace = result;
+            $log.debug("Broadcat workspace change event ", result);
             $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
-            $location.path(result.organisation_id+'/campaigns');
+	        if(!noredirect) {
+              $location.path(result.organisation_id+'/campaigns');
+	        }
           })
         }
+        return promise;
 
       };
 

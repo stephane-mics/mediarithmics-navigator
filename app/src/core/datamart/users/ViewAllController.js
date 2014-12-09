@@ -9,7 +9,7 @@ define(['./module'], function (module) {
 
       $scope.baseUrl = '#' + Common.locations.current.href;
 
-      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
+      $scope.datamartId = Session.getCurrentDatamartId();
 
       $scope.refreshUsers = function (offset, limit) {
         Restangular.one('datamarts', $scope.datamartId).all('users/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit}).then(function (result) {

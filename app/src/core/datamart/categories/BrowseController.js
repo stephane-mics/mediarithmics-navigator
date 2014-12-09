@@ -13,7 +13,7 @@ define(['./module'], function () {
       $scope.baseUrl = '#/datamart/categories/'+$stateParams.catalogId;
       $scope.itemUrl = '#/datamart/items';
 
-      $scope.datamartId = Session.getCurrentWorkspace().datamart_id;
+      $scope.datamartId = Session.getCurrentDatamartId();
       $scope.categoriesPerPage = 10;
 
       if ($stateParams.categoryId && $stateParams.catalogId) {
