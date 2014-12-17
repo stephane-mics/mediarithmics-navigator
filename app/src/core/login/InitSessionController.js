@@ -4,12 +4,12 @@ define(['./module'], function () {
   var module = angular.module('core/login');
 
   module.controller('core/login/InitSessionController', [
-    '$location', '$log', '$rootScope', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/login/constants','$state',
-    function($location, $log, $rootScope, Session, AuthenticationService, LoginConstants, $state) {
+    '$location', '$log', '$rootScope', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/login/constants','$stateParams',
+    function($location, $log, $rootScope, Session, AuthenticationService, LoginConstants, $stateParams) {
 
       $log.debug("InitSessionController called !");
 
-      Session.init().then(function() {
+      Session.init($stateParams.organisationId).then(function() {
         $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
         var path = AuthenticationService.popPendingPath();
         $log.debug("redirect to :", path);

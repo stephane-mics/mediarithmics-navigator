@@ -11,7 +11,7 @@ define(['./module'], function (module) {
       $scope.categoryUrl = '#/datamart/categories/' + $stateParams.catalogId ;
 
       // pass datamartId from other controller
-      var datamartId = Session.getCurrentWorkspace().datamart_id;
+      var datamartId =  Session.getCurrentDatamartId();
       var datasheets = Restangular.one('datamarts', datamartId).one('items', $stateParams.itemId).all('catalog_items');
       datasheets.getList({"catalog_id": $stateParams.catalogId}).then(function (result) {
         $scope.datasheet = result[0];
