@@ -17,10 +17,10 @@ define(['../module'], function () {
 
   var tableHeaders = {
     "creative_id": "Id",
-    "adgroup_id": "Id",
+    "ad_group_id": "Id",
     "ad_id": "Id",
-    "adgroup_name": "Ad Group Name",
-    "cost_impressions": "Spend",
+    "ad_group_name": "Ad Group Name",
+    "impressions_cost": "Spend",
     "impressions": "Impressions",
     "cpc": "CPC",
     "clicks": "Clicks",

@@ -58,13 +58,13 @@ define(['./module'], function () {
 
   var tableHeaders = {
     "creative_id": {name:"Id"},
-    "adgroup_id": {name:"Id"},
+    "ad_group_id": {name:"Id"},
     "ad_id": {name:"Id"},
     "site": {name:"Site"},
     "display_network": {name:"Display Network"},
-    "adgroup_name": {name:"Ad Group Name"},
+    "ad_group_name": {name:"Ad Group Name"},
     "day": {name:"Date"},
-    "cost_impressions": {name:"Spend", type:"currency"},
+    "impressions_cost": {name:"Spend", type:"currency"},
     "impressions": {name:"Impressions", type:"number"},
     "cpc": {name:"CPC", type:"currency"},
     "clicks": {name:"Clicks", type:"number"},
@@ -88,7 +88,7 @@ define(['./module'], function () {
           }
         );
 
-        var adGroupResource = $resource(configuration.WS_URL + "/reports/adgroup_performance_report",
+        var adGroupResource = $resource(configuration.WS_URL + "/reports/ad_group_performance_report",
           {},
           {get: {
             method: 'GET',
@@ -138,7 +138,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc, impressions_cost",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -151,7 +151,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc, impressions_cost",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -164,7 +164,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -177,7 +177,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
+              metrics: "impressions,clicks,cpm,ctr,cpc, impressions_cost",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper(response.report_view);
@@ -190,7 +190,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,cpc,cost_impressions,ctr",
+              metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 var report = response.report_view;
@@ -199,14 +199,14 @@ define(['./module'], function () {
                   return {
                     "ctr": 0,
                     "cpm": 0,
-                    "cost_impressions": 0,
+                    "impressions_cost": 0,
                     "cpc": 0
                   };
                 }
                 return {
                   "ctr": firstLine[_.indexOf(report.columns_headers, "ctr")],
                   "cpm": firstLine[_.indexOf(report.columns_headers, "cpm")],
-                  "cost_impressions": firstLine[_.indexOf(report.columns_headers, "cost_impressions")],
+                  "impressions_cost": firstLine[_.indexOf(report.columns_headers, "impressions_cost")],
                   "cpc": firstLine[_.indexOf(report.columns_headers, "cpc")]
                 };
               });
@@ -218,7 +218,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,cpc,cost_impressions,ctr",
+              metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr",
               filters: "organisation==" + organisation_id
             }).$promise.then(function (response) {
                 var report = response.report_view;
@@ -264,12 +264,11 @@ define(['./module'], function () {
             var mapStatsToNvd3 = function (response) {
               var report =new ReportWrapper(response.report_view);
 
-              var test = report.getRow(startDate().valueOf());
+              var test = report.getRow(startDate().utc().valueOf());
               var y1 = [], y2 = [];
 
 
-
-              var dateIter = startDate();
+              var dateIter = startDate().utc();
               while (dateIter.isBefore(endDate())) {
                 var row = report.getRow(dateIter.valueOf());
                 if(row[1] === 0) {
