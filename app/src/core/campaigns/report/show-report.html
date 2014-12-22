@@ -120,19 +120,18 @@
                                 <td>{{row.ad.format}}</td>
                                 <td class="metrics {{metricValue.type}}"
                                     ng-repeat="metricValue in adPerformance.getRow(row.ad.id) track by $index" ng-class="metricValue.type">
-                            <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
-                                {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
-                            </span>
-                            <span ng-if="metricValue.type == 'percent' && metricValue.value != undefined">
-                                {{metricValue.value | number}} %
-                            </span>
-                            <span ng-if="metricValue.type == 'number' && metricValue.value != undefined">
-                                {{metricValue.value | number}}
-                            </span>
-                            <span ng-if="!metricValue.type || metricValue.value == undefined">
-                                -
-                            </span>
-
+                                        <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
+                                            {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
+                                        </span>
+                                        <span ng-if="metricValue.type == 'percent' && metricValue.value != undefined">
+                                            {{metricValue.value | number}} %
+                                        </span>
+                                        <span ng-if="metricValue.type == 'number' && metricValue.value != undefined">
+                                            {{metricValue.value | number}}
+                                        </span>
+                                        <span ng-if="!metricValue.type || metricValue.value == undefined">
+                                            -
+                                        </span>
                                 </td>
                             </tr>
 

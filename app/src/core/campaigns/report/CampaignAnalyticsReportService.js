@@ -9,11 +9,15 @@ define(['./module'], function () {
     this.getMetrics = function () {
       return _.filter(report.columns_headers, isMetrics);
     };
+
+    /**
+     * get the first row where the first column match the id
+     */
     this.getRow = _.memoize(function (id) {
-      id = parseInt(id);
       var row = _.select(report.rows, function(r) {return r[0] === id;})[0];
       return self.decorate(row);
     });
+
     this.decorate = _.memoize(function (row) {
       if (row === undefined) {
         return _.map(new Array(this.getMetrics().length), function () {return 0; });
@@ -241,6 +245,7 @@ define(['./module'], function () {
           },
           'getStartDate': function () {return startDate();},
           'getEndDate': function () {return endDate();},
+
           'dayPerformance': function (campaignId, leftMetric, rightMetric) {
 
             /**
@@ -261,16 +266,24 @@ define(['./module'], function () {
                 }
               }
             };
+
+            /**
+             * This function iterates on report rows to map
+             * x,y points in the Nvd3 format
+             * WARNING : dateIter.valueOf returns the timestamp in the navigator timezone
+             */
             var mapStatsToNvd3 = function (response) {
               var report =new ReportWrapper(response.report_view);
 
-              var test = report.getRow(startDate().utc().valueOf());
               var y1 = [], y2 = [];
 
+              var dateIter = startDate();
 
-              var dateIter = startDate().utc();
               while (dateIter.isBefore(endDate())) {
-                var row = report.getRow(dateIter.valueOf());
+
+                var key = dateIter.format("YYYY-MM-DD");
+
+                var row = report.getRow(key);
                 if(row[1] === 0) {
                   y1.push({x: dateIter.valueOf(), y: 0 });
                 } else {
