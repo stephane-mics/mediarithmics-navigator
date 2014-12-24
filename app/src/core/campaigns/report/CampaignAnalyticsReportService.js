@@ -142,7 +142,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,ctr,cpc, impressions_cost",
+              metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -155,7 +155,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,ctr,cpc, impressions_cost",
+              metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper( response.report_view);
@@ -181,7 +181,7 @@ define(['./module'], function () {
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
               dimension: "",
-              metrics: "impressions,clicks,cpm,ctr,cpc, impressions_cost",
+              metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
                 return new ReportWrapper(response.report_view);

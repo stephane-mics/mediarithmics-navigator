@@ -45,13 +45,13 @@ define(['./module'], function () {
         $scope.data1 = data;
       });
 
-/*
+
     CampaignAnalyticsReportService.adGroupPerformance(
       campaignId
     ).then(function (data) {
         $scope.adGroupPerformance = data;
       });
-      */
+
     /*
     CampaignAnalyticsReportService.creativePerformance(
       campaignId
@@ -64,13 +64,13 @@ define(['./module'], function () {
     ).then(function (data) {
         $scope.adPerformance = data;
       });
-    /*
+
     CampaignAnalyticsReportService.mediaPerformance(
       campaignId
     ).then(function (data) {
         $scope.mediaPerformance = data;
       });
-    */
+
     CampaignAnalyticsReportService.kpi(
       campaignId
     ).then(function (data) {
