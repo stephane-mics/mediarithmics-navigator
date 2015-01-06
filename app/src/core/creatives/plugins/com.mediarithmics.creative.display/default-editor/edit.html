@@ -13,44 +13,38 @@
     </div>
 
     <div class="row">
-
+      <!-- Name -->
       <div class="col-md-8">
-
-        <!-- Name -->
         <div mcs-form-group="full" label-for="name" label-text="Ad name">
           <input ng-disabled="disabledEdition" ng-model="displayAd.name" type="text" class="form-control input-lg" id="name">
         </div>
-
       </div>
 
+      <!-- Format -->
       <div class="col-md-4">
-
-        <!-- Format -->
         <div mcs-form-group="full" label-for="format" label-text="Format">
           <select ng-disabled="disabledEdition" ng-model="displayAd.format" ng-options="iabAdSize for iabAdSize in iabAdSizes" id="format"></select>
         </div>
-
       </div>
     </div>
-    <div class="row">
 
+    <div class="row">
       <div class="col-md-12">
         <h4>Preview</h4>
         <iframe width="{{previewWidth}}" height="{{previewHeight}}" ng-src="{{previewUrl}}"></iframe>
       </div>
-
     </div>
 
     <div ng-include="'src/core/creatives/plugins/com.mediarithmics.creative.display/common/AuditStatus.inc.html'"></div>
 
     <div class="row">
-
       <div class="col-md-12">
         <h4>Properties</h4>
-
         <div ng-repeat="property in properties">
+          <mcs-number-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'INT'"></mcs-number-property>
           <mcs-url-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
           <mcs-asset-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
+          <mcs-text-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'STRING'"></mcs-text-property>
         </div>
       </div>
     </div>

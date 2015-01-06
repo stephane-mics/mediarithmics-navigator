@@ -31,7 +31,7 @@ define(['./module'], function (module) {
       };
 
       $scope.$watchCollection("uploadedFiles", function (newFiles) {
-        while(newFiles.length) {
+        while (newFiles.length) {
           var file = newFiles.pop();
           $log.info("got new uploaded file, pushing as asset", file);
           $scope.newCreativesWrapper.push({
@@ -46,10 +46,8 @@ define(['./module'], function (module) {
       });
 
       function saveCreativeWrapper(userDefinedCreative) {
-
         var isFlash = userDefinedCreative.asset.mime_type === "application/x-shockwave-flash";
         var options = {
-
           renderer : {
             groupId : "com.mediarithmics.creative.display",
             artifactId : "image-iframe"
@@ -59,34 +57,27 @@ define(['./module'], function (module) {
             artifactId : "basic-editor"
           }
         };
-
         if (isFlash) {
           options.renderer.artifactId = "flash-iframe";
         }
-
         var creativeContainer = DisplayAdService.initCreateDisplayAd(options);
 
         creativeContainer.value.name = userDefinedCreative.creative.name;
         creativeContainer.value.format = userDefinedCreative.asset.width + "x" + userDefinedCreative.asset.height;
-
-        creativeContainer.getOrCreatePropertyValueByTechnicalName("destination_url").value = {"url":userDefinedCreative.creative.url_target};
-
+        creativeContainer.value.subtype = "BANNER";
+        creativeContainer.getOrCreatePropertyValueByTechnicalName("destination_url").value = { "url":userDefinedCreative.creative.url_target };
         if(isFlash) {
-          creativeContainer.getOrCreatePropertyValueByTechnicalName("flash").value = {"asset_id":userDefinedCreative.asset.id};
+          creativeContainer.getOrCreatePropertyValueByTechnicalName("flash").value = { "asset_id":userDefinedCreative.asset.id };
         } else {
-          creativeContainer.getOrCreatePropertyValueByTechnicalName("image").value = {"asset_id":userDefinedCreative.asset.id};
+          creativeContainer.getOrCreatePropertyValueByTechnicalName("image").value = { "asset_id":userDefinedCreative.asset.id };
         }
 
         $log.debug("creating creative", userDefinedCreative);
         return creativeContainer.persist().then(function success() {
           $log.warn("emit mics-creative:selected", creativeContainer.value);
-          $scope.$emit("mics-creative:selected", {
-            creative : creativeContainer
-          });
+          $scope.$emit("mics-creative:selected", { creative : creativeContainer });
         }, function failure(response) {
-          errorService.showErrorModal({
-            error: response
-          });
+          errorService.showErrorModal({ error: response });
         });
       }
 

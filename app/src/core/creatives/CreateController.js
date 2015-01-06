@@ -3,15 +3,10 @@ define(['./module'], function () {
 
   var module = angular.module('core/creatives');
 
-  /*
-   * Campaign
-   */
-
   module.controller('core/creatives/CreateController', [
     '$scope', '$location', '$log', 'core/common/auth/Session','core/creatives/CreativeTemplateService', 'core/creatives/CreativePluginService',
 
     function($scope, $location, $log, Session, CreativeTemplateService, CreativePluginService) {
-
       CreativePluginService.getAllCreativeTemplates().then(function (templates) {
         $scope.creativeTemplates = templates;
       });
@@ -26,8 +21,6 @@ define(['./module'], function () {
       $scope.cancel = function() {
         $location.path("/"+ Session.getCurrentWorkspace().organisation_id +'/creatives');
       };
-
     }
   ]);
-
 });

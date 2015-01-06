@@ -10,20 +10,17 @@ define(['./module', 'app'], function (module) {
       $controller('core/creatives/plugins/com.mediarithmics.creative.display/common/CommonEditController', {$scope: $scope});
 
       $scope.$on("display-ad:loaded", function () {
-        // the parent controller has loaded the creative, you can use it now (check DisplayAdService)
+        // The parent controller has loaded the creative, you can use it now (check DisplayAdService)
         $log.info("display-ad:loaded");
+        $scope.iabAdSizes = _.map(IabService.getAdSizes($scope.displayAd.subtype), function (size) { return size.format; });
       });
-
-      $scope.iabAdSizes = _.map(IabService.getAdSizes(), function (size) {return size.format;});
-
 
       $scope.propertiesFilter = function (property) {
         return property.value.technical_name === 'destination_url';
       };
 
-      // save button
+      // Save button
       $scope.save = function () {
-        $log.debug("save display ad : ", $scope.display_ad);
         DisplayAdService.save().then(function (displayAdContainer) {
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
         }, function failure(response) {
@@ -33,9 +30,8 @@ define(['./module', 'app'], function (module) {
         });
       };
 
-      // save button
+      // Save button
       $scope.saveAndRefresh = function () {
-        $log.debug("save display ad : ", $scope.display_ad);
         DisplayAdService.save().then(function (displayAdContainer) {
           // $state.reload();
           // see https://github.com/angular-ui/ui-router/issues/582
@@ -53,10 +49,7 @@ define(['./module', 'app'], function (module) {
       $scope.cancel = function () {
         DisplayAdService.reset();
         $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
-
       };
-
-
     }
   ]);
 

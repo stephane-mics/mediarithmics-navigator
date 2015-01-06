@@ -1,4 +1,1 @@
-{"name": "core/creatives/plugins/com.mediarithmics.creative.display/default-editor", "dependencies": [
-  "restangular"
-]
-}
+{ "name": "core/creatives/plugins/com.mediarithmics.creative.display/default-editor", "dependencies": ["restangular"] }

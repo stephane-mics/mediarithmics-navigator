@@ -1,7 +1,7 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/creatives/plugins/com.mediarithmics.creative.display/default-editor/CreateController', [
+  module.controller('core/creatives/plugins/com.mediarithmics.creative.display/facebook/CreateController', [
     '$scope', '$location', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$log', "core/creatives/DisplayAdService", '$q',
     function($scope, $location, Session, CreativePluginService, $log, DisplayAdService, $q) {
 
@@ -15,6 +15,7 @@ define(['./module'], function (module) {
       });
 
       function createCreative(name, artifactId) {
+        var subtype = (artifactId === "facebook-right-hand-side") ? 'FACEBOOK_RIGHT_HAND_SIDE' : 'FACEBOOK_NEWS_FEED' ;
         var options = {
           renderer : {
             groupId : "com.mediarithmics.creative.display",
@@ -24,7 +25,7 @@ define(['./module'], function (module) {
             groupId : "com.mediarithmics.creative.display",
             artifactId : "default-editor"
           },
-          subtype : "BANNER"
+          subtype : subtype
         };
         var creativeContainer = DisplayAdService.initCreateDisplayAd(options);
         creativeContainer.value.name = name;
@@ -36,7 +37,7 @@ define(['./module'], function (module) {
         var artifactId = $scope.wrapper.artifactId;
 
         if (!name || !artifactId) {
-          $log.warn("no name or artifactId : ", name, artifactId, $scope);
+          $log.warn("Missing name or artifactId: ", name, artifactId, $scope);
           return;
         }
 
@@ -50,7 +51,7 @@ define(['./module'], function (module) {
         var artifactId = $scope.wrapper.artifactId;
 
         if (!name || !artifactId) {
-          $log.warn("no name or artifactId : ", name, artifactId, $scope);
+          $log.warn("Missing name or artifactId: ", name, artifactId, $scope);
           return;
         }
 

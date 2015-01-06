@@ -9,27 +9,26 @@
     </div>
   </div>
   <form role="form" class="mcs-default-content mcs-full-page-form" ng-submit="done()">
-    <h1>Create New Ad Creative</h1>
+    <h1>New Banner Ad Creative</h1>
 
     <div class="row">
-
       <div class="col-md-10">
 
-        <!-- Name -->
-        <div mcs-form-group="full" label-for="name" label-text="Ad name">
+        <div mcs-form-group="full">
+          <label for="name">Ad Name</label>
           <input  ng-model="wrapper.name" type="text" class="form-control input-lg" id="name">
         </div>
 
-        <label><input type="radio" name="artifactId" ng-model="wrapper.artifactId" value="image-iframe">Image file (.png, .jpg, .gif)</label><br>
-        <label><input type="radio" name="artifactId" ng-model="wrapper.artifactId" value="flash-iframe">Flash file (.swf)</label>
+        <label><input type="radio" name="artifactId" ng-model="wrapper.artifactId" value="image-iframe"> Image file (.png, .jpg, .gif)</label><br>
+        <label><input type="radio" name="artifactId" ng-model="wrapper.artifactId" value="flash-iframe"> Flash file (.swf)</label><br>
       </div>
     </div>
 
 
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish">Done</button>
-      <a class="mics-btn mics-btn-finish" ng-click="doneAndEdit()">Done &amp; Edit</button>
-      <a ng-click="cancel()" class="mics-btn mics-btn-cancel">Cancel</a>
+      <button type="button" class="mics-btn mics-btn-finish" ng-click="doneAndEdit()">Done &amp; Edit</button>
+      <button type="button" class="mics-btn mics-btn-cancel" ng-click="cancel()" >Cancel</button>
     </div>
   </form>
 </div>
