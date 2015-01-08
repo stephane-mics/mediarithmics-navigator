@@ -8,7 +8,7 @@ define(['./module'], function (module) {
     function($log, $q, _) {
 
       var creativeTemplates = [{
-        name : "Quick Upload",
+        name : "Banner Quick Upload",
         editor_group_id : "com.mediarithmics.creative.display",
         editor_artifact_id : "basic-editor",
         image : "/images/plugins/creative-mcs-basic.png",
@@ -17,7 +17,7 @@ define(['./module'], function (module) {
           edit_path : "/{organisation_id}/creatives/com.mediarithmics.creative.display/basic-editor/edit/{id}"
         }
       }, {
-        name : "Expert Mode",
+        name : "Banner Expert Mode",
         editor_group_id : "com.mediarithmics.creative.display",
         editor_artifact_id : "default-editor",
         image : "/images/plugins/creative-mcs-default.png",
@@ -25,7 +25,19 @@ define(['./module'], function (module) {
           create_path : "/{organisation_id}/creatives/com.mediarithmics.creative.display/default-editor/create",
           edit_path : "/{organisation_id}/creatives/com.mediarithmics.creative.display/default-editor/edit/{id}"
         }
-      }];
+      }
+      // UNCOMMENT TO ADD THE FACEBOOK AD EDITOR
+      //  , {
+      //  name : "Facebook Expert Mode",
+      //  editor_group_id : "com.mediarithmics.creative.display",
+      //  editor_artifact_id : "default-editor",
+      //  image : "/images/plugins/creative-mcs-facebook.png",
+      //  editor : {
+      //    create_path : "/{organisation_id}/creatives/com.mediarithmics.creative.display/facebook/create",
+      //    edit_path : "/{organisation_id}/creatives/com.mediarithmics.creative.display/default-editor/edit/{id}"
+      //  }
+      //}
+      ];
 
       function CreativePluginService() {}
 
@@ -80,8 +92,6 @@ define(['./module'], function (module) {
               deferred.resolve(template.editor);
             }, deferred.reject
           );
-
-
           return deferred.promise;
         }
       };

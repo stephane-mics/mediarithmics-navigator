@@ -1,0 +1,1 @@
+{ "name": "core/creatives/plugins/com.mediarithmics.creative.display/facebook", "dependencies": ["restangular"] }

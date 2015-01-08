@@ -47,25 +47,18 @@ define(['./module', 'app'], function (module) {
         $scope.creativeTemplate = template;
       });
 
-
       DisplayAdService.initEditDisplayAd(creativeId).then(function () {
-
         $scope.displayAd = DisplayAdService.getDisplayAdValue();
         $scope.properties = DisplayAdService.getProperties();
         $scope.audits = DisplayAdService.getAudits();
-
         $scope.disabledEdition = $scope.displayAd.audit_status !== "NOT_AUDITED";
-
         $scope.previewUrl = $sce.trustAsResourceUrl(configuration.ADS_PREVIEW_URL + "?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
         var sizes = $scope.displayAd.format.split("x");
         $scope.previewWidth = parseInt(sizes[0])+10;
         $scope.previewHeight = parseInt(sizes[1])+10;
-
         $scope.$emit("display-ad:loaded");
       });
-
     }
   ]);
-
 });
 

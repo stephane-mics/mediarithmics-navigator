@@ -22,7 +22,7 @@ define(['./module', 'app'], function (module) {
       // save button
       $scope.save = function () {
         $log.debug("save display ad : ", $scope.display_ad);
-        DisplayAdService.save().then(function (displayAdContainer) {
+        DisplayAdService.save().then(function () {
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
         }, function failure(response) {
           errorService.showErrorModal({
@@ -51,10 +51,7 @@ define(['./module', 'app'], function (module) {
       $scope.cancel = function () {
         DisplayAdService.reset();
         $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
-
       };
-
-
     }
   ]);
 

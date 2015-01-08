@@ -1,5 +1,6 @@
 {"name": "core/creatives", "dependencies": [
   "restangular",
+  "core/creatives/plugins/com.mediarithmics.creative.display/facebook",
   "core/creatives/plugins/com.mediarithmics.creative.display/default-editor",
   "core/creatives/plugins/com.mediarithmics.creative.display/basic-editor"
 ]}
