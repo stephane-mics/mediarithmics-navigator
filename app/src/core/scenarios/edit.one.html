@@ -1,0 +1,105 @@
+<div ng-controller="core/scenarios/EditOneController" class="mcs-default-container">
+  <div class="mcs-default-sidebar">
+    <div class="organisation-name-block">
+      {{currentOrganisation}}
+    </div>
+  </div>
+  <form ng-submit="next()" class="mcs-default-content mcs-full-page-form">
+
+    <div class="mcs-default-heading">
+      <h1 ng-if="isCreationMode">Create Scenario</h1>
+      <h1 ng-if="!isCreationMode">Edit Scenario</h1>
+    </div>
+
+    <!-- Name -->
+    <div mcs-form-group="" label-for="scenario_name" label-text="Scenario Name">
+      <input required class="input-lg" ng-model="scenario.name" type="text" id="scenario_name">
+    </div>
+
+    <h3>Inputs</h3>
+    <table class="mics-table js-auto-hide-actions" ng-show="inputs.length">
+      <thead>
+      <tr>
+        <th>Status</th>
+        <th>Input type</th>
+        <th class="actions">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="input in inputs">
+        <td><div mics-scenario-input-status="input" scenario="scenario"></div></td>
+        <td>{{input.type}}</td>
+        <td class="actions">
+          <a class="mics-btn mics-btn-edit" ng-click="editInput(input)">Edit</a>
+          <a class="mics-btn mics-btn-delete" ng-click="deleteInput(input)">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <div class="dropdown">
+      <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
+        Add Input
+        <!-- <span class="caret"></span> -->
+      </button>
+
+      <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addInput('EVENT_STREAM')">
+          Event Stream Input
+        </a></li>
+
+      </ul>
+    </div>
+
+    <h3>Workflow</h3>
+    <div ng-show="workflow.begin_node_id != null">
+      <h4>Starts <a ng-click="goToCampaign(campaign)">{{campaign.name}}</a></h4>
+    </div>
+
+    <div ng-show="workflow.begin_node_id == null">
+      <h4>Select a campaign</h4>
+
+      <div mcs-form-group="" label-for="campaign_id" label-text="Start campaign">
+        <input required class="input-lg" ng-model="begin_node.campaign_id" type="text" id="campaign_id">
+        <button class="mics-btn mics-btn-finish" ng-click="saveBeginNode(begin_node)">Save</button>
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+              Advanced Options
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+          <div class="panel-body">
+
+            <div ng-show="workflow.begin_node_id != null">
+
+              <div mcs-form-group="" label-for="campaign_id" label-text="Update started campaign">
+                <input required class="input-lg" ng-model="begin_node.campaign_id" type="text" id="campaign_id">
+                <button class="mics-btn mics-btn-delete" ng-click="saveBeginNode(begin_node)">Update</button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="mcs-actions-group">
+      <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
+      <button class="mics-btn mics-btn-finish">Done</button>
+    </div>
+  </form>
+</div>
+

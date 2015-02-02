@@ -1,0 +1,82 @@
+<div ng-controller="core/scenarios/inputs/EditOneController" class="mcs-default-container">
+  <div class="mcs-default-sidebar">
+    <div class="organisation-name-block">
+      {{currentOrganisation}}
+    </div>
+  </div>
+  <form ng-submit="next()" class="mcs-default-content mcs-full-page-form">
+
+    <div class="mcs-default-heading">
+      <h1>Edit Input</h1>
+    </div>
+
+
+    <h4>Conditions</h4>
+
+
+    <table class="mics-table js-auto-hide-actions" ng-show="conditions.length">
+      <thead>
+      <tr>
+        <th>Condition Type</th>
+        <th>Property Name</th>
+        <th>Operator</th>
+        <th>Property Value</th>
+        <th class="actions">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="condition in conditions">
+        <td ng-show="condition.condition_type == 'EVENT'">{{condition.condition_type}} - {{condition.event_name}}</td>
+        <td ng-show="condition.condition_type == 'VISIT'">{{condition.condition_type}}</td>
+        <td>{{condition.property_name}}</td>
+        <td>{{condition.operator}}</td>
+        <td>{{condition.property_value}}</td>
+        <td class="actions">
+          <a class="mics-btn mics-btn-delete" ng-click="deleteCondition(condition)">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>Add condition</h4>
+
+    <div class="form-group row">
+      <div class="col-xs-2">
+        <select class="form-control input-sm col-xs-2" id="condition_type" placeholder="Condition Type"
+                ng-model="condition.condition_type">
+          <option value="EVENT">Event</option>
+          <option value="VISIT">Visit</option>
+        </select>
+      </div>
+      <div class="col-xs-2" ng-show="condition.condition_type == 'EVENT'">
+        <input class="form-control input-sm col-xs-2" id="event_name" ng-model="condition.event_name"
+               placeholder="Event Name"/>
+      </div>
+      <div class="col-xs-2">
+        <input class="form-control input-sm col-xs-2" id="property_name" ng-model="condition.property_name"
+               placeholder="Property Name"/>
+      </div>
+      <div class="col-xs-2">
+        <select class="form-control input-sm col-xs-2" id="operator" ng-model="condition.operator"
+                placeholder="Operator">
+          <option value="EQUAL">=</option>
+        </select>
+      </div>
+      <div class="col-xs-2">
+        <input class="form-control input-sm col-xs-2" id="value" ng-model="condition.property_value"
+               placeholder="Property Value"/>
+      </div>
+      <div class="col-xs-2">
+        <button type="submit" class="btn btn-default" ng-click="addCondition(condition)">Add</button>
+      </div>
+
+    </div>
+
+
+    <div class="mcs-actions-group">
+
+      <button class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
+    </div>
+  </form>
+</div>
+

@@ -18,6 +18,7 @@ define([
     'lodash',
     'core/configuration',
     'core/adblock/index',
+    'core/scenarios/index',
     'core/keywords/index',
     'core/creatives/index',
     'core/adgroups/index',
@@ -54,6 +55,7 @@ define([
       'core/usergroups',
       'core/campaigns',
       'core/creatives',
+      'core/scenarios',
 
       'core/datamart',
       'core/login',
