@@ -61,8 +61,8 @@
       <h4>Select a campaign</h4>
 
       <div mcs-form-group="" label-for="campaign_id" label-text="Start campaign">
-        <input required class="input-lg" ng-model="begin_node.campaign_id" type="text" id="campaign_id">
-        <button class="mics-btn mics-btn-finish" ng-click="saveBeginNode(begin_node)">Save</button>
+        <input class="input-lg" ng-model="begin_node.campaign_id" type="text" id="campaign_id">
+        <button class="mics-btn " ng-click="saveBeginNode(begin_node)">Save</button>
       </div>
 
     </div>
@@ -98,7 +98,7 @@
 
     <div class="mcs-actions-group">
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
-      <button class="mics-btn mics-btn-finish">Done</button>
+      <button class="mics-btn mics-btn-finish" ng-click="next()">Done</button>
     </div>
   </form>
 </div>
