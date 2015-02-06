@@ -1,0 +1,5 @@
+{"name": "core/scenarios", "dependencies": [
+  "restangular",
+  "core/scenarios/inputs",
+  "checklist-model"
+]}
