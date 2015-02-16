@@ -16,6 +16,11 @@ define(['./module'], function () {
       return _.filter(report.columns_headers, isMetrics);
     };
 
+    // return the index of a metric in the list of metrics (excluding the dimensions)
+    this.getMetricIndex = function(metric) {
+      return self.getMetrics().indexOf(metric);
+    }
+
     /**
      * get the first row where the first column match the id
      */
@@ -23,6 +28,18 @@ define(['./module'], function () {
       var row = _.select(report.rows, function(r) {return (r[0]+"") === (id+"");})[0];
       return self.decorate(row);
     });
+
+    this.getHeaderIndex = _.memoize(function (header) {
+      return report.columns_headers.indexOf(header);
+    });
+
+    this.getRowWithHeader = function(header, id) {
+      var row = _.select(report.rows, function(r) {
+        return (r[self.getHeaderIndex(header)]+"") === (id+"");
+        })[0];
+      return self.decorate(row);
+    };
+
 
     this.decorate = _.memoize(function (row) {
       if (row === undefined) {
@@ -104,14 +121,28 @@ define(['./module'], function () {
           }
         );
 
-        var adGroupResource = $resource(WS_URL + "/reports/ad_group_performance_report",
-          {},
-          {get: {
-            method: 'GET',
-            headers: { 'Authorization': AuthenticationService.getAccessToken() }
-          }
-          }
-        );
+        var adGroupResource = {};
+        if (configuration.ANALYTICS_ENGINE == "business-analytics") {
+           adGroupResource = $resource(WS_URL + "/reports/ad_group_performance_report",
+            {},
+            {get: {
+              method: 'GET',
+              headers: { 'Authorization': AuthenticationService.getAccessToken() }
+            }
+            }
+          );
+        } else {
+            // the legacy has a typo in the url : adgroup
+           adGroupResource = $resource(WS_URL + "/reports/adgroup_performance_report",
+            {},
+            {get: {
+              method: 'GET',
+              headers: { 'Authorization': AuthenticationService.getAccessToken() }
+            }
+            }
+          );
+        }
+
         var adResource = $resource(WS_URL + "/reports/ad_performance_report",
           {},
           {get: {
@@ -295,8 +326,9 @@ define(['./module'], function () {
                * WARNING : dateIter.valueOf returns the timestamp in the navigator timezone
                */
               var mapStatsToNvd3 = function (response) {
+
                 var report =new ReportWrapper(response.report_view);
-  
+
                 var y1 = [], y2 = [];
   
                 var dateIter = startDate().add(2, "hour");
@@ -307,8 +339,7 @@ define(['./module'], function () {
                   // var key = dateIter.format("YYYY-MM-DD");
                   // var row = report.getRow(key);
                   
-                  console.log(dateIter.valueOf())
-                  
+
                   var row = report.getRow(dateIter.valueOf());
                   
                   if(row[1] === 0) {
@@ -527,28 +558,29 @@ define(['./module'], function () {
                */
               var mapStatsToNvd3 = function (response) {
                 var report =new ReportWrapper(response.report_view);
-  
+                var leftMetricIndex = report.getMetricIndex(leftMetric);
+                var rightMetricIndex = report.getMetricIndex(rightMetric);
+
                 var y1 = [], y2 = [];
   
                 var dateIter = startDate();
   
                 while (dateIter.isBefore(endDate())) {
   
-                  // business analytics method :
-                  // var key = dateIter.format("YYYY-MM-DD");
-                  // var row = report.getRow(key);
-                  
-                  var row = report.getRow(dateIter.valueOf());
-                  
-                  if(row[1] === 0) {
+                  // iterates on a key in string format
+                  var key = dateIter.format("YYYY-MM-DD");
+                  var row = report.getRowWithHeader("day", key);
+
+                  if(row[leftMetricIndex] === 0) {
                     y1.push({x: dateIter.valueOf(), y: 0 });
                   } else {
-                    y1.push({x: dateIter.valueOf(), y: row[1].value });
+                    y1.push({x: dateIter.valueOf(), y: row[leftMetricIndex].value });
                   }
-                  if(row[0] === 0) {
+
+                  if(row[rightMetricIndex] === 0) {
                     y2.push({x: dateIter.valueOf(), y: 0 });
                   } else {
-                    y2.push({x: dateIter.valueOf(), y: row[0].value });
+                    y2.push({x: dateIter.valueOf(), y: row[rightMetricIndex].value });
   
                   }
                   dateIter = dateIter.add(1, 'day');
@@ -557,12 +589,7 @@ define(['./module'], function () {
                 duplicatePointsIfNecessary(y1);
                 duplicatePointsIfNecessary(y2);
   
-  //              response.report_view.rows.forEach(function (row) {
-  //
-  //                var date = row[daysIdx];
-  //                y1.push({x: date, y: row[leftIdx] });
-  //                y2.push({x: date, y: row[rightIdx] });
-  //              });
+
                 return [
                   {
                     area: true,
