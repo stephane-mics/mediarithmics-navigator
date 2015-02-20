@@ -26,11 +26,11 @@
       </thead>
       <tbody>
       <tr ng-repeat="condition in conditions">
-        <td ng-show="condition.condition_type == 'EVENT'">{{condition.condition_type}} - {{condition.event_name}}</td>
-        <td ng-show="condition.condition_type == 'VISIT'">{{condition.condition_type}}</td>
-        <td>{{condition.property_name}}</td>
+        <td>{{condition.selector_family}}</td>
+        <td>{{condition.selector}}</td>
+        <td ng-show="condition.selector == 'PROPERTY'">{{condition.property_name}}</td>
         <td>{{condition.operator}}</td>
-        <td>{{condition.property_value}}</td>
+        <td>{{condition.condition_value}}</td>
         <td class="actions">
           <a class="mics-btn mics-btn-delete" ng-click="deleteCondition(condition)">Delete</a>
         </td>
@@ -43,16 +43,17 @@
     <div class="form-group row">
       <div class="col-xs-2">
         <select class="form-control input-sm col-xs-2" id="condition_type" placeholder="Condition Type"
-                ng-model="condition.condition_type">
-          <option value="EVENT">Event</option>
-          <option value="VISIT">Visit</option>
+                ng-model="condition.selector_family">
+          <option value="LAST_VISIT">Last visit</option>
+          <option value="LAST_EMAIL">Last email</option>
+          <option value="TOUCH">Touch</option>
         </select>
       </div>
-      <div class="col-xs-2" ng-show="condition.condition_type == 'EVENT'">
-        <input class="form-control input-sm col-xs-2" id="event_name" ng-model="condition.event_name"
-               placeholder="Event Name"/>
+      <div class="col-xs-2" >
+        <input class="form-control input-sm col-xs-2" id="event_name" ng-model="condition.selector"
+               placeholder="Selector"/>
       </div>
-      <div class="col-xs-2">
+      <div class="col-xs-2" ng-show="condition.selector == 'PROPERTY'">
         <input class="form-control input-sm col-xs-2" id="property_name" ng-model="condition.property_name"
                placeholder="Property Name"/>
       </div>
@@ -60,11 +61,13 @@
         <select class="form-control input-sm col-xs-2" id="operator" ng-model="condition.operator"
                 placeholder="Operator">
           <option value="EQUAL">=</option>
+          <option value="INF">&lg; </option>
+          <option value="SUP">&gt; </option>
         </select>
       </div>
       <div class="col-xs-2">
-        <input class="form-control input-sm col-xs-2" id="value" ng-model="condition.property_value"
-               placeholder="Property Value"/>
+        <input class="form-control input-sm col-xs-2" id="value" ng-model="condition.condition_value"
+               placeholder="Condition Value"/>
       </div>
       <div class="col-xs-2">
         <button type="submit" class="btn btn-default" ng-click="addCondition(condition)">Add</button>
