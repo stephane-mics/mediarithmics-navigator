@@ -11,6 +11,7 @@ define([
     'ngTable',
     'nvd3ChartDirectives',
     'ngBootstrap',
+    'jsplumb',
     'ui',
     'ui.router',
     'ui.router.extras',

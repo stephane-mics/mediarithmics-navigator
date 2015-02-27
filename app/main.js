@@ -7,6 +7,7 @@ require.config({
     'ngload': '../bower_components/angularAMD/ngload',
     "jqCookie": "../bower_components/jquery-cookie/jquery.cookie",
     "moment": "../bower_components/momentjs/moment",
+    "jsplumb": "../bower_components/jsplumb/dist/js/dom.jsPlumb-1.7.2",
 
 
 

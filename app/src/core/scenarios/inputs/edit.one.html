@@ -27,8 +27,7 @@
       <tbody>
       <tr ng-repeat="condition in conditions">
         <td>{{condition.selector_family}}</td>
-        <td>{{condition.selector}}</td>
-        <td ng-show="condition.selector == 'PROPERTY'">{{condition.property_name}}</td>
+        <td>{{condition.selector}}<em ng-show="condition.selector == 'PROPERTY'">&nbsp;-&nbsp;{{condition.property_name}}</em></td>
         <td>{{condition.operator}}</td>
         <td>{{condition.condition_value}}</td>
         <td class="actions">
@@ -61,8 +60,8 @@
         <select class="form-control input-sm col-xs-2" id="operator" ng-model="condition.operator"
                 placeholder="Operator">
           <option value="EQUAL">=</option>
-          <option value="INF">&lg; </option>
-          <option value="SUP">&gt; </option>
+          <option value="INF">&lt;</option>
+          <option value="SUP">&gt;</option>
         </select>
       </div>
       <div class="col-xs-2">

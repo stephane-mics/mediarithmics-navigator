@@ -53,11 +53,39 @@
     </div>
 
     <h3>Workflow</h3>
-    <div ng-show="workflow.begin_node_id != null">
-      <h4>Starts <a ng-click="goToCampaign(campaign)">{{campaign.name}}</a></h4>
-    </div>
+      <div class="dropdown">
+          <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
+              Add Node
+              <!-- <span class="caret"></span> -->
+          </button>
 
-    <div ng-show="workflow.begin_node_id == null">
+          <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addCampaign('LIBRARY')">
+                  Choose From Library
+              </a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addCampaign('DISPLAY')">
+                  Create a Display Campaign
+              </a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addCampaign('EMAIL')">
+                  Email Campaign
+              </a></li>
+
+          </ul>
+      </div>
+
+        <div ng-controller="core/scenarios/WorkflowController">
+            <div class="panel-body" style="overflow:hidden; height:400px;">
+                <js-plumb-canvas on-connection="onConnection" x="pos_x" y="pos_y" zoom="zoomlevel">
+                    <ng-include src="getTemplate(state)" ng-repeat="state in stateObjects"></ng-include>
+                    <js-plumb-connection ng-click="setActiveConnection($index)" ng-repeat="connection in stateConnections" ng-model="connection">
+                        <!-- we can have html content in here... inside the directive I attempt to attach it to the connection label, which works somewhat, but once you delete a connection it reverts to unwanted behavior -->
+                    </js-plumb-connection>
+                </js-plumb-canvas>
+            </div>
+        </div>
+
+
+    <!--<div ng-show="workflow.begin_node_id == null">
       <h4>Select a campaign</h4>
 
       <div mcs-form-group="" label-for="campaign_id" label-text="Start campaign">
@@ -65,9 +93,12 @@
         <button class="mics-btn " ng-click="saveBeginNode(begin_node)">Save</button>
       </div>
 
-    </div>
+    </div>-->
 
-    <br>
+
+
+
+    <br />
 
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
@@ -81,14 +112,14 @@
         <div id="collapseOne" class="panel-collapse collapse">
           <div class="panel-body">
 
-            <div ng-show="workflow.begin_node_id != null">
+            <!--<div ng-show="workflow.begin_node_id != null">
 
               <div mcs-form-group="" label-for="campaign_id" label-text="Update started campaign">
                 <input required class="input-lg" ng-model="begin_node.campaign_id" type="text" id="campaign_id">
                 <button class="mics-btn mics-btn-delete" ng-click="saveBeginNode(begin_node)">Update</button>
               </div>
 
-            </div>
+            </div>-->
 
           </div>
         </div>
@@ -100,6 +131,9 @@
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
       <button class="mics-btn mics-btn-finish" ng-click="next()">Done</button>
     </div>
+
   </form>
+
+
 </div>
 
