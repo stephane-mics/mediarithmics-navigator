@@ -18,11 +18,16 @@ define(['./module'], function () {
 
       function updateWorkspaces() {
           console.debug("updating workspace : ", Session.getCurrentWorkspace());
-          $rootScope.workspaces = Session.getWorkspaces();
-          $rootScope.hasDatamart = Session.hasDatamart();
-          $rootScope.organisationId = Session.getCurrentWorkspace().organisation_id;
+          $scope.workspaces = Session.getWorkspaces();
+          $scope.hasDatamart = Session.hasDatamart();
+          $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
       }
 
+
+
+      if(Session.isInitialized()) {
+          updateWorkspaces();
+      }
       $scope.$on(LoginConstants.LOGIN_SUCCESS, isLogged);
       $scope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
       $scope.$on(LoginConstants.LOGIN_SUCCESS, updateWorkspaces);
