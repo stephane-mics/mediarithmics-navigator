@@ -4,8 +4,8 @@ define(['./module'], function () {
   var module = angular.module('core/layout/header/navbar/navigator-navbar');
 
   module.controller('NavigatorNavbarController', [
-    '$scope', '$log', 'core/common/auth/Session', 'core/login/constants',
-    function ($scope, $log, Session, LoginConstants) {
+    '$scope', '$log', 'core/common/auth/Session', 'core/login/constants','$rootScope',
+    function ($scope, $log, Session, LoginConstants, $rootScope) {
       function isLogged() {
         $scope.isLogged = Session.isInitialized();
       }
@@ -17,11 +17,17 @@ define(['./module'], function () {
       };
 
       function updateWorkspaces() {
-        $scope.workspaces = Session.getWorkspaces();
-        $scope.hasDatamart = Session.hasDatamart();
-        $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
+          console.debug("updating workspace : ", Session.getCurrentWorkspace());
+          $scope.workspaces = Session.getWorkspaces();
+          $scope.hasDatamart = Session.hasDatamart();
+          $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
       }
 
+
+
+      if(Session.isInitialized()) {
+          updateWorkspaces();
+      }
       $scope.$on(LoginConstants.LOGIN_SUCCESS, isLogged);
       $scope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
       $scope.$on(LoginConstants.LOGIN_SUCCESS, updateWorkspaces);

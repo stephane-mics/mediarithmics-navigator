@@ -1,5 +1,6 @@
 {"name": "core/scenarios", "dependencies": [
   "restangular",
   "core/scenarios/inputs",
+  "core/campaigns/expert",
   "checklist-model"
 ]}

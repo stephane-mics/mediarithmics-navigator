@@ -1,4 +1,4 @@
-<div ng-controller="core/scenarios/inputs/EditOneController" class="mcs-default-container">
+<div ng-controller="core/queries/EditOneController" class="mcs-default-container">
   <div class="mcs-default-sidebar">
     <div class="organisation-name-block">
       {{currentOrganisation}}
@@ -7,9 +7,12 @@
   <form ng-submit="next()" class="mcs-default-content mcs-full-page-form">
 
     <div class="mcs-default-heading">
-      <h1>Edit Input</h1>
+      <h1>Edit Query</h1>
     </div>
 
+      <div mcs-form-group="" label-for="name" label-text="Query name">
+          <input  ng-model="query.name" type="text" class="form-control input-lg" id="name">
+      </div>
 
     <h4>Conditions</h4>
 

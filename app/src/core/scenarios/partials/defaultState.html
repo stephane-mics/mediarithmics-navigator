@@ -1,0 +1,17 @@
+<js-plumb-object state-object="state" ng-style="{ 'left':state.x, 'top':state.y }" class="state_window" >
+
+    <p class="node-label">{{getCampaign(state.id).name}}</p> <a class="mics-btn mics-btn-action btn-xs" ng-click="showCampaign(getCampaign(state.id))">Show</a>
+    <div style="position:absolute; top:-10px; left:0px;">
+        <div ng-repeat="endpoint in state.targets" class="col-sm-1">
+            <js-plumb-endpoint anchor="TopCenter" uuid="{{endpoint.uuid}}" settings="targetEndpointStyle"></js-plumb-endpoint>
+        </div>
+
+    </div>
+
+    <div style="position:absolute; top:25px; left:0px;">
+
+        <div ng-repeat="endpoint in state.sources" class="col-sm-1">
+            <js-plumb-endpoint anchor="TopCenter" uuid="{{endpoint.uuid}}" settings="sourceEndpointStyle"></js-plumb-endpoint>
+        </div>
+    </div>
+</js-plumb-object>

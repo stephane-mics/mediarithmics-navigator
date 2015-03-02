@@ -11,6 +11,7 @@ define([
     'ngTable',
     'nvd3ChartDirectives',
     'ngBootstrap',
+    'jsplumb',
     'ui',
     'ui.router',
     'ui.router.extras',
@@ -18,6 +19,7 @@ define([
     'lodash',
     'core/configuration',
     'core/adblock/index',
+    'core/queries/index',
     'core/scenarios/index',
     'core/keywords/index',
     'core/creatives/index',
@@ -56,6 +58,7 @@ define([
       'core/campaigns',
       'core/creatives',
       'core/scenarios',
+      'core/queries',
 
       'core/datamart',
       'core/login',

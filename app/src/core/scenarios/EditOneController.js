@@ -5,13 +5,21 @@ define(['./module'], function () {
 
   var module = angular.module('core/scenarios');
 
-  // TODO retreive and use angular.module('keywords') instead ?
+
+
 
   module.controller('core/scenarios/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location','$state',
-    function($scope, $log, Restangular, Session, _, $stateParams, $location, $state) {
-      var scenarioId = $stateParams.scenario_id;
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location','$state','core/campaigns/DisplayCampaignService','$modal',
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, $state, DisplayCampaignService,  $modal) {
 
+        function retrieveCampaignForNode($scope,node) {
+            Restangular.one("campaigns", node.campaign_id).get().then(function (campaign) {
+                $scope.campaigns[node.id] = campaign;
+                console.log($scope.campaigns);
+            });
+        }
+      var scenarioId = $stateParams.scenario_id;
+      $scope.campaigns = {};
       $scope.isCreationMode = !scenarioId;
 
       if (!scenarioId) {
@@ -27,21 +35,21 @@ define(['./module'], function () {
         });
         Restangular.one('scenarios', scenarioId).one("workflow").get().then(function (workflow) {
           $scope.workflow = workflow;
-          if (workflow.begin_node_id == null) {
-            $scope.begin_node = {
+          $scope.begin_node_id = workflow.begin_node_id;
+          workflow.all("nodes").getList().then(function (nodes) {
+              $scope.nodes = nodes;
+              for(var i = 0; i < nodes.length ; i++) {
+                  retrieveCampaignForNode($scope,nodes[i])
 
-            };
-          } else {
-            workflow.one("begin").get().then(function (beginNode) {
-              $scope.begin_node = beginNode;
-              Restangular.one("campaigns", beginNode.campaign_id).get().then(function (campaign) {
-                $scope.campaign = campaign;
-              });
+
+              }
             });
-          }
         });
       }
 
+      $scope.getCampaign = function (campaignId) {
+        return $scope.campaigns[campaignId];
+      };
       $scope.goToCampaign = function (campaign) {
         switch(campaign.type) {
           case "DISPLAY":
@@ -55,7 +63,7 @@ define(['./module'], function () {
 
       $scope.addInput = function (type) {
         $scope.inputs.post({"type":type}, {"scenario_id": scenarioId}).then(function (r) {
-          $scope.editInput(r.id);
+          $scope.editInput(r);
         });
 
         return;
@@ -88,14 +96,50 @@ define(['./module'], function () {
         });
       };
 
-
-
+      $scope.addCampaign = function(type) {
+          if(type == 'DISPLAY') {
+              $modal.open({
+                  templateUrl: 'src/core/scenarios/QuickCreateCampaign.html',
+                  scope : $scope,
+                  backdrop : 'static',
+                  controller: 'core/scenarios/QuickCreateDisplayCampaignController',
+                  size: "lg"
+              });
+          }
+          if(type == 'EMAIL') {
+              $modal.open({
+                  templateUrl: 'src/core/scenarios/QuickCreateCampaign.html',
+                  scope : $scope,
+                  backdrop : 'static',
+                  controller: 'core/scenarios/QuickCreateEmailCampaignController',
+                  size: "lg"
+              });
+          }
+          if(type == 'LIBRARY') {
+              $modal.open({
+                  templateUrl: 'src/core/campaigns/ChooseExistingCampaign.html',
+                  scope : $scope,
+                  backdrop : 'static',
+                  controller: 'core/campaigns/ChooseExistingCampaignController',
+                  size: "lg"
+              });
+          }
+      };
+        $scope.$on("mics-campaign:selected", function (event, campaign) {
+            Restangular.one('scenarios', scenarioId).one("workflow").all('nodes').post({campaign_id: campaign.id}).then(function () {
+                $state.transitionTo($state.current, $stateParams, {
+                    reload: true, inherit: true, notify: true
+                });
+            })
+        });
       $scope.next = function () {
         var promise = null;
         if(scenarioId) {
           promise = $scope.scenario.put();
         } else {
+          console.log("create a scenario")
           promise = Restangular.all('scenarios').post($scope.scenario, {organisation_id: Session.getCurrentWorkspace().organisation_id});
+
         }
         promise.then(function success(campaignContainer){
           $log.info("success");
