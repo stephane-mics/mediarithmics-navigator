@@ -137,7 +137,9 @@ define(['./module'], function () {
         if(scenarioId) {
           promise = $scope.scenario.put();
         } else {
+          console.log("create a scenario")
           promise = Restangular.all('scenarios').post($scope.scenario, {organisation_id: Session.getCurrentWorkspace().organisation_id});
+
         }
         promise.then(function success(campaignContainer){
           $log.info("success");
