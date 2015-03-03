@@ -74,6 +74,7 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           });
 
       $urlRouterProvider.when('/', '/home');
+      $urlRouterProvider.when('', '/home');
       $urlRouterProvider.when('/home', '/campaigns');
 
 
