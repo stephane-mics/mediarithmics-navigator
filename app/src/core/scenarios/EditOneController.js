@@ -148,6 +148,9 @@ define(['./module'], function () {
           $log.info("failure");
         });
       };
+      $scope.cancel = function () {
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
+      }
     }
   ]);
 });

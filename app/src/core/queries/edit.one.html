@@ -29,8 +29,8 @@
       </thead>
       <tbody>
       <tr ng-repeat="condition in conditions">
-        <td>{{condition.selector_family}}</td>
-        <td>{{condition.selector}}<em ng-show="condition.selector == 'PROPERTY'">&nbsp;-&nbsp;{{condition.property_name}}</em></td>
+        <td>{{condition.selector_family | mcsEnumLabel}}</td>
+        <td>{{condition.selector | mcsEnumLabel}}<em ng-show="condition.selector == 'PROPERTY'">&nbsp;-&nbsp;{{condition.property_name}}</em></td>
         <td>{{condition.operator}}</td>
         <td>{{condition.condition_value}}</td>
         <td class="actions">
@@ -45,15 +45,13 @@
     <div class="form-group row">
       <div class="col-xs-2">
         <select class="form-control input-sm col-xs-2" id="condition_type" placeholder="Condition Type"
-                ng-model="condition.selector_family">
-          <option value="LAST_VISIT">Last visit</option>
-          <option value="LAST_EMAIL">Last email</option>
-          <option value="TOUCH">Touch</option>
+                ng-model="condition.selector_family" ng-options="family.name as (family.name | mcsEnumLabel) for family in families"  ng-change="updateFamily(condition.selector_family)">
+
         </select>
       </div>
       <div class="col-xs-2" >
-        <input class="form-control input-sm col-xs-2" id="event_name" ng-model="condition.selector"
-               placeholder="Selector"/>
+        <select class="form-control input-sm col-xs-2" id="event_name" ng-model="condition.selector"
+               placeholder="Selector" ng-options="value.name as (value.name | mcsEnumLabel) for value in family"></select>
       </div>
       <div class="col-xs-2" ng-show="condition.selector == 'PROPERTY'">
         <input class="form-control input-sm col-xs-2" id="property_name" ng-model="condition.property_name"
@@ -80,6 +78,7 @@
 
     <div class="mcs-actions-group">
 
+        <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
       <button class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
     </div>
   </form>
