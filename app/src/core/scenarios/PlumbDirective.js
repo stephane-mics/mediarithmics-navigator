@@ -51,7 +51,7 @@ define(['./module', 'jsplumb', 'jquery'], function (module, jsPlumb, $) {
           console.log("connection " + params.connection.id + " was moved");
         });
         instance.bind("connection", function(info, origEvent) {
-          if(typeof origEvent !== 'undefined' && origEvent.type == 'drop'){
+          if(typeof origEvent !== 'undefined' && origEvent.type == 'mouseup'){
             console.log("[connection] event in jsPlumbCanvas Directive [DRAG & DROP]", info, origEvent);
             var targetUUID = $(info.target).attr('uuid');
             var sourceUUID = $(info.source).attr('uuid');

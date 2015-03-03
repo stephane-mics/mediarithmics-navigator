@@ -61,6 +61,14 @@ define(['./module'], function () {
         }
       };
 
+      $scope.deleteNode = function (id) {
+        $scope.workflow.one("nodes", id).remove().then(function (r) {
+          $state.transitionTo($state.current, $stateParams, {
+            reload: true, inherit: true, notify: true
+          });
+        });
+      }
+
       $scope.addInput = function (type) {
         $scope.inputs.post({"type":type}, {"scenario_id": scenarioId}).then(function (r) {
           $scope.editInput(r);
