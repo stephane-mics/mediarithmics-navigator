@@ -55,6 +55,14 @@ define(['./module'], function () {
         }
       };
 
+      Restangular.all("selector_families").getList().then(function (families) {
+        $scope.families = families;
+      });
+      $scope.updateFamily = function (family)  {
+        Restangular.one("selector_families",family).all("values").getList().then(function (family) {
+          $scope.family = family;
+        });
+      };
 
 
       $scope.done = function () {
