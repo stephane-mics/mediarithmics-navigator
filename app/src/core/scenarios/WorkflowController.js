@@ -85,10 +85,10 @@ define(['./module'], function () {
                     }
                     for(var i = 0; i < nodes.length ; i++) {
                         var node = nodes[i];
-                        if(previousNode != null) {
-                            $scope.stateConnections.push({sourceUUID:"src-" + previousNode.id, targetUUID:"target-" + node.id})
-                        } else {
+                        if(workflow.begin_node_id == node.id) {
                             $scope.stateConnections.push({sourceUUID:"start", targetUUID:"target-" + node.id})
+                        } else if(previousNode != null) {
+//                            $scope.stateConnections.push({sourceUUID:"src-" + previousNode.id, targetUUID:"target-" + node.id})
                         }
                         previousNode = node;
                     }
@@ -172,8 +172,6 @@ define(['./module'], function () {
             };
 
 
-
-            var instance = jsPlumb.instance;
             $scope.onConnection = function (instance, connection, targetUUID, sourceUUID) {
                 // still need a scope $apply
                 // console.log('onConnection in controller');
@@ -182,6 +180,14 @@ define(['./module'], function () {
                     'sourceUUID': sourceUUID,
                     'conn': connection
                 });
+                if(sourceUUID == 'start') {
+                    Restangular.one('scenarios', $stateParams.scenario_id).one("workflow").post("begin", {id: targetUUID.replace('target-', '')}).then(function (r, error) {
+
+                      $state.transitionTo($state.current, $stateParams, {
+                        reload: true, inherit: true, notify: true
+                      });
+                    });
+                }
                 $scope.$apply();
             }
         }
