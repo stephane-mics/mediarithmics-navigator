@@ -4,8 +4,14 @@ define(['./module'], function () {
   var module = angular.module('core/layout/header/navbar/navigator-navbar');
 
   module.controller('NavigatorNavbarController', [
-    '$scope', '$log', 'core/common/auth/Session', 'core/login/constants','$rootScope',
-    function ($scope, $log, Session, LoginConstants, $rootScope) {
+    '$scope', '$log', 'core/common/auth/Session', 'core/login/constants','$rootScope', 'core/configuration',
+    function ($scope, $log, Session, LoginConstants, $rootScope, configuration) {
+
+      $scope.getBrandLogo = function () {
+        return configuration.ASSETS_URL + "/white_label/" + location.hostname + "/logo.png";
+      };
+
+
       function isLogged() {
         $scope.isLogged = Session.isInitialized();
       }
