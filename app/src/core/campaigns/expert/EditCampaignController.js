@@ -63,8 +63,8 @@ define(['./module','moment'], function (m, moment) {
         };
 
         $scope.isInInventorySources = function (elem) {
-          var displayNetworkCampaigns = _.map($scope.inventorySources, function (elem) {
-            return "" + elem.display_network_campaign_id;
+          var displayNetworkAccesses = _.map($scope.inventorySources, function (elem) {
+            return "" + elem.display_network_access_id;
           });
           return !_.contains(displayNetworkCampaigns, elem.id);
         };
@@ -85,7 +85,7 @@ define(['./module','moment'], function (m, moment) {
 
         $scope.$on("mics-inventory-source:selected", function (event, inventorySource) {
           DisplayCampaignService.addInventorySource({
-            display_network_campaign_id : inventorySource.id,
+            display_network_access_id : inventorySource.id,
             display_network_name : inventorySource.display_network_name
           });
         });

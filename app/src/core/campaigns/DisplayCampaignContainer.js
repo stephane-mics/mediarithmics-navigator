@@ -101,7 +101,7 @@ define(['./module'], function () {
 
       DisplayCampaignContainer.prototype.addInventorySource = function (inventorySource) {
         var found = _.find(this.inventorySources, function (source) {
-          return source.display_network_campaign_id === inventorySource.display_network_campaign_id;
+          return source.display_network_access_id === inventorySource.display_network_access_id;
         });
         if(!found) {
           inventorySource.id = IdGenerator.getId();
@@ -113,7 +113,7 @@ define(['./module'], function () {
 
       DisplayCampaignContainer.prototype.removeInventorySource = function (inventorySource) {
         for (var i = 0; i < this.inventorySources.length; i++) {
-          if (this.inventorySources[i].display_network_campaign_id === inventorySource.display_network_campaign_id) {
+          if (this.inventorySources[i].display_network_access_id === inventorySource.display_network_access_id) {
             this.inventorySources.splice(i, 1);
             if (inventorySource.id && inventorySource.id.indexOf("T") === -1) {
               this.removedInventorySources.push(inventorySource);
