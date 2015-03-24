@@ -18,12 +18,12 @@ define(['./module'], function () {
       /**
        *  Init methods
        */
-      service.getDisplayNetworkCampaign = function () {
-        return this.getDisplayNetworkCampaignPromise().$object;
+      service.getDisplayNetworkAccess = function () {
+        return this.getDisplayNetworkAccessPromise().$object;
       };
-      service.getDisplayNetworkCampaignPromise = function () {
+      service.getDisplayNetworkAccessPromise = function () {
         var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
-        return Restangular.all('display_network_campaign').getList(params);
+        return Restangular.all('display_network_accesses').getList(params);
       };
 
       service.getDeepCampaignView = function (campaignId) {

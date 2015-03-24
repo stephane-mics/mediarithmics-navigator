@@ -9,7 +9,7 @@ define(['./module'], function () {
     function ($scope, DisplayCampaignContainer, DisplayCampaignService, $stateParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
       var campaignId = $stateParams.campaign_id;
 
-      function initView (displayNetworkCampaigns) {
+      function initView (displayNetworkAccesses) {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
 
         $scope.isCreationMode = DisplayCampaignService.isCreationMode();
@@ -24,11 +24,11 @@ define(['./module'], function () {
         }
 
         if($scope.isCreationMode) {
-          for(var i = 0; i < displayNetworkCampaigns.length; i++) {
-            var displayNetworkCampaign = displayNetworkCampaigns[i];
+          for(var i = 0; i < displayNetworkAccesses.length; i++) {
+            var displayNetworkAccess = displayNetworkAccesses[i];
             var newInventorySource = {
-              display_network_campaign_id: displayNetworkCampaign.id,
-              display_network_name: displayNetworkCampaign.display_network_name
+              display_network_access_id: displayNetworkAccess.id,
+              display_network_name: displayNetworkAccess.display_network_name
             };
             DisplayCampaignService.addInventorySource(newInventorySource);
           }
@@ -58,13 +58,13 @@ define(['./module'], function () {
         if (!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
           if (!campaignId || DisplayCampaignService.isTemporaryId(campaignId)) {
             DisplayCampaignService.initCreateCampaign(template)
-            .then(_.bind(DisplayCampaignService.getDisplayNetworkCampaignPromise, DisplayCampaignService))
+            .then(_.bind(DisplayCampaignService.getDisplayNetworkAccessPromise, DisplayCampaignService))
             .then(initView);
           } else {
             DisplayCampaignService
             .initEditCampaign(campaignId, template)
             .then(_.bind(DisplayCampaignService.loadAdGroups, DisplayCampaignService))
-            .then(_.bind(DisplayCampaignService.getDisplayNetworkCampaignPromise, DisplayCampaignService))
+            .then(_.bind(DisplayCampaignService.getDisplayNetworkAccessPromise, DisplayCampaignService))
             .then(initView);
           }
         }

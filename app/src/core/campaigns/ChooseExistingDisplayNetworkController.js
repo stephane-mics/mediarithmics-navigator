@@ -5,7 +5,7 @@ define(['./module'], function (module) {
     '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
     function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
 
-      $scope.availableInventorySources = DisplayCampaignService.getDisplayNetworkCampaign();
+      $scope.availableInventorySources = DisplayCampaignService.getDisplayNetworkAccess();
 
       $scope.selectedInventorySources = [];
 
