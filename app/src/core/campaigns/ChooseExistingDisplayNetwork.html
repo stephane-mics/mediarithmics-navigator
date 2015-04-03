@@ -15,7 +15,9 @@
         <tr ng-repeat="availableInventorySource in availableInventorySources">
           <td><input type="checkbox" checklist-model="selectedInventorySources" id="availableInventorySource.{{availableInventorySource.id}}" checklist-value="availableInventorySource"></td>
           <td>
-            <label for="availableInventorySource.{{availableInventorySource.id}}">{{availableInventorySource.display_network_name}}</label>
+            <label for="availableInventorySource.{{availableInventorySource.id}}">
+              {{availableInventorySource.display_network_name}} <span ng-if="availableInventorySource.name">({{availableInventorySource.name}})</span>
+            </label>
           </td>
         </tr>
       </tbody>
