@@ -141,7 +141,10 @@
       <div class="mics-default-block display-network-list">
         <span class="label label-default selected-display-network" ng-repeat="source in inventorySources|orderBy:'display_network_name'">
           <a class="close" aria-hidden="true" type="button" ng-click="removeInventorySource(source)">x</a>
-          {{source.display_network_name}} <span ng-if="source.display_network_access_name">({{source.display_network_access_name}})</span>
+          {{source.display_network_name}}
+          <span ng-if="source.display_network_access_name && source.display_network_access_deal_id">({{source.display_network_access_name}}, deal Id = {{source.display_network_access_deal_id}})</span>
+          <span ng-if="source.display_network_access_name && !source.display_network_access_deal_id">({{source.display_network_access_name}})</span>
+          <span ng-if="!source.display_network_access_name && source.display_network_access_deal_id">(deal Id ={{source.display_network_access_deal_id}})</span>
         </span>
 
       </div>

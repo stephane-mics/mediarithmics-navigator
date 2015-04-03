@@ -87,7 +87,8 @@ define(['./module','moment'], function (m, moment) {
           DisplayCampaignService.addInventorySource({
             display_network_access_id : inventorySource.id,
             display_network_name : inventorySource.display_network_name,
-            display_network_access_name : inventorySource.name
+            display_network_access_name : inventorySource.name,
+            display_network_access_deal_id : inventorySource.deal_id
           });
         });
 
