@@ -86,7 +86,8 @@ define(['./module','moment'], function (m, moment) {
         $scope.$on("mics-inventory-source:selected", function (event, inventorySource) {
           DisplayCampaignService.addInventorySource({
             display_network_access_id : inventorySource.id,
-            display_network_name : inventorySource.display_network_name
+            display_network_name : inventorySource.display_network_name,
+            display_network_access_name : inventorySource.name
           });
         });
 
