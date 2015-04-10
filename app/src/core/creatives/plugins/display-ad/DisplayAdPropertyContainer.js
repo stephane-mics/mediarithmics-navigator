@@ -5,31 +5,31 @@ define(['./module'], function (module) {
    * Display Ad Property Container
    */
 
-  module.factory("core/creatives/PropertyContainer", [
+  module.factory("core/creatives/plugins/display-ad/DisplayAdPropertyContainer", [
     "$q", "Restangular",
 
-    function($q, Restangular) {
+    function ($q, Restangular) {
 
-      var PropertyContainer = function PropertyContainer(property) {
+      var DisplayAdPropertyContainer = function DisplayAdPropertyContainer(property) {
         this.value = property;
         this.id = property.id;
       };
 
-      PropertyContainer.prototype.update = function update() {
+      DisplayAdPropertyContainer.prototype.update = function update() {
         var deferred = $q.defer();
-        this.value.put().then(function(property) {
+        this.value.put().then(function (property) {
           deferred.resolve(property);
-        }, function(reason) {
+        }, function (reason) {
           deferred.reject(reason);
         });
         return deferred.promise;
       };
 
-      PropertyContainer.prototype.persist = function persist(creativeId) {
+      DisplayAdPropertyContainer.prototype.persist = function persist(creativeId) {
         return Restangular.one("display_ads", creativeId).one("renderer_properties").customPUT([this.value]);
       };
 
-      return PropertyContainer;
+      return DisplayAdPropertyContainer;
     }
   ]);
 });

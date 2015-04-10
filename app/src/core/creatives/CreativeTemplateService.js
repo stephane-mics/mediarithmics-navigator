@@ -2,11 +2,7 @@
 define(['./module'], function () {
   'use strict';
 
-  /*
-   *
-   * DISPLAY Ad SERVICE
-   *
-   */
+
   var module = angular.module('core/creatives');
 
   module.factory('core/creatives/CreativeTemplateService', [
