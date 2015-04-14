@@ -1,8 +1,6 @@
 define(['./module'], function (module) {
   'use strict';
 
-
-  /* define the Authentication service */
   module.factory('core/creatives/CreativePluginService', [
     '$log', '$q', 'lodash',
     function ($log, $q, _) {
@@ -24,6 +22,15 @@ define(['./module'], function (module) {
         editor: {
           create_path: "/{organisation_id}/creatives/display-ad/default-editor/create",
           edit_path: "/{organisation_id}/creatives/display-ad/default-editor/edit/{id}"
+        }
+      }, {
+        name: "Video Mode",
+        editor_group_id: "com.mediarithmics.creative.video",
+        editor_artifact_id: "video-editor",
+        image: "/images/plugins/creative-mcs-default.png",
+        editor: {
+          create_path: "/{organisation_id}/creatives/video-ad/editor/create",
+          edit_path: "/{organisation_id}/creatives/video-ad/editor/edit/{id}"
         }
       }
         // UNCOMMENT TO ADD THE FACEBOOK AD EDITOR

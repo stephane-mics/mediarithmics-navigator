@@ -3,13 +3,11 @@ require.config({
   paths: {
     "jquery": "../bower_components/jquery/jquery",
     "angular": "../bower_components/angular/angular",
-    'angularAMD': '../bower_components/angularAMD/angularAMD',
-    'ngload': '../bower_components/angularAMD/ngload',
+    "angularAMD": "../bower_components/angularAMD/angularAMD",
+    "ngload": "../bower_components/angularAMD/ngload",
     "jqCookie": "../bower_components/jquery-cookie/jquery.cookie",
     "moment": "../bower_components/momentjs/moment",
     "jsplumb": "../bower_components/jsplumb/dist/js/dom.jsPlumb-1.7.2",
-
-
 
     "lodash": "../bower_components/lodash/dist/lodash.compat",
     "d3": "../bower_components/d3/d3",
@@ -20,11 +18,17 @@ require.config({
 
     "autofill-event": "../bower_components/autofill-event/src/autofill-event",
 
-
     "async": "../bower_components/async/lib/async",
     "moxie": "../bower_components/plupload/js/moxie",
     "plupload": "../bower_components/plupload/js/plupload.dev",
 
+    // Video
+    "com.2fdevs.videogular": "../bower_components/videogular/videogular",
+    "com.2fdevs.videogular.plugins.controls": "../bower_components/videogular-controls/vg-controls",
+    "com.2fdevs.videogular.plugins.overlayplay": "../bower_components/videogular-overlay-play/vg-overlay-play",
+    "com.2fdevs.videogular.plugins.poster": "../bower_components/videogular-poster/vg-poster",
+    "com.2fdevs.videogular.plugins.buffering": "../bower_components/videogular-buffering/vg-buffering",
+    "com.2fdevs.videogular.plugins.imaads": "../bower_components/videogular-ima-ads/vg-ima-ads",
 
     // Angular JS modules
     "nvd3ChartDirectives": "../bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives",
@@ -40,12 +44,11 @@ require.config({
     "ngTable": "../bower_components/ng-table/ng-table",
     "checklist-model": "../bower_components/checklist-model/checklist-model",
     "ui.bootstrap": "../bower_components/angular-bootstrap/ui-bootstrap-tpls"
-
   },
   shim: {
-    'angular': {'deps': ['jquery'], 'exports': 'angular'},
+    'angular': {deps: ['jquery'], exports: 'angular'},
     'angularAMD': ['angular'],
-    "ngCookies": ['angular'],
+    'ngCookies': ['angular'],
     'ngResource': ['angular'],
     'ui.bootstrap': ['angular'],
     'ngSanitize': ['angular'],
@@ -56,17 +59,22 @@ require.config({
     'bootstrap': ['jquery'],
     'jqCookie': ['jquery'],
     'jqDaterangepicker': ['jquery', 'moment'],
-    "autofill-event": ['jquery'],
+    'autofill-event': ['jquery'],
     'ngBootstrap': ['angular', 'bootstrap', 'jqDaterangepicker'],
     'ui': ['angular'],
     'ngTable': ['angular'],
     'core/configuration': ['angular'],
-    'plupload': {deps: ['moxie'], "exports": "plupload"},
-    "ui.router":["angular"],
-    "ui.router.extras":["angular","ui.router"],
-
-    "nv.d3": {deps: ['nvd3-templates/d3.global']},
-    'ngload': ['angularAMD']
+    'plupload': {deps: ['moxie'], exports: "plupload"},
+    'ui.router':["angular"],
+    'ui.router.extras':["angular","ui.router"],
+    'nv.d3': {deps: ['nvd3-templates/d3.global']},
+    'ngload': ['angularAMD'],
+    'com.2fdevs.videogular': ['angular', 'ngSanitize'],
+    'com.2fdevs.videogular.plugins.controls': ['angular', 'ngSanitize'],
+    'com.2fdevs.videogular.plugins.overlayplay': ['angular', 'ngSanitize'],
+    'com.2fdevs.videogular.plugins.poster': ['angular', 'ngSanitize'],
+    'com.2fdevs.videogular.plugins.buffering': ['angular', 'ngSanitize'],
+    'com.2fdevs.videogular.plugins.imaads': ['angular', 'ngSanitize']
   },
   deps: ['navigator']
 });

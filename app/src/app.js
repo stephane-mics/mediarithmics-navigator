@@ -33,7 +33,7 @@ define([
   ], function () {
     'use strict';
 
-    /*
+    /**
      * Application Module
      */
     var navigator = angular.module('navigator', [

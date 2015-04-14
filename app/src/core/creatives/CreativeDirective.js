@@ -1,4 +1,4 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
 
@@ -28,7 +28,6 @@ define(['./module'], function () {
       });
   }
 
-  var module = angular.module('core/creatives');
   module.directive('creativeThumbnail', ["Restangular", 'core/configuration', '$q',
     function (Restangular, configuration, $q) {
 

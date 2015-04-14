@@ -1,0 +1,78 @@
+<div class="mcs-default-container" ng-controller='core/creatives/plugins/video-ad/editor/EditController'>
+  <div class="mcs-default-sidebar">
+    <div class="organisation-name-block">
+      {{currentOrganisation}}
+    </div>
+    <div class="mcs-creative-type">
+      <h4>{{getRendererTitle(videoAd)}}</h4>
+    </div>
+  </div>
+  <form role="form" class="mcs-default-content mcs-full-page-form">
+    <div class="mcs-default-heading">
+      <h1>Video Ad</h1>
+    </div>
+
+    <div class="row">
+      <!-- Name -->
+      <div class="col-md-8">
+        <div mcs-form-group="full" label-for="name" label-text="Ad name">
+          <input ng-disabled="disabledEdition" ng-model="videoAd.name" type="text" class="form-control input-lg" id="name">
+        </div>
+      </div>
+    </div>
+
+    <div ng-show="adServingUrl" class="row">
+      <div class="col-md-8">
+        <h4>Preview</h4>
+
+        <videogular vg-theme="videoPlayerConfig.theme">
+          <vg-media vg-src="videoPlayerConfig.sources"></vg-media>
+
+          <vg-controls>
+            <vg-play-pause-button></vg-play-pause-button>
+            <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
+            <vg-scrub-bar>
+              <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+            </vg-scrub-bar>
+            <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
+            <vg-volume>
+              <vg-mute-button></vg-mute-button>
+              <vg-volume-bar></vg-volume-bar>
+            </vg-volume>
+            <vg-fullscreen-button></vg-fullscreen-button>
+          </vg-controls>
+
+          <vg-ima-ads vg-ad-tag-url="videoPlayerConfig.plugins.ads.adTagUrl"></vg-ima-ads>
+          <vg-overlay-play></vg-overlay-play>
+        </videogular>
+
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h4>Properties</h4>
+
+        <div ng-repeat="property in properties">
+          <mcs-number-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'INT'"></mcs-number-property>
+          <mcs-url-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
+          <mcs-data-file-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'DATA_FILE'"></mcs-data-file-property>
+          <mcs-asset-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
+          <mcs-text-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'STRING'"></mcs-text-property>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save or cancel -->
+    <div class="mcs-actions-group">
+      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="save()">Done</button>
+      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp;
+        Refresh
+      </button>
+      <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
+    </div>
+
+  </form>
+</div>
