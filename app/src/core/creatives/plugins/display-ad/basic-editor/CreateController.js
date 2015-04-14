@@ -1,9 +1,9 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/creatives/plugins/com.mediarithmics.creative.display/basic-editor/CreateController', [
+  module.controller('core/creatives/plugins/display-ad/basic-editor/CreateController', [
     '$scope', '$location', 'core/common/auth/Session', 'core/creatives/CreativePluginService',
-    function($scope, $location, Session, CreativePluginService) {
+    function ($scope, $location, Session, CreativePluginService) {
 
       $scope.canSave = false;
 
@@ -12,19 +12,19 @@ define(['./module'], function (module) {
       });
 
 
-      $scope.done = function() {
-        $scope.$broadcast("com.mediarithmics.creative.display/basic-editor:save");
+      $scope.done = function () {
+        $scope.$broadcast("display-ad/basic-editor:save");
       };
 
-      $scope.$on("com.mediarithmics.creative.display/basic-editor:saved", function () {
+      $scope.$on("display-ad/basic-editor:saved", function () {
         $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/creatives");
       });
 
-      $scope.$on("com.mediarithmics.creative.display/basic-editor:asset-added", function () {
+      $scope.$on("display-ad/basic-editor:asset-added", function () {
         $scope.canSave = true;
       });
 
-      $scope.cancel = function() {
+      $scope.cancel = function () {
         $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/creatives");
       };
 

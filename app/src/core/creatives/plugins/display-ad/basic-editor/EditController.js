@@ -1,13 +1,13 @@
 define(['./module', 'app'], function (module) {
   'use strict';
 
-  module.controller('core/creatives/plugins/com.mediarithmics.creative.display/basic-editor/EditController', [
+  module.controller('core/creatives/plugins/display-ad/basic-editor/EditController', [
 
-    '$scope', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state',
+    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state',
 
     function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state) {
 
-      $controller('core/creatives/plugins/com.mediarithmics.creative.display/common/CommonEditController', {$scope: $scope});
+      $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
 
       $scope.$on("display-ad:loaded", function () {
         // the parent controller has loaded the creative, you can use it now (check DisplayAdService)

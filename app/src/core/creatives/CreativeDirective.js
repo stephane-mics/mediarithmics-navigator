@@ -13,19 +13,19 @@ define(['./module'], function () {
    */
   function fetchRendererProperties(Restangular, $q, displayAdId) {
     return Restangular
-    .one("display_ads", displayAdId)
-    .all("renderer_properties")
-    .getList()
-    .then(function (properties) {
-      var deferred = $q.defer();
-      var result = {};
-      for (var i = 0; i < properties.length; i++) {
-        var p = properties[i];
-        result[p.technical_name] = {value: p.value, property_type: p.property_type};
-      }
-      deferred.resolve(result);
-      return deferred.promise;
-    });
+      .one("display_ads", displayAdId)
+      .all("renderer_properties")
+      .getList()
+      .then(function (properties) {
+        var deferred = $q.defer();
+        var result = {};
+        for (var i = 0; i < properties.length; i++) {
+          var p = properties[i];
+          result[p.technical_name] = {value: p.value, property_type: p.property_type};
+        }
+        deferred.resolve(result);
+        return deferred.promise;
+      });
   }
 
   var module = angular.module('core/creatives');
@@ -45,7 +45,7 @@ define(['./module'], function () {
                 if (creative.asset_path) {
                   attrs.$set("src", configuration.ASSETS_URL + creative.asset_path);
                 } else if (creative.icon_id === "flash") {
-                  if(format) {
+                  if (format) {
                     attrs.$set("src", "images/flash/generated/Adobe-swf_icon_" + format + ".png");
                   } else {
                     attrs.$set("src", "images/flash/Adobe-swf_icon.png");
@@ -62,12 +62,8 @@ define(['./module'], function () {
                 attrs.$set("src", "images/Unknown_file.png");
               }
             );
-
-
           });
         }
-
-
       };
     }
   ]);
@@ -77,10 +73,10 @@ define(['./module'], function () {
     function (Restangular, $q) {
       return {
         restrict: 'EA',
-        controller : [
+        controller: [
           "$scope",
           function ($scope) {
-            this.setup = function(fetchDisplayAdRendererProperties) {
+            this.setup = function (fetchDisplayAdRendererProperties) {
               var asString = fetchDisplayAdRendererProperties;
               //ad.creative_id as creative with rendererProperties
               var match = asString.match(/^\s*(.+)\s+as\s+(.*?)\s*$/);
@@ -91,13 +87,13 @@ define(['./module'], function () {
                   return;
                 }
                 fetchRendererProperties(Restangular, $q, newValue).then(function (result) {
-                    $scope[exposedVar] = result;
+                  $scope[exposedVar] = result;
                 });
               });
             };
           }
         ],
-        link: function(scope, element, attrs, myCtrl) {
+        link: function (scope, element, attrs, myCtrl) {
           myCtrl.setup(attrs.fetchDisplayAdRendererProperties);
         }
       };
@@ -114,10 +110,10 @@ define(['./module'], function () {
 
       return {
         restrict: 'EA',
-        controller : [
+        controller: [
           "$scope",
           function ($scope) {
-            this.setup = function(fetchCreative) {
+            this.setup = function (fetchCreative) {
               var asString = fetchCreative;
               //ad.creative_id as creative with rendererProperties
               var match = asString.match(/^\s*(.+)\s+as\s+(.*?)\s*(with\s*(.*))?$/);
@@ -139,7 +135,7 @@ define(['./module'], function () {
             };
           }
         ],
-        link: function(scope, element, attrs, myCtrl) {
+        link: function (scope, element, attrs, myCtrl) {
           myCtrl.setup(attrs.fetchCreative);
         }
       };
@@ -154,11 +150,8 @@ define(['./module'], function () {
       if (input.property_type === 'URL') {
         return input.value.url;
       }
-
       return "";
     };
   });
-
-
 });
 

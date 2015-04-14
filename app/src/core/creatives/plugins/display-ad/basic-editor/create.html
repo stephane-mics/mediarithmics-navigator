@@ -1,4 +1,4 @@
-<div class="mcs-default-container" ng-controller="core/creatives/plugins/com.mediarithmics.creative.display/basic-editor/CreateController">
+<div class="mcs-default-container" ng-controller="core/creatives/plugins/display-ad/basic-editor/CreateController">
   <div class="mcs-default-sidebar">
     <div class="organisation-name-block">
       {{currentOrganisation}}
@@ -11,7 +11,7 @@
   <form role="form" class="mcs-default-content mcs-full-page-form" ng-submit="done()">
     <h1>New Banner Ad Creative</h1>
 
-    <div ng-include="'src/core/creatives/plugins/com.mediarithmics.creative.display/basic-editor/upload-creative.html'"></div>
+    <div ng-include="'src/core/creatives/plugins/display-ad/basic-editor/upload-creative.html'"></div>
 
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish" ng-show="canSave">Done</button>

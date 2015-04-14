@@ -3,8 +3,8 @@ define(['./module'], function () {
 
   var module = angular.module('core/creatives');
 
-  module.factory("core/creatives/DisplayAdContainer", [
-    "$q", "Restangular", "core/common/IdGenerator", "async", "core/creatives/PropertyContainer", "$log",
+  module.factory("core/creatives/plugins/display-ad/DisplayAdContainer", [
+    "$q", "Restangular", "core/common/IdGenerator", "async", "core/creatives/plugins/display-ad/DisplayAdPropertyContainer", "$log",
 
     function ($q, Restangular, IdGenerator, async, PropertyContainer, $log) {
 
@@ -16,15 +16,15 @@ define(['./module'], function () {
           return;
         }
         this.value = {
-          name : "",
-          type : "DISPLAY_AD",
-          subtype : options.subtype,
-          format : "",
+          name: "",
+          type: "DISPLAY_AD",
+          subtype: options.subtype,
+          format: "",
           organisation_id: "",
-          renderer_group_id : options.renderer.groupId,
-          renderer_artifact_id : options.renderer.artifactId,
-          editor_group_id : options.editor.groupId,
-          editor_artifact_id : options.editor.artifactId
+          renderer_group_id: options.renderer.groupId,
+          renderer_artifact_id: options.renderer.artifactId,
+          editor_group_id: options.editor.groupId,
+          editor_artifact_id: options.editor.artifactId
         };
       };
 
@@ -68,13 +68,13 @@ define(['./module'], function () {
       };
 
       DisplayAdContainer.prototype.getOrCreatePropertyValueByTechnicalName = function getProperty(technicalName) {
-        for(var i=0; i < this.properties.length; i++){
+        for (var i = 0; i < this.properties.length; i++) {
           if (this.properties[i].value.technical_name === technicalName) {
             return this.properties[i].value;
           }
         }
         var propContainer = new PropertyContainer({
-          "technical_name" : technicalName,
+          "technical_name": technicalName,
           "value": {}
         });
         this.properties.push(propContainer);
@@ -82,7 +82,7 @@ define(['./module'], function () {
       };
 
       DisplayAdContainer.prototype.getProperty = function getProperty(id) {
-        for(var i=0; i < this.properties.length; i++){
+        for (var i = 0; i < this.properties.length; i++) {
           if (this.properties[i].id === id) {
             return this.properties[i];
           }
@@ -100,7 +100,7 @@ define(['./module'], function () {
         var self = this;
         this.value.organisation_id = this.organisationId;
 
-        Restangular.all('display_ads').post(this.value).then(angular.bind(this, function(displayAd) {
+        Restangular.all('display_ads').post(this.value).then(angular.bind(this, function (displayAd) {
           self.id = displayAd.id;
           var pArray = [];
 
@@ -109,16 +109,16 @@ define(['./module'], function () {
               // persist the properties container
               pArray.push(this.properties[i].persist(self.id));
             }
-            $q.all(pArray).then(function() {
+            $q.all(pArray).then(function () {
               deferred.resolve(self);
-            }, function(reason) {
+            }, function (reason) {
               deferred.reject(reason);
             });
           } else {
             // return the loaded container
             deferred.resolve(self);
           }
-        }), function(reason) {
+        }), function (reason) {
           deferred.reject(reason);
         });
         return deferred.promise;
@@ -128,25 +128,26 @@ define(['./module'], function () {
         var deferred = $q.defer();
         var self = this;
 
-        this.value.put().then(function(campaign) {
+        this.value.put().then(function (campaign) {
           var properties = self.properties;
           // update properties
           $log.debug("UPDATING PROPERTIES: ", properties);
-          async.mapSeries(properties, function(property, callback) {
+          async.mapSeries(properties, function (property, callback) {
             // update the property
-            property.update(self.id).then(function(result) {
+            $log.debug("UPDATING PROPERTY: ", property);
+            property.update(self.id).then(function (result) {
               callback(null, result);
-            }, function(reason) {
+            }, function (reason) {
               callback(reason, null);
             });
-          }, function(err, results) {
+          }, function (err, results) {
             if (err) {
               deferred.reject(err);
             } else {
               deferred.resolve(self);
             }
           });
-        }, function(reason) {
+        }, function (reason) {
           deferred.reject(reason);
         });
         return deferred.promise;
@@ -157,7 +158,7 @@ define(['./module'], function () {
           .one('display_ads', this.id)
           .all("action")
           .customPOST({
-            audit_action : action
+            audit_action: action
           });
       };
 

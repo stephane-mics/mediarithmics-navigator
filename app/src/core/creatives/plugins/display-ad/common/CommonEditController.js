@@ -2,17 +2,13 @@
 define(['./module', 'app'], function (module) {
   'use strict';
 
-  /*
-   * Display Ad Template Module
-   *
-   * common controller
-   *
-   *
+  /**
+   * Common controller
    */
 
-  module.controller('core/creatives/plugins/com.mediarithmics.creative.display/common/CommonEditController', [
+  module.controller('core/creatives/plugins/display-ad/common/CommonEditController', [
 
-    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', 'core/configuration', '$state',
+    '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', 'core/configuration', '$state',
 
     function ($scope, $sce, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, configuration, $state) {
 
@@ -43,7 +39,7 @@ define(['./module', 'app'], function (module) {
         });
       };
 
-      CreativePluginService.getCreativeTemplateFromEditor("com.mediarithmics.creative.display", "basic-editor").then(function (template) {
+      CreativePluginService.getCreativeTemplateFromEditor("display-ad", "basic-editor").then(function (template) {
         $scope.creativeTemplate = template;
       });
 
@@ -52,10 +48,10 @@ define(['./module', 'app'], function (module) {
         $scope.properties = DisplayAdService.getProperties();
         $scope.audits = DisplayAdService.getAudits();
         $scope.disabledEdition = $scope.displayAd.audit_status !== "NOT_AUDITED";
-        $scope.previewUrl = $sce.trustAsResourceUrl(configuration.ADS_PREVIEW_URL + "?ctx=PREVIEW&rid=" + $scope.displayAd.id +"&caid=preview");
+        $scope.previewUrl = $sce.trustAsResourceUrl(configuration.ADS_PREVIEW_URL + "?ctx=PREVIEW&rid=" + $scope.displayAd.id + "&caid=preview");
         var sizes = $scope.displayAd.format.split("x");
-        $scope.previewWidth = parseInt(sizes[0])+10;
-        $scope.previewHeight = parseInt(sizes[1])+10;
+        $scope.previewWidth = parseInt(sizes[0]) + 10;
+        $scope.previewHeight = parseInt(sizes[1]) + 10;
         $scope.$emit("display-ad:loaded");
       });
     }

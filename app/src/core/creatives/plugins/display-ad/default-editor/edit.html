@@ -1,4 +1,4 @@
-<div class="mcs-default-container" ng-controller='core/creatives/plugins/com.mediarithmics.creative.display/default-editor/EditController'>
+<div class="mcs-default-container" ng-controller='core/creatives/plugins/display-ad/default-editor/EditController'>
   <div class="mcs-default-sidebar">
     <div class="organisation-name-block">
       {{currentOrganisation}}
@@ -35,11 +35,12 @@
       </div>
     </div>
 
-    <div ng-include="'src/core/creatives/plugins/com.mediarithmics.creative.display/common/AuditStatus.inc.html'"></div>
+    <div ng-include="'src/core/creatives/plugins/display-ad/common/AuditStatus.inc.html'"></div>
 
     <div class="row">
       <div class="col-md-12">
         <h4>Properties</h4>
+
         <div ng-repeat="property in properties">
           <mcs-number-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'INT'"></mcs-number-property>
           <mcs-url-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
@@ -53,7 +54,9 @@
     <!-- save or cancel -->
     <div class="mcs-actions-group">
       <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="save()">Done</button>
-      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
+      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp;
+        Refresh
+      </button>
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
     </div>
 

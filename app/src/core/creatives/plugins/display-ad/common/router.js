@@ -7,6 +7,5 @@ define(['./module'], function (module) {
     }
   ]);
 
-
 });
 

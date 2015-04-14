@@ -3,6 +3,6 @@
   "dependencies": [
     "restangular",
     "checklist-model",
-    "core/creatives/plugins/com.mediarithmics.creative.display/basic-editor"
+    "core/creatives/plugins/display-ad/basic-editor"
   ]
 }
