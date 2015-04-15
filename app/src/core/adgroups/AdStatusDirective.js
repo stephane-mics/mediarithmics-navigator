@@ -7,24 +7,24 @@ define(['./module'], function (module) {
         restrict: 'EA',
         replace: true,
         templateUrl: "src/core/adgroups/adStatusTemplate.html",
-        scope : {
-          "ad" : "=micsAdStatus",
-          "adGroup" : "=",
-          "campaign" : "="
+        scope: {
+          "ad": "=micsAdStatus",
+          "adGroup": "=",
+          "campaign": "="
         },
-        controller : [
+        controller: [
           "$scope", "Restangular", "core/common/ErrorService",
           function ($scope, Restangular, errorService) {
 
             var updateAdStatus = function (ad, status) {
               Restangular.one("display_campaigns", $scope.campaign.id).one('ad_groups', $scope.adGroup.id).one('ads', ad.id).customPUT({
-                status : status,
-              }).then(function(returnedAd) {
+                status: status,
+              }).then(function (returnedAd) {
                 ad.status = returnedAd.status;
               }, function failure(response) {
                 errorService.showErrorModal({
                   error: response,
-                  messageType:"simple"
+                  messageType: "simple"
                 });
               });
             };

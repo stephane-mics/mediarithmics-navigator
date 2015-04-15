@@ -1,6 +1,6 @@
 define(['../module'], function () {
-
   'use strict';
+
   var module = angular.module('core/campaigns/report');
   module.directive('breakdownTable', function () {
     return {
@@ -29,15 +29,11 @@ define(['../module'], function () {
 
   };
 
-
   module.filter('tableHeader', function () {
     return function (input) {
       input = input || '';
       var out = tableHeaders[input] || input;
       return out;
-
     };
-
   });
-
 });

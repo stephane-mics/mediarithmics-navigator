@@ -8,10 +8,9 @@
   <div class="ad-group-components">
     <div class="ad-group-component">
       <h5>Ads <span class="badge">{{getAds(adGroup.id).length}}</span></h5>
+
       <div class="ad-container">
-
-        <div class="thumbnail" ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative" >
-
+        <div class="thumbnail" ng-repeat="ad in getAds(adGroup.id)" fetch-creative="ad.creative_id as creative">
           <div class="img-box">
             <img creative-thumbnail="creative.id" creative-format="creative.format"/>
           </div>
@@ -25,23 +24,24 @@
       <h5>Visibility : {{adGroup.visibility | constant:'adgroup_visibility'}}</h5>
     </div>
     <div
-         class="ad-group-component"
-         ng-show="adGroup.bid_optimizer_id"
-         fetch-bid-optimizer="adGroup.bid_optimizer_id as bidOptimizer"
-         fetch-plugin-from-version="bidOptimizer.engine_version_id as engine"
-         fetch-plugin-properties="engine.id as engineProperties"
-    >
+        class="ad-group-component"
+        ng-show="adGroup.bid_optimizer_id"
+        fetch-bid-optimizer="adGroup.bid_optimizer_id as bidOptimizer"
+        fetch-plugin-from-version="bidOptimizer.engine_version_id as engine"
+        fetch-plugin-properties="engine.id as engineProperties"
+        >
       <h5>
         Bid Strategy :
-        {{bidOptimizer.name}}  (
-          {{engineProperties['name'].value}}
-          by
-          {{engineProperties['provider'].value}}
+        {{bidOptimizer.name}} (
+        {{engineProperties['name'].value}}
+        by
+        {{engineProperties['provider'].value}}
         ) - {{adGroup.bid_optimization_objective_type}} {{adGroup.bid_optimization_objective_value}} &euro;
       </h5>
     </div>
     <div class="ad-group-component" ng-show="getUserGroups(adGroup.id).length">
       <h5>user groups <span class="badge">{{getUserGroups(adGroup.id).length}}</span></h5>
+
       <div>
         <span ng-repeat="userGroup in getUserGroups(adGroup.id)">
           <!-- {{userGroup.name}}, exclude = {{userGroup.exclude}} -->
@@ -50,6 +50,7 @@
     </div>
     <div class="ad-group-component" ng-show="getKeywordLists(adGroup.id).length">
       <h5>keywords lists <span class="badge">{{getKeywordLists(adGroup.id).length}}</span></h5>
+
       <div>
         <span ng-repeat="keywordList in getKeywordLists(adGroup.id)">
           <!-- {{keywordList.name}} -->
@@ -58,6 +59,7 @@
     </div>
     <div class="ad-group-component" ng-show="getPlacementLists(adGroup.id).length">
       <h5>Placements <span class="badge">{{getPlacementLists(adGroup.id).length}}</span></h5>
+
       <div>
         <span ng-repeat="placement in getPlacementLists(adGroup.id)">
           <!-- {{placement.name}}, exclude = {{placement.exclude}} -->

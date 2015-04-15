@@ -3,20 +3,22 @@
     <div class="organisation-name-block">
       {{currentOrganisation}}
     </div>
-      <div class="mcs-campaign-type ">
-          <img src="/images/plugins/keywords-targeting-small.png"><br />
-          <h4>Keywords Targeting</h4>
-      </div>
+    <div class="mcs-campaign-type ">
+      <img src="/images/plugins/keywords-targeting-small.png"><br/>
+      <h4>Keywords Targeting</h4>
+    </div>
   </div>
   <form ng-submit="next()" class="mcs-default-content mcs-full-page-form">
 
     <div class="mcs-default-heading">
       <h1 ng-if="isCreationMode">Create Keywords Campaign</h1>
+
       <h1 ng-if="!isCreationMode">Edit Keywords Campaign</h1>
     </div>
     <div ng-include="'src/core/campaigns/keywords/breadcrumb.html'"></div>
 
     <h2 class="text-center">{{ campaign.name }}</h2>
+
     <h3 class="text-center">Ongoing (no end date)</h3>
     <table class="summary">
       <tbody>

@@ -25,7 +25,6 @@ define(['./module'], function () {
       });
     }
 
-
     return _.rest(statRow, _.findLastIndex(stats.columns_headers, notMetrics) + 1);
   };
 
@@ -69,11 +68,9 @@ define(['./module'], function () {
     ).then(function (data) {
         $scope.kpis = data;
       });
-
-
   };
 
-  /*
+  /**
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
@@ -94,12 +91,11 @@ define(['./module'], function () {
         _.forEach(campaign.ad_groups, function (ad_group) {
           _.forEach(ad_group.ads, function (ad) {
             $scope.adsWithGroup.push({
-              ad_group : ad_group,
-              ad : ad
+              ad_group: ad_group,
+              ad: ad
             });
           });
         });
-
 
 
         $scope.getUrlForCreative = function (ad) {
@@ -136,13 +132,12 @@ define(['./module'], function () {
       };
 
 
-
       $scope.editCampaign = function (campaign) {
 
         $log.debug("> editCampaign for campaignId=", campaign.id);
 
         CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
-          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/,campaign.organisation_id);
+          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
           $location.path(location);
         });
       };
@@ -152,12 +147,11 @@ define(['./module'], function () {
         newScope.campaign = campaign;
         $modal.open({
           templateUrl: 'src/core/campaigns/delete.html',
-          scope : newScope,
-          backdrop : 'static',
+          scope: newScope,
+          backdrop: 'static',
           controller: 'core/campaigns/DeleteController'
         });
       };
     }
   ]);
-
 });

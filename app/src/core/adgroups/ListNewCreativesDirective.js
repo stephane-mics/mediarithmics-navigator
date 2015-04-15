@@ -6,7 +6,7 @@ define(['./module'], function () {
 
   module.directive('micsListNewCreatives', [
     '$log', 'lodash', 'core/configuration',
-    function($log, _, configuration) {
+    function ($log, _, configuration) {
       return {
         // restrict: 'E',
         scope: {
@@ -26,7 +26,7 @@ define(['./module'], function () {
           scope.ASSETS_URL = configuration.ASSETS_URL;
           scope.onDelete = function (eltToDelete) {
             var idx = scope.wrappers.indexOf(eltToDelete);
-            if(idx === -1) {
+            if (idx === -1) {
               $log.warn("micsListCreatives: trying to delete an unknown elt", eltToDelete);
               return;
             }

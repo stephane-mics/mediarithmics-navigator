@@ -1,7 +1,6 @@
 /* global _ */
 
 define(['./module'], function () {
-
   'use strict';
 
   function ReportWrapper(report) {
@@ -11,16 +10,24 @@ define(['./module'], function () {
     };
     this.getRow = _.memoize(function (id) {
       id = parseInt(id);
-      var row = _.select(report.rows, function(r) {return r[0] === id;})[0];
+      var row = _.select(report.rows, function (r) {
+        return r[0] === id;
+      })[0];
       return self.decorate(row);
     });
     this.decorate = _.memoize(function (row) {
       if (row === undefined) {
-        return _.map(new Array(this.getMetrics().length), function () {return 0; });
+        return _.map(new Array(this.getMetrics().length), function () {
+          return 0;
+        });
       } else {
         var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
-        var type = _.map(this.getMetrics(), function(m) {return tableHeaders[m].type;});
-        return _.map(_.zip([values, type]), function(t) { return {value: t[0], type:t[1]}; });
+        var type = _.map(this.getMetrics(), function (m) {
+          return tableHeaders[m].type;
+        });
+        return _.map(_.zip([values, type]), function (t) {
+          return {value: t[0], type: t[1]};
+        });
       }
     });
     this.getMetricName = function (input) {
@@ -36,7 +43,6 @@ define(['./module'], function () {
     this.getRows = function () {
       return report.rows;
     };
-
   }
 
 //  function Report(report) {
@@ -46,9 +52,6 @@ define(['./module'], function () {
 //  Report.prototype = _.create(ReportWrapper.prototype, {'constructor': Report});
 //
 
-
-
-
   var isMetrics = function (e) {
     return !(/name|id|day|site/).test(e);
   };
@@ -57,19 +60,19 @@ define(['./module'], function () {
   };
 
   var tableHeaders = {
-    "creative_id": {name:"Id"},
-    "adgroup_id": {name:"Id"},
-    "ad_id": {name:"Id"},
-    "site": {name:"Site"},
-    "display_network": {name:"Display Network"},
-    "adgroup_name": {name:"Ad Group Name"},
-    "day": {name:"Date"},
-    "cost_impressions": {name:"Spend", type:"currency"},
-    "impressions": {name:"Impressions", type:"number"},
-    "cpc": {name:"CPC", type:"currency"},
-    "clicks": {name:"Clicks", type:"number"},
-    "ctr": {name:"CTR", type:"percent"},
-    "cpm": {name:"CPM", type:"currency"}
+    "creative_id": {name: "Id"},
+    "adgroup_id": {name: "Id"},
+    "ad_id": {name: "Id"},
+    "site": {name: "Site"},
+    "display_network": {name: "Display Network"},
+    "adgroup_name": {name: "Ad Group Name"},
+    "day": {name: "Date"},
+    "cost_impressions": {name: "Spend", type: "currency"},
+    "impressions": {name: "Impressions", type: "number"},
+    "cpc": {name: "CPC", type: "currency"},
+    "clicks": {name: "Clicks", type: "number"},
+    "ctr": {name: "CTR", type: "percent"},
+    "cpm": {name: "CPM", type: "currency"}
 
   };
 
@@ -77,47 +80,52 @@ define(['./module'], function () {
   var module = angular.module('core/campaigns/report');
   module.factory('CampaignAnalyticsReportService',
     ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment',
-      function ($resource, Session, AuthenticationService, configuration,moment ) {
+      function ($resource, Session, AuthenticationService, configuration, moment) {
         var displayCampaignResource = $resource(
           configuration.WS_URL + "/reports/display_campaign_performance_report",
           {},
-          {get: {
-            method: 'GET',
-            headers: { 'Authorization': AuthenticationService.getAccessToken() }
-          }
+          {
+            get: {
+              method: 'GET',
+              headers: {'Authorization': AuthenticationService.getAccessToken()}
+            }
           }
         );
 
         var adGroupResource = $resource(configuration.WS_URL + "/reports/adgroup_performance_report",
           {},
-          {get: {
-            method: 'GET',
-            headers: { 'Authorization': AuthenticationService.getAccessToken() }
-          }
+          {
+            get: {
+              method: 'GET',
+              headers: {'Authorization': AuthenticationService.getAccessToken()}
+            }
           }
         );
         var adResource = $resource(configuration.WS_URL + "/reports/ad_performance_report",
           {},
-          {get: {
-            method: 'GET',
-            headers: { 'Authorization': AuthenticationService.getAccessToken() }
-          }
+          {
+            get: {
+              method: 'GET',
+              headers: {'Authorization': AuthenticationService.getAccessToken()}
+            }
           }
         );
         var creativeResource = $resource(configuration.WS_URL + "/reports/creative_performance_report",
           {},
-          {get: {
-            method: 'GET',
-            headers: { 'Authorization': AuthenticationService.getAccessToken() }
-          }
+          {
+            get: {
+              method: 'GET',
+              headers: {'Authorization': AuthenticationService.getAccessToken()}
+            }
           }
         );
         var mediaResource = $resource(configuration.WS_URL + "/reports/media_performance_report",
           {},
-          {get: {
-            method: 'GET',
-            headers: { 'Authorization': AuthenticationService.getAccessToken() }
-          }
+          {
+            get: {
+              method: 'GET',
+              headers: {'Authorization': AuthenticationService.getAccessToken()}
+            }
           }
         );
         var range = {startDate: moment().subtract('days', 20), endDate: moment()};
@@ -130,10 +138,9 @@ define(['./module'], function () {
         };
 
 
-
         var ReportService = {
           'creativePerformance': function (campaignId) {
-            return  creativeResource.get({
+            return creativeResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
@@ -141,12 +148,12 @@ define(['./module'], function () {
               metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return new ReportWrapper( response.report_view);
+                return new ReportWrapper(response.report_view);
               });
 
           },
           'adGroupPerformance': function (campaignId) {
-            return  adGroupResource.get({
+            return adGroupResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
@@ -154,12 +161,12 @@ define(['./module'], function () {
               metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return new ReportWrapper( response.report_view);
+                return new ReportWrapper(response.report_view);
               });
 
           },
           'adPerformance': function (campaignId) {
-            return  adResource.get({
+            return adResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
@@ -167,12 +174,12 @@ define(['./module'], function () {
               metrics: "impressions,clicks,cpm,ctr,cpc,cost_impressions",
               filters: "campaign_id==" + campaignId
             }).$promise.then(function (response) {
-                return new ReportWrapper( response.report_view);
+                return new ReportWrapper(response.report_view);
               });
 
           },
           'mediaPerformance': function (campaignId) {
-            return  mediaResource.get({
+            return mediaResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
@@ -185,7 +192,7 @@ define(['./module'], function () {
 
           },
           'kpi': function (campaignId) {
-            return  displayCampaignResource.get({
+            return displayCampaignResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
@@ -213,7 +220,7 @@ define(['./module'], function () {
 
           },
           'allCampaigns': function (organisation_id) {
-            return  displayCampaignResource.get({
+            return displayCampaignResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
@@ -228,9 +235,9 @@ define(['./module'], function () {
           },
           'getDefaultDateRanges': function () {
             return {
-                'Today': [moment(), moment()],
-                'Last 7 Days': [moment().subtract('days', 6), moment()],
-                'Last 30 Days': [moment().subtract('days', 29), moment()]
+              'Today': [moment(), moment()],
+              'Last 7 Days': [moment().subtract('days', 6), moment()],
+              'Last 30 Days': [moment().subtract('days', 29), moment()]
             };
           },
           'getDateRange': function () {
@@ -239,8 +246,12 @@ define(['./module'], function () {
           'setDateRange': function (newRange) {
             range = newRange;
           },
-          'getStartDate': function () {return startDate();},
-          'getEndDate': function () {return endDate();},
+          'getStartDate': function () {
+            return startDate();
+          },
+          'getEndDate': function () {
+            return endDate();
+          },
           'dayPerformance': function (campaignId, leftMetric, rightMetric) {
 
             /**
@@ -248,12 +259,12 @@ define(['./module'], function () {
              * In that case, we want a continue line : we duplicate the point.
              * @param {Array} yAxis the axis to check.
              */
-            var duplicatePointsIfNecessary = function(yAxis) {
-              if(yAxis.length === 1) {
+            var duplicatePointsIfNecessary = function (yAxis) {
+              if (yAxis.length === 1) {
                 var date = moment(yAxis[0].x);
                 // the date starts at 0:00, we add 23 points to cover all the day
                 // d3 can do that but I don't want to change the default behavior for the other ranges.
-                for(var i = 1; i<24; i+=1) {
+                for (var i = 1; i < 24; i += 1) {
                   yAxis.push({
                     x: date.clone().add('hours', i),
                     y: yAxis[0].y
@@ -262,25 +273,24 @@ define(['./module'], function () {
               }
             };
             var mapStatsToNvd3 = function (response) {
-              var report =new ReportWrapper(response.report_view);
+              var report = new ReportWrapper(response.report_view);
 
               var test = report.getRow(startDate().valueOf());
               var y1 = [], y2 = [];
 
 
-
               var dateIter = startDate();
               while (dateIter.isBefore(endDate())) {
                 var row = report.getRow(dateIter.valueOf());
-                if(row[1] === 0) {
-                  y1.push({x: dateIter.valueOf(), y: 0 });
+                if (row[1] === 0) {
+                  y1.push({x: dateIter.valueOf(), y: 0});
                 } else {
-                  y1.push({x: dateIter.valueOf(), y: row[1].value });
+                  y1.push({x: dateIter.valueOf(), y: row[1].value});
                 }
-                if(row[0] === 0) {
-                  y2.push({x: dateIter.valueOf(), y: 0 });
+                if (row[0] === 0) {
+                  y2.push({x: dateIter.valueOf(), y: 0});
                 } else {
-                  y2.push({x: dateIter.valueOf(), y: row[0].value });
+                  y2.push({x: dateIter.valueOf(), y: row[0].value});
 
                 }
                 dateIter = dateIter.add(1, 'day');
@@ -311,8 +321,7 @@ define(['./module'], function () {
                 }
               ];
             };
-
-            return  displayCampaignResource.get({
+            return displayCampaignResource.get({
               organisation_id: Session.getCurrentWorkspace().organisation_id,
               start_date: startDate().format('YYYY-MM-D'),
               end_date: endDate().format('YYYY-MM-D'),
@@ -322,10 +331,6 @@ define(['./module'], function () {
             }).$promise.then(mapStatsToNvd3);
           }
         };
-
         return ReportService;
-
       }]);
-
-
 });

@@ -1,5 +1,5 @@
 {
-  "name":"core/campaigns",
+  "name": "core/campaigns",
   "dependencies": [
     "core/creatives",
     "core/location",

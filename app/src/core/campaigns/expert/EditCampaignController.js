@@ -1,12 +1,9 @@
-define(['./module','moment'], function (m, moment) {
+define(['./module', 'moment'], function (m, moment) {
   'use strict';
 
-  /*
+  /**
    * Display Campaign Template Module
-   *
    * Template : Expert
-   *
-   *
    */
 
   var module = angular.module('core/campaigns/expert');
@@ -19,16 +16,18 @@ define(['./module','moment'], function (m, moment) {
       function initView() {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
-
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
         $scope.locations = DisplayCampaignService.getLocations();
         $scope.locationSelector = $scope.locations.length ? "custom" : "";
         $scope.schedule = $scope.campaign.start_date !== null ? "custom" : "";
-        if($scope.campaign.start_date !== null && $scope.campaign.end_date !== null ) {
-          $scope.campaignDateRange = {startDate: moment($scope.campaign.start_date), endDate: moment($scope.campaign.end_date)};
+        if ($scope.campaign.start_date !== null && $scope.campaign.end_date !== null) {
+          $scope.campaignDateRange = {
+            startDate: moment($scope.campaign.start_date),
+            endDate: moment($scope.campaign.end_date)
+          };
         }
-
       }
+
       $scope.campaignDateRange = {startDate: moment(), endDate: moment().add(20, 'days')};
       $log.debug('Expert.EditCampaignController called !');
 
@@ -49,15 +48,19 @@ define(['./module','moment'], function (m, moment) {
           // init scope
           initView();
         }
+
         $scope.getAds = function (adGroupId) {
           return DisplayCampaignService.getAds(adGroupId);
         };
+
         $scope.getUserGroups = function (adGroupId) {
           return DisplayCampaignService.getUserGroups(adGroupId);
         };
+
         $scope.getKeywordLists = function (adGroupId) {
           return DisplayCampaignService.getKeywordLists(adGroupId);
         };
+
         $scope.getPlacementLists = function (adGroupId) {
           return DisplayCampaignService.getPlacementLists(adGroupId);
         };
@@ -69,11 +72,11 @@ define(['./module','moment'], function (m, moment) {
           return !_.contains(displayNetworkCampaigns, elem.id);
         };
 
-        $scope.chooseDisplayNetworks = function() {
+        $scope.chooseDisplayNetworks = function () {
           $modal.open({
             templateUrl: 'src/core/campaigns/ChooseExistingDisplayNetwork.html',
-            scope : $scope,
-            backdrop : 'static',
+            scope: $scope,
+            backdrop: 'static',
             controller: 'core/campaigns/ChooseExistingDisplayNetworkController',
             size: "lg"
           });
@@ -85,10 +88,10 @@ define(['./module','moment'], function (m, moment) {
 
         $scope.$on("mics-inventory-source:selected", function (event, inventorySource) {
           DisplayCampaignService.addInventorySource({
-            display_network_access_id : inventorySource.id,
-            display_network_name : inventorySource.display_network_name,
-            display_network_access_name : inventorySource.name,
-            display_network_access_deal_id : inventorySource.deal_id
+            display_network_access_id: inventorySource.id,
+            display_network_name: inventorySource.display_network_name,
+            display_network_access_name: inventorySource.name,
+            display_network_access_deal_id: inventorySource.deal_id
           });
         });
 
@@ -108,36 +111,35 @@ define(['./module','moment'], function (m, moment) {
         };
 
         $scope.getLocationDescriptor = function (locationList) {
-          var descriptor =  _.reduce(locationList, function (str, location) {
-            if(str === "") {
+          var descriptor = _.reduce(locationList, function (str, location) {
+            if (str === "") {
               return location.name;
             }
-             return str + ", "  +location.name;
+            return str + ", " + location.name;
           }, "");
-          if(descriptor.length > 100) {
-            return descriptor.slice(0,100) + "...";
+          if (descriptor.length > 100) {
+            return descriptor.slice(0, 100) + "...";
           } else {
             return descriptor;
           }
-
         };
 
 
         $log.debug('Expert.EditCampaignController adGroups=', $scope.adGroups);
 
-        /*
+        /**
          * Ad Group Edition
          */
 
-        // new Ad Group
+          // New Ad Group
         $scope.newAdGroup = function () {
           var adGroupId = DisplayCampaignService.addAdGroup();
-          $location.path( '/' +  $scope.campaign.organisation_id + '/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroupId);
+          $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroupId);
         };
 
-        // edit Ad Group
+        // Edit Ad Group
         $scope.editAdGroup = function (adGroup) {
-          $location.path('/' +  $scope.campaign.organisation_id + '/campaigns/display/expert/edit/'+ campaignId +'/edit-ad-group/' + adGroup.id);
+          $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroup.id);
         };
 
         $scope.removeAdGroup = function (adGroup) {
@@ -147,11 +149,11 @@ define(['./module','moment'], function (m, moment) {
         };
 
 
-        /*
+        /**
          * Campaign Edition
          */
 
-        // save button
+          // Save button
         $scope.save = function () {
           if ($scope.schedule === 'custom') {
             $scope.campaign.start_date = $scope.campaignDateRange.startDate.valueOf();
@@ -167,12 +169,12 @@ define(['./module','moment'], function (m, moment) {
           DisplayCampaignService.save().then(function (campaignContainer) {
             waitingService.hideWaitingModal();
             DisplayCampaignService.reset();
-            $location.path('/' +  $scope.campaign.organisation_id+'/campaigns/display/report/' + campaignContainer.id + '/basic');
+            $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/report/' + campaignContainer.id + '/basic');
           }, function failure(response) {
             waitingService.hideWaitingModal();
             errorService.showErrorModal({
               error: response
-            }).then(null, function (){
+            }).then(null, function () {
               DisplayCampaignService.reset();
             });
           });
@@ -182,14 +184,11 @@ define(['./module','moment'], function (m, moment) {
         $scope.cancel = function () {
           DisplayCampaignService.reset();
           if ($scope.campaign && $scope.campaign.id) {
-            $location.path('/' +  $scope.campaign.organisation_id+'/campaigns/display/report/' + $scope.campaign.id + '/basic');
+            $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/report/' + $scope.campaign.id + '/basic');
           } else {
-            $location.path('/' +  $scope.campaign.organisation_id+'/campaigns');
+            $location.path('/' + $scope.campaign.organisation_id + '/campaigns');
           }
-
         };
-
-
       });
     }
   ]);

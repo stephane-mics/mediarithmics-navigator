@@ -3,7 +3,6 @@ define(['./module'], function () {
 
   var module = angular.module('core/campaigns/report');
 
-
   module.filter('website', function () {
     return function (input) {
       input = input || '';
@@ -11,6 +10,4 @@ define(['./module'], function () {
       return out;
     };
   });
-
-
 });
