@@ -1,45 +1,44 @@
 define(['./module'], function () {
   'use strict';
 
-
   var module = angular.module('core/campaigns');
-
 
   /* define the Authentication service */
   module.factory('core/campaigns/CampaignPluginService', [
     '$log', '$q', 'lodash',
-    function($log, $q, _) {
+    function ($log, $q, _) {
 
       var campaignTemplates = [{
-        name : "Multi Targeting",
-        template_group_id : "com.mediarithmics.campaign.display",
-        template_artifact_id : "default-template",
-        image : "/images/plugins/multi-targeting-small.png",
-        editor : {
-          create_path : "/{organisation_id}/campaigns/display/expert/edit/{id}",
-          edit_path : "/{organisation_id}/campaigns/display/expert/edit/{id}"
+        name: "Multi Targeting",
+        template_group_id: "com.mediarithmics.campaign.display",
+        template_artifact_id: "default-template",
+        image: "/images/plugins/multi-targeting-small.png",
+        editor: {
+          create_path: "/{organisation_id}/campaigns/display/expert/edit/{id}",
+          edit_path: "/{organisation_id}/campaigns/display/expert/edit/{id}"
         }
       }, {
-        name : "Keywords Targeting",
-        template_group_id : "com.mediarithmics.campaign.display",
-        template_artifact_id : "keywords-targeting-template",
-        image : "/images/plugins/keywords-targeting-small.png",
-        editor : {
-          create_path : "/{organisation_id}/campaigns/display/keywords",
-          edit_path : "/{organisation_id}/campaigns/display/keywords/{id}"
+        name: "Keywords Targeting",
+        template_group_id: "com.mediarithmics.campaign.display",
+        template_artifact_id: "keywords-targeting-template",
+        image: "/images/plugins/keywords-targeting-small.png",
+        editor: {
+          create_path: "/{organisation_id}/campaigns/display/keywords",
+          edit_path: "/{organisation_id}/campaigns/display/keywords/{id}"
         }
       }, {
-        name : "Email campaign",
-        template_group_id : "com.mediarithmics.campaign.email",
-        template_artifact_id : "expert-template",
-        image : "/images/plugins/email-campaign-expert-small.png",
-        editor : {
-          create_path : "/{organisation_id}/campaigns/email/expert",
-          edit_path : "/{organisation_id}/campaigns/email/expert/{id}"
+        name: "Email campaign",
+        template_group_id: "com.mediarithmics.campaign.email",
+        template_artifact_id: "expert-template",
+        image: "/images/plugins/email-campaign-expert-small.png",
+        editor: {
+          create_path: "/{organisation_id}/campaigns/email/expert",
+          edit_path: "/{organisation_id}/campaigns/email/expert/{id}"
         }
       }];
 
-      function CampaignPluginService() {}
+      function CampaignPluginService() {
+      }
 
       CampaignPluginService.prototype = {
 
@@ -47,7 +46,7 @@ define(['./module'], function () {
          * Get all the campaign templates, asynchronously.
          * @return {$q.promise} the promise with the templates.
          */
-        getAllCampaignTemplates : function () {
+        getAllCampaignTemplates: function () {
           var deferred = $q.defer();
 
           setTimeout(function () {
@@ -63,9 +62,9 @@ define(['./module'], function () {
          * @param {String} templateArtifactId the artifact id of the template.
          * @return {$q.promise} the promise with the template.
          */
-        getCampaignTemplate : function (templateGroupId, templateArtifactId) {
+        getCampaignTemplate: function (templateGroupId, templateArtifactId) {
           var deferred = $q.defer();
-          this.getAllCampaignTemplates().then(function success(templates){
+          this.getAllCampaignTemplates().then(function success(templates) {
             var matchingTemplate = _.find(templates, function (template) {
               return template.template_group_id === templateGroupId && template.template_artifact_id === templateArtifactId;
             });
@@ -84,11 +83,11 @@ define(['./module'], function () {
          * @param {String} templateArtifactId the artifact id of the template.
          * @return {$q.promise} the promise with the editor.
          */
-        getEditor : function(templateGroupId, templateArtifactId) {
+        getEditor: function (templateGroupId, templateArtifactId) {
           var deferred = $q.defer();
 
           this.getCampaignTemplate(templateGroupId, templateArtifactId).then(
-            function success(template){
+            function success(template) {
               deferred.resolve(template.editor);
             }, deferred.reject
           );

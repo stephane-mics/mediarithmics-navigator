@@ -9,7 +9,7 @@ define(['./module'], function () {
     function ($scope, DisplayCampaignContainer, DisplayCampaignService, $stateParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
       var campaignId = $stateParams.campaign_id;
 
-      function initView (displayNetworkAccesses) {
+      function initView(displayNetworkAccesses) {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
 
         $scope.isCreationMode = DisplayCampaignService.isCreationMode();
@@ -23,8 +23,8 @@ define(['./module'], function () {
           $scope.adGroup = DisplayCampaignService.getAdGroupValue($scope.adGroupId);
         }
 
-        if($scope.isCreationMode) {
-          for(var i = 0; i < displayNetworkAccesses.length; i++) {
+        if ($scope.isCreationMode) {
+          for (var i = 0; i < displayNetworkAccesses.length; i++) {
             var displayNetworkAccess = displayNetworkAccesses[i];
             var newInventorySource = {
               display_network_access_id: displayNetworkAccess.id,
@@ -33,7 +33,6 @@ define(['./module'], function () {
             DisplayCampaignService.addInventorySource(newInventorySource);
           }
         }
-
 
         $scope.keywordsList = new KeywordListContainer();
         var keywordListSelections = DisplayCampaignService.getKeywordLists($scope.adGroupId);
@@ -50,7 +49,6 @@ define(['./module'], function () {
         $scope.campaign.max_bid_price = 1;
         $scope.campaign.total_impression_capping = 10;
         $scope.campaign.per_day_impression_capping = 10;
-
       }
 
       CampaignPluginService.getCampaignTemplate("com.mediarithmics.campaign.display", "keywords-targeting-template").then(function (template) {
@@ -58,21 +56,20 @@ define(['./module'], function () {
         if (!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
           if (!campaignId || DisplayCampaignService.isTemporaryId(campaignId)) {
             DisplayCampaignService.initCreateCampaign(template)
-            .then(_.bind(DisplayCampaignService.getDisplayNetworkAccessPromise, DisplayCampaignService))
-            .then(initView);
+              .then(_.bind(DisplayCampaignService.getDisplayNetworkAccessPromise, DisplayCampaignService))
+              .then(initView);
           } else {
             DisplayCampaignService
-            .initEditCampaign(campaignId, template)
-            .then(_.bind(DisplayCampaignService.loadAdGroups, DisplayCampaignService))
-            .then(_.bind(DisplayCampaignService.getDisplayNetworkAccessPromise, DisplayCampaignService))
-            .then(initView);
+              .initEditCampaign(campaignId, template)
+              .then(_.bind(DisplayCampaignService.loadAdGroups, DisplayCampaignService))
+              .then(_.bind(DisplayCampaignService.getDisplayNetworkAccessPromise, DisplayCampaignService))
+              .then(initView);
           }
         }
       });
 
-
       $scope.container = {
-        step : "step1"
+        step: "step1"
       };
     }
   ]);

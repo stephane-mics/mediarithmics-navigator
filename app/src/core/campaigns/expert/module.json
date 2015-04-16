@@ -1,5 +1,6 @@
-{"name": "core/campaigns/expert",
-"dependencies": [
+{
+  "name": "core/campaigns/expert",
+  "dependencies": [
     "restangular",
     "core/campaigns",
     "core/creatives",

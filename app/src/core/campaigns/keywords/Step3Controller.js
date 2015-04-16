@@ -34,8 +34,8 @@ define(['./module'], function () {
           return ad.creative_id === params.creative.id;
         });
 
-        if(!existing) {
-          var ad  = {creative_id: params.creative.id};
+        if (!existing) {
+          var ad = {creative_id: params.creative.id};
           DisplayCampaignService.addAd(adGroupId, ad);
         }
       });

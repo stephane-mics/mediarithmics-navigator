@@ -7,23 +7,23 @@ define(['./module'], function (module) {
         restrict: 'EA',
         replace: true,
         templateUrl: "src/core/campaigns/campaignStatusTemplate.html",
-        scope : {
-          "campaign" : "=micsCampaignStatus"
+        scope: {
+          "campaign": "=micsCampaignStatus"
         },
-        controller : [
+        controller: [
           "$scope", "Restangular", "core/common/ErrorService",
           function ($scope, Restangular, errorService) {
 
             var updateCampaignStatus = function (campaign, status) {
               Restangular.one("display_campaigns", campaign.id).customPUT({
-                status : status,
-                type : "DISPLAY" // XXX this is used server side to find the right subclass of CampaignResource
-              }).then(function(returnedCampaign) {
+                status: status,
+                type: "DISPLAY" // XXX this is used server side to find the right subclass of CampaignResource
+              }).then(function (returnedCampaign) {
                 campaign.status = returnedCampaign.status;
               }, function failure(response) {
                 errorService.showErrorModal({
                   error: response,
-                  messageType:"simple"
+                  messageType: "simple"
                 });
               });
             };

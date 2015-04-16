@@ -1,5 +1,4 @@
 define(['./module', 'moment'], function (m, moment) {
-
   'use strict';
 
   var module = angular.module('core/campaigns/keywords');
@@ -8,10 +7,13 @@ define(['./module', 'moment'], function (m, moment) {
     "$scope", "$location",
     function ($scope, $location) {
 
-      if($scope.campaign) {
+      if ($scope.campaign) {
         $scope.schedule = $scope.campaign.start_date !== null ? "custom" : "";
-        if($scope.campaign.start_date !== null && $scope.campaign.end_date !== null ) {
-          $scope.campaignDateRange = {startDate: moment($scope.campaign.start_date), endDate: moment($scope.campaign.end_date)};
+        if ($scope.campaign.start_date !== null && $scope.campaign.end_date !== null) {
+          $scope.campaignDateRange = {
+            startDate: moment($scope.campaign.start_date),
+            endDate: moment($scope.campaign.end_date)
+          };
         }
       } else {
         $scope.campaignDateRange = {startDate: moment(), endDate: moment().add(20, 'days')};

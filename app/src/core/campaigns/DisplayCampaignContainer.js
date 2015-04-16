@@ -2,19 +2,15 @@ define(['./module'], function () {
   'use strict';
 
   var module = angular.module('core/campaigns');
-  /*
+  /**
    * Campaign Container
    */
 
   module.factory("core/campaigns/DisplayCampaignContainer", [
     "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log", 'core/common/promiseUtils', "lodash",
-    function($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _) {
-
-
+    function ($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _) {
       var DisplayCampaignContainer = function DisplayCampaignContainer(templateGroupId, templateArtifactId) {
-
         this.creationMode = true;
-
         this.adGroups = [];
         this.removedAdGroups = [];
         this.inventorySources = [];
@@ -22,12 +18,11 @@ define(['./module'], function () {
         this.locations = [];
         this.removedLocations = [];
 
-        this.value = {type:"DISPLAY", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
+        this.value = {type: "DISPLAY", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
         $log.info("DisplayCampaignContainer", this.value);
       };
 
       DisplayCampaignContainer.prototype.load = function (campaignId) {
-
         var root = Restangular.one('display_campaigns', campaignId);
         // send requests to get the value and the list of
         // ad group ids
@@ -35,14 +30,11 @@ define(['./module'], function () {
         var AdGroupsListP = root.getList('ad_groups');
         var inventorySourcesP = root.getList('inventory_sources');
         var locationsP = root.getList('locations');
-
         var self = this;
-
         var defered = $q.defer();
 
-
         $q.all([campaignResourceP, AdGroupsListP, inventorySourcesP, locationsP])
-          .then( function (result) {
+          .then(function (result) {
             self.creationMode = false;
             self.value = result[0];
 //          self.value.ad_groups = function () {
@@ -56,7 +48,7 @@ define(['./module'], function () {
             var adGroupsP = [];
             if (adGroups.length > 0) {
 
-              for(var i=0; i < adGroups.length; i++) {
+              for (var i = 0; i < adGroups.length; i++) {
                 // load the ad group container corresponding to the id list in ad groups
                 var adGroupCtn = new AdGroupContainer(adGroups[i]);
 
@@ -81,15 +73,9 @@ define(['./module'], function () {
               // return the loaded container
               defered.resolve(self);
             }
-
-
-
-
-          }, function(reason) {
-
+          }, function (reason) {
             defered.reject(reason);
           });
-
         // return the promise
         return defered.promise;
       };
@@ -98,16 +84,14 @@ define(['./module'], function () {
         return this.inventorySources;
       };
 
-
       DisplayCampaignContainer.prototype.addInventorySource = function (inventorySource) {
         var found = _.find(this.inventorySources, function (source) {
           return source.display_network_access_id === inventorySource.display_network_access_id;
         });
-        if(!found) {
+        if (!found) {
           inventorySource.id = IdGenerator.getId();
           this.inventorySources.push(inventorySource);
         }
-
         return inventorySource.id || found.id;
       };
 
@@ -126,9 +110,11 @@ define(['./module'], function () {
       DisplayCampaignContainer.prototype.addPostalCodeLocation = function (location) {
         this.locations.push(location);
       };
+
       DisplayCampaignContainer.prototype.getLocations = function () {
         return this.locations;
       };
+
       DisplayCampaignContainer.prototype.removeLocation = function (locationId) {
         for (var i = 0; i < this.locations.length; i++) {
           if (this.locations[i].id === locationId) {
@@ -142,7 +128,6 @@ define(['./module'], function () {
       };
 
 
-
       DisplayCampaignContainer.prototype.addAdGroup = function addAdGroup() {
         var adGroupCtn = new AdGroupContainer(IdGenerator.getId());
 
@@ -150,10 +135,9 @@ define(['./module'], function () {
         return adGroupCtn.id;
       };
 
-
       DisplayCampaignContainer.prototype.getAdGroup = function getAdGroup(id) {
 
-        for(var i=0; i < this.adGroups.length; i++){
+        for (var i = 0; i < this.adGroups.length; i++) {
           if (this.adGroups[i].id === id) {
             return this.adGroups[i];
           }
@@ -161,10 +145,9 @@ define(['./module'], function () {
         return null;
       };
 
-
       DisplayCampaignContainer.prototype.removeAdGroup = function removeAdGroup(id) {
 
-        for(var i=0; i < this.adGroups.length; i++){
+        for (var i = 0; i < this.adGroups.length; i++) {
           if (this.adGroups[i].id === id) {
             if (id.indexOf("T") === -1) {
               this.removedAdGroups.push(this.adGroups[i]);
@@ -173,9 +156,7 @@ define(['./module'], function () {
             return;
           }
         }
-
       };
-
 
       /**
        * Create a task (to be used by async.series) to save the given ad group container.
@@ -198,13 +179,10 @@ define(['./module'], function () {
               adGroupContainer.value.name = campaignContainer.value.name;
             }
           }
-
           promise = adGroupContainer[action](campaignContainer.id);
-
           promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
-
 
       /**
        * Create a task (to be used by async.series) to delete the given ad group container.
@@ -214,25 +192,20 @@ define(['./module'], function () {
       function deleteAdGroupTask(adGroupContainer) {
         return function (callback) {
           $log.info("deleting adGroup", adGroupContainer.id);
-
           // the container does everything
           var promise = adGroupContainer.remove();
-
           promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
-
       var saveAdGroups = function (self, adGroups) {
-
         var deferred = $q.defer(), tasks = [], i;
-        for(i = 0; i < self.adGroups.length ; i++) {
+        for (i = 0; i < self.adGroups.length; i++) {
           tasks.push(saveAdGroupTask(self, self.adGroups[i]));
         }
-        for(i = 0; i < self.removedAdGroups.length ; i++) {
+        for (i = 0; i < self.removedAdGroups.length; i++) {
           tasks.push(deleteAdGroupTask(self.removedAdGroups[i]));
         }
-
         async.series(tasks, function (err, res) {
           if (err) {
             deferred.reject(err);
@@ -299,10 +272,10 @@ define(['./module'], function () {
 
       var saveInventorySources = function (self, campaignId) {
         var deferred = $q.defer(), tasks = [], i;
-        for(i = 0; i < self.inventorySources.length ; i++) {
+        for (i = 0; i < self.inventorySources.length; i++) {
           tasks.push(saveInventorySourceTask(self.inventorySources[i], campaignId));
         }
-        for(i = 0; i < self.removedInventorySources.length ; i++) {
+        for (i = 0; i < self.removedInventorySources.length; i++) {
           tasks.push(deleteInventorySourceTask(self.removedInventorySources[i]));
         }
 
@@ -373,10 +346,10 @@ define(['./module'], function () {
 
       var saveLocations = function (self, campaignId) {
         var deferred = $q.defer(), tasks = [], i;
-        for(i = 0; i < self.locations.length ; i++) {
+        for (i = 0; i < self.locations.length; i++) {
           tasks.push(saveLocationTask(self.locations[i], campaignId));
         }
-        for(i = 0; i < self.removedLocations.length ; i++) {
+        for (i = 0; i < self.removedLocations.length; i++) {
           tasks.push(deleteLocationTask(self.removedLocations[i]));
         }
 
@@ -409,15 +382,15 @@ define(['./module'], function () {
         var self = this;
 
         Restangular.all('display_campaigns').post(this.value, {organisation_id: this.organisationId})
-          .then(angular.bind(this, function(campaign) {
+          .then(angular.bind(this, function (campaign) {
 
             self.id = campaign.id;
 
-            persistDependencies.call(null, self, campaign.id, self.adGroups).then(function() {
+            persistDependencies.call(null, self, campaign.id, self.adGroups).then(function () {
               deferred.resolve(campaign);
             }, deferred.reject);
 
-          }), function(reason) {
+          }), function (reason) {
             deferred.reject(reason);
           });
 
@@ -430,13 +403,13 @@ define(['./module'], function () {
 
         var self = this;
 
-        this.value.put().then(function(campaign) {
+        this.value.put().then(function (campaign) {
 
-          persistDependencies.call(null, self, campaign.id, self.adGroups).then(function() {
+          persistDependencies.call(null, self, campaign.id, self.adGroups).then(function () {
             deferred.resolve(campaign);
           }, deferred.reject);
 
-        }, function(reason) {
+        }, function (reason) {
           deferred.reject(reason);
         });
 

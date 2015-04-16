@@ -1,5 +1,4 @@
 define(['./module'], function () {
-
   'use strict';
 
   var module = angular.module('core/campaigns/keywords');
@@ -9,15 +8,15 @@ define(['./module'], function () {
     function ($stateProvider) {
       $stateProvider
         .state('campaigns/display/keywords/edit', {
-          url:'/{organisation_id}/campaigns/display/keywords/:campaign_id',
+          url: '/{organisation_id}/campaigns/display/keywords/:campaign_id',
           templateUrl: 'src/core/campaigns/keywords/index.html',
-          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
+          data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         });
       $stateProvider
         .state('campaigns/display/keywords/create', {
-          url:'/{organisation_id}/campaigns/display/keywords',
+          url: '/{organisation_id}/campaigns/display/keywords',
           templateUrl: 'src/core/campaigns/keywords/index.html',
-          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
+          data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         });
     }
   ]);

@@ -3,13 +3,11 @@ define(['./module'], function (module) {
 
   module.controller('core/campaigns/ChooseExistingDisplayNetworkController', [
     '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
-
+    function ($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
       $scope.availableInventorySources = DisplayCampaignService.getDisplayNetworkAccess();
-
       $scope.selectedInventorySources = [];
 
-      $scope.done = function() {
+      $scope.done = function () {
         var inventorySource;
         for (var i = 0; i < $scope.selectedInventorySources.length; i++) {
           inventorySource = $scope.selectedInventorySources[i];
@@ -18,10 +16,9 @@ define(['./module'], function (module) {
         $modalInstance.close();
       };
 
-      $scope.cancel = function() {
+      $scope.cancel = function () {
         $modalInstance.close();
       };
-
     }
   ]);
 });

@@ -1,5 +1,4 @@
 define(['./module'], function () {
-
   'use strict';
 
   var module = angular.module('core/campaigns/emails');
@@ -9,7 +8,7 @@ define(['./module'], function () {
     function ($scope, EmailCampaignService, $stateParams, CampaignPluginService, _, Restangular, $location, $log) {
       var campaignId = $stateParams.campaign_id;
 
-      function initView () {
+      function initView() {
         $scope.campaign = EmailCampaignService.getCampaignValue();
         $scope.isCreationMode = EmailCampaignService.isCreationMode();
         $scope.userGroupOpeningFeed = EmailCampaignService.getCampaign().userGroupOpeningFeed;
@@ -21,8 +20,8 @@ define(['./module'], function () {
           EmailCampaignService.initCreateCampaign(template).then(initView);
         } else {
           EmailCampaignService // TODO
-          .initEditCampaign(campaignId, template)
-          .then(initView);
+            .initEditCampaign(campaignId, template)
+            .then(initView);
         }
       });
 
@@ -32,13 +31,13 @@ define(['./module'], function () {
 
       $scope.next = function () {
         EmailCampaignService.save()
-        .then(function success(campaignContainer){
-          $log.info("success");
-          $location.path("/campaigns/");
-          EmailCampaignService.reset();
-        }, function failure(){
-          $log.info("failure");
-        });
+          .then(function success(campaignContainer) {
+            $log.info("success");
+            $location.path("/campaigns/");
+            EmailCampaignService.reset();
+          }, function failure() {
+            $log.info("failure");
+          });
       };
     }
   ]);

@@ -17,7 +17,7 @@ define(['./module'], function () {
    * Campaign list controller
    */
   module.controller('core/campaigns/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session','CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
+    '$scope', '$location', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
     function ($scope, $location, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
 
       $scope.currentPageDisplayCampaign = 1;
@@ -26,13 +26,15 @@ define(['./module'], function () {
 
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
-      $scope.organisationName = function (id ){ return Session.getOrganisationName(id);};
+      $scope.organisationName = function (id) {
+        return Session.getOrganisationName(id);
+      };
 
       $scope.administrator = Session.getCurrentWorkspace().administrator;
 
-      var params = { organisation_id: Session.getCurrentWorkspace().organisation_id };
+      var params = {organisation_id: Session.getCurrentWorkspace().organisation_id};
       if (Session.getCurrentWorkspace().administrator) {
-        params = { administration_id: Session.getCurrentWorkspace().organisation_id };
+        params = {administration_id: Session.getCurrentWorkspace().organisation_id};
       }
       Restangular.all('display_campaigns').getList(params).then(function (displayCampaigns) {
         $scope.displayCampaigns = displayCampaigns;
@@ -41,11 +43,11 @@ define(['./module'], function () {
         $scope.emailCampaigns = emailCampaigns;
       });
       $scope.$watch('reportDateRange', function () {
-        updateStatistics($scope, CampaignAnalyticsReportService,  Session.getCurrentWorkspace().organisation_id);
+        updateStatistics($scope, CampaignAnalyticsReportService, Session.getCurrentWorkspace().organisation_id);
       });
 
       $scope.getCampaignDashboardUrl = function (campaign) {
-        return "/"+ campaign.organisation_id  +"/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
+        return "/" + campaign.organisation_id + "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
       };
 
       $scope.newCampaign = function () {
@@ -83,8 +85,8 @@ define(['./module'], function () {
         newScope.campaign = campaign;
         $modal.open({
           templateUrl: 'src/core/campaigns/delete.html',
-          scope : newScope,
-          backdrop : 'static',
+          scope: newScope,
+          backdrop: 'static',
           controller: 'core/campaigns/DeleteController'
         });
 

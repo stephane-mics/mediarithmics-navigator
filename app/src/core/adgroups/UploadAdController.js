@@ -5,11 +5,10 @@ define(['./module'], function () {
 
   module.controller('core/adgroups/UploadAdController', [
     '$scope', '$modalInstance',
-    function($scope, $modalInstance) {
-
+    function ($scope, $modalInstance) {
       $scope.canSave = false;
 
-      $scope.done = function() {
+      $scope.done = function () {
         $scope.$broadcast("display-ad/basic-editor:save");
       };
 
@@ -21,10 +20,9 @@ define(['./module'], function () {
         $scope.canSave = true;
       });
 
-      $scope.cancel = function() {
+      $scope.cancel = function () {
         $modalInstance.close();
       };
-
     }
   ]);
 });
