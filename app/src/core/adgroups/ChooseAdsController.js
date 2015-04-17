@@ -1,13 +1,20 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
-  var module = angular.module('core/adgroups');
-
   module.controller("core/adgroups/ChooseAdsController", [
-    "$scope", "$modal", "$log", "$q",
-    function ($scope, $modal, $log, $q) {
+    "$scope", "$modal", "$log", "$q", "core/common/ads/AdService",
+    function($scope, $modal, $log, $q, AdService) {
+
+      $scope.setAdTypeToDisplayAd = function() {
+        AdService.setAdTypeToDisplayAd();
+      };
+
+      $scope.setAdTypeToVideoAd = function() {
+        AdService.setAdTypeToVideoAd();
+      };
+
       // Upload new Ad
-      $scope.uploadNewAd = function (adGroup) {
+      $scope.uploadNewAd = function(adGroup) {
         // Display pop-up
         var uploadModal = $modal.open({
           templateUrl: 'src/core/adgroups/upload-ad.html',
@@ -21,17 +28,16 @@ define(['./module'], function () {
         });
       };
 
-      // Select existing ads
-      $scope.selectExistingAd = function (adGroup) {
-        // display pop-up
+      // Select existing Ads
+      $scope.selectExistingAd = function(adGroup) {
+        // Display pop-up
         var uploadModal = $modal.open({
           templateUrl: 'src/core/adgroups/ChooseExistingAds.html',
           scope: $scope,
           backdrop: 'static',
           controller: 'core/adgroups/ChooseExistingAdsController',
-          size: "lg"
+          size: 'lg'
         });
-
         uploadModal.result.then(function () {
         }, function () {
           $log.info('Modal dismissed at: ' + new Date());

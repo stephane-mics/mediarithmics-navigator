@@ -34,7 +34,7 @@
               <tr ng-repeat="availableCreative in availableCreatives | offset: (currentPageCreative - 1)*itemsPerPage | limitTo: itemsPerPage | filter:creativename | filter:creativeformat">
                 <td><input type="checkbox" checklist-model="selectedCreatives" checklist-value="availableCreative"></td>
                 <td class="mics-small-thumbnail">
-                  <img creative-thumbnail="availableCreative.id" fetch-display-ad-renderer-properties="availableCreative.id as properties" title="{{properties.destination_url.value.url}}"/>
+                  <img creative-thumbnail="availableCreative.id" fetch-ad-renderer-properties="availableCreative.id as properties" title="{{properties.destination_url.value.url}}"/>
                   <span class="caption">{{availableCreative.format}}</span>
                 </td>
                 <td>{{availableCreative.name}}</td>
