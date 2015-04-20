@@ -31,16 +31,19 @@ define(['./module'], function (module) {
         $scope.videoAd = VideoAdService.getVideoAdValue();
         $scope.properties = VideoAdService.getProperties();
         $scope.adServingUrl = VideoAdService.getAdServingUrl();
-        $log.debug("VIDEO URL:", $scope.adServingUrl);
-        $scope.videoPlayerConfig = VideoAdService.setVideoPlayerConfig($scope.adServingUrl, "mp4");
-        $log.debug("Video Player Config:", $scope.adServingUrl);
         $scope.audits = VideoAdService.getAudits();
         $scope.disabledEdition = $scope.videoAd.audit_status !== "NOT_AUDITED";
-        var sizes = $scope.videoAd.format.split("x");
-        $scope.previewWidth = parseInt(sizes[0]) + 10;
-        $scope.previewHeight = parseInt(sizes[1]) + 10;
+        VideoAdService.setVideoPlayerConfig($scope.adServingUrl, function (config) {
+          $scope.videoPlayerConfig = config;
+          $log.debug("Video Player Config:", $scope.videoPlayerConfig);
+          $scope.videoWidth = $scope.videoPlayerConfig.plugins.ads.companionSize[0];
+          $scope.videoHeight = $scope.videoPlayerConfig.plugins.ads.companionSize[1];
+          $scope.videoAd.format = $scope.videoWidth + "x" + $scope.videoHeight;
+          $log.debug("Format: ", $scope.videoWidth + "x" + $scope.videoHeight);
+        });
         $scope.$emit("video-ad:loaded");
       });
+
     }
   ]);
 });

@@ -128,10 +128,9 @@ define(['./module'], function (module) {
         this.value.put().then(function (campaign) {
           var properties = self.properties;
           // update properties
-          $log.debug("UPDATING PROPERTIES: ", properties);
           async.mapSeries(properties, function (property, callback) {
             // update the property
-            $log.debug("UPDATING PROPERTY: ", property);
+            $log.debug("Updating property: ", property);
             property.update(self.id).then(function (result) {
               callback(null, result);
             }, function (reason) {

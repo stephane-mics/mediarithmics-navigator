@@ -19,6 +19,13 @@
           <input ng-disabled="disabledEdition" ng-model="videoAd.name" type="text" class="form-control input-lg" id="name">
         </div>
       </div>
+
+      <!-- Format -->
+      <div class="col-md-4">
+        <div mcs-form-group="full" label-for="format" label-text="Format">
+          {{videoWidth}} x {{videoHeight}}
+        </div>
+      </div>
     </div>
 
     <div ng-show="adServingUrl" class="row">

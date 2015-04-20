@@ -6,8 +6,8 @@ define(['./module'], function (module) {
    */
 
   module.factory('core/creatives/plugins/video-ad/VideoAdService', [
-    '$q', '$sce', 'Restangular', 'core/common/IdGenerator', 'core/creatives/plugins/video-ad/VideoAdContainer', '$log', 'core/common/auth/Session',
-    function ($q, $sce, Restangular, IdGenerator, VideoAdContainer, $log, Session) {
+    '$q', '$http', '$sce', 'Restangular', 'core/common/IdGenerator', 'core/creatives/plugins/video-ad/VideoAdContainer', '$log', 'core/common/auth/Session',
+    function ($q, $http, $sce, Restangular, IdGenerator, VideoAdContainer, $log, Session) {
       var service = {};
 
       service.reset = function () {
@@ -33,23 +33,45 @@ define(['./module'], function (module) {
         return "Unknown";
       };
 
-      service.setVideoPlayerConfig = function (url, type) {
-        return {
-          sources: [
-            {src: $sce.trustAsResourceUrl(url), type: "video/" + type }
-          ],
-          theme: "bower_components/videogular-themes-default/videogular.css",
-          plugins: {
-            ads: {
-              companion: "companionAd",
-              companionSize: [728, 90],
-              network: "6062",
-              unitPath: "iab_vast_samples",
-              adTagUrl: url,
-              skipButton: "<div class='skipButton'>Skip ad</div>"
-            }
+      service.parseVastXML = function (url, cb) {
+        $http.get(url).success(function(xml) {
+          var parsedXML = {};
+          var xmlDoc;
+          if (angular.isDefined(DOMParser)) {
+            var parser = new DOMParser();
+            xmlDoc = parser.parseFromString(xml, "text/xml");
+          } else if (angular.isDefined(ActiveXObject)) {
+            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+            xmlDoc.async = false;
+            xmlDoc.loadXML(xml);
           }
-        }
+          parsedXML.height = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('height');
+          parsedXML.width = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('width');
+          parsedXML.type = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('type');
+          cb(parsedXML);
+        });
+      };
+
+      service.setVideoPlayerConfig = function (url, cb) {
+        this.parseVastXML(url, function(parsedXML) {
+          var config = {
+            sources: [
+              {src: $sce.trustAsResourceUrl(url), type: parsedXML.type }
+            ],
+            theme: "bower_components/videogular-themes-default/videogular.css",
+            plugins: {
+              ads: {
+                companion: "companionAd",
+                companionSize: [parsedXML.width, parsedXML.height],
+                network: "6062",
+                unitPath: "iab_vast_samples",
+                adTagUrl: url,
+                skipButton: "<div class='skipButton'>Skip ad</div>"
+              }
+            }
+          };
+          cb(config);
+        });
       };
 
       service.getAudits = function () {
