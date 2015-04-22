@@ -1,0 +1,71 @@
+<div ng-controller="core/goals/EditOneController" class="mcs-default-container">
+  <div class="mcs-default-sidebar">
+    <div class="organisation-name-block">
+      {{currentOrganisation}}
+    </div>
+  </div>
+  <form ng-submit="next()" class="mcs-default-content mcs-full-page-form">
+
+    <div class="mcs-default-heading">
+      <h1>Edit Goal</h1>
+    </div>
+
+      <div mcs-form-group="" label-for="name" label-text="Goal name">
+          <input  ng-model="goal.name" type="text" class="form-control input-lg" id="name">
+      </div>
+
+      <div mcs-form-group="" label-for="name" label-text="Default Goal value">
+          <input  ng-model="goal.default_goal_value" type="text" class="form-control input-lg" id="name">
+      </div>
+      <div mcs-form-group="" label-for="name" label-text="Goal value currency">
+          <input  ng-model="goal.goal_value_currency" type="text" class="form-control input-lg" id="name">
+      </div>
+    <h3>Triggers</h3>
+    <table class="mics-table js-auto-hide-actions" ng-show="triggers.length">
+      <thead>
+      <tr>
+        <th>Status</th>
+        <th>Trigger type</th>
+        <th>Query name</th>
+        <th class="actions">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="trigger in triggers">
+        <td><div mics-goal-trigger-status="trigger" goal="goal"></div></td>
+        <td>{{trigger.type}}</td>
+        <td>{{trigger.queryName}}</td>
+        <td class="actions">
+          <a class="mics-btn mics-btn-edit" ng-click="editTrigger(trigger)">Edit Query</a>
+          <a class="mics-btn mics-btn-delete" ng-click="deleteTrigger(trigger)">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <div class="dropdown">
+      <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
+        Add Trigger
+        <!-- <span class="caret"></span> -->
+      </button>
+
+      <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addTrigger('GOAL_TRIGGER')">
+          Goal Trigger
+        </a></li>
+
+      </ul>
+    </div>
+    <br />
+    <br />
+    
+
+    <div class="mcs-actions-group">
+
+        <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
+      <button class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
+    </div>
+  </form>
+</div>
+

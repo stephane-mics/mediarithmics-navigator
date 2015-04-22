@@ -1,0 +1,4 @@
+{"name": "core/goals", "dependencies": [
+  "restangular",
+  "checklist-model"
+]}

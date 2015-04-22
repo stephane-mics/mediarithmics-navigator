@@ -20,6 +20,7 @@ define([
     'core/configuration',
     'core/adblock/index',
     'core/queries/index',
+    'core/goals/index',
     'core/scenarios/index',
     'core/keywords/index',
     'core/creatives/index',
@@ -59,6 +60,7 @@ define([
       'core/creatives',
       'core/scenarios',
       'core/queries',
+      'core/goals',
 
       'core/datamart',
       'core/login',
