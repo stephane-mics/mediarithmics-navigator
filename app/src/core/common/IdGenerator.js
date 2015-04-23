@@ -1,12 +1,8 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
-  /* Services */
-  var utilServices = angular.module('core/common');
-
-
   /* define the Authentication service */
-  utilServices.factory('core/common/IdGenerator', function() {
+  module.factory('core/common/IdGenerator', function() {
 
     var service = {};
     service.counter = 0;

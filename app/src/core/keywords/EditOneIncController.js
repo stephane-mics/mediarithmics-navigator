@@ -1,11 +1,7 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
 
-
-  var module = angular.module('core/keywords');
-
-  // TODO retreive and use angular.module('keywords') instead ?
 
   module.controller('core/keywords/EditOneIncController', [
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal',

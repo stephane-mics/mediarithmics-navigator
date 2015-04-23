@@ -1,10 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-
-  var module = angular.module('core/scenarios/inputs');
-
 
   module.filter('mcsEnumLabel', function () {
       return function (input) {

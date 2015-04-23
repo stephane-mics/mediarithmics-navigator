@@ -1,10 +1,9 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
   /**
    * DISPLAY CAMPAIGN SERVICE
    */
-  var module = angular.module('core/campaigns');
   /* define the Authentication service */
   module.factory('core/campaigns/DisplayCampaignService', [
     '$q', 'lodash', 'Restangular', 'core/common/IdGenerator', 'core/campaigns/AdGroupContainer', 'core/campaigns/DisplayCampaignContainer', '$log', 'core/common/auth/Session',

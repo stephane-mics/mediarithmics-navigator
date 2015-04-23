@@ -1,6 +1,6 @@
 /* global _ */
 
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
   function ReportWrapper(report) {
@@ -77,7 +77,6 @@ define(['./module'], function () {
   };
 
 
-  var module = angular.module('core/campaigns/report');
   module.factory('CampaignAnalyticsReportService',
     ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment',
       function ($resource, Session, AuthenticationService, configuration, moment) {

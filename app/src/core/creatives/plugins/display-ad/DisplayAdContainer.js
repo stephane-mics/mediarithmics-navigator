@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/creatives');
 
   module.factory("core/creatives/plugins/display-ad/DisplayAdContainer", [
     "$q", "Restangular", "core/common/IdGenerator", "async", "core/creatives/plugins/display-ad/DisplayAdPropertyContainer", "$log",

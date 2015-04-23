@@ -1,11 +1,9 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
   /**
    * DISPLAY AD SERVICE
    */
-
-  var module = angular.module('core/creatives');
 
   module.factory('core/creatives/plugins/display-ad/DisplayAdService', [
     '$q', 'Restangular', 'core/common/IdGenerator', 'core/creatives/plugins/display-ad/DisplayAdContainer', '$log', 'core/common/auth/Session',

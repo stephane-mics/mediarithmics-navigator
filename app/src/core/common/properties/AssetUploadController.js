@@ -1,4 +1,4 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
   /*
@@ -7,9 +7,6 @@ define(['./module'], function () {
    * Asset file upload controller
    *   
    */
-
-  var module = angular.module('core/common/properties');
-
 
   module.controller('core/common/properties/AssetUploadController', [
     '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session', 'core/configuration',

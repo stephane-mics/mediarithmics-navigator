@@ -1,11 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-
-  var module = angular.module('core/scenarios');
-
-
 
 
   module.controller('core/scenarios/EditOneController', [

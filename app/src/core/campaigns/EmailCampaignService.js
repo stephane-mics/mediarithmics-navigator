@@ -1,11 +1,9 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
   /**
    * Email Campaign Service
    */
-
-  var module = angular.module('core/campaigns');
 
   module.factory('core/campaigns/EmailCampaignService', [
     '$q', 'lodash', 'Restangular', 'core/common/IdGenerator', 'core/campaigns/EmailCampaignContainer', '$log', 'core/common/auth/Session',

@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/datamart/categories');
 
   module.controller('core/datamart/categories/BrowseController', [
     '$scope', '$location','$stateParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session', 'lodash',

@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/keywords');
 
   module.factory('core/keywords/KeywordListContainer', [
     "Restangular", "lodash", "core/common/auth/Session", "$log", "$location", "$q", "async", 'core/common/promiseUtils',

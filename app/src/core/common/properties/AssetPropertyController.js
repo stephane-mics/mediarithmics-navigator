@@ -1,12 +1,10 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
   /*
    * Asset Property Field controller
    *
    */
-
-  var module = angular.module('core/common/properties');
 
   module.controller('core/common/properties/AssetPropertyController', [
     '$scope', '$modal', '$log',

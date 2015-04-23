@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/queries');
 
   module.controller('core/queries/EditAllController', [
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal',

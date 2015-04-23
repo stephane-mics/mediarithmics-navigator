@@ -1,7 +1,5 @@
-define(['./module', "autofill-event"], function () {
+define(['./module', "autofill-event"], function (module) {
   'use strict';
-
-  var module = angular.module('core/login');
 
   module.controller('core/login/MainController', [
     '$scope', '$location', '$log', '$rootScope', 'jquery', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',

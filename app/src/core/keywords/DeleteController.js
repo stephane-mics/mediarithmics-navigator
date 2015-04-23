@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/keywords');
 
   module.controller('core/keywords/DeleteController', [
     '$scope', '$modalInstance', '$location', 'core/common/auth/Session','$state', '$stateParams', "core/common/ErrorService",

@@ -1,12 +1,10 @@
-define(['./module', 'moment'], function (m, moment) {
+define(['./module', 'moment'], function (module, moment) {
   'use strict';
 
   /**
    * Display Campaign Template Module
    * Template : Expert
    */
-
-  var module = angular.module('core/campaigns/expert');
 
   module.controller('core/campaigns/expert/EditCampaignController', [
     '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService', "core/common/WaitingService", "core/common/ErrorService", "$modal",

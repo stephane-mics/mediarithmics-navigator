@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/layout/header/navbar/navigator-navbar');
 
   module.controller('NavigatorNavbarController', [
     '$scope', '$log', 'core/common/auth/Session', 'core/login/constants','$rootScope', 'core/configuration',

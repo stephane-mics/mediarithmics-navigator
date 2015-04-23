@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns');
 
   module.factory("core/campaigns/AdGroupContainer", [
     "$q", "Restangular", "jquery", "core/common/IdGenerator", "async", "$log", 'core/common/auth/Session', 'lodash', 'core/common/promiseUtils',

@@ -1,9 +1,7 @@
 define(['./module', 'navigator'], function (module, navigator) {
   'use strict';
 
-  var plugins = angular.module('core/common/plugins');
-
-  plugins.factory('core/common/plugins/pluginService', [ function () {
+  module.factory('core/common/plugins/pluginService', [ function () {
       var pluginService = {};
 
       pluginService.registerPlugin = function (moduleName, pluginBase, url) {

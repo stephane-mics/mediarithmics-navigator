@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns/emails');
 
   module.controller('core/campaigns/emails/MainController', [
     "$scope", 'core/campaigns/EmailCampaignService', '$stateParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', '$location', '$log',

@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns');
 
   /* define the Authentication service */
   module.factory('core/campaigns/CampaignPluginService', [

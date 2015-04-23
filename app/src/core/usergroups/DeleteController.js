@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/usergroups');
 
   module.controller('core/usergroups/DeleteController', [
     '$scope', '$modalInstance', '$location', '$state', '$stateParams', "core/common/ErrorService",

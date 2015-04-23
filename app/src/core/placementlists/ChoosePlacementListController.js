@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/placementlists');
 
   module.controller("core/placementlists/ChoosePlacementListController", [
     "$scope", "$modal", "$log",

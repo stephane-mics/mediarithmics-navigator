@@ -1,7 +1,5 @@
-define(['./module', 'moment'], function (m, moment) {
+define(['./module', 'moment'], function (module, moment) {
   'use strict';
-
-  var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/Step1Controller', [
     "$scope", "$location",

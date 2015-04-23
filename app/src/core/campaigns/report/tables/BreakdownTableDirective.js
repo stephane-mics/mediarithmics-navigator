@@ -1,7 +1,6 @@
-define(['../module'], function () {
+define(['../module'], function (module) {
   'use strict';
 
-  var module = angular.module('core/campaigns/report');
   module.directive('breakdownTable', function () {
     return {
       restrict: 'E',

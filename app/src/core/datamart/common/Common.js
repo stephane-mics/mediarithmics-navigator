@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/datamart/common');
 
   module.factory('core/datamart/common/Common', [
     '$state',

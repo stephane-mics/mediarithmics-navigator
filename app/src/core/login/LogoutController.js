@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/login');
 
   module.controller('core/login/LogoutController', [
     '$location', '$log', '$rootScope', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',

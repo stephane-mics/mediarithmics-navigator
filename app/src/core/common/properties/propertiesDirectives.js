@@ -1,6 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-  var module = angular.module('core/common/properties');
 
   // url property
   module.directive('mcsUrlProperty', [
