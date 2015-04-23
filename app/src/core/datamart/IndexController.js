@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/datamart');
 
   module.controller('core/datamart/IndexController', [
     '$scope', '$route', 'core/datamart/common/Common',

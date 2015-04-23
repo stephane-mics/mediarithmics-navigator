@@ -1,4 +1,4 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   "use strict";
 
 
@@ -84,7 +84,6 @@ define(['./module'], function () {
     return currencies[currencyCode] || currencyCode;
   };
 
-  var module = angular.module('core/common');
   module.factory('core/common/CurrencyService',
     [function () {
       var service = {};

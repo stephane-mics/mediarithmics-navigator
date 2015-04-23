@@ -1,10 +1,8 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
-  var authModule = angular.module('core/common/auth');
-
   /* define the Authentication service */
-  authModule.factory('core/common/auth/AuthenticationService', [
+  module.factory('core/common/auth/AuthenticationService', [
     '$q', '$log', '$document', 'Restangular', "jquery",
     function($q, $log, $document, Restangular, $) {
 

@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/Step3Controller', [
     "$scope", "$log", "Restangular", "lodash", 'core/campaigns/DisplayCampaignService',

@@ -1,11 +1,7 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
 
-
-  var module = angular.module('core/scenarios/inputs');
-
-  // TODO retreive and use angular.module('keywords') instead ?
 
   module.controller('core/scenarios/inputs/EditOneController', [
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state',

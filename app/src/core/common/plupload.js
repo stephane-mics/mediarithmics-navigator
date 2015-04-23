@@ -1,8 +1,8 @@
-define(['./module', "plupload"], function () {
+define(['./module', "plupload"], function (module) {
 
   'use strict';
 
-  angular.module('core/common')
+  module
   .directive('micsPlUpload', [
     '$log', 'core/configuration', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', "jquery", "plupload",
     function ($log, configuration, Session, AuthenticationService, $, plupload) {

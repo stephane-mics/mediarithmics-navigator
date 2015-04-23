@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns');
 
   var updateStatistics = function ($scope, CampaignAnalyticsReportService, organisationId) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);

@@ -3,10 +3,8 @@
 define(['./module', 'navigator'], function (module, navigator) {
   'use strict';
 
-  var authModule = angular.module('core/common/auth');
-
   /* Define the Authentication service */
-  authModule.factory('core/common/auth/Session', [
+  module.factory('core/common/auth/Session', [
     '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants', 'core/common/plugins/pluginService', 'core/configuration',
     function ($q, $location, $log, $rootScope, Restangular, LoginConstants, pluginService, coreConfig) {
       var service = {};

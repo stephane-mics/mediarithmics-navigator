@@ -1,11 +1,7 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
     'use strict';
 
-
-    var module = angular.module('core/scenarios');
-
-    // TODO retreive and use angular.module('keywords') instead ?
 
     module.controller('core/scenarios/WorkflowController', [
         '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state','core/campaigns/CampaignPluginService',

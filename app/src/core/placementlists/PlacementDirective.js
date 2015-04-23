@@ -1,8 +1,7 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
 
-  var module = angular.module('core/placementlists');
   module.directive('fetchPlacementList', [
     "Restangular",
     function (Restangular) {

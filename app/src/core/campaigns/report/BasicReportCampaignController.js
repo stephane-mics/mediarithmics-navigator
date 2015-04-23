@@ -1,8 +1,6 @@
 /* global _, moment */
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns/report');
 
   var getDataForRow = function (id, stats) {
     if (stats === undefined) {
