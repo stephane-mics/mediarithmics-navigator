@@ -1,12 +1,10 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
-  var module = angular.module('core/creatives');
-
   module.controller('core/creatives/CreateController', [
-    '$scope', '$location', '$log', 'core/common/auth/Session', 'core/creatives/CreativeTemplateService', 'core/creatives/CreativePluginService',
+    '$scope', '$location', '$log', 'core/common/auth/Session','core/creatives/CreativePluginService',
 
-    function ($scope, $location, $log, Session, CreativeTemplateService, CreativePluginService) {
+    function($scope, $location, $log, Session, CreativePluginService) {
       CreativePluginService.getAllCreativeTemplates().then(function (templates) {
         $scope.creativeTemplates = templates;
       });

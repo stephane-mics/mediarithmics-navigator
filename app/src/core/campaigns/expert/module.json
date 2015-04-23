@@ -12,6 +12,7 @@
     "core/keywords",
     "core/placementlists",
     "core/common/properties",
+    "core/common/ads",
     "core/location"
   ]
 }

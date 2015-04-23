@@ -10,7 +10,7 @@ define(['./module'], function (module) {
           url: '/{organisation_id}/creatives/display-ad/facebook/create',
           templateUrl: 'src/core/creatives/plugins/display-ad/facebook/create.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
-        })
+        });
     }
   ]);
 

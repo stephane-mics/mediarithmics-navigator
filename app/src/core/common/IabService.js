@@ -20,6 +20,32 @@ define(['./module'], function (module) {
               name: "Facebook Right Hand Side Recommended Size",
               format: "600x315"
             }];
+          case "VIDEO":
+            return [{
+              name: "Linear",
+              format: "600x315"
+            },{
+              name: "Overlay 1",
+              format: "300x50"
+            },{
+              name: "Overlay 2",
+              format: "450x50"
+            },{
+              name: "Companion Ad 1",
+              format: "300x250"
+            },{
+              name: "Companion Ad 2",
+              format: "300x100"
+            },{
+              name: "Companion Ad 3",
+              format: "468x60"
+            },{
+              name: "Companion Ad 4",
+              format: "728x90"
+            },{
+              name: "Companion Ad 5",
+              format: "300x60"
+            }];
           default:
             return [{
               name: "Universal Ad Package, Medium Rectangle",

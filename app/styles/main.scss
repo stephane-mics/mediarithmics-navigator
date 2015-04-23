@@ -1618,3 +1618,22 @@ a.category-item {
   opacity: 0.6;
   filter: alpha(opacity=60);
 }
+
+// ------------------ VIDEO ------------------
+
+.skipButton {
+  position: absolute;
+  padding: 10px;
+  top: 10px;
+  right: 10px;
+  z-index: 99999;
+  color: white;
+  cursor: pointer;
+  background-color: #666666;
+  border: 2px #FFFFFF solid;
+  display: none;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+}

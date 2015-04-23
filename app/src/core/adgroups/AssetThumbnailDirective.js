@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/adgroups');
 
   module.directive('micsAssetThumbnail', [
     '$log', 'lodash', 'core/configuration',

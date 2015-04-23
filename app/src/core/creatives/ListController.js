@@ -1,15 +1,13 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
-  var module = angular.module('core/creatives');
-
-  /*
+  /**
    * Creative list controller
    */
 
   module.controller('core/creatives/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', '$modal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter',
-    function ($scope, $location, $log, Restangular, DisplayAdService, Session, $modal, $state, $stateParams, creativePluginService, _, $filter) {
+    '$scope', '$location', '$log', 'Restangular', 'core/common/auth/Session', '$modal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter',
+    function ($scope, $location, $log, Restangular, Session, $modal, $state, $stateParams, creativePluginService, _, $filter) {
 
       $scope.currentPageCreative = 1;
       $scope.itemsPerPage = 10;

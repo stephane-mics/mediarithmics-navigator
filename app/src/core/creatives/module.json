@@ -2,9 +2,8 @@
   "name": "core/creatives",
   "dependencies": [
     "restangular",
-    "core/creatives/plugins/display-ad",
-    "core/creatives/plugins/display-ad/facebook",
-    "core/creatives/plugins/display-ad/default-editor",
-    "core/creatives/plugins/display-ad/basic-editor"
+    "ngSanitize",
+    "core/creatives/plugins/video-ad",
+    "core/creatives/plugins/display-ad"
   ]
 }

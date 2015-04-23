@@ -11,7 +11,6 @@ define(['./module'], function () {
         return configuration.ASSETS_URL + "/white_label/" + location.hostname + "/logo.png";
       };
 
-
       function isLogged() {
         $scope.isLogged = Session.isInitialized();
       }
@@ -23,13 +22,10 @@ define(['./module'], function () {
       };
 
       function updateWorkspaces() {
-          console.debug("updating workspace : ", Session.getCurrentWorkspace());
           $scope.workspaces = Session.getWorkspaces();
           $scope.hasDatamart = Session.hasDatamart();
           $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
       }
-
-
 
       if(Session.isInitialized()) {
           updateWorkspaces();
