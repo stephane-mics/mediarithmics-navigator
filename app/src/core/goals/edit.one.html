@@ -61,6 +61,51 @@
     <br />
     
 
+    <h3>Attribution models</h3>
+    <table class="mics-table js-auto-hide-actions" ng-show="attributionModels.length">
+      <thead>
+      <tr>
+        <th>Attribution type</th>
+        <th>Attribution model processor</th>
+        <th>Default</th>
+        <th class="actions">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="attributionModel in attributionModels">
+        <td>{{attributionModel.attribution_type}}</td>
+        <td ng-show="attributionModel.attribution_model_id">{{attributionModel.group_id}}:{{attributionModel.artifact_id}}</td>
+        <td ng-show="!attributionModel.attribution_model_id">N/A</td>
+        <td><input type="radio"
+       ng-model="$parent.defaultAttributionModel" value="{{attributionModel.id}}" ng-change="updateDefaultAttributionModel(attributionModel)" /></td>
+        <td class="actions">
+          <a class="mics-btn mics-btn-delete" ng-click="deleteAttributionModel(attributionModel)">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <div class="dropdown">
+      <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
+        Add Attribution model
+        <!-- <span class="caret"></span> -->
+      </button>
+
+      <ul class="dropdown-menu" role="menu" aria-labelledby="Add Attribution model">
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addAttributionModel('post-view')">
+          Post view
+        </a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addAttributionModel('post-click')">
+          Post click
+        </a></li>
+
+      </ul>
+    </div>
+    <br />
+    <br />
+    
+
     <div class="mcs-actions-group">
 
         <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>

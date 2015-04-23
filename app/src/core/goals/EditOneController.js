@@ -19,13 +19,32 @@ define(['./module'], function () {
         Restangular.one("goals", goalId).get().then(function (goal) {
           $scope.goal = goal;
           $scope.triggers = goal.all("triggers").getList().$object;
+           goal.all("attribution_models").getList().then(function (attributionModels) {
+            $scope.attributionModels = attributionModels;
+
+            $scope.defaultAttributionModel = _.find(attributionModels, {'default': true}, 'id').id;
+          } );
+          
+
         });
       }
 
+
       
 
+      $scope.updateDefaultAttributionModel = function (attributionModel) {
+        attributionModel.default = true;
+        attributionModel.put().then(function (r) {
+          $state.transitionTo($state.current, $stateParams, {
+            reload: true, inherit: true, notify: true
+          });
+        });
+
+        return;
+      };
+
       $scope.addTrigger = function (type) {
-        $scope.triggers.post({"type":type}, {"scenario_id": goalId}).then(function (r) {
+        $scope.triggers.post({"type":type}).then(function (r) {
           $scope.editTrigger(r);
         });
 
@@ -34,6 +53,26 @@ define(['./module'], function () {
 
       $scope.deleteTrigger = function (trigger) {
         trigger.remove({"scenario_id": goalId}).then(function (r) {
+          $state.transitionTo($state.current, $stateParams, {
+            reload: true, inherit: true, notify: true
+          });
+        });
+
+        return;
+      };
+
+      $scope.addAttributionModel = function (type) {
+        $scope.attributionModels.post({"group_id":"com.mediarithmics.attribution", "artifact_id": type}).then(function (r) {
+           $state.transitionTo($state.current, $stateParams, {
+            reload: true, inherit: true, notify: true
+          });
+        });
+
+        return;
+      };
+
+      $scope.deleteAttributionModel = function (attribution) {
+        attribution.remove().then(function (r) {
           $state.transitionTo($state.current, $stateParams, {
             reload: true, inherit: true, notify: true
           });
