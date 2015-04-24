@@ -15,6 +15,7 @@ define(['./module', 'moment'], function (module, moment) {
         $scope.campaign = DisplayCampaignService.getCampaignValue();
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
+        $scope.goalSelections = DisplayCampaignService.getGoalSelections();
         $scope.locations = DisplayCampaignService.getLocations();
         $scope.locationSelector = $scope.locations.length ? "custom" : "";
         $scope.schedule = $scope.campaign.start_date !== null ? "custom" : "";
@@ -80,8 +81,32 @@ define(['./module', 'moment'], function (module, moment) {
           });
         };
 
+        $scope.addGoal = function (type) {
+          if(type == 'CONVERSION') {
+            $modal.open({
+              templateUrl: 'src/core/goals/ChooseExistingGoal.html',
+              scope: $scope,
+              backdrop: 'static',
+              controller: 'core/goals/ChooseExistingGoalController',
+              size: "lg"
+            });
+          } else {
+            DisplayCampaignService.addGoalSelection({'goal_selection_type':type});
+          }
+      
+
+        };
+
+        $scope.$on("mics-goal:selected", function (event, goal) {
+          DisplayCampaignService.addGoalSelection({'goal_selection_type':'CONVERSION',"goal_id": goal.id, 'goal_name': goal.name});
+        });
+
         $scope.removeInventorySource = function (source) {
           DisplayCampaignService.removeInventorySource(source);
+        };
+
+        $scope.removeGoalSelection = function (goalSelection) {
+          DisplayCampaignService.removeGoalSelection(goalSelection);
         };
 
         $scope.$on("mics-inventory-source:selected", function (event, inventorySource) {

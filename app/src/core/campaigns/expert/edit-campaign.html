@@ -136,6 +136,64 @@
       </div>
     </div>
 
+<!------------------------ Select Goals   ------------------------>
+    <div class="mcs-form-group">
+      <div class="mics-block-heading">
+        <div class="dropdown">
+      <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
+        Add Goal
+        <!-- <span class="caret"></span> -->
+      </button>
+
+      <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT')">
+          Visit site
+        </a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT_LANDING')">
+          Visit campaign landing page
+        </a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CONVERSION')">
+          Conversion (from goal)
+        </a></li>
+
+      </ul>
+    </div>
+        
+        <span>Goal</span>
+      </div>
+
+      
+
+      <table class="fragment-list-keyword-list" ng-show="goalSelections.length">
+        <thead>
+        <tr>
+          <th>Goal Type</th>
+          <th>Goal Name</th>
+          <th>Default</th>
+          <!-- <th>Duration (days)</th> -->
+          <th class="actions">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="source in goalSelections|orderBy:'id'">
+          <td>{{source.goal_selection_type || json}}</td>
+          <td>
+            {{source.goal_name}}
+          </td>
+          <td >
+            {{source.default}}
+          </td>
+          <td class="actions">
+            <button class="mics-btn mics-btn-delete" ng-click="removeGoalSelection(source)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+        
+      
+    </div>
+
     <!------------------------ Advanced options ------------------------>
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
