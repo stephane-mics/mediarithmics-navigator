@@ -16,6 +16,7 @@ define(['./module', 'moment'], function (module, moment) {
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
         $scope.goalSelections = DisplayCampaignService.getGoalSelections();
+        $scope.defaultGoalSelection = _.find(DisplayCampaignService.getGoalSelections(), {"default":true});
         $scope.locations = DisplayCampaignService.getLocations();
         $scope.locationSelector = $scope.locations.length ? "custom" : "";
         $scope.schedule = $scope.campaign.start_date !== null ? "custom" : "";
@@ -100,6 +101,14 @@ define(['./module', 'moment'], function (module, moment) {
         $scope.$on("mics-goal:selected", function (event, goal) {
           DisplayCampaignService.addGoalSelection({'goal_selection_type':'CONVERSION',"goal_id": goal.id, 'goal_name': goal.name});
         });
+
+        $scope.updateDefaultGoalSelection = function () {
+          
+          _.forEach(DisplayCampaignService.getGoalSelections(), function(gs) {gs.default=false; return;})
+          $scope.defaultGoalSelection.default=true
+          return ;
+
+        }
 
         $scope.removeInventorySource = function (source) {
           DisplayCampaignService.removeInventorySource(source);

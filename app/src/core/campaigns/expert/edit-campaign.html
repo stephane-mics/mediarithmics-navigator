@@ -163,7 +163,6 @@
       </div>
 
       
-
       <table class="fragment-list-keyword-list" ng-show="goalSelections.length">
         <thead>
         <tr>
@@ -180,8 +179,8 @@
           <td>
             {{source.goal_name}}
           </td>
-          <td >
-            {{source.default}}
+          <td > 
+            <input type="radio" name="default-goal-selection" ng-checked="source.default" ng-value="source" ng-model="$parent.defaultGoalSelection"  ng-change="updateDefaultGoalSelection()"/>
           </td>
           <td class="actions">
             <button class="mics-btn mics-btn-delete" ng-click="removeGoalSelection(source)">Delete</button>

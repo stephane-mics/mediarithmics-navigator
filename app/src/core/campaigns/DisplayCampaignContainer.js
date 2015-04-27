@@ -358,13 +358,7 @@ define(['./module'], function (module) {
           $log.info("saving goalSelection", goalSelection.id);
           var promise;
           if ((goalSelection.id && goalSelection.id.indexOf('T') === -1) || (typeof(goalSelection.modified) !== "undefined")) {
-            // update the goal selection
-            // TODO 501 Not Implemented
-            // promise = goalSelection.put();
-
-            var deferred = $q.defer();
-            promise = deferred.promise;
-            deferred.resolve();
+            promise = goalSelection.put();
 
           } else {
             promise = Restangular
