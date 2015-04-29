@@ -17,8 +17,16 @@ define(['./module'], function (module) {
       	} else if(input == 'SUP') {
       		return '>';
       	} else if(input == 'EQUAL') {
-      		return '=';
-      	}
+          return '=';
+        } else if(input == 'COPY') {
+          return 'Copy value';
+        } else if(input == 'NOT_EQUAL') {
+          return '≠';
+        } else if(input == 'NOT_MATCH') {
+          return 'Doesn\'t match';
+        } else if(input == 'MATCH') {
+          return 'Matches';
+        }
         return  input;
       };
 
