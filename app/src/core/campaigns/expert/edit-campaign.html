@@ -139,31 +139,39 @@
 <!------------------------ Select Goals   ------------------------>
     <div class="mcs-form-group">
       <div class="mics-block-heading">
-        <div class="dropdown">
+       
+        
+        <span ng-show="(simpleGoals.length != 1)">Goals</span>
+        <span ng-show="(simpleGoals.length == 1)">Goal : Click on ad </span>
+        <button class="pull-right mics-btn mics-btn-action" type="button" ng-click="toggleMoreGoals()" ng-disabled="moreGoals">
+        More
+        <!-- <span class="caret"></span> -->
+      </button>
+      </div>
+    <div  ng-show="(simpleGoals.length != 1) || moreGoals">
+    <br />
+  <div class="dropdown">
       <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
         Add Goal
         <!-- <span class="caret"></span> -->
       </button>
 
       <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT')">
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CLICK_ON_AD')">
+          Click on Ad
+        </a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT_SITE')">
           Visit site
         </a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT_LANDING')">
-          Visit campaign landing page
-        </a></li>
+        
         <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CONVERSION')">
-          Conversion (from goal)
+          Choose from library
         </a></li>
 
       </ul>
     </div>
-        
-        <span>Goal</span>
-      </div>
-
-      
-      <table class="fragment-list-keyword-list" ng-show="goalSelections.length">
+<br />
+      <table class="fragment-list-keyword-list">
         <thead>
         <tr>
           <th>Goal Type</th>
@@ -189,7 +197,7 @@
         </tbody>
       </table>
 
-        
+    </div>
       
     </div>
 

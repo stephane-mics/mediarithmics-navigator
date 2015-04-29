@@ -6,6 +6,8 @@ define(['./module'], function (module) {
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state',
     function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state) {
       var queryId = $stateParams.query_id;
+      $scope.ctx = $stateParams.ctx;
+      var returnState = $stateParams.returnState;
 
       if (!queryId) {
         $scope.query = {};
@@ -69,14 +71,23 @@ define(['./module'], function (module) {
         }
         promise.then(function success() {
           $log.info("success");
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/queries");
+          if(returnState) {
+            $location.path(returnState);
+          } else {
+            $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/queries");
+          }
+          
         }, function failure() {
           $log.info("failure");
         });
 
       };
       $scope.cancel = function () {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/queries");
+          if(returnState) {
+            $location.path(returnState);
+          } else {
+            $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/queries");
+          }
       };
     }
 

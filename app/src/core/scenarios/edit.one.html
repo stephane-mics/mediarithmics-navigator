@@ -29,6 +29,7 @@
       <tr ng-repeat="input in inputs">
         <td><div mics-scenario-input-status="input" scenario="scenario"></div></td>
         <td>{{input.type}}</td>
+        <td><div mcs-query-display="input.query_id"> </div></td>
         <td class="actions">
           <a class="mics-btn mics-btn-edit" ng-click="editInput(input)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteInput(input)">Delete</a>

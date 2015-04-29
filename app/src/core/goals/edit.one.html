@@ -24,19 +24,17 @@
     <table class="mics-table js-auto-hide-actions" ng-show="triggers.length">
       <thead>
       <tr>
-        <th>Status</th>
         <th>Trigger type</th>
-        <th>Query name</th>
+        <th>Conditions</th>
         <th class="actions">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="trigger in triggers">
-        <td><div mics-goal-trigger-status="trigger" goal="goal"></div></td>
-        <td>{{trigger.type}}</td>
-        <td>{{trigger.queryName}}</td>
+        <td>{{trigger.goal_trigger_type}}</td>
+        <td><div mcs-query-display="trigger.query_id"> </div></td>
         <td class="actions">
-          <a class="mics-btn mics-btn-edit" ng-click="editTrigger(trigger)">Edit Query</a>
+          <a class="mics-btn mics-btn-edit" ng-click="editTrigger(trigger)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteTrigger(trigger)">Delete</a>
         </td>
       </tr>
@@ -51,8 +49,11 @@
       </button>
 
       <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addTrigger('GOAL_TRIGGER')">
-          Goal Trigger
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addTrigger('PIXEL_TRIGGER')">
+          Pixel Trigger
+        </a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addTrigger('FULL_USER_DATA_QUERY')">
+          User Activity
         </a></li>
 
       </ul>
@@ -74,7 +75,7 @@
       <tbody>
       <tr ng-repeat="attributionModel in attributionModels">
         <td>{{attributionModel.attribution_type}}</td>
-        <td ng-show="attributionModel.attribution_model_id">{{attributionModel.group_id}}:{{attributionModel.artifact_id}}</td>
+        <td ng-show="attributionModel.attribution_model_id">{{attributionModel.attribution_model_name}} ({{attributionModel.group_id}}:{{attributionModel.artifact_id}})</td>
         <td ng-show="!attributionModel.attribution_model_id">N/A</td>
         <td><input type="radio"
        ng-model="$parent.defaultAttributionModel" value="{{attributionModel.id}}" ng-change="updateDefaultAttributionModel(attributionModel)" /></td>
@@ -93,11 +94,11 @@
       </button>
 
       <ul class="dropdown-menu" role="menu" aria-labelledby="Add Attribution model">
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addAttributionModel('post-view')">
-          Post view
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addDirectAttributionModel()">
+          Direct
         </a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addAttributionModel('post-click')">
-          Post click
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addAttributionModel()">
+          From processor
         </a></li>
 
       </ul>
