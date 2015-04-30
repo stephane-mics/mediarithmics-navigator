@@ -23,12 +23,10 @@ require.config({
     "plupload": "../bower_components/plupload/js/plupload.dev",
 
     // Video
-    "com.2fdevs.videogular": "../bower_components/videogular/videogular",
-    "com.2fdevs.videogular.plugins.controls": "../bower_components/videogular-controls/vg-controls",
-    "com.2fdevs.videogular.plugins.overlayplay": "../bower_components/videogular-overlay-play/vg-overlay-play",
-    "com.2fdevs.videogular.plugins.poster": "../bower_components/videogular-poster/vg-poster",
-    "com.2fdevs.videogular.plugins.buffering": "../bower_components/videogular-buffering/vg-buffering",
-    "com.2fdevs.videogular.plugins.imaads": "../bower_components/videogular-ima-ads/vg-ima-ads",
+    "video-js": "../bower_components/video.js/dist/video-js/video",
+    "videojs-vast": "../bower_components/videojs-vast/videojs.vast",
+    "vast-client": "../bower_components/vast-client-js/vast-client",
+    "video-ads": "../bower_components/videojs-contrib-ads/src/videojs.ads",
 
     // Angular JS modules
     "nvd3ChartDirectives": "../bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives",
@@ -64,17 +62,22 @@ require.config({
     'ui': ['angular'],
     'ngTable': ['angular'],
     'core/configuration': ['angular'],
-    'plupload': {deps: ['moxie'], exports: "plupload"},
-    'ui.router':["angular"],
-    'ui.router.extras':["angular","ui.router"],
+    'plupload': {deps: ['moxie'], exports: 'plupload'},
+    'ui.router':['angular'],
+    'ui.router.extras':['angular','ui.router'],
     'nv.d3': {deps: ['nvd3-templates/d3.global']},
     'ngload': ['angularAMD'],
-    'com.2fdevs.videogular': ['angular', 'ngSanitize'],
-    'com.2fdevs.videogular.plugins.controls': ['angular', 'ngSanitize'],
-    'com.2fdevs.videogular.plugins.overlayplay': ['angular', 'ngSanitize'],
-    'com.2fdevs.videogular.plugins.poster': ['angular', 'ngSanitize'],
-    'com.2fdevs.videogular.plugins.buffering': ['angular', 'ngSanitize'],
-    'com.2fdevs.videogular.plugins.imaads': ['angular', 'ngSanitize']
+    'video-ads': ['video-js'],
+    'vast-client': ['video-ads'],
+    'videojs-vast': ['vast-client-compat']
   },
   deps: ['navigator']
+});
+
+/**
+ * Since vast-client uses browserify, we have to explicitly set it globally to allow videojs-vast to use it.
+ */
+define("vast-client-compat", ["vast-client"], function (DMVAST) {
+  window.DMVAST = DMVAST;
+  return DMVAST;
 });

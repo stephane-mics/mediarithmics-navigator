@@ -21,38 +21,23 @@
       </div>
 
       <!-- Format -->
-      <div class="col-md-4">
+      <div class="col-md-4" ng-if="videoAd.format">
         <div mcs-form-group="full" label-for="format" label-text="Format">
-          {{videoWidth}} x {{videoHeight}}
+          {{videoAd.format}}
         </div>
       </div>
     </div>
 
-    <div ng-show="adServingUrl" class="row">
+    <div class="row" ng-show="previewUrl">
       <div class="col-md-8">
         <h4>Preview</h4>
-
-        <videogular vg-theme="videoPlayerConfig.theme">
-          <vg-media vg-src="videoPlayerConfig.sources"></vg-media>
-
-          <vg-controls>
-            <vg-play-pause-button></vg-play-pause-button>
-            <vg-time-display>{{ currentTime | date:'mm:ss' }}</vg-time-display>
-            <vg-scrub-bar>
-              <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-            </vg-scrub-bar>
-            <vg-time-display>{{ timeLeft | date:'mm:ss' }}</vg-time-display>
-            <vg-volume>
-              <vg-mute-button></vg-mute-button>
-              <vg-volume-bar></vg-volume-bar>
-            </vg-volume>
-            <vg-fullscreen-button></vg-fullscreen-button>
-          </vg-controls>
-
-          <vg-ima-ads vg-ad-tag-url="videoPlayerConfig.plugins.ads.adTagUrl"></vg-ima-ads>
-          <vg-overlay-play></vg-overlay-play>
-        </videogular>
-
+        <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"
+               width="640" height="360"
+               data-setup='{}'>
+          <source ng-src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4'/>
+          <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that
+            <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+        </video>
       </div>
     </div>
 
