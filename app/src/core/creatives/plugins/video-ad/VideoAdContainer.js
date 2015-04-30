@@ -89,9 +89,7 @@ define(['./module'], function (module) {
 
       VideoAdContainer.prototype.setProperty = function setProperty(id, value) {
         for (var i = 0; i < this.properties.length; i++) {
-          console.log(this.properties[i].id, "<==>", id);
           if (this.properties[i].id === id) {
-            console.log("Setting property: ", this.properties[i], " to: ", value);
             this.properties[i].value.value.url = value;
           }
         }

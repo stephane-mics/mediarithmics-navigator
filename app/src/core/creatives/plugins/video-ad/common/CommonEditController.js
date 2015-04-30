@@ -40,18 +40,14 @@ define(['./module'], function (module) {
         }
         VideoAdService.parseVast($scope.vastUrl, function (config) {
           $scope.videoType = config.type;
+          $scope.previewHeight = config.height;
+          $scope.previewWidth = config.width;
           $scope.videoAd.format = config.width + "x" + config.height;
           $log.debug("Properties: ", $scope.properties[1].value.value);
-          var video = videojs('videoPlayer');
-          video.ads();
-          video.vast({url: $scope.previewUrl});
           $scope.$emit("video-ad:loaded");
         });
       });
 
-      $scope.$on("$destroy", function() {
-        videojs('videoPlayer').dispose();
-      });
     }
   ]);
 });
