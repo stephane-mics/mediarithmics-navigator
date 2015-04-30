@@ -112,5 +112,27 @@ define(['./module'], function (module) {
     }
   ]);
 
+// double property
+  module.directive('mcsDoubleProperty', [
+    function () {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: '@',
+          labelFor: '@',
+          property: '=',
+          ngDisabled: '='
+        },
+        templateUrl: '/src/core/common/properties/double-property.html',
+        link: function (scope, element, attrs) {
+
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
+      };
+    }
+  ]);
+
 
 });
