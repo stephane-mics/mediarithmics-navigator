@@ -27,7 +27,7 @@ define(['./module'], function (module) {
         name: "Video Mode",
         editor_group_id: "com.mediarithmics.creative.video",
         editor_artifact_id: "video-editor",
-        image: "/images/plugins/creative-mcs-default.png",
+        image: "/images/plugins/creative-mcs-video.png",
         editor: {
           create_path: "/{organisation_id}/creatives/video-ad/editor/create",
           edit_path: "/{organisation_id}/creatives/video-ad/editor/edit/{id}"
