@@ -23,6 +23,10 @@ define(['./module'], function (module) {
         return Restangular.all('display_network_accesses').getList(params);
       };
 
+
+      
+
+
       service.getDeepCampaignView = function (campaignId) {
         var root = Restangular.one('display_campaigns', campaignId);
         // send requests to get the value and the list of
@@ -207,6 +211,22 @@ define(['./module'], function (module) {
 
       service.removePlacementList = function (adGroupId, placementList) {
         this.campaignCtn.getAdGroup(adGroupId).removePlacementList(placementList);
+      };
+
+
+      /**
+       * GoalSelections methods
+       */
+      service.getGoalSelections = function () {
+        return this.campaignCtn.getGoalSelections();
+      };
+
+      service.addGoalSelection = function (goalSelection) {
+        return this.campaignCtn.addGoalSelection(goalSelection);
+      };
+
+      service.removeGoalSelection = function (goalSelection) {
+        return this.campaignCtn.removeGoalSelection(goalSelection);
       };
 
 

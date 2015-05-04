@@ -14,6 +14,8 @@ define(['./module'], function (module) {
         this.removedAdGroups = [];
         this.inventorySources = [];
         this.removedInventorySources = [];
+        this.goalSelections = [];
+        this.removedGoalSelections = [];
         this.locations = [];
         this.removedLocations = [];
 
@@ -23,16 +25,18 @@ define(['./module'], function (module) {
 
       DisplayCampaignContainer.prototype.load = function (campaignId) {
         var root = Restangular.one('display_campaigns', campaignId);
+        var meta = Restangular.one('campaigns', campaignId);
         // send requests to get the value and the list of
         // ad group ids
         var campaignResourceP = root.get();
         var AdGroupsListP = root.getList('ad_groups');
         var inventorySourcesP = root.getList('inventory_sources');
         var locationsP = root.getList('locations');
+        var goalSelectionsP = meta.getList('goal_selections');
         var self = this;
         var defered = $q.defer();
 
-        $q.all([campaignResourceP, AdGroupsListP, inventorySourcesP, locationsP])
+        $q.all([campaignResourceP, AdGroupsListP, inventorySourcesP, locationsP, goalSelectionsP])
           .then(function (result) {
             self.creationMode = false;
             self.value = result[0];
@@ -43,6 +47,7 @@ define(['./module'], function (module) {
             var adGroups = result[1];
             self.inventorySources = result[2];
             self.locations = result[3];
+            self.goalSelections = result[4];
 
             var adGroupsP = [];
             if (adGroups.length > 0) {
@@ -100,6 +105,35 @@ define(['./module'], function (module) {
             this.inventorySources.splice(i, 1);
             if (inventorySource.id && inventorySource.id.indexOf("T") === -1) {
               this.removedInventorySources.push(inventorySource);
+            }
+            return;
+          }
+        }
+      };
+
+
+      DisplayCampaignContainer.prototype.getGoalSelections = function () {
+        return this.goalSelections;
+      };
+
+      DisplayCampaignContainer.prototype.addGoalSelection = function (goalSelection) {
+        var found = _.find(this.goalSelections, function (source) {
+          return (source.goal_id == goalSelection.goal_id) && (source.goal_selection_type == goalSelection.goal_selection_type);
+        });
+        if (!found) {
+          goalSelection.id = IdGenerator.getId();
+          goalSelection.default = this.goalSelections.length == 0;
+          this.goalSelections.push(goalSelection);
+        }
+        return goalSelection.id || found.id;
+      };
+
+      DisplayCampaignContainer.prototype.removeGoalSelection = function (goalSelection) {
+        for (var i = 0; i < this.goalSelections.length; i++) {
+          if (this.goalSelections[i].id === goalSelection.id) {
+            this.goalSelections.splice(i, 1);
+            if (goalSelection.id && goalSelection.id.indexOf("T") === -1) {
+              this.removedGoalSelections.push(goalSelection);
             }
             return;
           }
@@ -291,6 +325,76 @@ define(['./module'], function (module) {
         return deferred.promise;
       };
 
+      /**
+       * Create a task (to be used by async.series) to delete the given goal selection source.
+       * @param {Object} goalSelection the goal selection to delete.
+       * @return {Function} the task.
+       */
+      function deleteGoalSelectionTask(goalSelection) {
+        return function (callback) {
+          $log.info("deleting goalSelection", goalSelection.id);
+          var promise;
+          if (goalSelection.id && goalSelection.id.indexOf('T') === -1) {
+            // delete the goalSelection
+            promise = goalSelection.remove();
+          } else {
+            // the goalSelection was not persisted, nothing to do
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+      /**
+       * Create a task (to be used by async.series) to save the given goal selection.
+       * @param {Object} goalSelection the goal selection to save.
+       * @param {String} campaignId the id of the current campaign.
+       * @return {Function} the task.
+       */
+      function saveGoalSelectionTask(goalSelection, campaignId) {
+        return function (callback) {
+          $log.info("saving goalSelection", goalSelection.id);
+          var promise;
+          if ((goalSelection.id && goalSelection.id.indexOf('T') === -1) || (typeof(goalSelection.modified) !== "undefined")) {
+            promise = goalSelection.put();
+
+          } else {
+            promise = Restangular
+              .one('campaigns', campaignId)
+              .post('goal_selections', goalSelection);
+          }
+          promiseUtils.bindPromiseCallback(promise, callback);
+        };
+      }
+
+
+      var saveGoalSelections = function (self, campaignId) {
+        var deferred = $q.defer(), tasks = [], i;
+        for (i = 0; i < self.goalSelections.length; i++) {
+          tasks.push(saveGoalSelectionTask(self.goalSelections[i], campaignId));
+        }
+        for (i = 0; i < self.removedGoalSelections.length; i++) {
+          tasks.push(deleteGoalSelectionTask(self.removedGoalSelections[i]));
+        }
+
+        async.series(tasks, function (err, res) {
+          if (err) {
+            deferred.reject(err);
+          } else {
+            $log.info(res.length + " goal selections saved");
+            // return the ad group container as the promise results
+            deferred.resolve(self);
+          }
+
+        });
+        return deferred.promise;
+      };
+
+
+
+
 
       /**
        * Create a task (to be used by async.series) to delete the given inventory source.
@@ -367,9 +471,11 @@ define(['./module'], function (module) {
 
 
       function persistDependencies(self, campaignId, adGroups) {
-        return saveInventorySources(self, campaignId).then(function () {
-          return saveLocations(self, campaignId).then(function () {
-            return saveAdGroups(self, adGroups);
+        return saveGoalSelections(self, campaignId).then(function () {
+          return saveInventorySources(self, campaignId).then(function () {
+            return saveLocations(self, campaignId).then(function () {
+              return saveAdGroups(self, adGroups);
+            });
           });
         });
       }

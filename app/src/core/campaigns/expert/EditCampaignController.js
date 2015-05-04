@@ -11,11 +11,22 @@ define(['./module', 'moment'], function (module, moment) {
     function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService, waitingService, errorService, $modal) {
       var campaignId = $stateParams.campaign_id;
 
+        function updateGoalSelectionsCount() {
+          $scope.simpleGoals = _.filter(DisplayCampaignService.getGoalSelections(), {"goal_selection_type":"CLICK_ON_AD"});
+          return ;
+        }
+
+
       function initView() {
+        $scope.moreGoals = false;
         $scope.campaign = DisplayCampaignService.getCampaignValue();
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
+        $scope.goalSelections = DisplayCampaignService.getGoalSelections();
+        $scope.defaultGoalSelection = _.find(DisplayCampaignService.getGoalSelections(), {"default":true});
+        updateGoalSelectionsCount();
         $scope.locations = DisplayCampaignService.getLocations();
+
         $scope.locationSelector = $scope.locations.length ? "custom" : "";
         $scope.schedule = $scope.campaign.start_date !== null ? "custom" : "";
         if ($scope.campaign.start_date !== null && $scope.campaign.end_date !== null) {
@@ -51,6 +62,11 @@ define(['./module', 'moment'], function (module, moment) {
           return DisplayCampaignService.getAds(adGroupId);
         };
 
+        $scope.toggleMoreGoals = function () {
+          $scope.moreGoals = !$scope.moreGoals ;
+          return;
+        };
+
         $scope.getUserGroups = function (adGroupId) {
           return DisplayCampaignService.getUserGroups(adGroupId);
         };
@@ -80,8 +96,43 @@ define(['./module', 'moment'], function (module, moment) {
           });
         };
 
+        $scope.addGoal = function (type) {
+          if(type == 'CONVERSION') {
+            $modal.open({
+              templateUrl: 'src/core/goals/ChooseExistingGoal.html',
+              scope: $scope,
+              backdrop: 'static',
+              controller: 'core/goals/ChooseExistingGoalController',
+              size: "lg"
+            });
+          } else {
+            DisplayCampaignService.addGoalSelection({'goal_selection_type':type});
+          }
+           updateGoalSelectionsCount();
+
+        };
+
+        $scope.$on("mics-goal:selected", function (event, goal) {
+          DisplayCampaignService.addGoalSelection({'goal_selection_type':'CONVERSION',"goal_id": goal.id, 'goal_name': goal.name});
+          updateGoalSelectionsCount();
+        });
+
+        $scope.updateDefaultGoalSelection = function () {
+          
+          _.forEach(DisplayCampaignService.getGoalSelections(), function(gs) {gs.default=false; return;})
+          $scope.defaultGoalSelection.default=true
+          return ;
+
+        }
+
+
         $scope.removeInventorySource = function (source) {
           DisplayCampaignService.removeInventorySource(source);
+        };
+
+        $scope.removeGoalSelection = function (goalSelection) {
+          DisplayCampaignService.removeGoalSelection(goalSelection);
+          updateGoalSelectionsCount();
         };
 
         $scope.$on("mics-inventory-source:selected", function (event, inventorySource) {

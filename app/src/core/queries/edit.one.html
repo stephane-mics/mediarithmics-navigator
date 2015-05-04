@@ -7,10 +7,12 @@
   <form ng-submit="next()" class="mcs-default-content mcs-full-page-form">
 
     <div class="mcs-default-heading">
-      <h1>Edit Query</h1>
+      <h1 ng-show="!ctx">Edit Query</h1>
+      <h1 ng-show="ctx == 'goal'">Edit Goal Trigger</h1>
+
     </div>
 
-      <div mcs-form-group="" label-for="name" label-text="Query name">
+      <div ng-show="!ctx" mcs-form-group="" label-for="name" label-text="Query name">
           <input  ng-model="query.name" type="text" class="form-control input-lg" id="name">
       </div>
 
@@ -31,7 +33,7 @@
       <tr ng-repeat="condition in conditions">
         <td>{{condition.selector_family | mcsEnumLabel}}</td>
         <td>{{condition.selector | mcsEnumLabel}}<em ng-show="condition.selector == 'PROPERTY'">&nbsp;-&nbsp;{{condition.property_name}}</em></td>
-        <td>{{condition.operator}}</td>
+        <td>{{condition.operator | mcsConditionOperator}}</td>
         <td>{{condition.condition_value}}</td>
         <td class="actions">
           <a class="mics-btn mics-btn-delete" ng-click="deleteCondition(condition)">Delete</a>
@@ -63,10 +65,14 @@
           <option value="EQUAL">=</option>
           <option value="INF">&lt;</option>
           <option value="SUP">&gt;</option>
+          <option value="NOT_EQUAL">&ne;</option>
+          <option value="MATCH">Matches</option>
+          <option value="NOT_MATCH">Doesn't Match</option>
+          <option value="COPY">Copy value (Always true)</option>
         </select>
       </div>
       <div class="col-xs-2">
-        <input class="form-control input-sm col-xs-2" id="value" ng-model="condition.condition_value"
+        <input class="form-control input-sm col-xs-2" id="value" ng-model="condition.condition_value" ng-show="condition.operator != 'COPY'"
                placeholder="Condition Value"/>
       </div>
       <div class="col-xs-2">
