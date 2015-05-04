@@ -109,7 +109,7 @@ define(['./module'], function (module) {
       function ($resource, Session, AuthenticationService, configuration,moment ) {
       
         var WS_URL = configuration.WS_URL;
-        if (configuration.ANALYTICS_ENGINE == "business-analytics") WS_URL = WS_URL.replace("api", "dev-api");
+        if (configuration.ANALYTICS_ENGINE != "business-analytics") WS_URL = WS_URL.replace("api", "dev-api");
       
         var displayCampaignResource = $resource(
           WS_URL + "/reports/display_campaign_performance_report",
