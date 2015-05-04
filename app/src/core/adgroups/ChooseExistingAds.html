@@ -8,18 +8,16 @@
       <div class="col-lg-12">
         <div class="row">
           <div class="filter-size">
-            <select
-              ng-model="creativeformat"
-              ng-options="availableCreative.format as availableCreative.format for availableCreative in availableCreatives | unique:'format' | orderBy:'format'">
+            <select ng-model="creativeformat"
+                    ng-options="availableCreative.format as availableCreative.format for availableCreative in availableCreatives | unique:'format' | orderBy:'format'">
               <option value="">all sizes</option>
             </select>
           </div>
 
           <div class="filter-name">
-            <input
-              type="text"
-              ng-model="creativename"
-              placeholder="search">
+            <input type="text"
+                   ng-model="creativename"
+                   placeholder="search">
           </div>
 
           <div class="filtered-content">
@@ -36,7 +34,7 @@
               <tr ng-repeat="availableCreative in availableCreatives | offset: (currentPageCreative - 1)*itemsPerPage | limitTo: itemsPerPage | filter:creativename | filter:creativeformat">
                 <td><input type="checkbox" checklist-model="selectedCreatives" checklist-value="availableCreative"></td>
                 <td class="mics-small-thumbnail">
-                  <img creative-thumbnail="availableCreative.id" fetch-display-ad-renderer-properties="availableCreative.id as properties" title="{{properties.destination_url.value.url}}" />
+                  <img creative-thumbnail="availableCreative.id" fetch-ad-renderer-properties="availableCreative.id as properties" title="{{properties.destination_url.value.url}}"/>
                   <span class="caption">{{availableCreative.format}}</span>
                 </td>
                 <td>{{availableCreative.name}}</td>

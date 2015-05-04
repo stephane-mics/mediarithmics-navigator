@@ -1,8 +1,9 @@
 {
-  "name":"core/campaigns",
+  "name": "core/campaigns",
   "dependencies": [
     "core/creatives",
     "core/location",
+    "core/goals",
     "core/campaigns/expert",
     "core/campaigns/keywords",
     "core/campaigns/emails",

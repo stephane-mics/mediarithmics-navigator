@@ -1,8 +1,6 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
-
-  var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/Step3Controller', [
     "$scope", "$log", "Restangular", "lodash", 'core/campaigns/DisplayCampaignService',
@@ -34,8 +32,8 @@ define(['./module'], function () {
           return ad.creative_id === params.creative.id;
         });
 
-        if(!existing) {
-          var ad  = {creative_id: params.creative.id};
+        if (!existing) {
+          var ad = {creative_id: params.creative.id};
           DisplayCampaignService.addAd(adGroupId, ad);
         }
       });

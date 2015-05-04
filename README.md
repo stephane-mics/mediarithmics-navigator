@@ -65,6 +65,11 @@ gem install compass
 
 We use [nvm](https://github.com/creationix/nvm) to set the nodejs version.
 
+#### setup endpoints
+
+create `app/conf/app-configuration.js` using `app/conf/app-configuration.js.template`.
+
+
 Getting started
 ---------------
 

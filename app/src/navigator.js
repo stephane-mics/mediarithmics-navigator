@@ -37,6 +37,17 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
     }
   ]);
 
+  // load the brand css
+  navigator.config([
+    'core/configuration',
+    function (configuration) {
+      var link = document.createElement("link");
+      link.type = "text/css";
+      link.rel = "stylesheet";
+      link.href = configuration.ASSETS_URL + "/white_label/" + location.hostname + "/style.css";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    }]);
+
 // configure the application
   navigator.config([
     "$stateProvider", "$logProvider","$urlRouterProvider",
@@ -74,6 +85,7 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           });
 
       $urlRouterProvider.when('/', '/home');
+      $urlRouterProvider.when('', '/home');
       $urlRouterProvider.when('/home', '/campaigns');
 
 

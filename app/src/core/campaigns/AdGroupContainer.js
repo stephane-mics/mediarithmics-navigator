@@ -1,12 +1,10 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns');
 
   module.factory("core/campaigns/AdGroupContainer", [
     "$q", "Restangular", "jquery", "core/common/IdGenerator", "async", "$log", 'core/common/auth/Session', 'lodash', 'core/common/promiseUtils',
     function ($q, Restangular, $, IdGenerator, async, $log, Session, _, promiseUtils) {
-      /*
+      /**
        * Ad Group Container
        */
 
@@ -14,8 +12,8 @@ define(['./module'], function () {
         if (typeof value === "string") {
           this.id = value;
           this.value = {
-            id:value,
-            visibility : 'ANY_POSITION'
+            id: value,
+            visibility: 'ANY_POSITION'
           };
         } else {
 
@@ -38,7 +36,6 @@ define(['./module'], function () {
         this.bidOptimizer = null;
       };
 
-
       AdGroupContainer.prototype.load = function load() {
         var pValue = this.value.get();
         var pAds = this.value.getList('ads');
@@ -57,33 +54,24 @@ define(['./module'], function () {
             self.id = self.value.id;
             self.ads = result[1];
             self.userGroups = result[2];
-            self.keywordLists =  result[3];
-
+            self.keywordLists = result[3];
             self.placementLists = result[4];
-
             // return the loaded container
             deferred.resolve(self);
-
           }, function (reason) {
-
             deferred.reject(reason);
           });
-
         // return the promise
         return deferred.promise;
-
       };
 
       AdGroupContainer.prototype.addAd = function addAd(ad) {
-
         ad.id = IdGenerator.getId();
         this.ads.push(ad);
-
         return ad.id;
       };
 
       AdGroupContainer.prototype.removeAd = function removeAd(adId) {
-
         for (var i = 0; i < this.ads.length; i++) {
           if (this.ads[i].id === adId) {
             if (adId.indexOf("T") === -1) {
@@ -96,7 +84,6 @@ define(['./module'], function () {
       };
 
       AdGroupContainer.prototype.getAd = function getAd(adId) {
-
         for (var i = 0; i < this.ads.length; i++) {
           if (this.ads[i].id === adId) {
             return this.ads[i];
@@ -111,20 +98,17 @@ define(['./module'], function () {
       };
 
       AdGroupContainer.prototype.addKeywordList = function addKeywordList(keywordListSelection) {
-
         var found = _.find(this.keywordLists, function (kw) {
           return kw.keyword_list_id === keywordListSelection.keyword_list_id;
         });
-        if(!found) {
+        if (!found) {
           keywordListSelection.id = IdGenerator.getId();
           this.keywordLists.push(keywordListSelection);
         }
-
         return keywordListSelection.id || found.id;
       };
 
       AdGroupContainer.prototype.removeKeywordList = function removeKeywordList(keywordList) {
-
         for (var i = 0; i < this.keywordLists.length; i++) {
           if (this.keywordLists[i].keyword_list_id === keywordList.keyword_list_id) {
             this.keywordLists.splice(i, 1);
@@ -138,20 +122,17 @@ define(['./module'], function () {
 
 
       AdGroupContainer.prototype.addPlacementList = function addPlacementList(placementListSelection) {
-
         var found = _.find(this.placementLists, function (kw) {
           return kw.placement_list_id === placementListSelection.placement_list_id;
         });
-        if(!found) {
+        if (!found) {
           placementListSelection.id = IdGenerator.getId();
           this.placementLists.push(placementListSelection);
         }
-
         return placementListSelection.id || found.id;
       };
 
       AdGroupContainer.prototype.removePlacementList = function removePlacementList(placementList) {
-
         for (var i = 0; i < this.placementLists.length; i++) {
           if (this.placementLists[i].placement_list_id === placementList.placement_list_id) {
             this.placementLists.splice(i, 1);
@@ -163,17 +144,13 @@ define(['./module'], function () {
         }
       };
 
-
       AdGroupContainer.prototype.addUserGroup = function addUserGroup(userGroupSelection) {
-
         userGroupSelection.id = IdGenerator.getId();
         this.userGroups.push(userGroupSelection);
-
         return userGroupSelection.id;
       };
 
       AdGroupContainer.prototype.removeUserGroup = function removeUserGroup(userGroup) {
-
         for (var i = 0; i < this.userGroups.length; i++) {
           if (this.userGroups[i].user_group_id === userGroup.user_group_id) {
             this.userGroups.splice(i, 1);
@@ -184,8 +161,6 @@ define(['./module'], function () {
           }
         }
       };
-
-
 
       /**
        * Create a task (to be used by async.series) to save the given ad.
@@ -205,8 +180,8 @@ define(['./module'], function () {
           } else {
             // create the ad
             promise = Restangular.one('display_campaigns', campaignId)
-            .one('ad_groups', adGroupId)
-            .post('ads', ad);
+              .one('ad_groups', adGroupId)
+              .post('ads', ad);
           }
           promiseUtils.bindPromiseCallback(promise, callback);
         };
@@ -253,8 +228,8 @@ define(['./module'], function () {
           } else {
             // create the user group
             promise = Restangular.one('display_campaigns', campaignId)
-            .one('ad_groups', adGroupId)
-            .post('user_groups', userGroup);
+              .one('ad_groups', adGroupId)
+              .post('user_groups', userGroup);
           }
           promiseUtils.bindPromiseCallback(promise, callback);
         };
@@ -297,7 +272,6 @@ define(['./module'], function () {
           if ((keywordList.id && keywordList.id.indexOf('T') === -1) || (typeof(keywordList.modified) !== "undefined")) {
             // update the keyword list
             promise = keywordList.put();
-
           } else {
             // create the keyword list
             promise = Restangular.one('display_campaigns', campaignId)

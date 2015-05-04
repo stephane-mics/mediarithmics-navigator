@@ -1,7 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/placementlists');
 
   module.controller('core/placementlists/DeleteController', [
     '$scope', '$modalInstance', '$location', '$state', '$stateParams', "core/common/ErrorService",

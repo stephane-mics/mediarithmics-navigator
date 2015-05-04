@@ -7,59 +7,64 @@
       <h1>All Creatives</h1>
     </div>
     <div class="mics-table-toolbar">
-      <div class ="col-md-4">
-        <button class="mics-btn mics-btn-add" ng-click="newCreative()" >New Creative</button>
+      <div class="col-md-4">
+        <button class="mics-btn mics-btn-add" ng-click="newCreative()">New Creative</button>
       </div>
-      <div class ="col-md-2">
+      <div class="col-md-2">
         <!-- <label><input type="checkbox" ng-model="displayArchived"> Display archived</label> -->
       </div>
       <div class="form-group col-md-3">
         <select
-          class="form-control"
-          ng-model="creativeformat"
-          ng-options="creative.format as creative.format for creative in creatives | unique:'format' | orderBy:'format'">
+            class="form-control"
+            ng-model="creativeformat"
+            ng-options="creative.format as creative.format for creative in creatives | unique:'format' | orderBy:'format'">
           <option value="">all sizes</option>
         </select>
       </div>
 
       <div class="form-group col-md-3">
         <input
-        class="form-control"
-        type="text"
-        ng-model="creativename"
-        placeholder="search">
+            class="form-control"
+            type="text"
+            ng-model="creativename"
+            placeholder="search">
       </div>
     </div>
     <table class="mics-table js-auto-hide-actions">
       <thead>
-        <tr>
-          <th></th>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Audit Status</th>
-          <th ng-if="administrator">Organisation</th>
-          <th class="actions">Actions</th>
-        </tr>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Subtype</th>
+        <th>Audit Status</th>
+        <th ng-if="administrator">Organisation</th>
+        <th class="actions">Actions</th>
+      </tr>
       </thead>
       <tbody>
       <tr ng-repeat="creative in filteredCreatives()|offset: (currentPageCreative - 1)*itemsPerPage | limitTo: itemsPerPage">
         <td class="mics-small-thumbnail">
-          <img creative-thumbnail="creative.id" fetch-display-ad-renderer-properties="creative.id as properties" title="{{properties.destination_url.value.url}}" />
+          <img creative-thumbnail="creative.id" fetch-display-ad-renderer-properties="creative.id as properties"
+               title="{{properties.destination_url.value.url}}"/>
           <span class="caption">{{creative.format}}</span>
         </td>
         <td>{{creative.name}}</td>
         <td>{{creative.type}}</td>
+        <td>{{creative.subtype}}</td>
         <td>{{creative.audit_status}}</td>
         <td ng-if="administrator">{{organisationName(creative.organisation_id)}}</td>
         <td class="actions">
           <a class="mics-btn mics-btn-action" href="#{{getEditUrlForCreative(creative).url}}">Edit</a>
           <a class="mics-btn mics-btn-create" ng-show="creative.archived" ng-click="unArchiveCreative(creative)">Un-archive</a>
-          <a class="mics-btn mics-btn-delete" ng-show="creative.archived"  ng-click="deleteCreative(creative)">Delete</a>
-          <a class="mics-btn mics-btn-delete" ng-show="!creative.archived" ng-click="archiveCreative(creative)">Archive</a>
+          <a class="mics-btn mics-btn-delete" ng-show="creative.archived" ng-click="deleteCreative(creative)">Delete</a>
+          <a class="mics-btn mics-btn-delete" ng-show="!creative.archived"
+             ng-click="archiveCreative(creative)">Archive</a>
         </td>
       </tr>
       </tbody>
     </table>
-    <pagination total-items="filteredCreatives().length" ng-model="currentPageCreative" items-per-page="itemsPerPage"></pagination>
+    <pagination total-items="filteredCreatives().length" ng-model="currentPageCreative"
+                items-per-page="itemsPerPage"></pagination>
   </div>
 </div>

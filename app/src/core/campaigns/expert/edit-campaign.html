@@ -1,36 +1,31 @@
-<!-- campaign edition form -->
+<div class="mcs-default-container edit-campaign-expert" ng-controller="core/campaigns/expert/EditCampaignController">
 
-<div class="mcs-default-container edit-campaign-expert" ng-Controller="core/campaigns/expert/EditCampaignController">
   <div class="mcs-default-sidebar">
     <div class="organisation-name-block">
       {{currentOrganisation}}
     </div>
     <div class="mcs-campaign-type ">
-
-      <img src="/images/plugins/multi-targeting-small.png"><br />
+      <img src="/images/plugins/multi-targeting-small.png"><br/>
       <h4>Multi Targeting</h4>
-
     </div>
   </div>
+
   <form role="form" class="mcs-default-content mcs-full-page-form">
+
+    <!------------------------ Basic Info ------------------------>
     <div class="mcs-default-heading">
       <h1>Campaign</h1>
     </div>
 
-    <!--<div class="mcs-form-group">-->
-    <!--<label>Id</label>-->
-    <!--<p  class="form-control-static">{{campaign.id}}</p>-->
-    <!--</div>-->
-
     <!-- Name -->
     <div mcs-form-group="" label-for="name" label-text="Campaign name">
-      <input  ng-model="campaign.name" type="text" class="form-control input-lg" id="name">
+      <input ng-model="campaign.name" type="text" class="form-control input-lg" id="name">
     </div>
 
     <!-- Weekly budget -->
     <div mcs-form-group="" label-for="max_budget_per_period" label-text="Budget">
       <div class="form-inline">
-        <input ng-model="campaign.max_budget_per_period" type="text" class="form-control "  format="L"   id="max_budget_per_period" />
+        <input ng-model="campaign.max_budget_per_period" type="text" class="form-control " format="L" id="max_budget_per_period"/>
         &euro; per
         <select ng-model="campaign.max_budget_period">
           <option value="DAY">day</option>
@@ -40,34 +35,29 @@
       </div>
     </div>
 
+    <!-- Total budget -->
     <div mcs-form-group="number" label-for="total-budget" label-text="Total budget">
-      <input ng-model="campaign.total_budget" type="text" class="form-control "  format="L"   id="total-budget" />
+      <input ng-model="campaign.total_budget" type="text" class="form-control " format="L" id="total-budget"/>
     </div>
 
     <!-- Schedule -->
     <div mcs-form-group="select" label-for="schedule" label-text="Schedule">
       <select ng-model="$parent.schedule" class="form-control" id="schedule">
         <option value="">Ongoing (no end date)</option>
-        <option value="custom" ng-selected="campaign.start_date != null ? 'selected' : ''" >Custom</option>
+        <option value="custom" ng-selected="campaign.start_date != null ? 'selected' : ''">Custom</option>
       </select>
-
       <input ng-show="$parent.schedule === 'custom'"
              type="daterange"
              class="form-control range"
              ng-model="$parent.campaignDateRange"
-             format="L"
-        />
-
+             format="L"/>
     </div>
-
-
-
 
     <!-- Location -->
     <div mcs-form-group="select" label-for="location" label-text="Location">
-      <select class="form-control"  id="location" ng-model="$parent.locationSelector">
+      <select class="form-control" id="location" ng-model="$parent.locationSelector">
         <option value="" ng-show="!locations.length">Worldwide</option>
-        <option value="custom"  ng-selected="locations.length ? 'selected' : ''" >Custom</option >
+        <option value="custom" ng-selected="locations.length ? 'selected' : ''">Custom</option>
       </select>
     </div>
     <div>
@@ -83,14 +73,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="location in locations" >
+        <tr ng-repeat="location in locations">
           <td>{{location.country}}</td>
           <td>
             {{location.type}}
           </td>
           <td mcs-location="location">
             {{location.postal_code}}: {{getLocationDescriptor(locationList)}}
-
           </td>
           <td class="actions">
             <button class="mics-btn mics-btn-delete" ng-click="deleteLocation(location)">Delete</button>
@@ -100,22 +89,22 @@
       </table>
     </div>
 
+    <!-- Max bid price -->
     <div mcs-form-group="number" label-for="max-bid-price" label-text="Max bid price">
-      <input ng-model="campaign.max_bid_price" type="text" class="form-control "  format="L"   id="max-bid-price" />
+      <input ng-model="campaign.max_bid_price" type="text" class="form-control " format="L" id="max-bid-price"/>
     </div>
 
+    <!-- Total impression capping -->
     <div mcs-form-group="number" label-for="total-impression-capping" label-text="Total impression capping">
-      <input ng-model="campaign.total_impression_capping" type="text" class="form-control "  format="L"    id="total-impression-capping" />
+      <input ng-model="campaign.total_impression_capping" type="text" class="form-control " format="L" id="total-impression-capping"/>
     </div>
 
-
+    <!-- Daily impression capping -->
     <div mcs-form-group="number" label-for="per-day-impression-capping" label-text="Daily impression capping">
-      <input ng-model="campaign.per_day_impression_capping" type="text" class="form-control "  format="L"   id="per-day-impression-capping" />
+      <input ng-model="campaign.per_day_impression_capping" type="text" class="form-control " format="L" id="per-day-impression-capping"/>
     </div>
 
-
-
-    <!-- Ad Groups -->
+    <!------------------------ Select ad groups ------------------------>
     <div class="mcs-form-group">
       <div class="mics-block-heading">
         <div class="btn-group">
@@ -124,13 +113,11 @@
         <span>Ad groups</span>
       </div>
       <div ng-repeat="adGroup in adGroups|orderBy:'id'">
-        <div ng-include src="'src/core/campaigns/expert/view-ad-group.html'"></div>
+        <div ng-include="'src/core/campaigns/expert/view-ad-group.html'"></div>
       </div>
-
     </div>
 
-
-    <!-- Display Networks -->
+    <!------------------------ Select display networks  ------------------------>
     <div class="mcs-form-group">
       <div class="mics-block-heading">
         <div class="btn-group">
@@ -142,11 +129,79 @@
         <span class="label label-default selected-display-network" ng-repeat="source in inventorySources|orderBy:'display_network_name'">
           <a class="close" aria-hidden="true" type="button" ng-click="removeInventorySource(source)">x</a>
           {{source.display_network_name}}
+          <span ng-if="source.display_network_access_name && source.display_network_access_deal_id">({{source.display_network_access_name}}, deal Id = {{source.display_network_access_deal_id}})</span>
+          <span ng-if="source.display_network_access_name && !source.display_network_access_deal_id">({{source.display_network_access_name}})</span>
+          <span ng-if="!source.display_network_access_name && source.display_network_access_deal_id">(deal Id ={{source.display_network_access_deal_id}})</span>
         </span>
-
       </div>
     </div>
 
+<!------------------------ Select Goals   ------------------------>
+    <div class="mcs-form-group">
+      <div class="mics-block-heading">
+       
+        
+        <span ng-show="(simpleGoals.length != 1)">Goals</span>
+        <span ng-show="(simpleGoals.length == 1)">Goal : Click on ad </span>
+        <button class="pull-right mics-btn mics-btn-action" type="button" ng-click="toggleMoreGoals()" ng-disabled="moreGoals">
+        More
+        <!-- <span class="caret"></span> -->
+      </button>
+      </div>
+    <div  ng-show="(simpleGoals.length != 1) || moreGoals">
+    <br />
+  <div class="dropdown">
+      <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
+        Add Goal
+        <!-- <span class="caret"></span> -->
+      </button>
+
+      <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CLICK_ON_AD')">
+          Click on Ad
+        </a></li>
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT_SITE')">
+          Visit site
+        </a></li>
+        
+        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CONVERSION')">
+          Choose from library
+        </a></li>
+
+      </ul>
+    </div>
+<br />
+      <table class="fragment-list-keyword-list">
+        <thead>
+        <tr>
+          <th>Goal Type</th>
+          <th>Goal Name</th>
+          <th>Default</th>
+          <!-- <th>Duration (days)</th> -->
+          <th class="actions">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="source in goalSelections|orderBy:'id'">
+          <td>{{source.goal_selection_type || json}}</td>
+          <td>
+            {{source.goal_name}}
+          </td>
+          <td > 
+            <input type="radio" name="default-goal-selection" ng-checked="source.default" ng-value="source" ng-model="$parent.defaultGoalSelection"  ng-change="updateDefaultGoalSelection()"/>
+          </td>
+          <td class="actions">
+            <button class="mics-btn mics-btn-delete" ng-click="removeGoalSelection(source)">Delete</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+      
+    </div>
+
+    <!------------------------ Advanced options ------------------------>
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -158,28 +213,22 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse">
           <div class="panel-body">
-
             <div mcs-form-group="" label-for="targeted_devices" label-text="Targeted devices">
               <select ng-model="campaign.targeted_devices" type="text" id="targeted_devices">
                 <option value="ALL">All devices</option>
                 <option value="ONLY_DESKTOP">Only desktop</option>
                 <option value="ONLY_MOBILE">Only mobile</option>
               </select>
-
             </div>
-
           </div>
         </div>
       </div>
     </div>
 
-
-    <!-- save or cancel -->
+    <!-- Save or cancel -->
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish" ng-click="save()">Save</button>
       <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
-
   </form>
-
 </div>

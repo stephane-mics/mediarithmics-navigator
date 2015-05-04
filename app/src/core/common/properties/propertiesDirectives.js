@@ -1,6 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-  var module = angular.module('core/common/properties');
 
   // url property
   module.directive('mcsUrlProperty', [
@@ -10,11 +9,55 @@ define(['./module'], function () {
         scope: {
           labelText: "@",
           labelFor: '@',
-          property: "=property",
-          ngDisabled: "="
+          property: '=',
+          ngDisabled: '='
         },
         templateUrl: '/src/core/common/properties/url-property.html',
-        link: function (scope, ele, attrs, c) {
+        link: function (scope, element, attrs) {
+
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
+      };
+    }
+  ]);
+
+  // text property
+  module.directive('mcsTextProperty', [
+    function () {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: "@",
+          labelFor: '@',
+          property: '=',
+          ngDisabled: '='
+        },
+        templateUrl: '/src/core/common/properties/text-property.html',
+        link: function (scope, element, attrs) {
+
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
+      };
+    }
+  ]);
+
+  // text property
+  module.directive('mcsNumberProperty', [
+    function () {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: "@",
+          labelFor: '@',
+          property: '=',
+          ngDisabled: '='
+        },
+        templateUrl: '/src/core/common/properties/number-property.html',
+        link: function (scope, element, attrs) {
 
           scope.$watch("property", function () {
 //            console.log(scope.property);
@@ -32,12 +75,12 @@ define(['./module'], function () {
         scope: {
           labelText: '@',
           labelFor: '@',
-          property: '=property',
-          ngDisabled: "="
+          property: '=',
+          ngDisabled: '='
         },
         controller: 'core/common/properties/AssetPropertyController',
         templateUrl: '/src/core/common/properties/asset-property.html',
-        link: function (scope, ele, attrs, c) {
+        link: function (scope, element, attrs) {
 
           scope.$watch("property", function () {
 //            console.log(scope.property);
@@ -55,11 +98,33 @@ define(['./module'], function () {
         scope: {
           labelText: '@',
           labelFor: '@',
-          property: '=property',
-          ngDisabled: "="
+          property: '=',
+          ngDisabled: '='
         },
         templateUrl: '/src/core/common/properties/data-file-property.html',
-        link: function (scope, ele, attrs, c) {
+        link: function (scope, element, attrs) {
+
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
+      };
+    }
+  ]);
+
+// double property
+  module.directive('mcsDoubleProperty', [
+    function () {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: '@',
+          labelFor: '@',
+          property: '=',
+          ngDisabled: '='
+        },
+        templateUrl: '/src/core/common/properties/double-property.html',
+        link: function (scope, element, attrs) {
 
           scope.$watch("property", function () {
 //            console.log(scope.property);

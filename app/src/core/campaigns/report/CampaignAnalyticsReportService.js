@@ -1,6 +1,6 @@
 /* global _ */
 
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
 

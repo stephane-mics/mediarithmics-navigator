@@ -11,6 +11,7 @@ define([
     'ngTable',
     'nvd3ChartDirectives',
     'ngBootstrap',
+    'jsplumb',
     'ui',
     'ui.router',
     'ui.router.extras',
@@ -18,6 +19,9 @@ define([
     'lodash',
     'core/configuration',
     'core/adblock/index',
+    'core/queries/index',
+    'core/goals/index',
+    'core/scenarios/index',
     'core/keywords/index',
     'core/creatives/index',
     'core/adgroups/index',
@@ -30,7 +34,7 @@ define([
   ], function () {
     'use strict';
 
-    /*
+    /**
      * Application Module
      */
     var navigator = angular.module('navigator', [
@@ -54,6 +58,9 @@ define([
       'core/usergroups',
       'core/campaigns',
       'core/creatives',
+      'core/scenarios',
+      'core/queries',
+      'core/goals',
 
       'core/datamart',
       'core/login',

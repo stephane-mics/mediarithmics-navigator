@@ -1,29 +1,26 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns');
 
   module.controller('core/campaigns/DeleteController', [
     '$scope', '$modalInstance', '$location', "core/common/ErrorService",
-    function($scope, $modalInstance, $location, errorService) {
+    function ($scope, $modalInstance, $location, errorService) {
 
-      $scope.done = function() {
-        $scope.campaign.remove().then(function (){
+      $scope.done = function () {
+        $scope.campaign.remove().then(function () {
           $modalInstance.close();
           $location.path("/");
         }, function failure(response) {
           $modalInstance.close();
           errorService.showErrorModal({
             error: response,
-            messageType:"simple"
+            messageType: "simple"
           });
         });
       };
 
-      $scope.cancel = function() {
+      $scope.cancel = function () {
         $modalInstance.close();
       };
-
     }
   ]);
 });

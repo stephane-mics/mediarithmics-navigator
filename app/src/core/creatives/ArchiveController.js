@@ -2,12 +2,12 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/ArchiveController', [
-    '$scope', '$modalInstance', '$location','core/common/auth/Session', '$state', '$stateParams', "core/common/ErrorService",
-    function($scope, $modalInstance, $location, Session, $state, $stateParams, errorService) {
+    '$scope', '$modalInstance', '$location', 'core/common/auth/Session', '$state', '$stateParams', "core/common/ErrorService",
+    function ($scope, $modalInstance, $location, Session, $state, $stateParams, errorService) {
 
-      $scope.done = function() {
+      $scope.done = function () {
         $scope.creative.archived = true;
-        $scope.creative.put().then(function (){
+        $scope.creative.put().then(function () {
           $modalInstance.close();
           // $state.reload();
           // see https://github.com/angular-ui/ui-router/issues/582
@@ -18,12 +18,12 @@ define(['./module'], function (module) {
           $modalInstance.close();
           errorService.showErrorModal({
             error: response,
-            messageType:"simple"
+            messageType: "simple"
           });
         });
       };
 
-      $scope.cancel = function() {
+      $scope.cancel = function () {
         $modalInstance.close();
       };
 

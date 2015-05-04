@@ -1,8 +1,5 @@
-define(['./module'], function () {
-
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns/keywords');
 
   module.controller('core/campaigns/keywords/Step4Controller', [
     "$scope", "$window", "lodash", "core/common/auth/Session", 'core/campaigns/DisplayCampaignService', "$log", "$location", "$q", "Restangular", "async", "core/common/WaitingService", "core/common/ErrorService",
@@ -12,7 +9,7 @@ define(['./module'], function () {
         keywordsListContainer.keywordList.name = campaignContainer.name;
         return keywordsListContainer.save().then(function (kwList) {
           DisplayCampaignService.addKeywordList($scope.adGroupId, {
-            keyword_list_id : kwList.id
+            keyword_list_id: kwList.id
           });
         });
       }
@@ -25,7 +22,7 @@ define(['./module'], function () {
         $scope.container.step = "step3";
       };
 
-      $scope.editBudget = $scope.editLocation = function() {
+      $scope.editBudget = $scope.editLocation = function () {
         $scope.container.step = "step1";
       };
 
@@ -39,23 +36,21 @@ define(['./module'], function () {
 
       $scope.next = function () {
         var campaign = $scope.campaign;
-
         var promise = handleKeywordList(campaign, $scope.keywordsList).then(_.bind(DisplayCampaignService.save, DisplayCampaignService));
 
         waitingService.showWaitingModal();
-        promise.then(function success(campaignContainer){
+        promise.then(function success(campaignContainer) {
           waitingService.hideWaitingModal();
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaignContainer.id + "/basic");
           DisplayCampaignService.reset();
-        }, function failure(response){
+        }, function failure(response) {
           waitingService.hideWaitingModal();
           errorService.showErrorModal({
-              error: response
-          }).then(null, function (){
+            error: response
+          }).then(null, function () {
             DisplayCampaignService.reset();
           });
         });
-
       };
     }
   ]);

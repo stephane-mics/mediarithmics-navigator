@@ -1,8 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/campaigns/report');
-
 
   module.filter('website', function () {
     return function (input) {
@@ -11,6 +8,4 @@ define(['./module'], function () {
       return out;
     };
   });
-
-
 });

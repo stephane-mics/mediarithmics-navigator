@@ -1,9 +1,7 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
 
   'use strict';
 
-
-  var module = angular.module('core/keywords');
 
   module.controller('core/keywords/EditOneController', [
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal', '$stateParams', 'core/keywords/KeywordListContainer', '$location',

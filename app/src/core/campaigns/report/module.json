@@ -1,4 +1,5 @@
-{"name": "core/campaigns/report",
+{
+  "name": "core/campaigns/report",
   "dependencies": [
     "restangular",
     "ngResource",

@@ -4,7 +4,7 @@
       {{currentOrganisation}}
     </div>
     <div class="mcs-campaign-type ">
-      <img src="/images/plugins/email-campaign-expert-small.png"><br />
+      <img src="/images/plugins/email-campaign-expert-small.png"><br/>
       <h4>Email Campaign</h4>
     </div>
   </div>
@@ -12,6 +12,7 @@
 
     <div class="mcs-default-heading">
       <h1 ng-if="isCreationMode">Create Email Campaign</h1>
+
       <h1 ng-if="!isCreationMode">Edit Email Campaign</h1>
     </div>
 
@@ -19,7 +20,6 @@
     <div mcs-form-group="" label-for="email_step1_name" label-text="Campaign name">
       <input required class="input-lg" ng-model="campaign.name" type="text" id="email_step1_name">
     </div>
-
 
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
@@ -32,7 +32,6 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse">
           <div class="panel-body">
-
             <div mcs-form-group="" label-for="email_step1_technical_id" label-text="Technical Id">
               <input required ng-model="campaign.technical_id" type="text" id="email_step1_technical_id">
             </div>
@@ -44,12 +43,10 @@
             <div mcs-form-group="" label-for="email_step1_user_group_clickers" label-text="Email clickers group">
               <input ng-model="userGroupClickFeed.name" type="text" id="email_step1_user_group_clickers" disabled>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-
 
 
     <div class="mcs-actions-group">

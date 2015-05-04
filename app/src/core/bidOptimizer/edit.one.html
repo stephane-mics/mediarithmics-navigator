@@ -22,6 +22,8 @@
 
         <div ng-repeat="property in properties">
           <mcs-data-file-property property="property.value" ng-if="property.value.property_type == 'DATA_FILE'"></mcs-data-file-property>
+          <mcs-double-property property="property.value" ng-if="property.value.property_type == 'DOUBLE'"></mcs-double-property>
+
         </div>
       </div>
     </div>

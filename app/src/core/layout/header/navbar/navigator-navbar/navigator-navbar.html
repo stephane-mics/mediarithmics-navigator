@@ -13,7 +13,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><img src="/images/mediarithmics-small-white.png" /></a>
+      <a class="navbar-brand" href="#"><img ng-src="{{getBrandLogo()}}" /></a>
     </div>
 
     <div class="navbar-collapse collapse" ng-if="isLogged">
@@ -26,6 +26,9 @@
           <a href="#" dropdown-toggle>Library</a>
           <ul class="dropdown-menu">
             <li><a href="#/{{organisationId}}/library/usergroups">User Groups</a></li>
+            <li><a href="#/{{organisationId}}/library/scenarios">Scenarios</a></li>
+            <li><a href="#/{{organisationId}}/library/goals">Goals</a></li>
+            <li><a href="#/{{organisationId}}/library/queries">User Datamart Queries</a></li>
             <li><a href="#/{{organisationId}}/library/placementlists">Placement Lists</a></li>
             <li><a href="#/{{organisationId}}/library/keywordslists">Keywords Lists</a></li>
             <li><a href="#/{{organisationId}}/library/bidOptimizers">Bid Optimizers</a></li>

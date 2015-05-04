@@ -1,4 +1,4 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   "use strict";
 
   var constants = {
@@ -14,7 +14,6 @@ define(['./module'], function () {
     return constants[type][value] || type + "." + value;
   };
 
-  var module = angular.module('core/common');
   module.factory('core/common/ConstantsService',
     [function () {
       var service = {};

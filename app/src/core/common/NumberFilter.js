@@ -1,8 +1,5 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
-
-  var module = angular.module('core/common');
-
 
   module.filter('approxNumber', function () {
     return function (input) {

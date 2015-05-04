@@ -1,35 +1,40 @@
-define(['./module'], function () {
+define(['./module'], function (module) {
   'use strict';
 
-  var module = angular.module('core/adgroups');
-
   module.controller('core/adgroups/ChooseExistingAdsController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
+    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', 'Restangular', 'core/common/auth/Session', 'core/common/ads/AdService',
+    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session, AdService) {
       $scope.currentPageCreative = 1;
       $scope.itemsPerPage = 10;
+      var creativeType = "ALL";
+
+      if (AdService.getSelectedAdType() == AdService.getAdTypes().DISPLAY_AD) {
+        creativeType = "DISPLAY_AD"
+      } else if (AdService.getSelectedAdType() == AdService.getAdTypes().VIDEO_AD) {
+        creativeType = "VIDEO_AD"
+      }
 
       $scope.availableCreatives = Restangular.all("creatives").getList({
         max_results : 200,
-        creative_type : "DISPLAY_AD",
+        creative_type : creativeType,
         archived : false,
         organisation_id : Session.getCurrentWorkspace().organisation_id
       }).$object;
 
       $scope.selectedCreatives = [];
 
-      $scope.done = function() {
+      $scope.done = function () {
         var creative;
         for (var i = 0; i < $scope.selectedCreatives.length; i++) {
           creative = $scope.selectedCreatives[i];
           $scope.$emit("mics-creative:selected", {
-            creative : creative
+            creative: creative
           });
         }
         $modalInstance.close();
       };
 
-      $scope.cancel = function() {
+      $scope.cancel = function () {
         $modalInstance.close();
       };
 

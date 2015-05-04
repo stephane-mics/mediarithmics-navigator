@@ -1,7 +1,6 @@
-define(['../module'], function () {
-
+define(['../module'], function (module) {
   'use strict';
-  var module = angular.module('core/campaigns/report');
+
   module.directive('breakdownTable', function () {
     return {
       restrict: 'E',
@@ -29,15 +28,11 @@ define(['../module'], function () {
 
   };
 
-
   module.filter('tableHeader', function () {
     return function (input) {
       input = input || '';
       var out = tableHeaders[input] || input;
       return out;
-
     };
-
   });
-
 });

@@ -1,1 +1,8 @@
-{"name": "core/common", "dependencies": ["core/common/auth", "core/common/properties"]}
+{
+  "name": "core/common",
+  "dependencies": [
+    "core/common/auth",
+    "core/common/properties",
+    "core/common/ads"
+  ]
+}

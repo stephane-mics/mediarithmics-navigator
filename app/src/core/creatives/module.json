@@ -1,5 +1,9 @@
-{"name": "core/creatives", "dependencies": [
-  "restangular",
-  "core/creatives/plugins/com.mediarithmics.creative.display/default-editor",
-  "core/creatives/plugins/com.mediarithmics.creative.display/basic-editor"
-]}
+{
+  "name": "core/creatives",
+  "dependencies": [
+    "restangular",
+    "ngSanitize",
+    "core/creatives/plugins/video-ad",
+    "core/creatives/plugins/display-ad"
+  ]
+}

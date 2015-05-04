@@ -9,3 +9,4 @@ index.js
 module.js
 generated/
 *.zip
+npm-debug.log

@@ -1,4 +1,5 @@
-{"name": "core/campaigns/emails",
+{
+  "name": "core/campaigns/emails",
   "dependencies": [
     "core/campaigns",
     "ui.bootstrap",

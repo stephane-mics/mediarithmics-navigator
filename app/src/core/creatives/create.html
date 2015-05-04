@@ -1,27 +1,26 @@
-
 <!--creative creation -->
 <div class="mcs-default-container" ng-Controller="core/creatives/CreateController">
   <div class="mcs-default-sidebar">
     <div class="organisation-name-block">
-      {{currentOrganisation}}
+      {{ currentOrganisation }}
     </div>
   </div>
   <form role="form" class="mcs-default-content mcs-full-page-form">
     <div class="campaign-list-heading">
-      <h1>New Creative </h1>
+      <h1>New Creative</h1>
     </div>
     <div class="row">
 
       <div class="col-md-3" ng-repeat="template in creativeTemplates">
-        <img style="height:150px" ng-src="{{template.image}}">
-        <h4>{{template.name}}</h4>
+        <img style="height:150px" ng-click="create(template)" ng-src="{{ template.image }}">
+        <h4>{{ template.name }}</h4>
         <a class="mics-btn mics-btn-add" ng-click="create(template)">New</a>
       </div>
     </div>
 
     <div class="mcs-actions-group" style="margin-top:70px">
-      <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button><br>
+      <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
+      <br>
     </div>
-  </div>
-</form>
+  </form>
 </div>
