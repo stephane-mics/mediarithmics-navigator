@@ -4,7 +4,7 @@ define(['./module'], function (module) {
   module.filter('website', function () {
     return function (input) {
       input = input || '';
-      var out = input.replace(/web\:site\:/, "");
+      var out = input.replace(/site\:web\:/, "");
       return out;
     };
   });
