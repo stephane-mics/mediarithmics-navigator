@@ -1,4 +1,4 @@
-define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports','module'], function (angularAMD, navigator, lodash, async, jquery, plupload, d3, moment,uiRouterExtras, exports, module) {
+define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports', 'module'], function (angularAMD, navigator, lodash, async, jquery, plupload, d3, moment, uiRouterExtras, exports, module) {
   "use strict";
 
   navigator.factory('lodash', [
@@ -50,39 +50,39 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
 
 // configure the application
   navigator.config([
-    "$stateProvider", "$logProvider","$urlRouterProvider",
+    "$stateProvider", "$logProvider", "$urlRouterProvider",
     function ($stateProvider, $logProvider, $urlRouterProvider) {
 
       $stateProvider
         .state('login', {
-          url:'/login',
+          url: '/login',
           templateUrl: 'src/core/login/main.html',
           publicUrl: true,
           sidebar: false
         })
         .state('logout', {
-          url:'/logout',
+          url: '/logout',
           templateUrl: 'src/core/login/logout.html',
           publicUrl: true,
           sidebar: false
         })
         .state('remember-me', {
-          url:'/remember-me',
+          url: '/remember-me',
           templateUrl: 'src/core/login/remember-me.html',
           publicUrl: true,
           sidebar: false
         })
-          .state('init-session/withOrganisation', {
-            url:'/init-session/:organisationId',
-            templateUrl: 'src/core/login/init-session.html',
-            publicUrl: true,
-            sidebar: false
-          }).state('init-session/withoutOrganisation', {
-            url:'/init-session',
-            templateUrl: 'src/core/login/init-session.html',
-            publicUrl: true,
-            sidebar: false
-          });
+        .state('init-session/withOrganisation', {
+          url: '/init-session/:organisationId',
+          templateUrl: 'src/core/login/init-session.html',
+          publicUrl: true,
+          sidebar: false
+        }).state('init-session/withoutOrganisation', {
+          url: '/init-session',
+          templateUrl: 'src/core/login/init-session.html',
+          publicUrl: true,
+          sidebar: false
+        });
 
       $urlRouterProvider.when('/', '/home');
       $urlRouterProvider.when('', '/home');
@@ -92,31 +92,31 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
       // TODO: move these to non-public and authenticate
       $stateProvider
         .state('datamart/overview', {
-          url:'/datamart/overview',
+          url: '/datamart/overview',
           templateUrl: 'src/core/datamart/index.html'
         })
         .state('datamart/items', {
-          url:'/datamart/items',
+          url: '/datamart/items',
           templateUrl: 'src/core/datamart/items/view.all.html'
         })
         .state('datamart/items/:catalogId/:itemId', {
-          url:'/datamart/items/:catalogId/:itemId',
+          url: '/datamart/items/:catalogId/:itemId',
           templateUrl: 'src/core/datamart/items/view.one.html'
         })
         .state('datamart/categories/:catalogId', {
-          url:'/datamart/categories/:catalogId',
+          url: '/datamart/categories/:catalogId',
           templateUrl: 'src/core/datamart/categories/browse.html'
         })
         .state('datamart/categories/:catalogId/:categoryId', {
-          url:'/datamart/categories/:catalogId/:categoryId',
+          url: '/datamart/categories/:catalogId/:categoryId',
           templateUrl: 'src/core/datamart/categories/browse.html'
         })
         .state('datamart/users', {
-          url:'/datamart/users',
+          url: '/datamart/users',
           templateUrl: 'src/core/datamart/users/view.all.html'
         })
         .state('datamart/users/:userId', {
-          url:'/datamart/users/:userId',
+          url: '/datamart/users/:userId',
           templateUrl: 'src/core/datamart/users/view.one.html'
         });
 
@@ -176,7 +176,7 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
     function ($futureStateProvider) {
       function ngloadStateFactory($q, futureState) {
         var ngloadDeferred = $q.defer();
-        require([ "ngload!" + futureState.src , 'ngload', 'angularAMD'],
+        require(["ngload!" + futureState.src, 'ngload', 'angularAMD'],
           function ngloadCallback(result, ngload, angularAMD) {
             angularAMD.processQueue();
             ngloadDeferred.resolve(result.entryState);
@@ -196,7 +196,7 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
 // secured part of the app
 
   navigator.run([
-    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants","$state",
+    '$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants", "$state",
     function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants, $state) {
 
       var defaults = _.partialRight(_.assign, function (a, b) {
@@ -236,8 +236,8 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           if (AuthenticationService.hasAccessToken()) {
             if (!Session.isInitialized()) {
               AuthenticationService.pushPendingPath($location.url());
-              if(toParams.organisation_id) {
-                $location.path('/init-session/'+toParams.organisation_id);
+              if (toParams.organisation_id) {
+                $location.path('/init-session/' + toParams.organisation_id);
               } else {
                 $location.path('/init-session');
 

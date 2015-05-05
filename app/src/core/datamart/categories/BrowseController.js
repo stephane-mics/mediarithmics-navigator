@@ -7,7 +7,7 @@ define(['./module'], function (module) {
 
     function($scope, $location, $stateParams, Restangular, Common, Session, lodash) {
 
-      $scope.catalogBase = '#/datamart/categories/'
+      $scope.catalogBase = '#/datamart/categories/';
       $scope.baseUrl = '#/datamart/categories/'+$stateParams.catalogId;
       $scope.itemUrl = '#/datamart/items';
 
@@ -72,9 +72,9 @@ define(['./module'], function (module) {
       }
 
       Restangular.one('datamarts', $scope.datamartId).all('catalogs').getList().then(function (catalogs) {
-         $scope.catalogs = catalogs
+         $scope.catalogs = catalogs;
          if($stateParams.catalogId) {
-          $scope.catalog = lodash.find(catalogs, {"$catalog_id": $stateParams.catalogId})
+          $scope.catalog = lodash.find(catalogs, {"$catalog_id": $stateParams.catalogId});
          }
 
 //         $scope.refreshCategories(0, $scope.categoriesPerPage);
@@ -83,9 +83,9 @@ define(['./module'], function (module) {
 
       $scope.changeCatalog =  function() {
         if($scope.catalog) {
-          $location.path('/datamart/categories/'+$scope.catalog.$catalog_id)
+          $location.path('/datamart/categories/'+$scope.catalog.$catalog_id);
         }
-      }
+      };
 
 
       // add languageMapping controls

@@ -2,35 +2,34 @@ define(['./module'], function (module) {
   'use strict';
 
   module.factory('core/common/ads/AdService', function () {
-      var service = {};
-      var adTypes = {
-        ALL: "ALL",
-        DISPLAY_AD: "DISPLAY_AD",
-        VIDEO_AD: "VIDEO_AD"
-      };
-      var selectedAdType = adTypes.ALL;
+    var service = {};
+    var adTypes = {
+      ALL: "ALL",
+      DISPLAY_AD: "DISPLAY_AD",
+      VIDEO_AD: "VIDEO_AD"
+    };
+    var selectedAdType = adTypes.ALL;
 
-      service.setAdTypeToVideoAd = function () {
-        selectedAdType = adTypes.VIDEO_AD;
-      };
+    service.setAdTypeToVideoAd = function () {
+      selectedAdType = adTypes.VIDEO_AD;
+    };
 
-      service.setAdTypeToDisplayAd = function () {
-        selectedAdType = adTypes.DISPLAY_AD;
-      };
+    service.setAdTypeToDisplayAd = function () {
+      selectedAdType = adTypes.DISPLAY_AD;
+    };
 
-      service.setAdTypeToAll = function () {
-        selectedAdType = adTypes.ALL;
-      };
+    service.setAdTypeToAll = function () {
+      selectedAdType = adTypes.ALL;
+    };
 
-      service.getSelectedAdType = function () {
-        return selectedAdType;
-      };
+    service.getSelectedAdType = function () {
+      return selectedAdType;
+    };
 
-      service.getAdTypes = function () {
-        return adTypes;
-      };
+    service.getAdTypes = function () {
+      return adTypes;
+    };
 
-      return service;
-    }
-  )
+    return service;
+  });
 });

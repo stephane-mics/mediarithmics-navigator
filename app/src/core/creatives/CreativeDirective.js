@@ -86,8 +86,8 @@ define(['./module'], function (module) {
                 var adRoute = adRoutes.DISPLAY_AD;
                 if (!newValue) {
                   return;
-                } else if (AdService.getSelectedAdType() == AdService.getAdTypes().VIDEO_AD) {
-                  adRoute = adRoutes.VIDEO_AD
+                } else if (AdService.getSelectedAdType() === AdService.getAdTypes().VIDEO_AD) {
+                  adRoute = adRoutes.VIDEO_AD;
                 }
                 fetchRendererProperties(Restangular, $q, newValue, adRoute).then(function (result) {
                   $scope[exposedVar] = result;
@@ -122,8 +122,8 @@ define(['./module'], function (module) {
                 $scope[exposedVar] = creative;
                 if (withRendererProperties) {
                   var adRoute = adRoutes.DISPLAY_AD;
-                  if (creative.type == AdService.getAdTypes().VIDEO_AD) {
-                    adRoute = adRoutes.VIDEO_AD
+                  if (creative.type === AdService.getAdTypes().VIDEO_AD) {
+                    adRoute = adRoutes.VIDEO_AD;
                   }
                   fetchRendererProperties(Restangular, $q, newValue, adRoute).then(function (result) {
                     $scope[exposedVar + "Properties"] = result;

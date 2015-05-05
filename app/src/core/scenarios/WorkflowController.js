@@ -48,20 +48,23 @@ define(['./module'], function (module) {
             };
             $scope.getTemplate = function (state) {
                 //resolve a template to use
-                if (typeof state.template === 'undefined')
+                if (typeof state.template === 'undefined') {
                     return "/src/core/scenarios/partials/defaultState.html";
-                if (state.template == 'fancyObject')
+                }
+                if (state.template === 'fancyObject') {
                     return "/src/core/scenarios/partials/secondaryState.html";
+                }
                 return "/src/core/scenarios/partials/defaultState.html";
             };
 
             $scope.$watch("$parent.nodes", function (nodes) {
                 if (typeof nodes !== "undefined") {
-                    console.log(nodes)
+                    $log.debug(nodes);
                     var workflow = $scope.$eval("$parent.workflow");
                     var previousNode = null;
+                    var node = null;
                     for(var i = 0; i < nodes.length ; i++) {
-                        var node = nodes[i];
+                        node = nodes[i];
                         $scope.stateObjects.push({
                             "id": node.id,
                             "sources": [
@@ -79,18 +82,18 @@ define(['./module'], function (module) {
 
 
                     }
-                    for(var i = 0; i < nodes.length ; i++) {
-                        var node = nodes[i];
-                        if(workflow.begin_node_id == node.id) {
-                            $scope.stateConnections.push({sourceUUID:"start", targetUUID:"target-" + node.id})
-                        } else if(previousNode != null) {
+                    for(var j = 0; j < nodes.length ; j++) {
+                        node = nodes[j];
+                        if(workflow.begin_node_id === node.id) {
+                            $scope.stateConnections.push({sourceUUID:"start", targetUUID:"target-" + node.id});
+                        } else if(previousNode !== null) {
 //                            $scope.stateConnections.push({sourceUUID:"src-" + previousNode.id, targetUUID:"target-" + node.id})
                         }
                         previousNode = node;
                     }
-                    $scope.stateConnections.push({sourceUUID:"src-" + previousNode.id, targetUUID:"end" })
+                    $scope.stateConnections.push({sourceUUID:"src-" + previousNode.id, targetUUID:"end" });
                 }
-            })
+            });
 
             $scope.stateObjects = [
                 {
@@ -119,31 +122,19 @@ define(['./module'], function (module) {
                     "y": 300
                 }
             ];
-            $scope.newState = function () {
-                $scope.stateObjects.push({
-                    'name': 'New State',
-                    'sources': [
-                        {uuid: getNextUUID()},
-                        {uuid: getNextUUID()},
-                    ],
-                    'targets': [
-                        {uuid: getNextUUID()},
-                        {uuid: getNextUUID()}
-                    ],
-                    'x': 10,
-                    'y': 10
-                });
-            };
+
+
             $scope.stateConnections = [
 //        { targetUUID:8, sourceUUID:2 },
 //        { targetUUID:7, sourceUUID:9 },
 //        { targetUUID:4, sourceUUID:12 }
             ];
+
             $scope.removeConnection = function (index) {
                 $scope.stateConnections.splice(index, 1);
-            }
+            };
             $scope.setActiveConnection = function (index) {
-                if (typeof $scope.activeConnection !== 'undefined' && $scope.activeConnection.index == index) {
+                if (typeof $scope.activeConnection !== 'undefined' && $scope.activeConnection.index === index) {
                     $scope.activeConnection = undefined;
                     return;
                 }
@@ -176,8 +167,10 @@ define(['./module'], function (module) {
                     'sourceUUID': sourceUUID,
                     'conn': connection
                 });
-                if(sourceUUID == 'start') {
-                    Restangular.one('scenarios', $stateParams.scenario_id).one("workflow").post("begin", {id: targetUUID.replace('target-', '')}).then(function (r, error) {
+                if(sourceUUID === 'start') {
+                    Restangular.one('scenarios', $stateParams.scenario_id).one("workflow")
+                      .post("begin", {id: targetUUID.replace('target-', '')})
+                      .then(function (r, error) {
 
                       $state.transitionTo($state.current, $stateParams, {
                         reload: true, inherit: true, notify: true
@@ -185,7 +178,7 @@ define(['./module'], function (module) {
                     });
                 }
                 $scope.$apply();
-            }
+            };
         }
 
     ]);

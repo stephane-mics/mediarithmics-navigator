@@ -79,13 +79,6 @@ define(['./module', 'moment'], function (module, moment) {
           return DisplayCampaignService.getPlacementLists(adGroupId);
         };
 
-        $scope.isInInventorySources = function (elem) {
-          var displayNetworkAccesses = _.map($scope.inventorySources, function (elem) {
-            return "" + elem.display_network_access_id;
-          });
-          return !_.contains(displayNetworkCampaigns, elem.id);
-        };
-
         $scope.chooseDisplayNetworks = function () {
           $modal.open({
             templateUrl: 'src/core/campaigns/ChooseExistingDisplayNetwork.html',

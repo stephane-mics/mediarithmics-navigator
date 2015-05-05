@@ -8,10 +8,10 @@ define(['./module'], function (module) {
       $scope.itemsPerPage = 10;
       var creativeType = "ALL";
 
-      if (AdService.getSelectedAdType() == AdService.getAdTypes().DISPLAY_AD) {
-        creativeType = "DISPLAY_AD"
-      } else if (AdService.getSelectedAdType() == AdService.getAdTypes().VIDEO_AD) {
-        creativeType = "VIDEO_AD"
+      if (AdService.getSelectedAdType() === AdService.getAdTypes().DISPLAY_AD) {
+        creativeType = "DISPLAY_AD";
+      } else if (AdService.getSelectedAdType() === AdService.getAdTypes().VIDEO_AD) {
+        creativeType = "VIDEO_AD";
       }
 
       $scope.availableCreatives = Restangular.all("creatives").getList({

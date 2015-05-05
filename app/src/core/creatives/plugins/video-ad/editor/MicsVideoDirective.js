@@ -30,7 +30,7 @@ define(['./module'], function (module) {
             player.dispose();
           });
         }
-      }
+      };
     }
   ]);
 });

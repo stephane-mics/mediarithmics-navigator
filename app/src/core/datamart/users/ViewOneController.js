@@ -37,8 +37,8 @@ define(['./module'], function (module) {
           $scope.agents = agents;
         });
         $scope.userEndpoint.all('timeline').getList().then(function (timeline){
-          $scope.timeline = timeline
-          $scope.handleVisits(timeline)
+          $scope.timeline = timeline;
+          $scope.handleVisits(timeline);
         });
       };
 
@@ -52,7 +52,7 @@ define(['./module'], function (module) {
         // iterate visits
         for (var j = 0; j < timeline.length; j++) {
           // assemble an activity and a composite id for it
-          var event = timeline[j]
+          var event = timeline[j];
           var agent = lodash.find($scope.agents,  {'user_agent_id':  event.agent_id});
           var activity = { id: agent.id + '_' + event.id, agent: agent, visit: event };
 
