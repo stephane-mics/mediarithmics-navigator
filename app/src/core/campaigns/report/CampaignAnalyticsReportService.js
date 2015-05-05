@@ -102,7 +102,6 @@ define(['./module'], function (module) {
   };
 
 
-  var module = angular.module('core/campaigns/report');
   module.factory('CampaignAnalyticsReportService',
     ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment',
     
