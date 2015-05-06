@@ -17,7 +17,7 @@ define(['./module'], function (module) {
         var options = {
           renderer: {
             groupId: "com.mediarithmics.creative.video",
-            artifactId: "video-renderer"
+            artifactId: "external-video-ad-renderer"
           },
           editor: {
             groupId: "com.mediarithmics.creative.video",

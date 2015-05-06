@@ -33,44 +33,32 @@ define(['./module'], function (module) {
         return "Unknown";
       };
 
-      service.parseVastXML = function (url, cb) {
-        $http.get(url).success(function(xml) {
-          var parsedXML = {};
-          var xmlDoc;
-          if (angular.isDefined(DOMParser)) {
-            var parser = new DOMParser();
-            xmlDoc = parser.parseFromString(xml, "text/xml");
-          } else if (angular.isDefined(ActiveXObject)) {
-            xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async = false;
-            xmlDoc.loadXML(xml);
-          }
-          parsedXML.height = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('height');
-          parsedXML.width = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('width');
-          parsedXML.type = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('type');
-          cb(parsedXML);
-        });
+      service.getVastValues = function (vast) {
+        var parsedXML = {};
+        var xmlDoc;
+        if (angular.isDefined(DOMParser)) {
+          var parser = new DOMParser();
+          xmlDoc = parser.parseFromString(vast, "text/xml");
+        } else if (angular.isDefined(ActiveXObject)) {
+          xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+          xmlDoc.async = false;
+          xmlDoc.loadXML(vast);
+        }
+        parsedXML.height = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('height');
+        parsedXML.width = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('width');
+        parsedXML.type = xmlDoc.getElementsByTagName("MediaFile")[0].getAttribute('type');
+        return parsedXML;
       };
 
-      service.setVideoPlayerConfig = function (url, cb) {
-        this.parseVastXML(url, function(parsedXML) {
-          var config = {
-            sources: [
-              {src: $sce.trustAsResourceUrl(url), type: parsedXML.type }
-            ],
-            theme: "bower_components/videogular-themes-default/videogular.css",
-            plugins: {
-              ads: {
-                companion: "companionAd",
-                companionSize: [parsedXML.width, parsedXML.height],
-                network: "6062",
-                unitPath: "iab_vast_samples",
-                adTagUrl: url,
-                skipButton: "<div class='skipButton'>Skip ad</div>"
-              }
-            }
-          };
-          cb(config);
+      service.parseVast = function (vastUrl, cb) {
+        var self = this;
+        $http.get(vastUrl).success(function (vast) {
+          var vastProperties = self.getVastValues(vast);
+          cb({
+            type: vastProperties.type,
+            width: vastProperties.width,
+            height: vastProperties.height
+          })
         });
       };
 
@@ -85,7 +73,6 @@ define(['./module'], function (module) {
         return ctn.load(creativeId);
       };
 
-      // initEditVideoAd : returns a promise on the video ad container
       service.initCreateVideoAd = function (options) {
         var ctn = new VideoAdContainer(options);
         ctn.organisationId = Session.getCurrentWorkspace().organisation_id;

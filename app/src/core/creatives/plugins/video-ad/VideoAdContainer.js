@@ -87,6 +87,14 @@ define(['./module'], function (module) {
         return null;
       };
 
+      VideoAdContainer.prototype.setProperty = function setProperty(id, value) {
+        for (var i = 0; i < this.properties.length; i++) {
+          if (this.properties[i].id === id) {
+            this.properties[i].value.value.url = value;
+          }
+        }
+        return null;
+      };
 
       VideoAdContainer.prototype.getProperties = function getProperties() {
         return this.properties;
@@ -130,7 +138,6 @@ define(['./module'], function (module) {
           // update properties
           async.mapSeries(properties, function (property, callback) {
             // update the property
-            $log.debug("Updating property: ", property);
             property.update(self.id).then(function (result) {
               callback(null, result);
             }, function (reason) {
