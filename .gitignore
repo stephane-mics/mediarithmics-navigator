@@ -10,3 +10,4 @@ module.js
 generated/
 *.zip
 npm-debug.log
+navigator-zip/
