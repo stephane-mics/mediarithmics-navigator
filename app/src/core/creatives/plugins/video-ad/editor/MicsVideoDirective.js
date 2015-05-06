@@ -11,14 +11,14 @@ define(['./module'], function (module) {
           var setup = {
             'controls': attrs.controls || true,
             'preload': attrs.preload || 'auto',
-            'height': attrs.height || "360",
-            'width': attrs.width || "640"
+            'height': attrs.height || '360',
+            'width': attrs.width || '640'
           };
 
-          //var player = videojs(element[0], setup, function () {
-          //  this.src({type: attrs.type, src: attrs.src});
-          //  this.ads();
-          //});
+          var player = videojs(element[0], setup, function () {
+            this.src({type: attrs.type, src: attrs.src});
+            this.ads();
+          });
 
           attrs.$observe('micsVideo', function (value) {
             if (value) {

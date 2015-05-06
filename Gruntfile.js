@@ -22,7 +22,7 @@ function readIvyCredentials() {
   var credsFile = path.join(process.env.HOME, ".ivy2", ".credentials");
   try {
     return properties.parse(fs.readFileSync(credsFile).toString());
-  } catch(e) {
+  } catch (e) {
     return {};
   }
 }
@@ -76,8 +76,8 @@ module.exports = function (grunt) {
           version: version,
           packaging: 'zip',
           auth: {
-            username:nexusCreds.user,
-            password:nexusCreds.password
+            username: nexusCreds.user,
+            password: nexusCreds.password
           },
           pomDir: 'generated/pom',
           url: 'https://' + nexusCreds.host + '/content/repositories/' + (isSnapshot ? 'snapshots' : 'releases'),
@@ -386,6 +386,12 @@ module.exports = function (grunt) {
             cwd: '.tmp/images',
             dest: '<%= yeoman.dist %>/images',
             src: ['generated/*']
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/video.js/dist/video-js/font/',
+            dest: '<%= yeoman.dist %>/styles/font',
+            src: '*'
           }
         ]
       },
@@ -483,7 +489,6 @@ module.exports = function (grunt) {
       ]
     },
 
-
     // By default, your `index.html`'s <!-- Usemin block --> will take care of
     // minification. These next options are pre-configured if you do not wish
     // to use the Usemin blocks.
@@ -498,10 +503,6 @@ module.exports = function (grunt) {
     //   }
     // },
 
-    // concat: {
-    //   dist: {}
-    // },
-
     // Test settings
     karma: {
       unit: {
@@ -509,19 +510,17 @@ module.exports = function (grunt) {
         singleRun: true
       }
     },
+
     genRequireJsFiles: {
       config: {
         src: '<%= yeoman.app %>/src/**/module.json',
         template: 'define([{{{requires}}}],function(){});',
         templateModule: 'define(["angular"],function(){' +
-          '"use strict";' +
-          'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
-          '});'
+        '"use strict";' +
+        'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
+        '});'
       }
     }
-
-
-
   });
 
   grunt.registerMultiTask('genRequireJsFiles', function () {
@@ -529,8 +528,6 @@ module.exports = function (grunt) {
     var path = require('path');
     var Mustache = require('mustache');
     var _ = require('lodash');
-
-//    var done = this.async();
 
     this.filesSrc.forEach(function (filepath) {
       var content = JSON.parse(fs.readFileSync(filepath));
@@ -555,8 +552,8 @@ module.exports = function (grunt) {
           }
           return "\"" + v + "\"";
 
-        }).join(",")};
-
+        }).join(",")
+      };
 
       var indexJs = Mustache.render(grunt.config("genRequireJsFiles.config.template"), models);
       var moduleJs = Mustache.render(grunt.config("genRequireJsFiles.config.templateModule"), models);
@@ -621,7 +618,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    // 'test',
     'build'
   ]);
 };
