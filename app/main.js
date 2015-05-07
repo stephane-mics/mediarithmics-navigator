@@ -22,12 +22,6 @@ require.config({
     "moxie": "../bower_components/plupload/js/moxie",
     "plupload": "../bower_components/plupload/js/plupload.dev",
 
-    // Video
-    "video-js": "../bower_components/video.js/dist/video-js/video",
-    "videojs-vast": "../bower_components/videojs-vast/videojs.vast",
-    "vast-client": "../bower_components/vast-client-js/vast-client",
-    "video-ads": "../bower_components/videojs-contrib-ads/src/videojs.ads",
-
     // Angular JS modules
     "nvd3ChartDirectives": "../bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives",
     "ngResource": "../bower_components/angular-resource/angular-resource",
@@ -66,18 +60,8 @@ require.config({
     'ui.router':['angular'],
     'ui.router.extras':['angular','ui.router'],
     'nv.d3': {deps: ['nvd3-templates/d3.global']},
-    'ngload': ['angularAMD'],
-    'video-ads': ['video-js'],
-    'vast-client': ['video-ads'],
-    'videojs-vast': ['vast-client-compat']
+    'ngload': ['angularAMD']
   },
   deps: ['navigator']
 });
 
-/**
- * Since vast-client uses browserify, we have to explicitly set it globally to allow videojs-vast to use it.
- */
-define("vast-client-compat", ["vast-client"], function (DMVAST) {
-  window.DMVAST = DMVAST;
-  return DMVAST;
-});
