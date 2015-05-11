@@ -15,27 +15,39 @@
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
+  <!-- CSS -->
   <!-- build:css styles/vendor.css -->
   <link rel="stylesheet" href="bower_components/ng-table/ng-table.css"/>
   <link rel="stylesheet" href="bower_components/nvd3/nv.d3.css">
   <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker-bs3.css">
   <link rel="stylesheet" href="styles/jsplumb/jsplumb.css">
   <!-- endbuild -->
-
+  <!-- build:css styles/video.css -->
+  <link rel="stylesheet" href="bower_components/videojs-contrib-ads/src/videojs.ads.css">
+  <link rel="stylesheet" href="bower_components/videojs-vast/videojs.vast.css">
+  <link rel="stylesheet" href="bower_components/video.js/dist/video-js/video-js.css">
+  <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
-
   <link rel="stylesheet" href="styles/font/stylesheet.css">
 
-  <script>
-    var require = {paths: {'core/configuration': '../conf/app-configuration'}};
-  </script>
+  <!-- Scripts -->
+  <script>var require = {paths: {'core/configuration': '../conf/app-configuration'}};</script>
+  <!-- The scripts included below are used for video support. The production minification,
+  and the videojs-vast plugin expecting from the vast-client plugin to to always be globally declared,
+  are two of the factors making these dependencies injections impossible. -->
+  <!-- build:js scripts/video.js -->
+  <script src="bower_components/video.js/dist/video-js/video.js"></script>
+  <script src="bower_components/videojs-contrib-ads/src/videojs.ads.js"></script>
+  <script src="bower_components/vast-client-js/vast-client.js"></script>
+  <script src="bower_components/videojs-vast/videojs.vast.js"></script>
+  <!-- endbuild -->
   <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
   <script>
-    // this warning is for developers : if a plugin can't load a dependency, I don't really want to throw an `alert`...
+    // This warning is for developers : if a plugin can't load a dependency, I don't really want to throw an `alert`...
     requirejs.onError = function (err) {
-      // if (err.requireType === 'scripterror')
+      // If (err.requireType === 'scripterror')
       console.error("the scripts " + err.requireModules + " couldn't be loaded. Do you have an ad blocker ?");
       throw err;
     };
