@@ -16,6 +16,12 @@ define(['./module', 'moment'], function (module, moment) {
           return ;
         }
 
+      $scope.campaignScopeHelper = {
+        campaignDateRange : {startDate: moment(), endDate: moment().add(20, 'days')},
+        schedule : ""
+      };
+      $log.debug('Expert.EditCampaignController called !');
+
 
       function initView() {
         $scope.moreGoals = false;
@@ -23,22 +29,19 @@ define(['./module', 'moment'], function (module, moment) {
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
         $scope.goalSelections = DisplayCampaignService.getGoalSelections();
-        $scope.defaultGoalSelection = _.find(DisplayCampaignService.getGoalSelections(), {"default":true});
+        $scope.campaignScopeHelper.defaultGoalSelection = _.find(DisplayCampaignService.getGoalSelections(), {"default":true});
         updateGoalSelectionsCount();
         $scope.locations = DisplayCampaignService.getLocations();
 
-        $scope.locationSelector = $scope.locations.length ? "custom" : "";
-        $scope.schedule = $scope.campaign.start_date !== null ? "custom" : "";
+        $scope.campaignScopeHelper.locationSelector = $scope.locations.length ? "custom" : "";
+        $scope.campaignScopeHelper.schedule = $scope.campaign.start_date !== null ? "custom" : "";
         if ($scope.campaign.start_date !== null && $scope.campaign.end_date !== null) {
-          $scope.campaignDateRange = {
+          $scope.campaignScopeHelper.campaignDateRange = {
             startDate: moment($scope.campaign.start_date),
             endDate: moment($scope.campaign.end_date)
           };
         }
       }
-
-      $scope.campaignDateRange = {startDate: moment(), endDate: moment().add(20, 'days')};
-      $log.debug('Expert.EditCampaignController called !');
 
       CampaignPluginService.getCampaignTemplate("com.mediarithmics.campaign.display", "default-template").then(function (template) {
         // TODO load the campaign (no effect if already in cache or if this is a temporary id)
@@ -120,7 +123,7 @@ define(['./module', 'moment'], function (module, moment) {
         $scope.updateDefaultGoalSelection = function () {
           
           _.forEach(DisplayCampaignService.getGoalSelections(), function(gs) {gs.default=false; return;})
-          $scope.defaultGoalSelection.default=true
+          $scope.campaignScopeHelper.defaultGoalSelection.default = true;
           return ;
 
         }
@@ -154,7 +157,7 @@ define(['./module', 'moment'], function (module, moment) {
           }
           DisplayCampaignService.removeLocation(elem.id);
           if (!$scope.locations.length) {
-            $scope.locationSelector = "";
+            $scope.campaignScopeHelper.locationSelector = "";
           }
 
         };
@@ -204,9 +207,9 @@ define(['./module', 'moment'], function (module, moment) {
 
           // Save button
         $scope.save = function () {
-          if ($scope.schedule === 'custom') {
-            $scope.campaign.start_date = $scope.campaignDateRange.startDate.valueOf();
-            $scope.campaign.end_date = $scope.campaignDateRange.endDate.valueOf();
+          if ($scope.campaignScopeHelper.schedule === 'custom') {
+            $scope.campaign.start_date = $scope.campaignScopeHelper.campaignDateRange.startDate.valueOf();
+            $scope.campaign.end_date = $scope.campaignScopeHelper.campaignDateRange.endDate.valueOf();
           } else {
             $scope.campaign.start_date = null;
             $scope.campaign.end_date = null;
