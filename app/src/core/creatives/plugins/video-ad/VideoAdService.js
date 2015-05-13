@@ -26,8 +26,8 @@ define(['./module'], function (module) {
 
       service.getAdServingUrl = function () {
         for (var i in this.videoAdCtn.properties) {
-          if (this.videoAdCtn.properties[i].value.technical_name == "ad_serving_url") {
-            return this.videoAdCtn.properties[i].value.value.url
+          if (this.videoAdCtn.properties[i].value.technical_name === "ad_serving_url") {
+            return this.videoAdCtn.properties[i].value.value.url;
           }
         }
         return "Unknown";
@@ -58,7 +58,7 @@ define(['./module'], function (module) {
             type: vastProperties.type,
             width: vastProperties.width,
             height: vastProperties.height
-          })
+          });
         });
       };
 

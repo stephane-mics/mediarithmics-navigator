@@ -4,8 +4,8 @@ define(['./module'], function (module) {
 
 
   module.controller('core/datamart/items/ViewAllController', [
-    '$scope', '$route', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
-    function($scope, $route, Restangular, Common, Session) {
+    '$scope', '$stateParams', '$route', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session', 'lodash',
+    function($scope, $stateParams, $route, Restangular, Common, Session, _) {
 
       $scope.baseUrl = '#' + Common.locations.current.href;
 
@@ -22,9 +22,9 @@ define(['./module'], function (module) {
 
 
       Restangular.one('datamarts', $scope.datamartId).all('catalogs').getList().then(function (catalogs) {
-         $scope.catalogs = catalogs
+         $scope.catalogs = catalogs;
          if($stateParams.catalogId) {
-          $scope.catalog = lodash.find(catalogs, {"$catalog_id": $stateParams.catalogId})
+          $scope.catalog = _.find(catalogs, {"$catalog_id": $stateParams.catalogId});
          }
 
 //         $scope.refreshCategories(0, $scope.categoriesPerPage);
