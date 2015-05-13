@@ -29,6 +29,7 @@ define([
     'core/campaigns/index',
     'core/placementlists/index',
     'core/login/index',
+    'core/password/index',
     'core/datamart/index',
     'core/layout/index'
   ], function () {
@@ -64,6 +65,7 @@ define([
 
       'core/datamart',
       'core/login',
+      'core/password',
       'core/common'
     ]);
 

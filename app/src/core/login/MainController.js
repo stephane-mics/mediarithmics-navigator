@@ -31,24 +31,18 @@ define(['./module', "autofill-event"], function (module) {
         });
       }
 
+      $scope.resetPassword = function() {
+        $location.path('request-password-reset')
+      };
+
       $scope.submit = function() {
-
-        // check that email & password are not empty
-        if  ( !$scope.user.email || !$scope.user.password ) {
-
-        }
-
         if ($scope.rememberMe) {
-
           AuthenticationService.createRefreshToken($scope.user.email, $scope.user.password).then(function() {
-
-            // success : create an access token
+            // Success : create an access token
             AuthenticationService.createAccessToken().then(initSession, showSimpleError);
           }, showSimpleError);
-
         } else {
-
-          // authentication without creation of refresh token
+          // Authentication without creation of refresh token
           AuthenticationService.createAccessToken($scope.user.email, $scope.user.password).then(function() {
             Session.init().then(initSession, showSimpleError);
           }, showSimpleError);
