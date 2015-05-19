@@ -66,8 +66,7 @@ define(['./module', 'moment'], function (module, moment) {
         };
 
         $scope.toggleMoreGoals = function () {
-          $scope.moreGoals = !$scope.moreGoals ;
-          return;
+          $scope.moreGoals = !$scope.moreGoals;
         };
 
         $scope.getUserGroups = function (adGroupId) {
