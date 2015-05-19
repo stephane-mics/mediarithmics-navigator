@@ -125,7 +125,7 @@
         </div>
         <span>Display networks</span>
       </div>
-      <div class="mics-default-block display-network-list">
+      <div ng-show="inventorySources" class="mics-default-block display-network-list">
         <span class="label label-default selected-display-network" ng-repeat="source in inventorySources|orderBy:'display_network_name'">
           <a class="close" aria-hidden="true" type="button" ng-click="removeInventorySource(source)">x</a>
           {{source.display_network_name}}
@@ -136,69 +136,61 @@
       </div>
     </div>
 
-<!------------------------ Select Goals   ------------------------>
+    <!------------------------ Select Goals   ------------------------>
     <div class="mcs-form-group">
       <div class="mics-block-heading">
-       
-        
+        <div ng-show="(simpleGoals.length != 1) || moreGoals">
+          <div class="dropdown">
+            <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>Add Goal</button>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CLICK_ON_AD')">
+                Click on Ad
+              </a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT_SITE')">
+                Visit site
+              </a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CONVERSION')">
+                Choose from library
+              </a></li>
+            </ul>
+          </div>
+        </div>
         <span ng-show="(simpleGoals.length != 1)">Goals</span>
         <span ng-show="(simpleGoals.length == 1)">Goal : Click on ad </span>
-        <button class="pull-right mics-btn mics-btn-action" type="button" ng-click="toggleMoreGoals()" ng-disabled="moreGoals">
-        More
-        <!-- <span class="caret"></span> -->
-      </button>
+        <button class="pull-right mics-btn mics-btn-action" type="button" ng-click="toggleMoreGoals()" ng-show="simpleGoals">
+          More
+        </button>
       </div>
-    <div  ng-show="(simpleGoals.length != 1) || moreGoals">
-    <br />
-  <div class="dropdown">
-      <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
-        Add Goal
-        <!-- <span class="caret"></span> -->
-      </button>
 
-      <ul class="dropdown-menu" role="menu" aria-labelledby="New Input">
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CLICK_ON_AD')">
-          Click on Ad
-        </a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('VISIT_SITE')">
-          Visit site
-        </a></li>
-        
-        <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addGoal('CONVERSION')">
-          Choose from library
-        </a></li>
+      <!--List Goals-->
+      <div ng-show="simpleGoals">
+        <br/>
+        <table class="fragment-list-keyword-list">
+          <thead>
+          <tr>
+            <th>Goal Type</th>
+            <th>Goal Name</th>
+            <th>Default</th>
+            <th class="actions">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="source in goalSelections|orderBy:'id'">
+            <td>{{source.goal_selection_type || json}}</td>
+            <td>
+              {{source.goal_name}}
+            </td>
+            <td>
+              <input type="radio" name="default-goal-selection" ng-checked="source.default" ng-value="source" ng-model="campaignScopeHelper.defaultGoalSelection" ng-change="updateDefaultGoalSelection()"/>
+            </td>
+            <td class="actions">
+              <button class="mics-btn mics-btn-delete" ng-click="removeGoalSelection(source)">Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
-      </ul>
-    </div>
-<br />
-      <table class="fragment-list-keyword-list">
-        <thead>
-        <tr>
-          <th>Goal Type</th>
-          <th>Goal Name</th>
-          <th>Default</th>
-          <!-- <th>Duration (days)</th> -->
-          <th class="actions">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="source in goalSelections|orderBy:'id'">
-          <td>{{source.goal_selection_type || json}}</td>
-          <td>
-            {{source.goal_name}}
-          </td>
-          <td > 
-            <input type="radio" name="default-goal-selection" ng-checked="source.default" ng-value="source" ng-model="campaignScopeHelper.defaultGoalSelection"  ng-change="updateDefaultGoalSelection()"/>
-          </td>
-          <td class="actions">
-            <button class="mics-btn mics-btn-delete" ng-click="removeGoalSelection(source)">Delete</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-    </div>
-      
     </div>
 
     <!------------------------ Advanced options ------------------------>
