@@ -102,19 +102,21 @@ define(['./module'], function (module) {
           });
         });
 
-
         $scope.getUrlForCreative = function (ad) {
-          return "/" + Session.getCurrentWorkspace().organisation_id + "/creatives/" + ad.creative_editor_group_id + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
+          var type = "display-ad";
+          if (ad.creative_editor_group_id === "com.mediarithmics.creative.video") {
+            type = "video-ad";
+          }
+          return "/" + Session.getCurrentWorkspace().organisation_id + "/creatives/" + type + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
         };
-
 
         $scope.$watch('reportDateRange', function () {
           updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
         });
+
         $scope.refresh = function () {
           updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
         };
-
       });
 
 
