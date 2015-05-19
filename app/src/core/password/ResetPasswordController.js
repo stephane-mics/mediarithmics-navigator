@@ -11,7 +11,6 @@ define(['./module', "autofill-event"], function (module) {
       }
 
       function initSession() {
-        console.log("init session");
         Session.init().then(function () {
           $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
           var newPath = AuthenticationService.popPendingPath();
@@ -27,7 +26,9 @@ define(['./module', "autofill-event"], function (module) {
       }
 
       $scope.submit = function () {
-        if ($scope.newPassword !== $scope.confirmPassword || $scope.newPassword.length === 0) {
+        if ($scope.newPassword.length < 4) {
+          $scope.errorMessage = "The chosen password is too short.";
+        } else if ($scope.newPassword !== $scope.confirmPassword) {
           $scope.errorMessage = "Invalid password.";
         } else {
           Restangular.all("authentication/reset_password").post({
