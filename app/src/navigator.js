@@ -60,6 +60,24 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           publicUrl: true,
           sidebar: false
         })
+        .state('email-sent', {
+          url: '/email-sent',
+          templateUrl: 'src/core/password/email-sent.html',
+          publicUrl: true,
+          sidebar: false
+        })
+        .state('request-password-reset', {
+          url: '/request-password-reset?error',
+          templateUrl: 'src/core/password/request-password-reset.html',
+          publicUrl: true,
+          sidebar: false
+        })
+        .state('reset-password', {
+          url: '/reset-password?email&token',
+          templateUrl: 'src/core/password/reset-password.html',
+          publicUrl: true,
+          sidebar: false
+        })
         .state('logout', {
           url: '/logout',
           templateUrl: 'src/core/login/logout.html',

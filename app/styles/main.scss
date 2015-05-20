@@ -362,11 +362,39 @@ input[type=daterange] + *{
  */
 
 .mcs-form-signin {
-
-  max-width:340px;
+  max-width: 340px;
   padding: 15px;
   margin: 0 auto;
+  a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: block;
+  }
+}
 
+/*
+ * Reset password
+ */
+
+.mcs-form-reset-password {
+  max-width: 485px;
+  padding-top: 30px;
+  margin: 0 auto;
+
+  .reset-password {
+    margin-top: 5px;
+    display: block;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  h4 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
 }
 
 /*
@@ -896,7 +924,7 @@ table.fragment-list-creatives {
   select, input[type=text] {
     @extend .form-control;
   }
-  
+
   .modal-body .filtered-content {
     @include make-sm-column(12);
     max-height : 300px; /* TODO : arbitrary value */
@@ -1606,7 +1634,7 @@ a.category-item {
   width: 250px;
   .node-label {
     padding-left: 20px;
-    
+
   }
 }
 
@@ -1619,7 +1647,7 @@ a.category-item {
   filter: alpha(opacity=60);
 }
 
-// ------------------ VIDEO ------------------
+// ------------------ Video ------------------
 
 .skipButton {
   position: absolute;
