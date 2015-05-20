@@ -10,7 +10,7 @@ define(['./module', 'app'], function (module) {
       $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
 
       $scope.$on("display-ad:loaded", function () {
-        // the parent controller has loaded the creative, you can use it now (check DisplayAdService)
+        // The parent controller has loaded the creative, you can use it now (check DisplayAdService)
         $log.info("display-ad:loaded");
       });
 
@@ -19,19 +19,21 @@ define(['./module', 'app'], function (module) {
         return property.value.technical_name === 'destination_url';
       };
 
-      // save button
-      $scope.save = function () {
+      $scope.save = function (disabledEdition) {
         $log.debug("save display ad : ", $scope.display_ad);
-        DisplayAdService.save().then(function () {
+        if (disabledEdition) {
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
-        }, function failure(response) {
-          errorService.showErrorModal({
-            error: response
+        } else {
+          DisplayAdService.save().then(function () {
+            $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+          }, function failure(response) {
+            errorService.showErrorModal({
+              error: response
+            });
           });
-        });
+        }
       };
 
-      // save button
       $scope.saveAndRefresh = function () {
         $log.debug("save display ad : ", $scope.display_ad);
         DisplayAdService.save().then(function (displayAdContainer) {
@@ -47,7 +49,6 @@ define(['./module', 'app'], function (module) {
         });
       };
 
-      // back button
       $scope.cancel = function () {
         DisplayAdService.reset();
         $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');

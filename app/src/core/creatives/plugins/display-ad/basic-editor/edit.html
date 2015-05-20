@@ -21,7 +21,7 @@
 
       <div class="col-md-4">
         <div mcs-form-group="full" label-for="format" label-text="Format">
-          <input ng-disabled ng-model="displayAd.format" type="text" class="form-control input-lg" id="format">
+          <input ng-disabled="disabledEdition"  ng-model="displayAd.format" type="text" class="form-control input-lg" id="format">
         </div>
       </div>
     </div>
@@ -48,9 +48,9 @@
 
     <!-- save or cancel -->
     <div class="mcs-actions-group">
-      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="save()">Done</button>
-      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
-      <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
+      <button class="mics-btn mics-btn-finish" ng-click="save(disabledEdition)">Done</button>
+      <button ng-if="!disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
+      <button ng-if="!disabledEdition" class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
 
   </form>

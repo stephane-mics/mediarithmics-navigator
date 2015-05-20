@@ -53,11 +53,9 @@
 
     <!-- save or cancel -->
     <div class="mcs-actions-group">
-      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="save()">Done</button>
-      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp;
-        Refresh
-      </button>
-      <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
+      <button class="mics-btn mics-btn-finish" ng-click="save(disabledEdition)">Done</button>
+      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
+      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
 
   </form>
