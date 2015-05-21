@@ -20,14 +20,18 @@ define(['./module', 'app'], function (module) {
       };
 
       // Save button
-      $scope.save = function () {
-        DisplayAdService.save().then(function (displayAdContainer) {
+      $scope.save = function (disabledEdition) {
+        if (disabledEdition) {
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
-        }, function failure(response) {
-          errorService.showErrorModal({
-            error: response
+        } else {
+          DisplayAdService.save().then(function (displayAdContainer) {
+            $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+          }, function failure(response) {
+            errorService.showErrorModal({
+              error: response
+            });
           });
-        });
+        }
       };
 
       // Save button

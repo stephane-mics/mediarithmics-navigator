@@ -6,17 +6,17 @@ $icon-font-path: "/bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap
 $font-family-sans-serif: "LLCircularWeb-Book", "Source Sans Pro", Helvetica, Arial, sans-serif;
 
 @mixin use-bold-font() {
-  font-family : "LLCircularWeb-Medium", "Source Sans Pro", Helvetica, Arial, sans-serif;
+  font-family: "LLCircularWeb-Medium", "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 
 @mixin use-normal-font() {
-  font-family : $font-family-sans-serif;
+  font-family: $font-family-sans-serif;
 }
 
 $dark-blue: #092f56;
-$dark-blue-not : #ffffff;
-$mcs-red : #fe5858;
-$mcs-red-not : #fff;
+$dark-blue-not: #ffffff;
+$mcs-red: #fe5858;
+$mcs-red-not: #fff;
 $mcs-light-blue: #00a1e1;
 $mcs-light-blue-not: #fff;
 $mcs-green: #00ad68;
@@ -25,9 +25,9 @@ $mcs-orange: #FE8F10;
 $mcs-orange-not: #fff;
 $mcs-light-grey: #E6E6E6;
 $mcs-grey: #CBCBCB;
-$body-bg:#fff;
+$body-bg: #fff;
 
-$font-size-base:12px;
+$font-size-base: 12px;
 
 $nav-tabs-active-link-hover-color: $mcs-light-blue-not;
 $nav-tabs-active-link-hover-bg: $mcs-light-blue;
@@ -49,7 +49,7 @@ $brand-success: #00AB67;
 $brand-info: #0BA3DE;
 
 $brand-warning: $mcs-orange;
-$brand-danger:  $mcs-red;
+$brand-danger: $mcs-red;
 $border-radius-base: 0px;
 $border-radius-small: 0px;
 $border-radius-large: 0px;
@@ -60,7 +60,7 @@ $pagination-active-bg: $mcs-light-blue;
 $pagination-active-border: $mcs-light-blue;
 
 //navbar style
-$navbar-inverse-link-active-color:$dark-blue;
+$navbar-inverse-link-active-color: $dark-blue;
 $navbar-inverse-link-active-bg: $body-bg;
 $navbar-inverse-border: $body-bg;
 $navbar-inverse-bg: $dark-blue;
@@ -69,7 +69,7 @@ $navbar-inverse-color: $body-bg;
 $navbar-inverse-link-color: $body-bg;
 
 @mixin mics-button-variant($background) {
-  $color : #fff;
+  $color: #fff;
   @include button-variant($color, $background, $background);
 
   /* no darken() on hover */
@@ -89,7 +89,7 @@ $navbar-inverse-link-color: $body-bg;
 
 @import "bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss";
 
-.navbar-nav.mcs-main-nav  > li > a {
+.navbar-nav.mcs-main-nav > li > a {
   height: 33px;
   margin-top: 17px;
   padding-right: 9px;
@@ -104,9 +104,8 @@ $navbar-inverse-link-color: $body-bg;
 
 }
 
-
 .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
-  margin-left:120px;
+  margin-left: 120px;
 }
 
 .top-warning {
@@ -129,15 +128,15 @@ $navbar-inverse-link-color: $body-bg;
  */
 
 a, *[ng-click] {
-  cursor : pointer;
+  cursor: pointer;
 }
 
 *[ng-click][modal-window] {
-  cursor:default;
+  cursor: default;
 }
 
 input[type=daterange] {
-  cursor:pointer; /* the plugin will display a custom component */
+  cursor: pointer; /* the plugin will display a custom component */
 }
 
 label {
@@ -151,8 +150,8 @@ label {
   border-color: white;
 
   .mcs-workspace-label {
-    color :$dark-blue-not;
-    font-size : 15px;
+    color: $dark-blue-not;
+    font-size: 15px;
     @include use-bold-font();
   }
 
@@ -170,8 +169,8 @@ label {
 }
 
 .input-group-addon {
-  background-color:$mcs-light-blue;
-  color:$mcs-light-blue-not;
+  background-color: $mcs-light-blue;
+  color: $mcs-light-blue-not;
   @include use-bold-font();
 }
 
@@ -185,7 +184,7 @@ label {
   @extend .table;
   @extend .table-striped;
   thead {
-    color:white;
+    color: white;
     background-color: $mcs-light-blue;
     tr {
       th {
@@ -215,8 +214,8 @@ label {
         @extend .text-right;
         .mics-btn {
           @extend .btn-xs;
-          margin-left:8px;
-          margin-bottom:8px;
+          margin-left: 8px;
+          margin-bottom: 8px;
         }
       }
       /* &:not(:hover) td.actions .mics-btn { */
@@ -229,14 +228,13 @@ label {
 .mics-table.js-auto-hide-actions {
   thead {
     th.actions {
-      display:none;
+      display: none;
     }
   }
   tbody {
     td.actions {
-      display:none;
+      display: none;
     }
-
 
     > tr:nth-child(odd) > td.actions {
       background-color: $table-bg-accent;
@@ -253,7 +251,7 @@ label {
   padding: 21px;
 
   .form-group {
-    margin-bottom : 0; /* that's ok, we add our own padding */
+    margin-bottom: 0; /* that's ok, we add our own padding */
   }
 
   > div {
@@ -265,32 +263,32 @@ label {
     margin-left: 10px;
   }
 }
+
 .mics-default-block {
-  padding:15px;
+  padding: 15px;
   border: 1px solid $mcs-light-grey;
 }
 
 .pretty-print-url {
   .url-search-item {
-    display:block;
+    display: block;
   }
   .key {
-    color:blue;
+    color: blue;
   }
   .separator {
-    color:black;
+    color: black;
   }
   .value {
-    font-weight:bold;
+    font-weight: bold;
   }
   .toggle {
     margin: 0 5px;
   }
   .url {
-    float:right;
+    float: right;
   }
 }
-
 
 .mics-btn {
   @extend .btn;
@@ -309,7 +307,7 @@ label {
   }
 
   .btn-group & + & {
-    margin-left:5px;
+    margin-left: 5px;
   }
 }
 
@@ -334,13 +332,12 @@ label {
 .mics-btn-add:before {
   @extend .glyphicon;
   @extend .glyphicon-plus;
-  margin-right:4px;
+  margin-right: 4px;
 }
 
 .mics-btn-finish {
   @include mics-button-variant($mcs-green);
 }
-
 
 .daterangepicker {
   .applyBtn {
@@ -353,7 +350,7 @@ label {
   }
 }
 
-input[type=daterange] + *{
+input[type=daterange] + * {
   margin-left: 5px;
 }
 
@@ -410,7 +407,7 @@ input[type=daterange] + *{
 }
 
 .breadcrumb {
-  color : $breadcrumb-color; /* not just the separator */
+  color: $breadcrumb-color; /* not just the separator */
   background-color: transparent;
 
   font-size: $font-size-large;
@@ -420,6 +417,7 @@ input[type=daterange] + *{
     margin-right: 25px;
   }
 }
+
 .breadcrumb > .active {
   &:before {
     color: $breadcrumb-active-color;
@@ -474,8 +472,8 @@ form.mcs-full-page-form {
 
   /* for the actions buttons at the bottom of the page */
   .mcs-actions-group {
-    margin-top : 30px;
-    margin-bottom : 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 
     .mics-btn + .mics-btn {
       margin-left: 8px;
@@ -483,16 +481,11 @@ form.mcs-full-page-form {
   }
 }
 
-
-
-
-
 .keyword-expression {
   display: inline-block;
   border: 1px solid #888;
   padding: 4px;
   margin: 4px;
-
 
   /* link to delete */
   > a {
@@ -506,6 +499,7 @@ form.mcs-full-page-form {
   color: $mcs-green-not;
   background-color: $mcs-green;
 }
+
 .negative-keyword-expression {
   @extend .keyword-expression;
   color: $mcs-red-not;
@@ -523,7 +517,7 @@ form.mcs-full-page-form {
 
 [dropdown-toggle].mics-btn-add {
   & + ul.dropdown-menu {
-    padding:0;
+    padding: 0;
 
     li > a:hover, li > a:focus {
       background-color: $mcs-orange;
@@ -541,7 +535,7 @@ form.mcs-full-page-form {
   height: 200px;
   line-height: 200px;
   cursor: pointer;
-  margin : 5px auto;
+  margin: 5px auto;
 }
 
 .drop-target.dragover {
@@ -553,25 +547,26 @@ form.mcs-full-page-form {
 * campaign list
 */
 
-
 .nv-y1 {
   .tick {
     line {
-      stroke:white;
+      stroke: white;
     }
   }
 }
+
 .nv-y2 {
   .tick {
     line {
-      stroke:white;
+      stroke: white;
     }
   }
 }
+
 .nv-x {
   .tick {
     line {
-      stroke:white;
+      stroke: white;
     }
   }
 }
@@ -579,25 +574,24 @@ form.mcs-full-page-form {
 .metrics {
   @extend .text-right;
 }
+
 .metrics.number {
   @extend .text-right;
 }
+
 .metrics.currency {
   @extend .text-right;
 }
-
 
 .mcs-default-container {
   @include make-row();
 }
 
-
-
 .mcs-default-sidebar {
   /* override right and width to the good values but keep the overall behavior */
   @include make-xs-column(3);
-  width:20% !important;
-  float:right;
+  width: 20% !important;
+  float: right;
   ul {
     @extend .nav;
     @extend .nav-pills;
@@ -605,10 +599,10 @@ form.mcs-full-page-form {
 
   }
   .organisation-name-block {
-    text-align:right;
-    color :$dark-blue-not;
-    background-color:$dark-blue;
-    font-size : 15px;
+    text-align: right;
+    color: $dark-blue-not;
+    background-color: $dark-blue;
+    font-size: 15px;
     line-height: $line-height-computed;
     @include use-bold-font();
     padding: 35px 15px 15px 0;
@@ -619,19 +613,19 @@ form.mcs-full-page-form {
 .sidebar-placeholder {
   /* override right and width to the good values but keep the overall behavior */
   @include make-xs-column(3);
-  width:20% !important;
+  width: 20% !important;
   background-color: $mcs-light-grey;
 
   position: fixed;
-  top:0;
-  right:0;
-  bottom:0;
+  top: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .mcs-default-content {
   /* override right and width to the good values but keep the overall behavior */
   @include make-xs-column(9, 100px);
-  width:80% !important;
+  width: 80% !important;
 }
 
 .mcs-default-heading {
@@ -666,7 +660,7 @@ form.mcs-full-page-form {
           background-color: $mcs-light-blue;
           color: $mcs-light-blue-not;
           @include use-bold-font();
-          font-size : ceil(($font-size-base * 1.5));
+          font-size: ceil(($font-size-base * 1.5));
         }
         @extend .text-right;
       }
@@ -681,22 +675,19 @@ form.mcs-full-page-form {
 
 }
 
-
 .mcs-default-sidebar {
   .mcs-campaign-type, .mcs-creative-type {
     max-width: 200px;
     margin-left: auto;
     margin-right: auto;
     & > img {
-      width:100%;
+      width: 100%;
     }
     & > h4 {
       display: inline-block;
     }
   }
 }
-
-
 
 .campaign-report {
   .report-top-tab {
@@ -714,7 +705,7 @@ form.mcs-full-page-form {
     .campaign-heading {
       @extend .mcs-default-heading;
       h2 {
-        &>span {
+        & > span {
           @include use-bold-font();
           margin-right: 20px;
         }
@@ -731,48 +722,48 @@ form.mcs-full-page-form {
       @include make-row();
 
       /* compensate the bootstrap margin */
-      margin:0;
+      margin: 0;
 
       padding: 8px 0;
       border-top: 1px solid $dark-blue;
       border-bottom: 1px solid $dark-blue;
       .report-type-controller {
         @include make-md-column(4);
-        padding:0;
+        padding: 0;
         .nav-pills {
           @include use-bold-font();
-          font-size : ceil(($font-size-base * 1.5));
+          font-size: ceil(($font-size-base * 1.5));
           a {
             padding: 4px 15px;
             color: $dark-blue;
           }
           .active a {
             color: $dark-blue-not;
-            background-color : $dark-blue;
+            background-color: $dark-blue;
           }
         }
       }
       .report-date-controller {
         @include make-md-column(8);
         min-width: 270px;
-        padding:0;
+        padding: 0;
         input.range {
           width: 240px;
           background-color: $mcs-light-blue;
           color: $mcs-light-blue-not;
           @include use-bold-font();
-          font-size : ceil(($font-size-base * 1.5));
+          font-size: ceil(($font-size-base * 1.5));
         }
         @extend .text-right;
       }
     }
     .chart-area {
-      @include    make-row();
+      @include make-row();
       .kpi-area {
         @include make-md-column(2);
 
         dl {
-          margin-bottom:0;
+          margin-bottom: 0;
         }
 
         dt {
@@ -815,13 +806,13 @@ form.mcs-full-page-form {
           svg {
             .nv-x {
               text {
-                fill:$dark-blue;
+                fill: $dark-blue;
               }
             }
 
             .nv-y1, .nv-y2 {
               text {
-                fill:$mcs-light-blue;
+                fill: $mcs-light-blue;
               }
             }
           }
@@ -838,7 +829,7 @@ form.mcs-full-page-form {
             color: #FE5858;
           }
           .y1-legend:before, .y2-legend:before {
-            content:' \25CF';
+            content: ' \25CF';
             /* font-size: $font-size-small; */
             display: inline-block;
             margin-top: -3px;
@@ -859,13 +850,13 @@ form.mcs-full-page-form {
       }
     }
     .breakdown-area {
-      @include    make-row();
+      @include make-row();
       .nav-tabs a {
         @include use-bold-font();
-        color : $dark-blue;
+        color: $dark-blue;
       }
       .nav-tabs .active a {
-        color : $dark-blue-not;
+        color: $dark-blue-not;
       }
       .badge.creative-audit-notification-alert {
         background-color: red;
@@ -889,16 +880,15 @@ form.mcs-full-page-form {
 .create-keywords-campaign {
   .front-recommendation {
     /* line-height: 40px; */
-    font-size : $font-size-large;
+    font-size: $font-size-large;
     @extend .text-center;
 
     span {
-      display:inline-block;
-      margin:10px;
+      display: inline-block;
+      margin: 10px;
     }
   }
 }
-
 
 table.fragment-list-creatives {
 
@@ -927,7 +917,7 @@ table.fragment-list-creatives {
 
   .modal-body .filtered-content {
     @include make-sm-column(12);
-    max-height : 300px; /* TODO : arbitrary value */
+    max-height: 300px; /* TODO : arbitrary value */
     overflow: auto;
   }
 }
@@ -940,7 +930,7 @@ table.fragment-list-creatives {
   }
 
   img {
-    margin:0 8px;
+    margin: 0 8px;
   }
 }
 
@@ -952,11 +942,10 @@ table.fragment-list-keyword-list {
   @extend .mics-table;
 }
 
-
 .choose-existing-keyword-list {
   .modal-body {
     @include make-md-column(12);
-    max-height : 300px; /* TODO : arbitrary value */
+    max-height: 300px; /* TODO : arbitrary value */
     overflow: auto;
   }
 }
@@ -968,17 +957,18 @@ table.fragment-list-placement-list {
 .choose-existing-placement-list {
   .modal-body {
     @include make-md-column(12);
-    max-height : 300px; /* TODO : arbitrary value */
+    max-height: 300px; /* TODO : arbitrary value */
     overflow: auto;
   }
 }
+
 table.fragment-list-bid-optimizer {
   @extend .mics-table;
 }
+
 table.fragment-list-bid-optimizer-engine {
   @extend .mics-table;
 }
-
 
 /*
  * Datamart
@@ -1233,8 +1223,6 @@ a.category-item {
   transition: left 0.2s;
 }
 
-
-
 .datamart-timeline > li.with_action .datamart-timeline-content {
   border-left: 6px solid $mcs-light-blue;
 }
@@ -1263,7 +1251,7 @@ a.category-item {
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-details {
   padding-top: 15px;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .datamart-timeline > li .datamart-timeline-content:after {
@@ -1342,7 +1330,7 @@ a.category-item {
 
   .datamart-timeline > li {
     margin-bottom: 20px;
-    border-bottom: 1px solid rgba(0,0,0,.1);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
   }
 
   .datamart-timeline > li .datamart-timeline-datetime {
@@ -1430,6 +1418,7 @@ a.category-item {
     }
   }
 }
+
 .updatable-item-status-PAUSED {
   button.updatable-item-status-state {
     @extend .btn-warning;
@@ -1439,6 +1428,7 @@ a.category-item {
     }
   }
 }
+
 .updatable-item-status-PENDING {
   button.updatable-item-status-state {
     @extend .btn-info;
@@ -1448,6 +1438,7 @@ a.category-item {
     }
   }
 }
+
 .updatable-item-status-ACTIVE {
   button.updatable-item-status-state {
     @extend .btn-success;
@@ -1462,8 +1453,6 @@ a.category-item {
   margin: 0 0 20px 0;
 }
 
-
-
 @import "compass/css3/border-radius";
 @import "compass/css3/transition";
 @import "compass/css3/images";
@@ -1476,14 +1465,14 @@ a.category-item {
     color: $mcs-red;
   }
 
-  &>* {
-    display:inline-block;
+  & > * {
+    display: inline-block;
   }
   .mics-toggle {
     width: 50px;
     height: 24px;
     position: relative;
-    @include border-radius( 50px );
+    @include border-radius(50px);
     label {
       display: block;
       width: 18px;
@@ -1494,8 +1483,8 @@ a.category-item {
       left: 3px;
       z-index: 1;
       background: #fff;
-      @include border-radius( 100% );
-      @include transition( all .4s ease );
+      @include border-radius(100%);
+      @include transition(all .4s ease);
 
       &:hover {
         background: $dark-blue;
@@ -1518,16 +1507,15 @@ a.category-item {
   }
 }
 
-
 .edit-campaign-expert .show-ad-group {
 
-  $ad-container-margin : 30px;
-  $ad-container-max-img-size : 120px;
+  $ad-container-margin: 30px;
+  $ad-container-max-img-size: 120px;
   h4 {
     @include use-bold-font();
     font-size: ceil(($font-size-base * 2));
     /* margin-bottom:16px; */
-    margin-top:30px;
+    margin-top: 30px;
   }
   .ad-group-components {
     border: 2px solid $mcs-light-blue;
@@ -1538,9 +1526,9 @@ a.category-item {
     h5 {
       @include use-bold-font();
       font-size: ceil(($font-size-base * 1.5));
-      display:inline-block;
+      display: inline-block;
       padding-bottom: 8px;
-      margin:0;
+      margin: 0;
       border-bottom: 1px solid $dark-blue;
     }
 
@@ -1549,27 +1537,27 @@ a.category-item {
       margin-right: -$ad-container-margin;
     }
     .ad-container:after {
-      clear:both;
-      display:table;
-      content:" ";
+      clear: both;
+      display: table;
+      content: " ";
     }
     .img-box {
-      width:$ad-container-max-img-size;
-      height:$ad-container-max-img-size;
+      width: $ad-container-max-img-size;
+      height: $ad-container-max-img-size;
       vertical-align: bottom;
       display: table-cell;
     }
     .thumbnail {
-      float:left;
+      float: left;
       position: relative;
-      border:none;
-      margin:28px; /* 4 images in 1024 and 5 images in 1250 : perfect */
-      padding:0;
+      border: none;
+      margin: 28px; /* 4 images in 1024 and 5 images in 1250 : perfect */
+      padding: 0;
       & img {
-        margin:0;
+        margin: 0;
         border: 2px solid $dark-blue;
-        max-width:$ad-container-max-img-size;
-        max-height:$ad-container-max-img-size;
+        max-width: $ad-container-max-img-size;
+        max-height: $ad-container-max-img-size;
       }
       .caption {
         padding: 5px 0;
@@ -1581,12 +1569,11 @@ a.category-item {
       background: $mcs-red;
       font-size: $font-size-base;
       padding: 5px 8px;
-      margin-left:5px;
+      margin-left: 5px;
     }
   }
   /* margin-bottom: 30px; */
 }
-
 
 .display-network-list .label {
   font-size: $font-size-base;
@@ -1597,20 +1584,21 @@ a.category-item {
     line-height: 0.8;
   }
 }
+
 .mics-small-thumbnail {
-  margin : 0;
-  padding:0;
-  border : none;
-  background-color:transparent;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
   @extend .text-center;
   img {
-    max-width : 50px;
-    max-height : 50px;
+    max-width: 50px;
+    max-height: 50px;
   }
   .caption {
-    display:block;
-    font-size : $font-size-small;
-    padding : 0;
+    display: block;
+    font-size: $font-size-small;
+    padding: 0;
   }
 }
 
@@ -1664,4 +1652,15 @@ a.category-item {
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
   border-radius: 10px;
+}
+
+// ------------------ AUDIT STATUS ------------------
+
+.audit-status {
+  .status {
+    border-radius: 100px !important;
+    padding: 0 1rem 0 1rem;
+    font-size: 17px;
+    display: inline-block;
+  }
 }

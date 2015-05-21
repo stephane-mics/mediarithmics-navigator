@@ -26,14 +26,18 @@ define(['./module'], function (module) {
       };
 
       // Save button
-      $scope.save = function () {
-        VideoAdService.save().then(function (videoAdContainer) {
+      $scope.save = function (disabledEdition) {
+        if (disabledEdition) {
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
-        }, function failure(response) {
-          errorService.showErrorModal({
-            error: response
+        } else {
+          VideoAdService.save().then(function (videoAdContainer) {
+            $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+          }, function failure(response) {
+            errorService.showErrorModal({
+              error: response
+            });
           });
-        });
+        }
       };
 
       // Save button
