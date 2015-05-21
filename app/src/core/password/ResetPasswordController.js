@@ -14,7 +14,6 @@ define(['./module', "autofill-event"], function (module) {
         Session.init().then(function () {
           $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
           var newPath = AuthenticationService.popPendingPath();
-          $log.debug("Redirecting to : " + newPath);
           $location.path(newPath);
         }, function () {
           $rootScope.$broadcast(LoginConstants.LOGIN_FAILURE);
