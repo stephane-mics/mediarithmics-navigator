@@ -13,13 +13,13 @@ define(['./module', "autofill-event"], function (module) {
       $scope.submit = function () {
         $scope.infoMessage = "Sending email...";
         Restangular.all("authentication/send_password_reset_email").post({email: $scope.email}).then(function () {
-          $location.path('email-sent')
+          $location.path('email-sent');
         }, function () {
           $rootScope.$broadcast(LoginConstants.LOGIN_FAILURE);
           $scope.errorMessage = "Please enter a valid registered email address.";
           $scope.infoMessage = undefined;
         });
-      }
+      };
     }
   ]);
 });

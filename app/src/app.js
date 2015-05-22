@@ -31,7 +31,8 @@ define([
     'core/login/index',
     'core/password/index',
     'core/datamart/index',
-    'core/layout/index'
+    'core/layout/index',
+    'core/settings/index'
   ], function () {
     'use strict';
 
@@ -62,11 +63,11 @@ define([
       'core/scenarios',
       'core/queries',
       'core/goals',
-
       'core/datamart',
       'core/login',
       'core/password',
-      'core/common'
+      'core/common',
+      'core/settings'
     ]);
 
     return navigator;
