@@ -378,11 +378,6 @@ input[type=daterange] + * {
   padding-top: 30px;
   margin: 0 auto;
 
-  .reset-password {
-    margin-top: 5px;
-    display: block;
-  }
-
   h2 {
     text-align: center;
     margin-bottom: 15px;
@@ -391,6 +386,22 @@ input[type=daterange] + * {
   h4 {
     text-align: center;
     margin-bottom: 15px;
+  }
+
+  input {
+    margin-top: 5px;
+  }
+
+  button {
+    margin-top: 5px;
+  }
+}
+
+.mcs-form-update-password {
+  max-width: 485px;
+
+  input {
+    margin-top: 5px;
   }
 }
 

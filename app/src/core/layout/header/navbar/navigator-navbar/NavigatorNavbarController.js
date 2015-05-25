@@ -2,7 +2,7 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('NavigatorNavbarController', [
-    '$scope', '$log', 'core/common/auth/Session', 'core/login/constants','$rootScope', 'core/configuration',
+    '$scope', '$log', 'core/common/auth/Session', 'core/login/constants', '$rootScope', 'core/configuration',
     function ($scope, $log, Session, LoginConstants, $rootScope, configuration) {
 
       $scope.getBrandLogo = function () {
@@ -20,13 +20,13 @@ define(['./module'], function (module) {
       };
 
       function updateWorkspaces() {
-          $scope.workspaces = Session.getWorkspaces();
-          $scope.hasDatamart = Session.hasDatamart();
-          $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
+        $scope.workspaces = Session.getWorkspaces();
+        $scope.hasDatamart = Session.hasDatamart();
+        $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
       }
 
-      if(Session.isInitialized()) {
-          updateWorkspaces();
+      if (Session.isInitialized()) {
+        updateWorkspaces();
       }
       $scope.$on(LoginConstants.LOGIN_SUCCESS, isLogged);
       $scope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);

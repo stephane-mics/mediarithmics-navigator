@@ -1,0 +1,7 @@
+{
+  "name": "core/settings",
+  "dependencies": [
+    "core/common",
+    "restangular"
+  ]
+}
