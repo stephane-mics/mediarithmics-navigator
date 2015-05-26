@@ -1,7 +1,7 @@
 define(['./module', "autofill-event"], function (module) {
   'use strict';
 
-  module.controller('core/password/ResetPasswordController', [
+  module.controller('core/password/SetPasswordController', [
     '$scope', '$rootScope', '$location', '$stateParams', '$log', 'Restangular', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
     function ($scope, $rootScope, $location, $stateParams, $log, Restangular, AuthenticationService, Session, LoginConstants) {
       if (!angular.isDefined($stateParams.token) || !angular.isDefined($stateParams.email)) {
@@ -22,7 +22,7 @@ define(['./module', "autofill-event"], function (module) {
       }
 
       function loginError() {
-        $scope.errorMessage = "Couldn't log in.";
+        $scope.errorMessage = "Error: Impossible to log in.";
         $location.path('request-password-reset').search({error: 1});
       }
 
@@ -32,17 +32,17 @@ define(['./module', "autofill-event"], function (module) {
         } else if ($scope.newPassword !== $scope.confirmPassword) {
           $scope.errorMessage = "Passwords do not match.";
         } else {
-          $scope.infoMessage = "Resetting password... Please wait.";
-          Restangular.all("authentication/reset_password").post({
+          $scope.infoMessage = "Setting up your new password... Please wait.";
+          Restangular.all("authentication/set_password").post({
             email: $stateParams.email,
             token: $stateParams.token,
             password: $scope.newPassword
           }).then(function () {
-            $scope.successMessage = "Your password was successfully changed.";
+            $scope.successMessage = "Your new password was successfully set.";
             $scope.errorMessage = undefined;
             $scope.infoMessage = undefined;
           }, function () {
-            $scope.errorMessage = "Couldn't change password.";
+            $scope.errorMessage = "We're sorry, we couldn't set up your new password.";
             $scope.successMessage = undefined;
             $scope.infoMessage = undefined;
           });

@@ -32,7 +32,7 @@ define(['./module', "autofill-event"], function (module) {
       }
 
       $scope.resetPassword = function() {
-        $location.path('request-password-reset')
+        $location.path('request-password-reset');
       };
 
       $scope.submit = function() {
