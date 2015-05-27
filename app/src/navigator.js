@@ -72,9 +72,9 @@ define(['angularAMD', 'app', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'mom
           publicUrl: true,
           sidebar: false
         })
-        .state('reset-password', {
-          url: '/reset-password?email&token',
-          templateUrl: 'src/core/password/reset-password.html',
+        .state('set-password', {
+          url: '/set-password?email&token',
+          templateUrl: 'src/core/password/set-password.html',
           publicUrl: true,
           sidebar: false
         })
