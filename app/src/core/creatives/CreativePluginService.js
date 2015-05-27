@@ -26,11 +26,11 @@ define(['./module'], function (module) {
       }, {
         name: "Video Mode",
         editor_group_id: "com.mediarithmics.creative.video",
-        editor_artifact_id: "video-editor",
+        editor_artifact_id: "default-editor",
         image: "/images/plugins/creative-mcs-video.png",
         editor: {
-          create_path: "/{organisation_id}/creatives/video-ad/editor/create",
-          edit_path: "/{organisation_id}/creatives/video-ad/editor/edit/{id}"
+          create_path: "/{organisation_id}/creatives/video-ad/default-editor/create",
+          edit_path: "/{organisation_id}/creatives/video-ad/default-editor/edit/{id}"
         }
       }
         // UNCOMMENT TO ADD THE FACEBOOK AD EDITOR

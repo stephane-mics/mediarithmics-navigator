@@ -1,7 +1,7 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/creatives/plugins/video-ad/editor/EditController', [
+  module.controller('core/creatives/plugins/video-ad/default-editor/EditController', [
     '$scope', '$sce', '$log', '$location', '$stateParams', 'core/creatives/plugins/video-ad/VideoAdService', 'core/common/auth/Session',
     'core/creatives/CreativePluginService', '$controller', 'core/common/ErrorService', '$state', 'core/common/IabService', 'lodash',
     function ($scope, $sce, $log, $location, $stateParams, VideoAdService, Session, CreativePluginService, $controller, errorService, $state, IabService, _) {
