@@ -4,13 +4,13 @@ define(['./module'], function (module) {
   module.controller('NavigatorNavbarController', [
     '$scope', '$log', 'core/common/auth/Session', 'core/login/constants', '$rootScope', 'core/configuration',
     function ($scope, $log, Session, LoginConstants, $rootScope, configuration) {
-
       $scope.getBrandLogo = function () {
         return configuration.ASSETS_URL + "/white_label/" + location.hostname + "/logo.png";
       };
 
       function isLogged() {
         $scope.isLogged = Session.isInitialized();
+        $scope.user = Session.getUserProfile();
       }
 
       isLogged();
