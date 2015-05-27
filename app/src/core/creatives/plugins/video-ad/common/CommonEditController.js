@@ -23,7 +23,7 @@ define(['./module'], function (module) {
         });
       };
 
-      CreativePluginService.getCreativeTemplateFromEditor("video-ad", "video-editor").then(function (template) {
+      CreativePluginService.getCreativeTemplateFromEditor("video-ad", "default-editor").then(function (template) {
         $scope.creativeTemplate = template;
       });
 

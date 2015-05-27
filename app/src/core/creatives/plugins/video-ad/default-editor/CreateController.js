@@ -9,7 +9,7 @@ define(['./module'], function (module) {
         name: ""
       };
 
-      CreativePluginService.getCreativeTemplateFromEditor("video-ad", "video-editor").then(function (template) {
+      CreativePluginService.getCreativeTemplateFromEditor("video-ad", "default-editor").then(function (template) {
         $scope.creativeTemplate = template;
       });
 
@@ -21,7 +21,7 @@ define(['./module'], function (module) {
           },
           editor: {
             groupId: "com.mediarithmics.creative.video",
-            artifactId: "video-editor"
+            artifactId: "default-editor"
           },
           subtype: "VIDEO"
         };
@@ -53,7 +53,7 @@ define(['./module'], function (module) {
         }
 
         var promises = [
-          CreativePluginService.getEditor("com.mediarithmics.creative.video", "video-editor"),
+          CreativePluginService.getEditor("com.mediarithmics.creative.video", "default-editor"),
           createCreative(name)
         ];
 
