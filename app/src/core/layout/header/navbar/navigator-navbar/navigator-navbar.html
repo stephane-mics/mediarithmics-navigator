@@ -41,15 +41,24 @@
 
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
-          <a href="#" class="mcs-workspace-label" dropdown-toggle>{{currentOrganisation}} <b class="caret"></b></a>
+          <a ng-hide="workspaces.length > 1" href="#" class="mcs-workspace-label">{{currentOrganisation}}</a>
+          <a ng-show="workspaces.length > 1" href="#" class="mcs-workspace-label" dropdown-toggle>{{currentOrganisation}}
+            <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li ng-repeat="workspace in workspaces" ng-if="workspaces.length > 1 && workspace.organisationId != currentOrganisationId">
-              <a ng-click="switchWorkspace(workspace.organisationId)">{{workspace.organisationName}}</a></li>
-            <li ng-if="workspaces.length > 1" class="divider"></li>
-            <li><a href="#settings">Settings</a></li>
+              <a ng-click="switchWorkspace(workspace.organisationId)">{{workspace.organisationName}}</a>
+            </li>
           </ul>
         </li>
-        <li><a href="#logout">Log out</a></li>
+        <li class="dropdown">
+          <img dropdown-toggle src="./images/user.svg">
+          <ul class="dropdown-menu">
+            <li><p>{{user.email}}</p></li>
+            <li><a href="#settings">Profile & Settings</a></li>
+            <li class="divider"></li>
+            <li><a href="#logout">Log out</a></li>
+          </ul>
+        </li>
       </ul>
 
     </div>
