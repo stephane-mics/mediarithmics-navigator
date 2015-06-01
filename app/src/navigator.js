@@ -15,7 +15,6 @@ define([
     'ui',
     'ui.router',
     'ui.router.extras',
-    'ngload',
     'lodash',
     'core/configuration',
     'core/adblock/index',

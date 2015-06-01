@@ -1,6 +1,6 @@
 /* global _ */
 
-define(['./module', 'navigator'], function (module, navigator) {
+define(['./module'], function (module) {
   'use strict';
 
   /* Define the Authentication service */
@@ -33,7 +33,6 @@ define(['./module', 'navigator'], function (module, navigator) {
             self.initialized = true;
             deferred.resolve();
           }
-          pluginService.registerPlugin("admin", coreConfig.ADMIN_PLUGIN_URL, "/admin");
         }, deferred.reject);
         return deferred.promise;
       };

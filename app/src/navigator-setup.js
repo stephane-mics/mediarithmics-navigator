@@ -1,4 +1,5 @@
-define(['angularAMD', 'navigator', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports', 'module'], function (angularAMD, navigator, lodash, async, jquery, plupload, d3, moment, uiRouterExtras, exports, module) {
+define(['navigator', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports', 'module'],
+  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment, uiRouterExtras, exports, module) {
   "use strict";
 
   navigator.factory('lodash', [
@@ -142,24 +143,6 @@ define(['angularAMD', 'navigator', 'lodash', 'async', 'jquery', 'plupload', 'd3'
     }
   ]);
 
-  navigator.config(['$futureStateProvider',
-    function ($futureStateProvider) {
-      function ngloadStateFactory($q, futureState) {
-        var ngloadDeferred = $q.defer();
-        require(["ngload!" + futureState.src, 'ngload', 'angularAMD'],
-          function ngloadCallback(result, ngload, angularAMD) {
-            angularAMD.processQueue();
-            ngloadDeferred.resolve(result.entryState);
-          });
-        return ngloadDeferred.promise;
-      }
-
-      $futureStateProvider.stateFactory('ngload', ngloadStateFactory);
-      navigator.$futureStateProvider = $futureStateProvider;
-    }]);
-
-  /* Work to be performed after module loading */
-
   /**
    * Add an event listener on $stateChangeStart to restrict access to secured part of the app
    */
@@ -222,6 +205,5 @@ define(['angularAMD', 'navigator', 'lodash', 'async', 'jquery', 'plupload', 'd3'
     }
   ]);
 
-  var r = angularAMD.bootstrap(navigator, true, document.body);
-  exports.app = navigator;
+  angularAMD.bootstrap(navigator, true, document.body);
 });
