@@ -62,6 +62,6 @@ require.config({
     'nv.d3': {deps: ['nvd3-templates/d3.global']},
     'ngload': ['angularAMD']
   },
-  deps: ['navigator']
+  deps: ['navigator-setup']
 });
 

@@ -1,4 +1,4 @@
-define(['./module', 'app'], function (module) {
+define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/plugins/display-ad/basic-editor/EditController', [
