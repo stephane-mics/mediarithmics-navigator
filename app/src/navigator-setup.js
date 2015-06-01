@@ -1,7 +1,8 @@
-define(['navigator', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports', 'module'],
-  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment, uiRouterExtras, exports, module) {
+define(['navigator', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports', 'module', 'plugins'],
+  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment, uiRouterExtras, exports, module, plugins) {
   "use strict";
 
+    console.log("In navigator setup");
   navigator.factory('lodash', [
     function () {
       return lodash;
@@ -148,7 +149,7 @@ define(['navigator', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3'
    */
   navigator.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
     function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
-
+      console.log("You lost. Navigator running...");
       var defaults = _.partialRight(_.assign, function (a, b) {
         return typeof a === 'undefined' ? b : a;
       });

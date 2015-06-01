@@ -1,5 +1,7 @@
 define([
+    'plugins',
     'angularAMD',
+    'ngload',
     'moment',
     'jqCookie',
     'jqDaterangepicker',
@@ -32,7 +34,7 @@ define([
     'core/datamart/index',
     'core/layout/index',
     'core/settings/index'
-  ], function () {
+  ], function (plugins) {
     'use strict';
 
     /**
@@ -67,7 +69,10 @@ define([
       'core/password',
       'core/common',
       'core/settings'
-    ]);
+    ], function() {
+      plugins.loadPlugins();
+      console.log("Navigator loaded!")
+    });
 
     return navigator;
   }

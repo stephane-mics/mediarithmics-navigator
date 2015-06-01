@@ -55,13 +55,13 @@ require.config({
     'ngBootstrap': ['angular', 'bootstrap', 'jqDaterangepicker'],
     'ui': ['angular'],
     'ngTable': ['angular'],
-    'core/configuration': ['angular'],
     'plupload': {deps: ['moxie'], exports: 'plupload'},
     'ui.router': ['angular'],
     'ui.router.extras': ['angular', 'ui.router'],
     'nv.d3': {deps: ['nvd3-templates/d3.global']},
-    'ngload': ['angularAMD']
+    'ngload': ['angularAMD'],
+    // Navigator configuration
+    'core/configuration': ['angular']
   },
   deps: ['navigator-setup']
 });
-
