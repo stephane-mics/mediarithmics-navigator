@@ -1,5 +1,5 @@
-define(['app-setup', 'navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'ui.router.extras', 'exports', 'module'],
-  function (app, navigator, angularAMD, lodash, async, jquery, plupload, d3, moment, uiRouterExtras, exports, module) {
+define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment'],
+  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment) {
     "use strict";
 
     navigator.factory('lodash', [

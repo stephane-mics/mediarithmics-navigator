@@ -316,14 +316,14 @@ module.exports = function (grunt) {
       dist: {
         options: {
           baseUrl: "app/src",
-          mainConfigFile: "app/app.js",
+          mainConfigFile: "app/main.js",
           name: "navigator",
           optimize: "none",
-          insertRequire: ['navigator'],
+          insertRequire: ['app'],
           paths: {
             'core/configuration': 'empty:'
           },
-          out: ".tmp/concat/scripts/app.js"
+          out: ".tmp/concat/scripts/main.js"
         }
       }
     },

@@ -38,14 +38,12 @@ define([
 ], function () {
   'use strict';
 
-  console.log("Loaded App RequireJS. Loading App AngularJS.");
-
-  var app = angular.module('app', [
-    'navigator',
-    'admin'
-  ], function () {
-    console.log("Loaded App AngularJS");
-  });
-
-  return app;
+  var appModuleDependencies = ['navigator'];
+  if (typeof localStorage.plugins !== 'undefined') {
+    var pluginsInfo = JSON.parse(localStorage.plugins);
+    for (var i = 0; i < pluginsInfo.length; ++i) {
+      appModuleDependencies.push(pluginsInfo[i].name)
+    }
+  }
+  return angular.module('app', appModuleDependencies);
 });

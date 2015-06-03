@@ -2,7 +2,6 @@ define(['app-setup', 'angularAMD'],
   function (app, angularAMD) {
     app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
       function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
-        console.log("You lost. Navigator is running...");
         var defaults = _.partialRight(_.assign, function (a, b) {
           return typeof a === 'undefined' ? b : a;
         });

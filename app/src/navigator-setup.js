@@ -1,9 +1,5 @@
-define([
-    'app'
-  ], function () {
+define([], function () {
     'use strict';
-
-    console.log("Loaded Navigator RequireJS. Loading Navigator AngularJS");
 
     var navigator = angular.module('navigator', [
       'ngCookies',
@@ -34,9 +30,7 @@ define([
       'core/password',
       'core/common',
       'core/settings'
-    ], function () {
-      console.log("Loaded Navigator AngularJS");
-    });
+    ]);
 
     return navigator;
   }
