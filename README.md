@@ -1,7 +1,8 @@
 Mediarithmics Navigator
 =======================
 
-This is the repository for [navigator](https://navigator.mediarithmics.com/), the application used by our customers.
+This is the repository for [Navigator](https://navigator.mediarithmics.com/), the application used by our customers.  
+If you need to learn mode about how the Navigator loads its plugins checkout the [Navigator Loading Documentation](https://github.com/MEDIARITHMICS/mediarithmics-navigator/blob/master/NAVIGATOR_LOADING.md)
 
 Prerequisites
 -------------
@@ -78,4 +79,3 @@ Getting started
 * `npm install`
 * `bower install`
 * `grunt` or `grunt serve`
-
