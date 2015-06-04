@@ -1,75 +1,63 @@
-define([
-    'angularAMD',
-    'moment',
-    'jqCookie',
-    'jqDaterangepicker',
-    'ngCookies',
-    'ngResource',
-    'ngRoute',
-    'restangular',
-    'ngSanitize',
-    'ngTable',
-    'nvd3ChartDirectives',
-    'ngBootstrap',
-    'jsplumb',
-    'ui',
-    'ui.router',
-    'ui.router.extras',
-    'ngload',
-    'lodash',
-    'core/configuration',
-    'core/adblock/index',
-    'core/queries/index',
-    'core/goals/index',
-    'core/scenarios/index',
-    'core/keywords/index',
-    'core/creatives/index',
-    'core/adgroups/index',
-    'core/usergroups/index',
-    'core/campaigns/index',
-    'core/placementlists/index',
-    'core/login/index',
-    'core/password/index',
-    'core/datamart/index',
-    'core/layout/index',
-    'core/settings/index'
-  ], function () {
-    'use strict';
+define(['app-setup', 'angularAMD'],
+  function (app, angularAMD) {
+    app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
+      function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
+        var defaults = _.partialRight(_.assign, function (a, b) {
+          return typeof a === 'undefined' ? b : a;
+        });
 
-    /**
-     * Application Module
-     */
-    var navigator = angular.module('navigator', [
-      'ngCookies',
-      'ngResource',
-      'ngSanitize',
-      'ngRoute',
-      'restangular',
-      'nvd3ChartDirectives',
-      'ngBootstrap',
-      'ui.keypress',
-      'ui.unique',
-      'ui.router',
-      'ct.ui.router.extras',
+        function updateWorkspaces() {
+          $rootScope.currentOrganisation = Session.getCurrentWorkspace().organisation_name;
+          $rootScope.currentOrganisationId = Session.getCurrentWorkspace().organisation_id;
+        }
 
-      'core/configuration',
-      'core/adblock',
-      'core/layout',
-      'core/keywords',
-      'core/adgroups',
-      'core/usergroups',
-      'core/campaigns',
-      'core/creatives',
-      'core/scenarios',
-      'core/queries',
-      'core/goals',
-      'core/datamart',
-      'core/login',
-      'core/password',
-      'core/common',
-      'core/settings'
+        $rootScope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
+        $rootScope.$on(LoginConstants.LOGIN_SUCCESS, updateWorkspaces);
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+          $log.debug("$stateChangeSuccess  toState : ", toState);
+
+          var options = defaults(toState, {
+            publicUrl: false,
+            sidebar: true,
+            topbar: true
+          });
+
+          if (Session.isInitialized() && Session.getCurrentWorkspace().organisation_id !== toParams.organisation_id) {
+            Session.updateWorkspace(toParams.organisation_id);
+          }
+          $rootScope.sidebar = options.sidebar;
+          var urlMatch = toState.name.match(/\/?(\w+)\/?/);
+          if (urlMatch) {
+            $rootScope.category = urlMatch[1];
+          }
+          $rootScope.topbar = options.topbar;
+          if (!options.publicUrl) {
+
+            if (AuthenticationService.hasAccessToken()) {
+              if (!Session.isInitialized()) {
+                AuthenticationService.pushPendingPath($location.url());
+                if (toParams.organisation_id) {
+                  $location.path('/init-session/' + toParams.organisation_id);
+                } else {
+                  $location.path('/init-session');
+                }
+              }
+            } else if (AuthenticationService.hasRefreshToken()) {
+              // Keep the current path in memory
+              AuthenticationService.pushPendingPath($location.url());
+              // Redirect to the remember-me page
+              $location.path('/remember-me');
+            } else {
+              AuthenticationService.pushPendingPath($location.url());
+              // Redirect to login
+              $location.path('/login');
+            }
+          }
+        });
+      }
     ]);
 
-    return navigator;
-  }
-);
+    angularAMD.bootstrap(app, true, document.body);
+    return app;
+  });

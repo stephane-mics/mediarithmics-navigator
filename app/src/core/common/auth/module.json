@@ -1,5 +1,5 @@
 {"name": "core/common/auth",
-  "dependencies": ["restangular", "core/common/plugins"]
+  "dependencies": ["restangular"]
 }
 
 

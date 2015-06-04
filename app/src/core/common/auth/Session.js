@@ -1,12 +1,9 @@
-/* global _ */
-
-define(['./module', 'navigator'], function (module, navigator) {
+define(['./module'], function (module) {
   'use strict';
 
-  /* Define the Authentication service */
   module.factory('core/common/auth/Session', [
-    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants', 'core/common/plugins/pluginService', 'core/configuration',
-    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, pluginService, coreConfig) {
+    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants',  'core/configuration',
+    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, coreConfig) {
       var service = {};
       service.initialized = false;
 
@@ -19,7 +16,7 @@ define(['./module', 'navigator'], function (module, navigator) {
         var self = this;
 
         Restangular.one('connected_user').get().then(function (userProfile) {
-          $log.debug("User Profile :", userProfile);
+          $log.debug("Initialize session with user profile:", userProfile);
           self.userProfile = userProfile;
           if (organisationId) {
             $log.debug("fetching organisation : ", organisationId);
@@ -33,7 +30,6 @@ define(['./module', 'navigator'], function (module, navigator) {
             self.initialized = true;
             deferred.resolve();
           }
-          pluginService.registerPlugin("admin", coreConfig.ADMIN_PLUGIN_URL, "/admin");
         }, deferred.reject);
         return deferred.promise;
       };

@@ -319,7 +319,7 @@ module.exports = function (grunt) {
           mainConfigFile: "app/main.js",
           name: "navigator",
           optimize: "none",
-          insertRequire: ['navigator'],
+          insertRequire: ['app'],
           paths: {
             'core/configuration': 'empty:'
           },

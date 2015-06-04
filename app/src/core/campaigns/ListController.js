@@ -8,15 +8,15 @@ define(['./module'], function (module) {
     report.then(function (stats) {
       $scope.displayCampaignsStatistics = stats;
     });
-
-
   };
-  /*
+
+  /**
    * Campaign list controller
    */
   module.controller('core/campaigns/ListController', [
     '$scope', '$location', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
     function ($scope, $location, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
+      var currentWorkspace = Session.getCurrentWorkspace();
 
       $scope.currentPageDisplayCampaign = 1;
       $scope.currentPageEmailCampaign = 1;
@@ -28,11 +28,11 @@ define(['./module'], function (module) {
         return Session.getOrganisationName(id);
       };
 
-      $scope.administrator = Session.getCurrentWorkspace().administrator;
+      $scope.administrator = currentWorkspace.administrator;
 
-      var params = {organisation_id: Session.getCurrentWorkspace().organisation_id};
-      if (Session.getCurrentWorkspace().administrator) {
-        params = {administration_id: Session.getCurrentWorkspace().organisation_id};
+      var params = {organisation_id: currentWorkspace.organisation_id};
+      if ($scope.administrator) {
+        params = {administration_id: currentWorkspace.organisation_id};
       }
       Restangular.all('display_campaigns').getList(params).then(function (displayCampaigns) {
         $scope.displayCampaigns = displayCampaigns;
@@ -41,7 +41,7 @@ define(['./module'], function (module) {
         $scope.emailCampaigns = emailCampaigns;
       });
       $scope.$watch('reportDateRange', function () {
-        updateStatistics($scope, CampaignAnalyticsReportService, Session.getCurrentWorkspace().organisation_id);
+        updateStatistics($scope, CampaignAnalyticsReportService, currentWorkspace.organisation_id);
       });
 
       $scope.getCampaignDashboardUrl = function (campaign) {
@@ -49,7 +49,7 @@ define(['./module'], function (module) {
       };
 
       $scope.newCampaign = function () {
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/campaigns/select-campaign-template');
+        $location.path('/' + currentWorkspace.organisation_id + '/campaigns/select-campaign-template');
       };
 
       $scope.showCampaign = function (campaign, $event) {
