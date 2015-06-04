@@ -33,8 +33,6 @@
   <link rel="stylesheet" href="styles/font/stylesheet.css">
 
   <!-- Scripts -->
-  <script></script>
-  <script>var require = {paths: {'core/configuration': '../conf/app-configuration'}};</script>
   <!-- The scripts included below are used for video support. The production minification,
   and the videojs-vast plugin expecting from the vast-client plugin to to always be globally declared,
   are two of the factors making these dependencies injections impossible. -->
@@ -44,17 +42,9 @@
   <script src="bower_components/vast-client-js/vast-client.js"></script>
   <script src="bower_components/videojs-vast/videojs.vast.js"></script>
   <!-- endbuild -->
+  <script>var require = {paths: {'core/configuration': '../conf/app-configuration'}};</script>
   <script src="conf/plugins-configuration.js"></script>
   <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
-  <script>
-    console.log("Printing modules loaded by requirejs");
-    var start = +new Date();
-    // https://github.com/jrburke/requirejs/wiki/Internal-API:-onResourceLoad
-    requirejs.onResourceLoad = function (context, map, depArray) {
-      var duration = new Date() - start;
-      console.log("onResourceLoad", duration + "ms", map.id);
-    };
-  </script>
   <script>
     // This warning is for developers : if a plugin can't load a dependency, I don't really want to throw an `alert`...
     requirejs.onError = function (err) {

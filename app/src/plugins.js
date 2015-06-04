@@ -9,7 +9,7 @@ if (localStorage.plugins) {
   var pluginsInfo = JSON.parse(localStorage.plugins);
   for (var i = 0; i < pluginsInfo.length; ++i) {
     var pluginInfo = pluginsInfo[i];
-    pluginsModuleDependencies.push(window.PLUGINS_CONFIGURATION[pluginInfo.name].url + pluginInfo.setupFile);
+    pluginsModuleDependencies.push(window.PLUGINS_CONFIGURATION[pluginInfo.name].url + '/' + pluginInfo.setupFile);
     define(pluginInfo.moduleName, ['navigator'], function () {
       var data = {};
       var pluginService = {};

@@ -1,6 +1,5 @@
 require.config({
   baseUrl: "/src",
-  waitSeconds: 0,
   paths: {
     "jquery": "../bower_components/jquery/jquery",
     "angular": "../bower_components/angular/angular",
