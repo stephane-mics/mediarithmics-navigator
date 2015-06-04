@@ -39,8 +39,8 @@ define(['./module'], function (module) {
         if (angular.isDefined(DOMParser)) {
           var parser = new DOMParser();
           xmlDoc = parser.parseFromString(vast, "text/xml");
-        } else if (angular.isDefined(ActiveXObject)) {
-          xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        } else if (angular.isDefined(window.ActiveXObject)) {
+          xmlDoc = new window.ActiveXObject("Microsoft.XMLDOM");
           xmlDoc.async = false;
           xmlDoc.loadXML(vast);
         }

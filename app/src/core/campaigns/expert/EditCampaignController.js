@@ -7,9 +7,9 @@ define(['./module', 'moment'], function (module, moment) {
    */
 
   module.controller('core/campaigns/expert/EditCampaignController', [
-    '$scope', '$modal', '$log', '$location', '$stateParams', 'lodash', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
+    'jquery', '$scope', '$modal', '$log', '$location', '$stateParams', 'lodash', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
     'core/common/WaitingService', 'core/common/ErrorService', 'core/campaigns/goals/GoalsService',
-    function ($scope, $modal, $log, $location, $stateParams, _, DisplayCampaignService, CampaignPluginService, WaitingService, ErrorService, GoalsService) {
+    function (jQuery, $scope, $modal, $log, $location, $stateParams, _, DisplayCampaignService, CampaignPluginService, WaitingService, ErrorService, GoalsService) {
       var campaignId = $stateParams.campaign_id;
       $scope.goalTypes = GoalsService.getGoalTypesList();
       $scope.isConversionType = GoalsService.isConversionType;
@@ -146,8 +146,8 @@ define(['./module', 'moment'], function (module, moment) {
             if (GoalsService.isConversionType(type)) {
               $scope.conversionGoals = [];
             }
-            var goalsToRemove = $.grep($scope.selectedGoals, function (g) {
-              return g.goal_selection_type == type;
+            var goalsToRemove = jQuery.grep($scope.selectedGoals, function (g) {
+              return g.goal_selection_type === type;
             });
             self.removeGoals(goalsToRemove);
           }
