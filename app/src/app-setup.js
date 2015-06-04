@@ -39,10 +39,13 @@ define([
   'use strict';
 
   var appModuleDependencies = ['navigator'];
-  if (typeof localStorage.plugins !== 'undefined') {
+  if (localStorage.plugins) {
     var pluginsInfo = JSON.parse(localStorage.plugins);
     for (var i = 0; i < pluginsInfo.length; ++i) {
-      appModuleDependencies.push(pluginsInfo[i].name)
+      var plugin = window.PLUGINS_CONFIGURATION[pluginsInfo[i].name];
+      if (plugin.isLoaded) {
+        appModuleDependencies.push(pluginsInfo[i].name)
+      }
     }
   }
   return angular.module('app', appModuleDependencies);
