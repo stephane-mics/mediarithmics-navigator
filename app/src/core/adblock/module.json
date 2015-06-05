@@ -1,2 +1,5 @@
-{"name": "core/adblock", "dependencies": [
-]}
+{
+  "name": "core/adblock",
+  "dependencies": [
+  ]
+}
