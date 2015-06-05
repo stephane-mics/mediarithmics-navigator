@@ -125,7 +125,7 @@
         </div>
         <span>Display networks</span>
       </div>
-      <div ng-show="inventorySources" class="mics-default-block display-network-list">
+      <div ng-show="inventorySources.length" class="mics-default-block display-network-list">
         <span class="label label-default selected-display-network" ng-repeat="source in inventorySources|orderBy:'display_network_name'">
           <a class="close" aria-hidden="true" type="button" ng-click="removeInventorySource(source)">x</a>
           {{source.display_network_name}}
@@ -157,13 +157,13 @@
         </div>
         <span ng-show="(simpleGoals.length != 1)">Goals</span>
         <span ng-show="(simpleGoals.length == 1)">Goal : Click on ad </span>
-        <button class="pull-right mics-btn mics-btn-action" type="button" ng-click="toggleMoreGoals()" ng-show="simpleGoals">
+        <button class="pull-right mics-btn mics-btn-action" type="button" ng-click="toggleMoreGoals()" ng-show="simpleGoals.length">
           More
         </button>
       </div>
 
       <!--List Goals-->
-      <div ng-show="simpleGoals">
+      <div ng-show="simpleGoals.length">
         <br/>
         <table class="fragment-list-keyword-list">
           <thead>
