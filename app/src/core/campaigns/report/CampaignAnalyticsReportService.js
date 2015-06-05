@@ -19,7 +19,7 @@ define(['./module'], function (module) {
     // return the index of a metric in the list of metrics (excluding the dimensions)
     this.getMetricIndex = function(metric) {
       return self.getMetrics().indexOf(metric);
-    }
+    };
 
     /**
      * get the first row where the first column match the id
@@ -108,7 +108,9 @@ define(['./module'], function (module) {
       function ($resource, Session, AuthenticationService, configuration,moment ) {
       
         var WS_URL = configuration.WS_URL;
-        if (configuration.ANALYTICS_ENGINE != "business-analytics") WS_URL = WS_URL.replace("api", "dev-api");
+        if (configuration.ANALYTICS_ENGINE !== "business-analytics") {
+          WS_URL = WS_URL.replace("api", "dev-api");
+        }
       
         var displayCampaignResource = $resource(
           WS_URL + "/reports/display_campaign_performance_report",
@@ -121,7 +123,7 @@ define(['./module'], function (module) {
         );
 
         var adGroupResource = {};
-        if (configuration.ANALYTICS_ENGINE == "business-analytics") {
+        if (configuration.ANALYTICS_ENGINE === "business-analytics") {
            adGroupResource = $resource(WS_URL + "/reports/ad_group_performance_report",
             {},
             {get: {
@@ -182,7 +184,7 @@ define(['./module'], function (module) {
 
         var ReportService = {};  
 
-        if (configuration.ANALYTICS_ENGINE != "business-analytics") { 
+        if (configuration.ANALYTICS_ENGINE !== "business-analytics") {
           
   
           ReportService = {
@@ -398,7 +400,7 @@ define(['./module'], function (module) {
         * BUSINESS ANALYTICS 
         */
 
-        if (configuration.ANALYTICS_ENGINE == "business-analytics") { 
+        if (configuration.ANALYTICS_ENGINE === "business-analytics") {
           
   
           ReportService.creativePerformance = function (campaignId) {
@@ -517,17 +519,17 @@ define(['./module'], function (module) {
             
             ReportService.getDateRange = function () {
               return range;
-            }
+            };
             
             
             ReportService.setDateRange = function (newRange) {
               range = newRange;
-            }
+            };
             
             
-            ReportService.getStartDate = function () {return startDate();}
+            ReportService.getStartDate = function () {return startDate();};
             
-            ReportService.getEndDate = function () {return endDate();}
+            ReportService.getEndDate = function () {return endDate();};
   
             ReportService.dayPerformance = function (campaignId, leftMetric, rightMetric) {
   

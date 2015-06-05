@@ -92,7 +92,7 @@ define(['./module', 'moment'], function (module, moment) {
         };
 
         $scope.addGoal = function (type) {
-          if(type == 'CONVERSION') {
+          if(type === 'CONVERSION') {
             $modal.open({
               templateUrl: 'src/core/goals/ChooseExistingGoal.html',
               scope: $scope,
@@ -113,12 +113,9 @@ define(['./module', 'moment'], function (module, moment) {
         });
 
         $scope.updateDefaultGoalSelection = function () {
-          
-          _.forEach(DisplayCampaignService.getGoalSelections(), function(gs) {gs.default=false; return;})
+          _.forEach(DisplayCampaignService.getGoalSelections(), function(gs) {gs.default=false;});
           $scope.campaignScopeHelper.defaultGoalSelection.default = true;
-          return ;
-
-        }
+        };
 
 
         $scope.removeInventorySource = function (source) {
