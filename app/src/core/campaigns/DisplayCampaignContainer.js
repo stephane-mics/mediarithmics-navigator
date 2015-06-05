@@ -118,11 +118,11 @@ define(['./module'], function (module) {
 
       DisplayCampaignContainer.prototype.addGoalSelection = function (goalSelection) {
         var found = _.find(this.goalSelections, function (source) {
-          return (source.goal_id == goalSelection.goal_id) && (source.goal_selection_type == goalSelection.goal_selection_type);
+          return (source.goal_id === goalSelection.goal_id) && (source.goal_selection_type === goalSelection.goal_selection_type);
         });
         if (!found) {
           goalSelection.id = IdGenerator.getId();
-          goalSelection.default = this.goalSelections.length == 0;
+          goalSelection.default = this.goalSelections.length === 0;
           this.goalSelections.push(goalSelection);
         }
         return goalSelection.id || found.id;

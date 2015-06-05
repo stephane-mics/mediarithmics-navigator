@@ -12,19 +12,19 @@ define(['./module'], function (module) {
 
   module.filter('mcsConditionOperator', function () {
       return function (input) {
-      	if(input == 'INF') {
+      	if(input === 'INF') {
       		return '<';
-      	} else if(input == 'SUP') {
+      	} else if(input === 'SUP') {
       		return '>';
-      	} else if(input == 'EQUAL') {
+      	} else if(input === 'EQUAL') {
           return '=';
-        } else if(input == 'COPY') {
+        } else if(input === 'COPY') {
           return 'Copy value';
-        } else if(input == 'NOT_EQUAL') {
+        } else if(input === 'NOT_EQUAL') {
           return '≠';
-        } else if(input == 'NOT_MATCH') {
+        } else if(input === 'NOT_MATCH') {
           return 'Doesn\'t match';
-        } else if(input == 'MATCH') {
+        } else if(input === 'MATCH') {
           return 'Matches';
         }
         return  input;
