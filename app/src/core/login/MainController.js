@@ -4,6 +4,9 @@ define(['./module', "autofill-event"], function (module) {
   module.controller('core/login/MainController', [
     '$scope', '$location', '$log', '$rootScope', 'jquery', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
     function($scope, $location, $log, $rootScope, $, AuthenticationService, Session, LoginConstants) {
+      if (Session.isInitialized()) {
+        $location.path("/campaigns")
+      }
       $scope.user = {email:"", password:""};
 
       setTimeout(function() {
