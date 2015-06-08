@@ -1,7 +1,6 @@
 # Navigator Loading
 
 This specification explains how [Navigator](http://navigator.mediarithmics.com/#/) loads its modules and its plugins modules using RequireJS and AngularJS.  
-As of today, Navigator has only one plugin, the Administration Platform.  
 
 If you are not familiar with dependencies injection please check out:
 * [The RequireJS Documentation](http://requirejs.org/docs/api.html#usage)
@@ -33,11 +32,10 @@ In __app-setup.js__ we require all the modules we are going to use as well as <f
 In __navigator.js__, <font color="#13BA6E">navigator</font> relies on <font color="#13BA6E">navigator-setup</font> to build the AngularJS <font color="#B522DD">navigator</font> module. It also sets up the basic configuration and routes to access Navigator itself. <font color="#13BA6E">plugins</font> relies on what is in localStorage to define the Plugins.
 
 
-## How To Load The Admin Plugin
+## How To Add A Plugin
 
-Open the console in your browser and set the localStorage with the command below.
+Open the console in your browser and set the localStorage with the command below, replacing 'foo' with the name of your plugin.
 
-    localStorage.plugins = "[{\"name\":\"admin\", \"moduleName\":\"admin.conf\", \"urn\":\"/admin\", \"setupFile\":\"main.js\"}]"
+    localStorage.plugins = "[{\"name\":\"foo\", \"moduleName\":\"foo.conf\", \"urn\":\"/foo\", \"setupFile\":\"main.js\"}]"
 
-Setup __app-configuration.js__ using the __app-configuration.js.template__ and put it in the __conf__ folder.  
-Start the admin-platform with `grunt serve`.
+Setup your plugin configuration then start your plugin and reload navigator.
