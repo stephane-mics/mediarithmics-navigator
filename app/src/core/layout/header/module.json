@@ -1,4 +1,6 @@
 {
   "name": "core/layout/header",
-  "dependencies": ["core/layout/header/navbar/navigator-navbar"]
+  "dependencies": [
+    "core/layout/header/navbar/navigator-navbar"
+  ]
 }

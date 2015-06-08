@@ -1,5 +1,7 @@
 define(['app-setup', 'angularAMD'],
   function (app, angularAMD) {
+    'use strict';
+
     app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
       function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
         var defaults = _.partialRight(_.assign, function (a, b) {
