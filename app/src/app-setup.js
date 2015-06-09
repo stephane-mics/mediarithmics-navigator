@@ -33,6 +33,7 @@ define([
   'core/datamart/index',
   'core/layout/index',
   'core/settings/index',
+  'optional-plugin',
   'navigator',
   'plugins'
 ], function () {

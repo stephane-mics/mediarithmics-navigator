@@ -5,7 +5,7 @@ define(['./module', "autofill-event"], function (module) {
     '$scope', '$location', '$log', '$rootScope', 'jquery', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
     function($scope, $location, $log, $rootScope, $, AuthenticationService, Session, LoginConstants) {
       if (Session.isInitialized()) {
-        $location.path("/campaigns")
+        $location.path("/campaigns");
       }
       $scope.user = {email:"", password:""};
 
