@@ -35,11 +35,10 @@ define(['./module'], function (module) {
       CampaignAnalyticsReportService.getEndDate().toDate().getTime()
     ];
 
-    CampaignAnalyticsReportService.dayPerformance(
-      campaignId,
-      "clicks", "impressions"
-    ).then(function (data) {
-        $scope.data1 = data;
+    CampaignAnalyticsReportService
+      .dayPerformance(campaignId, "clicks", "impressions")
+      .then(function (data) {
+        $scope.chartData = data;
       });
 
 
@@ -82,7 +81,8 @@ define(['./module'], function (module) {
     '$scope', '$location', '$log', '$stateParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal', 'core/common/auth/Session',
     function ($scope, $location, $log, $stateParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal, Session) {
       $scope.valTo = 10;
-
+      $scope.timeFilters = ['Daily', 'Hourly'];
+      $scope.chartTimeFilter = $scope.timeFilters[0];
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
 
