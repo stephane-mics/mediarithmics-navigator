@@ -59,16 +59,20 @@
              interpolate="linear"
              clipEdge="true"
              data="chartData"
-             id="exampleId2"
-             xAxisTickFormat="xAxisTickFormat()">
+             xaxistickformat="xAxisTickFormat()"
+             xaxistickvalues="xAxisTicks()"
+             timefilter="chartTimeFilter">
         </div>
         <div class="row chart-legend">
           <div class="col-xs-6">
             <span class="y1-legend">Impressions</span>
             <span class="y2-legend">Clicks</span>
           </div>
-          <div class="col-xs-offset-4 col-xs-2">
-            <select id="role" ng-model="chartTimeFilter" class="form-control" ng-options="timeFilter for timeFilter in timeFilters"></select>
+          <div ng-show="!dateRangeIsToday()" class="col-xs-offset-4 col-xs-2">
+            <select id="role" ng-model="timeFilter" class="form-control" ng-click="refresh()" ng-options="timeFilter for timeFilter in timeFilters"></select>
+          </div>
+          <div ng-show="dateRangeIsToday()" class="col-xs-offset-4 col-xs-2">
+            <strong>Hourly</strong>
           </div>
         </div>
       </div>

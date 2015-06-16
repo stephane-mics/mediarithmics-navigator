@@ -1,8 +1,5 @@
-/* global nv */
 define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (module, nv, ignore, d3) {
-
   'use strict';
-
 
   function initializeMargin(scope, attrs) {
     var margin = (scope.$eval(attrs.margin) || {left: 50, top: 50, bottom: 50, right: 50});
@@ -14,7 +11,6 @@ define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (
   }
 
   function checkElementID(scope, attrs, element, chart, data) {
-    console.log(data);
     var dataAttributeChartID; //randomly generated if id attribute doesn't exist
     if (!attrs.id) {
       dataAttributeChartID = 'chartid' + Math.floor(Math.random() * 1000000001);
@@ -52,50 +48,33 @@ define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (
     }
   }
 
-
   module.directive('nvd3DoubleLineChart', [function () {
     return {
       restrict: 'EA',
       scope: {
+        // Data Specific
         data: '=',
-        width: '@',
-        height: '@',
+
+        // Graph Specific
         id: '@',
-        showlegend: '@',
-        tooltips: '@',
-        showxaxis: '@',
-        showyaxis: '@',
-        rightalignyaxis: '@',
-        defaultstate: '@',
+        width: '@',
+        color: '&',
+        height: '@',
         nodata: '@',
         margin: '&',
-        tooltipcontent: '&',
-        color: '&',
-        x: '&',
-        y: '&',
-        isArea: '@',
-        interactive: '@',
-        clipedge: '@',
-        clipvoronoi: '@',
-        interpolate: '@',
-
         callback: '&',
-
-        useinteractiveguideline: '@',
-        //xaxis
-        xaxisorient: '&',
-        xaxisticks: '@',
-        xaxistickvalues: '&xaxistickvalues',
-        xaxisticksubdivide: '&',
-        xaxisticksize: '&',
-        xaxistickpadding: '&',
+        showlegend: '@',
+        interactive: '@',
+        tooltipcontent: '&',
+        xaxistickvalues: '&',
         xaxistickformat: '&',
-        //angularjs specific
-        objectequality: '@', //$watch(watchExpression, listener, objectEquality)
+        useinteractiveguideline: '@',
 
-        //d3.js specific
+        // AngularJS Specific
+        objectequality: '@',
+
+        // d3.js Specific
         transitionduration: '@'
-
       },
       controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
         $scope.d3Call = function (data, chart) {
@@ -105,33 +84,25 @@ define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (
       link: function (scope, element, attrs) {
         scope.$watch('data', function (data) {
           if (data) {
-            //if the chart exists on the scope, do not call addGraph again, update data and call the chart.
+            // When the chart exists we only update the data.
             if (scope.chart) {
+              scope.chart.tooltipContent(scope.tooltipcontent());
+              scope.chart.xAxis
+                .tickValues(scope.xaxistickvalues())
+                .tickFormat(scope.xaxistickformat());
               return scope.d3Call(data, scope.chart);
             }
+            // Create the graph
             nv.addGraph({
               generate: function () {
                 initializeMargin(scope, attrs);
                 var chart = nv.models.doubleLineChart()
-                  //                                        .width(scope.width)
-                  //                                        .height(scope.height)
-                  //                                        .margin(scope.margin)
-                  //                                        .x(attrs.x === undefined ? function(d){ return d[0]; } : scope.x())
-                  //                                        .y(attrs.y === undefined ? function(d){ return d[1]; } : scope.y())
-                  //                                        .forceX(attrs.forcex === undefined ? [] : scope.$eval(attrs.forcex)) // List of numbers to Force into the X scale (ie. 0, or a max / min, etc.)
-                  //                                        .forceY(attrs.forcey === undefined ? [0] : scope.$eval(attrs.forcey)) // List of numbers to Force into the Y scale
                   .showLegend(attrs.showlegend === undefined ? false : (attrs.showlegend === 'true'))
                   .tooltips(true)
                   .showXAxis(true)
                   .showYAxis(true)
-                  //                                        .rightAlignYAxis(attrs.rightalignyaxis === undefined ? false : (attrs.rightalignyaxis === 'true'))
                   .noData(attrs.nodata === undefined ? 'No Data Available.' : scope.nodata)
-                  //                                        .interactive(attrs.interactive === undefined ? false : (attrs.interactive === 'true'))
-                  //                                        .clipEdge(attrs.clipedge === undefined ? false : (attrs.clipedge === 'true'))
-                  //                                        .clipVoronoi(attrs.clipvoronoi === undefined ? false : (attrs.clipvoronoi === 'true'))
-                  //                                        .interpolate(attrs.interpolate === undefined ? 'linear' : attrs.interpolate)
                   .color(attrs.color === undefined ? nv.utils.defaultColor() : scope.color());
-                //                                        .isArea(attrs.isarea === undefined ? function(d) { return d.area; } : function(){ return (attrs.isarea === 'true'); });
 
                 if (chart.useInteractiveGuideline) {
                   chart.useInteractiveGuideline(true);
@@ -156,8 +127,5 @@ define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (
         }, (attrs.objectequality === undefined ? false : (attrs.objectequality === 'true')));
       }
     };
-
-
   }]);
-
 });

@@ -1,4 +1,4 @@
-define(['./module'], function (module) {
+define(['./module', 'lodash'], function (module, _) {
   'use strict';
 
   /**
@@ -7,19 +7,17 @@ define(['./module'], function (module) {
   function ReportWrapper(report) {
     var self = this;
 
-    // return the list of the report metrics (excluding the dimensions)
+    // Return the list of the report metrics (excluding the dimensions)
     this.getMetrics = function () {
       return _.filter(report.columns_headers, isMetrics);
     };
 
-    // return the index of a metric in the list of metrics (excluding the dimensions)
+    // Return the index of a metric in the list of metrics (excluding the dimensions)
     this.getMetricIndex = function (metric) {
       return self.getMetrics().indexOf(metric);
     };
 
-    /**
-     * get the first row where the first column match the id
-     */
+    // Get the first row where the first column matches the id
     this.getRow = _.memoize(function (id) {
       var row = _.select(report.rows, function (r) {
         return (r[0] + "") === (id + "");
@@ -32,12 +30,21 @@ define(['./module'], function (module) {
     });
 
     this.getRowWithHeader = function (header, id) {
-      var row = _.select(report.rows, function (r) {
-        return (r[self.getHeaderIndex(header)] + "") === (id + "");
+      var index = self.getHeaderIndex(header);
+      var selectedRow = _.select(report.rows, function (row) {
+        return (row[index] + "") === (id + "");
       })[0];
-      return self.decorate(row);
+      return self.decorate(selectedRow);
     };
 
+    this.getRowWithHeaders = function (header1, id1, header2, id2) {
+      var index1 = self.getHeaderIndex(header1);
+      var index2 = self.getHeaderIndex(header2);
+      var selectedRow = _.select(report.rows, function (row) {
+        return (row[index1] + "") === (id1 + "") && (row[index2] + "") === (id2 + "");
+      })[0];
+      return self.decorate(selectedRow);
+    };
 
     this.decorate = _.memoize(function (row) {
       if (row === undefined) {
@@ -54,10 +61,9 @@ define(['./module'], function (module) {
         });
       }
     });
+
     this.getMetricName = function (input) {
-      input = input || '';
-      var out = tableHeaders[input].name || input;
-      return out;
+      return tableHeaders[input].name || input || '';
     };
 
     this.getMetricType = function (index) {
@@ -72,6 +78,7 @@ define(['./module'], function (module) {
   var isMetrics = function (e) {
     return !(/name|id|day|site/).test(e);
   };
+
   var notMetrics = function (e) {
     return (/name|id|day|site/).test(e);
   };
@@ -94,14 +101,17 @@ define(['./module'], function (module) {
   };
 
 
+  /**
+   * Campaign Analytics Report Service
+   */
   module.factory('CampaignAnalyticsReportService',
     ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment',
-
       function ($resource, Session, AuthenticationService, configuration, moment) {
         var WS_URL = configuration.WS_URL;
-        if (configuration.ANALYTICS_ENGINE !== "business-analytics") {
-          WS_URL = WS_URL.replace("api", "dev-api");
-        }
+
+        /**
+         * Resources definition
+         */
 
         var displayCampaignResource = $resource(
           WS_URL + "/reports/display_campaign_performance_report",
@@ -114,29 +124,15 @@ define(['./module'], function (module) {
           }
         );
 
-        var adGroupResource = {};
-        if (configuration.ANALYTICS_ENGINE === "business-analytics") {
-          adGroupResource = $resource(WS_URL + "/reports/ad_group_performance_report",
-            {},
-            {
-              get: {
-                method: 'GET',
-                headers: {'Authorization': AuthenticationService.getAccessToken()}
-              }
+        var adGroupResource = $resource(WS_URL + "/reports/ad_group_performance_report",
+          {},
+          {
+            get: {
+              method: 'GET',
+              headers: {'Authorization': AuthenticationService.getAccessToken()}
             }
-          );
-        } else {
-          // the legacy has a typo in the url : adgroup
-          adGroupResource = $resource(WS_URL + "/reports/adgroup_performance_report",
-            {},
-            {
-              get: {
-                method: 'GET',
-                headers: {'Authorization': AuthenticationService.getAccessToken()}
-              }
-            }
-          );
-        }
+          }
+        );
 
         var adResource = $resource(WS_URL + "/reports/ad_performance_report",
           {},
@@ -147,6 +143,7 @@ define(['./module'], function (module) {
             }
           }
         );
+
         var creativeResource = $resource(WS_URL + "/reports/creative_performance_report",
           {},
           {
@@ -156,6 +153,7 @@ define(['./module'], function (module) {
             }
           }
         );
+
         var mediaResource = $resource(WS_URL + "/reports/media_performance_report",
           {},
           {
@@ -165,18 +163,24 @@ define(['./module'], function (module) {
             }
           }
         );
+
+        /**
+         * Default Date Range Used For Daily Stats
+         */
+
         var range = {startDate: moment().subtract('days', 20), endDate: moment()};
 
         var startDate = function () {
           return moment(range.startDate).startOf('day');
         };
+
         var endDate = function () {
           return moment(range.endDate).add(1, 'day').startOf('day');
         };
 
 
         /**
-         * REPORT SERVICE
+         * Report Service
          */
 
         var ReportService = {};
@@ -303,26 +307,13 @@ define(['./module'], function (module) {
           return endDate();
         };
 
-        ReportService.dayPerformance = function (campaignId, leftMetric, rightMetric) {
-          /**
-           * If the axis only has one point, d3 will show a single point.
-           * In that case, we want a continue line : we duplicate the point.
-           * @param {Array} yAxis the axis to check.
-           */
-          var duplicatePointsIfNecessary = function (yAxis) {
-            if (yAxis.length === 1) {
-              var date = moment(yAxis[0].x);
-              // the date starts at 0:00, we add 23 points to cover all the day
-              // d3 can do that but I don't want to change the default behavior for the other ranges.
-              for (var i = 1; i < 24; i += 1) {
-                yAxis.push({
-                  x: date.clone().add('hours', i),
-                  y: yAxis[0].y
-                });
-              }
-            }
-          };
+        ReportService.dateRangeIsToday = function () {
+          //console.log("DATE RANGE IS TODAY - ", range.startDate.format(), " | ", range.endDate.format());
+          return this.getStartDate().valueOf() >= this.getEndDate().subtract('days', 1).valueOf();
+        };
 
+
+        ReportService.dailyPerformance = function (campaignId, leftMetric, rightMetric) {
           /**
            * This function iterates on report rows to map
            * x,y points in the Nvd3 format
@@ -350,13 +341,10 @@ define(['./module'], function (module) {
                 y2.push({x: dateIter.valueOf(), y: 0});
               } else {
                 y2.push({x: dateIter.valueOf(), y: row[rightMetricIndex].value});
-
               }
+
               dateIter = dateIter.add(1, 'day');
             }
-
-            duplicatePointsIfNecessary(y1);
-            duplicatePointsIfNecessary(y2);
 
             return [
               {
@@ -385,7 +373,72 @@ define(['./module'], function (module) {
           }).$promise.then(dailyStatsMapping);
         };
 
-        return ReportService;
+        /**
+         * Hourly Performance For One Day
+         */
+        ReportService.hourlyPerformance = function (campaignId, leftMetric, rightMetric) {
+          /**
+           * This function iterates on report rows to map
+           * x,y points in the Nvd3 format
+           * WARNING : dateIter.valueOf returns the timestamp in the navigator timezone
+           */
+          var hourlyStatsMapping = function (response) {
+            //response.report_view.rows[0] = ["1020", "2015-06-15", 0, 27, 1358];
 
+            var y1 = [], y2 = [];
+            var report = new ReportWrapper(response.report_view);
+            var leftMetricIndex = report.getMetricIndex(leftMetric);
+            var rightMetricIndex = report.getMetricIndex(rightMetric);
+            var dateIter = startDate();
+
+            while (dateIter.isBefore(endDate())) {
+              // Key represent each hour
+              var key = dateIter.format("YYYY-MM-DD");
+              var key2 = dateIter.format("H");
+              var row = report.getRowWithHeaders("day", key, "hour_of_day", key2);
+
+              if (row[leftMetricIndex] === 0) {
+                y1.push({x: dateIter.valueOf(), y: 0});
+              } else {
+                y1.push({x: dateIter.valueOf(), y: row[leftMetricIndex].value});
+              }
+
+              if (row[rightMetricIndex] === 0) {
+                y2.push({x: dateIter.valueOf(), y: 0});
+              } else {
+                y2.push({x: dateIter.valueOf(), y: row[rightMetricIndex].value});
+              }
+
+              dateIter = dateIter.add(1, 'hour');
+            }
+
+            return [
+              {
+                area: true,
+                values: y1,
+                key: leftMetric,
+                color: "#FE5858"
+              },
+              {
+                values: y2,
+                area: true,
+                right: true,
+                key: rightMetric,
+                color: "#00AC67"
+              }
+            ];
+          };
+
+          return displayCampaignResource.get({
+            organisation_id: Session.getCurrentWorkspace().organisation_id,
+            start_date: startDate().format('YYYY-MM-D'),
+            end_date: endDate().format('YYYY-MM-D'),
+            dimension: "day,hour_of_day",
+            metrics: leftMetric + "," + rightMetric,
+            filters: "campaign_id==" + campaignId
+          }).$promise.then(hourlyStatsMapping);
+        };
+
+        return ReportService;
       }]);
 });
