@@ -74,11 +74,8 @@
             <span class="y2-legend">Clicks</span>
             <span class="y1-legend">Impressions</span>
           </div>
-          <div ng-show="!dateRangeIsToday()" class="col-xs-offset-4 col-xs-2">
-            <select id="role" ng-model="timeFilter" class="form-control" ng-click="refresh()" ng-options="timeFilter for timeFilter in timeFilters"></select>
-          </div>
-          <div ng-show="dateRangeIsToday()" class="col-xs-offset-4 col-xs-2">
-            <strong>Hourly</strong>
+          <div class="col-xs-offset-4 col-xs-2">
+            <select id="role" ng-model="timeFilter" class="form-control precision-filter" ng-click="refresh()" ng-options="timeFilter for timeFilter in timeFilters" ng-disabled="dateRangeIsToday()"></select>
           </div>
         </div>
       </div>
