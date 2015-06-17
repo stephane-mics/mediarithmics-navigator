@@ -49,7 +49,7 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
     }
   }
 
-  module.directive('nvd3DoubleLineChart', [function () {
+  module.directive('micsDoubleLineChart', [function () {
     return {
       restrict: 'EA',
       scope: {
@@ -67,9 +67,8 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
         showlegend: '@',
         interactive: '@',
         tooltipcontent: '&',
-        xaxistickvalues: '&',
-        xaxistickformat: '&',
         useinteractiveguideline: '@',
+        singleday: '&',
 
         // AngularJS Specific
         objectequality: '@',
@@ -87,9 +86,7 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
           if (data) {
             // When the chart exists we only update the data.
             if (scope.chart) {
-              scope.chart.xAxis
-                .tickValues(scope.xaxistickvalues())
-                .tickFormat(scope.xaxistickformat());
+              scope.chart.singleDay(scope.singleday());
               return scope.d3Call(data, scope.chart);
             }
             // Create the graph
@@ -112,10 +109,6 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
 
                 if (attrs.tooltipcontent) {
                   chart.tooltipContent(scope.tooltipcontent());
-                }
-
-                if (attrs.xaxistickformat) {
-                  chart.xAxis.tickFormat(scope.xaxistickformat());
                 }
 
                 scope.d3Call(data, chart);
