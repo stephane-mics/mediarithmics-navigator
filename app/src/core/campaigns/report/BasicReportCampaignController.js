@@ -79,7 +79,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.valTo = 10;
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
-      $scope.timeFilters = ['Daily', 'Hourly'];
+      $scope.timeFilters = ['Daily', 'Hourly']; // Time filters order is important
       $scope.timeFilter = $scope.timeFilters[0];
 
       DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
@@ -96,6 +96,10 @@ define(['./module', 'lodash'], function (module, _) {
             });
           });
         });
+
+        $scope.isHourlyMode = function() {
+          return $scope.timeFilter === $scope.timeFilters[1];
+        };
 
         $scope.getUrlForCreative = function (ad) {
           var type = "display-ad";

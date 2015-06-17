@@ -31,6 +31,7 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
       showLegend = true,
       showXAxis = true,
       singleDay = false,
+      hourlyMode = false,
       showYAxis = true,
       rightAlignYAxis = false,
       useInteractiveGuideline = false,
@@ -401,23 +402,22 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
             })
             .forEach(function (series, i) {
               pointIndex = nv.interactiveBisect(series.values, e.pointXValue, chart.x());
-              // TODO find how to deal with different number of series
-              //              if(!series.right) {
-              lines1.highlightPoint(i, pointIndex, true);
-              //              } else {
-              lines2.highlightPoint(i, pointIndex, true);
-              //              }
-
               var point = series.values[pointIndex];
-              if (typeof point === 'undefined') {
+              lines1.highlightPoint(i, pointIndex, true);
+              lines2.highlightPoint(i, pointIndex, true);
+
+              if (angular.isUndefined(point)) {
                 return;
               }
-              if (typeof singlePoint === 'undefined') {
+
+              if (angular.isUndefined(singlePoint)) {
                 singlePoint = point;
               }
-              if (typeof pointXLocation === 'undefined') {
+
+              if (angular.isUndefined(pointXLocation)) {
                 pointXLocation = chart.xScale()(chart.x()(point, pointIndex));
               }
+
               allData.push({
                 key: series.key,
                 value: chart.y()(point, pointIndex),
@@ -438,16 +438,23 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
             }
           }
 
+          // Change tooltip title to display hour when hourly mode is selected
+          var timeFormat = function(d) { return d3.time.format('%H:%M')(new Date(d)); };
           var xValue = xAxis.tickFormat()(chart.x()(singlePoint, pointIndex));
+          var tooltipTitle = "";
+          if (singleDay || !hourlyMode) {
+            tooltipTitle = xValue;
+          } else {
+            tooltipTitle = xValue + " - " + timeFormat(chart.x()(singlePoint, pointIndex))
+          }
+
           interactiveLayer.tooltip
             .position({left: pointXLocation + margin.left, top: e.mouseY + margin.top})
             .chartContainer(that.parentNode)
             .enabled(tooltips)
-            .valueFormatter(function (d, i) {
-              return yAxis1.tickFormat()(d);
-            })
+            .valueFormatter(function (d, i) { return yAxis1.tickFormat()(d); })
             .data({
-              value: xValue,
+              value: tooltipTitle,
               series: allData
             })();
 
@@ -554,6 +561,14 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
         return singleDay;
       }
       singleDay = _;
+      return chart;
+    };
+
+    chart.hourlyMode = function (_) {
+      if (!arguments.length) {
+        return hourlyMode;
+      }
+      hourlyMode = _;
       return chart;
     };
 
