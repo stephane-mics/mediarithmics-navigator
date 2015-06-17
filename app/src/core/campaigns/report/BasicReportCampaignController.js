@@ -1,5 +1,4 @@
-/* global _, moment */
-define(['./module'], function (module) {
+define(['./module', 'lodash'], function (module, _) {
   'use strict';
 
   var getDataForRow = function (id, stats) {
@@ -13,6 +12,7 @@ define(['./module'], function (module) {
     var isMetrics = function (e) {
       return !(/name|id/).test(e);
     };
+
     var notMetrics = function (e) {
       return (/name|id/).test(e);
     };
@@ -26,51 +26,46 @@ define(['./module'], function (module) {
     return _.rest(statRow, _.findLastIndex(stats.columns_headers, notMetrics) + 1);
   };
 
-  var updateStatistics = function ($scope, CampaignAnalyticsReportService, $stateParams) {
+  var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
-
-    var campaignId = $stateParams.campaign_id;
+    if (CampaignAnalyticsReportService.dateRangeIsToday()) {
+      $scope.timeFilter = $scope.timeFilters[1];
+    }
 
     $scope.xaxisdomain = [CampaignAnalyticsReportService.getStartDate().toDate().getTime(),
       CampaignAnalyticsReportService.getEndDate().toDate().getTime()
     ];
 
-    CampaignAnalyticsReportService.dayPerformance(
-      campaignId,
-      "clicks", "impressions"
-    ).then(function (data) {
-        $scope.data1 = data;
-      });
+    // Get statistics according to time filter
+    if ($scope.timeFilter === $scope.timeFilters[1]) {
+      CampaignAnalyticsReportService.hourlyPerformance(campaignId, "clicks", "impressions")
+        .then(function (data) {
+          $scope.chartData = data;
+        });
+    } else {
+      CampaignAnalyticsReportService.dailyPerformance(campaignId, "clicks", "impressions")
+        .then(function (data) {
+          $scope.chartData = data;
+        });
+    }
 
-
-    CampaignAnalyticsReportService.adGroupPerformance(
-      campaignId
-    ).then(function (data) {
+    CampaignAnalyticsReportService.adGroupPerformance(campaignId)
+      .then(function (data) {
         $scope.adGroupPerformance = data;
       });
 
-    /*
-    CampaignAnalyticsReportService.creativePerformance(
-      campaignId
-    ).then(function (data) {
-        $scope.creativePerformance = data;
-      });
-    */
-    CampaignAnalyticsReportService.adPerformance(
-      campaignId
-    ).then(function (data) {
+    CampaignAnalyticsReportService.adPerformance(campaignId)
+      .then(function (data) {
         $scope.adPerformance = data;
       });
 
-    CampaignAnalyticsReportService.mediaPerformance(
-      campaignId
-    ).then(function (data) {
+    CampaignAnalyticsReportService.mediaPerformance(campaignId)
+      .then(function (data) {
         $scope.mediaPerformance = data;
       });
 
-    CampaignAnalyticsReportService.kpi(
-      campaignId
-    ).then(function (data) {
+    CampaignAnalyticsReportService.kpi(campaignId)
+      .then(function (data) {
         $scope.kpis = data;
       });
   };
@@ -82,16 +77,16 @@ define(['./module'], function (module) {
     '$scope', '$location', '$log', '$stateParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal', 'core/common/auth/Session',
     function ($scope, $location, $log, $stateParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal, Session) {
       $scope.valTo = 10;
-
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
+      $scope.timeFilters = ['Daily', 'Hourly'];
+      $scope.timeFilter = $scope.timeFilters[0];
 
-      $log.debug("fetching " + $stateParams.campaign_id);
       DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
         $scope.adgroups = campaign.ad_groups;
 
-        // bastard object to iterate easily with an ng-repeat
+        // Object used to iterate easily with an ng-repeat
         $scope.adsWithGroup = [];
         _.forEach(campaign.ad_groups, function (ad_group) {
           _.forEach(ad_group.ads, function (ad) {
@@ -111,38 +106,72 @@ define(['./module'], function (module) {
         };
 
         $scope.$watch('reportDateRange', function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
+          $scope.timeFilter = $scope.timeFilters[0];
+          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService);
         });
 
         $scope.refresh = function () {
-          updateStatistics($scope, CampaignAnalyticsReportService, $stateParams);
+          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService);
         };
       });
 
+      /**
+       * Utils
+       */
+
+      $scope.dateRangeIsToday = function () {
+        return CampaignAnalyticsReportService.dateRangeIsToday();
+      };
 
       $scope.getDataForRow = getDataForRow;
 
-      $scope.xAxisTickFormat = function () {
-        return function (d) {
-          return d3.time.format('%d %b')(new Date(d)); //uncomment for date format
-        };
+      /**
+       * X Axis Ticks
+       */
+
+      $scope.xAxisTicks = function () {
+        var tickValues = [];
+        if ($scope.dateRangeIsToday()) {
+          for (var i = 0; i < $scope.chartData[0].values.length; ++i) {
+            tickValues[i] = $scope.chartData[0].values[i].x;
+          }
+        }
+        return tickValues;
       };
+
+      var dailyXAxisTickFormat = function (d) {
+        return d3.time.format('%d %b')(new Date(d));
+      };
+
+      var hourlyXAxisTickFormat = function (d) {
+        return d3.time.format('%H:%M')(new Date(d));
+      };
+
+      $scope.xAxisTickFormat = function () {
+        return $scope.dateRangeIsToday() ? hourlyXAxisTickFormat : dailyXAxisTickFormat;
+      };
+
+      /**
+       * Y Axes Ticks
+       */
+
       $scope.yAxisTickFormat = function () {
         return function (d) {
           return d3.format(',f');
         };
       };
+
       $scope.y2AxisTickFormat = function () {
         return function (d) {
           return '$' + d3.format(',.2f')(d);
         };
       };
 
+      /**
+       * Campaigns Management
+       */
 
       $scope.editCampaign = function (campaign) {
-
-        $log.debug("> editCampaign for campaignId=", campaign.id);
-
         CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
           var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
           $location.path(location);

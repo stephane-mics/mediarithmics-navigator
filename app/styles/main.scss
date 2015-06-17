@@ -849,9 +849,15 @@ form.mcs-full-page-form {
               }
             }
 
-            .nv-y1, .nv-y2 {
+            .nv-y1 {
               text {
-                fill: $mcs-light-blue;
+                fill: #FE5858;
+              }
+            }
+
+            .nv-y2 {
+              text {
+                fill: #00AC67;
               }
             }
           }
