@@ -10,7 +10,6 @@ define([
   'restangular',
   'ngSanitize',
   'ngTable',
-  'nvd3ChartDirectives',
   'ngBootstrap',
   'jsplumb',
   'ui',

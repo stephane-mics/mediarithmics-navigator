@@ -7,7 +7,6 @@ define(['angular'], function () {
       'ngSanitize',
       'ngRoute',
       'restangular',
-      'nvd3ChartDirectives',
       'ngBootstrap',
       'ui.keypress',
       'ui.unique',
