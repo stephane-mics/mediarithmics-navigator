@@ -71,8 +71,9 @@
         </div>
         <div class="row chart-legend">
           <div class="col-xs-6">
-            <span class="y2-legend">Clicks</span>
-            <span class="y1-legend">Impressions</span>
+            <span class="y2-legend">{{charts.chart1}}</span>
+            <span class="y1-legend">{{charts.chart2}}</span>
+            <button class="mics-btn mics-btn-continue" ng-click="chooseCharts()"><span class="caret"></span></button>
           </div>
           <div class="col-xs-offset-4 col-xs-2">
             <select id="role" ng-model="timeFilter" class="form-control precision-filter" ng-click="refresh()" ng-options="timeFilter for timeFilter in timeFilters" ng-disabled="dateRangeIsToday()"></select>

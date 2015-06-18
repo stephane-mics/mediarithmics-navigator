@@ -369,6 +369,7 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
           g.select('.nv-y1.nv-axis')
             .transition()
             .call(yAxis1);
+          
           yAxis2
             .scale(y2)
             .ticks(availableHeight / 36)

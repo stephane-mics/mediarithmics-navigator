@@ -52,11 +52,15 @@ define(['./module', 'lodash'], function (module, _) {
           return 0;
         });
       } else {
+        // Keep all values from the data that is a metric
         var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
+        // Replace 'null' with 0 to be able to use the data with the charts
+        var clearedValues = values.map(function(v) { return v === null ? 0 : v });
         var type = _.map(this.getMetrics(), function (m) {
           return tableHeaders[m].type;
         });
-        return _.map(_.zip([values, type]), function (t) {
+        // Build data array matching data values and data types
+        return _.map(_.zip([clearedValues, type]), function (t) {
           return {value: t[0], type: t[1]};
         });
       }
@@ -97,7 +101,12 @@ define(['./module', 'lodash'], function (module, _) {
     "cpc": {name: "CPC", type: "currency"},
     "clicks": {name: "Clicks", type: "number"},
     "ctr": {name: "CTR", type: "percent"},
-    "cpm": {name: "CPM", type: "currency"}
+    "cpm": {name: "CPM", type: "currency"},
+
+    // TODO Remove and add hidden dimensions in campaign analytics
+    "delivery_cost": {name: "Delivery", type: "currency"},
+    "click_count": {name: "Click count", type: "number"},
+    "view_count": {name: "View count", type: "number"}
   };
 
 
@@ -308,7 +317,6 @@ define(['./module', 'lodash'], function (module, _) {
         };
 
         ReportService.dateRangeIsToday = function () {
-          //console.log("DATE RANGE IS TODAY - ", range.startDate.format(), " | ", range.endDate.format());
           return this.getStartDate().valueOf() >= this.getEndDate().subtract('days', 1).valueOf();
         };
 
@@ -383,8 +391,6 @@ define(['./module', 'lodash'], function (module, _) {
            * WARNING : dateIter.valueOf returns the timestamp in the navigator timezone
            */
           var hourlyStatsMapping = function (response) {
-            //response.report_view.rows[0] = ["1020", "2015-06-15", 0, 27, 1358];
-
             var y1 = [], y2 = [];
             var report = new ReportWrapper(response.report_view);
             var leftMetricIndex = report.getMetricIndex(leftMetric);

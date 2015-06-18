@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h3>Select Charts</h3>
+</div>
+<form>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-xs-6">
+        <table class="mics-table">
+          <thead>
+          <tr>
+            <th>Red Chart</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="chart in chartsList">
+            <td>
+              <label>
+                <input ng-disabled="charts.chart2 === chart"  type="radio" ng-model="charts.chart1" ng-value="chart">
+                {{chart}}
+              </label>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-xs-6">
+        <table class="mics-table">
+          <thead>
+          <tr>
+            <th>Green Chart</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="chart in chartsList">
+            <td>
+              <label>
+                <input ng-disabled="charts.chart1 === chart" type="radio" ng-model="charts.chart2" ng-value="chart">
+                {{chart}}
+              </label>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <a ng-click="choose()" class="mics-btn mics-btn-finish">Choose</a>
+    <a ng-click="cancel()" class="mics-btn mics-btn-cancel">Cancel</a>
+  </div>
+</form>
+
