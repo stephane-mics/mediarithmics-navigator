@@ -11,7 +11,8 @@ require.config({
 
     "lodash": "../bower_components/lodash/dist/lodash.compat",
     "d3": "../bower_components/d3/d3",
-    "nv.d3": "nvd3-templates/nv.d3",
+    "nv.d3": "../bower_components/nvd3/build/nv.d3",
+    "doubleLineChart": "nvd3-templates/doubleLineChart",
 
     "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap",
     "jqDaterangepicker": "../bower_components/bootstrap-daterangepicker/daterangepicker",
@@ -23,7 +24,6 @@ require.config({
     "plupload": "../bower_components/plupload/js/plupload.dev",
 
     // Angular JS modules
-    "nvd3ChartDirectives": "../bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives",
     "ngResource": "../bower_components/angular-resource/angular-resource",
     "ngCookies": "../bower_components/angular-cookies/angular-cookies",
     "ngSanitize": "../bower_components/angular-sanitize/angular-sanitize",
@@ -39,6 +39,7 @@ require.config({
   },
   shim: {
     'angular': {deps: ['jquery'], exports: 'angular'},
+    'nvd3': {exports: 'nv'},
     'angularAMD': ['angular'],
     'ngCookies': ['angular'],
     'ngResource': ['angular'],
@@ -47,7 +48,6 @@ require.config({
     'ngRoute': ['angular'],
     'checklist-model': ['angular'],
     'restangular': ['ngResource', 'lodash'],
-    'nvd3ChartDirectives': ['angular', 'd3'],
     'bootstrap': ['jquery'],
     'jqCookie': ['jquery'],
     'jqDaterangepicker': ['jquery', 'moment'],
@@ -58,7 +58,6 @@ require.config({
     'plupload': {deps: ['moxie'], exports: 'plupload'},
     'ui.router': ['angular'],
     'ui.router.extras': ['angular', 'ui.router'],
-    'nv.d3': {deps: ['nvd3-templates/d3.global']},
     'ngload': ['angularAMD'],
     // Navigator configuration
     'core/configuration': ['angular']

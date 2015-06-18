@@ -1,4 +1,5 @@
-define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (module, nv, ignore, d3) {
+/* global nv, d3 */
+define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1, ignore2, ignore3) {
   'use strict';
 
   function initializeMargin(scope, attrs) {
@@ -86,7 +87,6 @@ define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (
           if (data) {
             // When the chart exists we only update the data.
             if (scope.chart) {
-              scope.chart.tooltipContent(scope.tooltipcontent());
               scope.chart.xAxis
                 .tickValues(scope.xaxistickvalues())
                 .tickFormat(scope.xaxistickformat());
@@ -96,12 +96,14 @@ define(['./module', 'nv.d3', 'nvd3-templates/doubleLineChart', 'd3'], function (
             nv.addGraph({
               generate: function () {
                 initializeMargin(scope, attrs);
+
                 var chart = nv.models.doubleLineChart()
                   .showLegend(attrs.showlegend === undefined ? false : (attrs.showlegend === 'true'))
                   .tooltips(true)
                   .showXAxis(true)
                   .showYAxis(true)
-                  .noData(attrs.nodata === undefined ? 'No Data Available.' : scope.nodata)
+                  .interactive(true)
+                  .noData(attrs.nodata === undefined ? 'No Data Available' : scope.nodata)
                   .color(attrs.color === undefined ? nv.utils.defaultColor() : scope.color());
 
                 if (chart.useInteractiveGuideline) {

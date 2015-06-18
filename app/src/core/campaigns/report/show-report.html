@@ -54,19 +54,25 @@
         </div>
       </div>
       <div class="medium-chart">
-        <div class="chart with-3d-shadow "
-             nvd3-double-line-chart
-             interpolate="linear"
-             clipEdge="true"
-             data="chartData"
-             xaxistickformat="xAxisTickFormat()"
-             xaxistickvalues="xAxisTicks()"
-             timefilter="chartTimeFilter">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="chart"
+                 nvd3-double-line-chart
+                 interpolate="linear"
+                 clipEdge="true"
+                 data="chartData"
+                 height="100%"
+                 width="100%"
+                 xaxistickformat="xAxisTickFormat()"
+                 xaxistickvalues="xAxisTicks()"
+                 timefilter="chartTimeFilter">
+            </div>
+          </div>
         </div>
         <div class="row chart-legend">
           <div class="col-xs-6">
-            <span class="y1-legend">Impressions</span>
             <span class="y2-legend">Clicks</span>
+            <span class="y1-legend">Impressions</span>
           </div>
           <div ng-show="!dateRangeIsToday()" class="col-xs-offset-4 col-xs-2">
             <select id="role" ng-model="timeFilter" class="form-control" ng-click="refresh()" ng-options="timeFilter for timeFilter in timeFilters"></select>
