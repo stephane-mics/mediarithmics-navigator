@@ -57,14 +57,13 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="chart"
-                 nvd3-double-line-chart
+                 mics-double-line-chart
                  interpolate="linear"
                  clipEdge="true"
                  data="chartData"
                  height="100%"
                  width="100%"
-                 xaxistickformat="xAxisTickFormat()"
-                 xaxistickvalues="xAxisTicks()"
+                 singleday="dateRangeIsToday()"
                  timefilter="chartTimeFilter">
             </div>
           </div>

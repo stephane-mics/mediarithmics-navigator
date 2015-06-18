@@ -8,20 +8,29 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
      * Public Variables with Default Settings
      */
 
+    // Basic Chart variables
     var lines1 = nv.models.line(),
       lines2 = nv.models.line(),
       xAxis = nv.models.axis(),
       yAxis1 = nv.models.axis(),
       yAxis2 = nv.models.axis(),
       legend = nv.models.legend(),
-      interactiveLayer = nv.interactiveGuideline();
+      interactiveLayer = nv.interactiveGuideline(),
+      scale = d3.time.scale();
 
+    lines1.xScale(scale);
+    xAxis.orient('bottom').tickPadding(7);
+    yAxis1.orient('left');
+    yAxis2.orient('right');
+
+    // Margin
     var margin = {top: 10, right: 60, bottom: 20, left: 60},
       color = nv.utils.defaultColor(),
       width = null,
       height = null,
       showLegend = true,
       showXAxis = true,
+      singleDay = false,
       showYAxis = true,
       rightAlignYAxis = false,
       useInteractiveGuideline = false,
@@ -39,19 +48,6 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
       dispatch = d3.dispatch('tooltipShow', 'tooltipHide', 'stateChange', 'changeState'),
       transitionDuration = 250,
       comprehensibleValues = [1, 2, 5, 10];
-    var scale = d3.time.scale();
-    lines1.xScale(scale);
-    xAxis
-      .orient('bottom')
-      .tickPadding(7)
-    ;
-    yAxis1
-      .orient('left')
-    ;
-
-    yAxis2
-      .orient('right')
-    ;
 
     /**
      * Private Variables
@@ -338,24 +334,31 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
          */
 
         if (showXAxis) {
-          var numberOfDays = d3.time.day.range(range[0], range[1], 1).length + 1;
-          xAxis
-            .scale(x)
-            .tickSize(-availableHeight, 0);
+          var xValues = 0;
+          if (singleDay) {
+            xAxis.tickFormat(function (d) {
+              return d3.time.format('%H:%M')(new Date(d));
+            });
+            xValues = 24; // Because there are 24 hours a day
+          } else {
+            xAxis.tickFormat(function (d) {
+              return d3.time.format('%d %b')(new Date(d));
+            });
+            xValues = d3.time.day.range(range[0], range[1], 1).length + 1; // Depending on the selected days
+          }
+          xAxis.scale(x).tickSize(-availableHeight, 0);
 
-          if (numberOfDays < availableWidth / 100) {
+          if (xValues < availableWidth / 100) {
             xAxis.ticks(d3.time.day, 1);
           } else {
             xAxis.ticks(Math.floor(availableWidth / 100));
           }
 
-          g.select('.nv-x.nv-axis')
-            .attr('transform', 'translate(0,' + y1.range()[0] + ')');
-          g.select('.nv-x.nv-axis')
-            .transition()
-            .call(xAxis);
+          g.select('.nv-x.nv-axis').attr('transform', 'translate(0,' + y1.range()[0] + ')');
+          g.select('.nv-x.nv-axis').transition().call(xAxis);
         }
 
+        // Y Axes
         if (showYAxis) {
           yAxis1
             .scale(y1)
@@ -452,7 +455,7 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
         });
 
         interactiveLayer.dispatch.on("elementMouseout", function (e) {
-        dispatch.tooltipHide();
+          dispatch.tooltipHide();
           lines1.clearHighlights();
           lines2.clearHighlights();
         });
@@ -543,6 +546,14 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
         return showXAxis;
       }
       showXAxis = _;
+      return chart;
+    };
+
+    chart.singleDay = function (_) {
+      if (!arguments.length) {
+        return singleDay;
+      }
+      singleDay = _;
       return chart;
     };
 

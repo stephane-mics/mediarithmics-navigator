@@ -126,48 +126,6 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.getDataForRow = getDataForRow;
 
       /**
-       * X Axis Ticks
-       */
-
-      $scope.xAxisTicks = function () {
-        var tickValues = [];
-        if ($scope.dateRangeIsToday()) {
-          for (var i = 0; i < $scope.chartData[0].values.length; ++i) {
-            tickValues[i] = $scope.chartData[0].values[i].x;
-          }
-        }
-        return tickValues;
-      };
-
-      var dailyXAxisTickFormat = function (d) {
-        return d3.time.format('%d %b')(new Date(d));
-      };
-
-      var hourlyXAxisTickFormat = function (d) {
-        return d3.time.format('%H:%M')(new Date(d));
-      };
-
-      $scope.xAxisTickFormat = function () {
-        return $scope.dateRangeIsToday() ? hourlyXAxisTickFormat : dailyXAxisTickFormat;
-      };
-
-      /**
-       * Y Axes Ticks
-       */
-
-      $scope.yAxisTickFormat = function () {
-        return function (d) {
-          return d3.format(',f');
-        };
-      };
-
-      $scope.y2AxisTickFormat = function () {
-        return function (d) {
-          return '$' + d3.format(',.2f')(d);
-        };
-      };
-
-      /**
        * Campaigns Management
        */
 
