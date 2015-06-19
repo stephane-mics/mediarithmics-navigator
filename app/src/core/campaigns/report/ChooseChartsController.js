@@ -14,12 +14,18 @@ define(['./module'], function (module) {
         'Spent'
       ];
 
-      $scope.choose = function () {
+      $scope.save = function () {
         $modalInstance.close($scope.charts);
       };
 
       $scope.cancel = function () {
         $modalInstance.close(charts);
+      };
+
+      $scope.switch = function() {
+        var tmp = $scope.charts.chart1;
+        $scope.charts.chart1 = $scope.charts.chart2;
+        $scope.charts.chart2 = tmp;
       };
     }
   ]);
