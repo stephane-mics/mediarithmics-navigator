@@ -64,11 +64,11 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
         nodata: '@',
         margin: '&',
         callback: '&',
+        singleday: '&',
         showlegend: '@',
         interactive: '@',
-        tooltipcontent: '&',
+        hourlymode: '&',
         useinteractiveguideline: '@',
-        singleday: '&',
 
         // AngularJS Specific
         objectequality: '@',
@@ -86,6 +86,7 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
           if (data) {
             // When the chart exists we only update the data.
             if (scope.chart) {
+              scope.chart.hourlyMode(scope.hourlymode());
               scope.chart.singleDay(scope.singleday());
               return scope.d3Call(data, scope.chart);
             }
@@ -100,16 +101,9 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
                   .showXAxis(true)
                   .showYAxis(true)
                   .interactive(true)
+                  .useInteractiveGuideline(true)
                   .noData(attrs.nodata === undefined ? 'No Data Available' : scope.nodata)
                   .color(attrs.color === undefined ? nv.utils.defaultColor() : scope.color());
-
-                if (chart.useInteractiveGuideline) {
-                  chart.useInteractiveGuideline(true);
-                }
-
-                if (attrs.tooltipcontent) {
-                  chart.tooltipContent(scope.tooltipcontent());
-                }
 
                 scope.d3Call(data, chart);
                 nv.utils.windowResize(chart.update);
