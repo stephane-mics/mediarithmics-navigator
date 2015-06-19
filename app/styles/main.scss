@@ -112,7 +112,8 @@ $navbar-inverse-link-color: $body-bg;
     cursor: pointer;
     height: 30px;
     margin: 10px;
-  };
+  }
+;
 
   li.dropdown.open {
     background: white;
@@ -892,6 +893,10 @@ form.mcs-full-page-form {
             max-width: 10rem;
             max-height: 3rem;
           }
+          .selection-button {
+            padding: 0px 9px;
+          }
+        ;
         }
       }
       .big-chart {
