@@ -855,13 +855,13 @@ form.mcs-full-page-form {
 
             .nv-y1 {
               text {
-                fill: #FE5858;
+                fill: $mcs-red;
               }
             }
 
             .nv-y2 {
               text {
-                fill: #00AC67;
+                fill: $mcs-green;
               }
             }
           }
@@ -1707,7 +1707,7 @@ a.category-item {
   border-radius: 10px;
 }
 
-// ------------------ AUDIT STATUS ------------------
+// ------------------ Audit Status ------------------
 
 .audit-status {
   .status {
@@ -1715,5 +1715,21 @@ a.category-item {
     padding: 0 1rem 0 1rem;
     font-size: 17px;
     display: inline-block;
+  }
+}
+
+// ------------------ Double Line Chart Selection ------------------
+
+.double-line-chart-selection {
+  .chart1 {
+    border: 1.5px solid black;
+    background: $mcs-red;
+    color: $mcs-red;
+  }
+
+  .chart2 {
+    border: 1.5px solid black;
+    background: $mcs-green;
+    color: $mcs-green;
   }
 }
