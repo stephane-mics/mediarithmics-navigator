@@ -816,7 +816,7 @@ form.mcs-full-page-form {
         }
         dd {
           @extend .text-right;
-          font-size: 37px;
+          font-size: 32px;
           @include use-bold-font();
         }
         dd + dt {
@@ -841,6 +841,10 @@ form.mcs-full-page-form {
         .chart {
           height: 300px;
           position: static;
+
+          .nvtooltip {
+            background: white;
+          }
 
           svg {
             .nv-x {
@@ -883,6 +887,10 @@ form.mcs-full-page-form {
           }
           .y1-legend, .y2-legend {
             margin-right: 20px;
+          }
+          .precision-filter {
+            max-width: 10rem;
+            max-height: 3rem;
           }
         }
       }
