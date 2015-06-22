@@ -80,11 +80,11 @@ define(['./module', 'lodash'], function (module, _) {
   }
 
   var isMetrics = function (e) {
-    return !(/name|id|day|site/).test(e);
+    return !(/name|id|day|site|weighted_conversions/).test(e);
   };
 
   var notMetrics = function (e) {
-    return (/name|id|day|site/).test(e);
+    return (/name|id|day|site|weighted_conversions/).test(e);
   };
 
   var tableHeaders = {
@@ -102,8 +102,10 @@ define(['./module', 'lodash'], function (module, _) {
     "clicks": {name: "Clicks", type: "number"},
     "ctr": {name: "CTR", type: "percent"},
     "cpm": {name: "CPM", type: "currency"},
+    "cpa": {name: "CPA", type: "currency"},
 
     // TODO Remove and add hidden dimensions in campaign analytics
+    "weighted_conversions": {name: "Weighted Conversions", type: "number"}
     "delivery_cost": {name: "Delivery", type: "currency"},
     "click_count": {name: "Click count", type: "number"},
     "view_count": {name: "View count", type: "number"}
@@ -254,24 +256,26 @@ define(['./module', 'lodash'], function (module, _) {
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
-            metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr",
+            metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr,cpa",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
               var report = response.data.report_view;
               var firstLine = report.rows[0];
               if (firstLine === undefined) {
                 return {
+                  "cpa": 0,
+                  "cpc": 0,
                   "ctr": 0,
                   "cpm": 0,
-                  "impressions_cost": 0,
-                  "cpc": 0
+                  "impressions_cost": 0
                 };
               }
               return {
+                "cpa": firstLine[_.indexOf(report.columns_headers, "cpa")],
+                "cpc": firstLine[_.indexOf(report.columns_headers, "cpc")],
                 "ctr": firstLine[_.indexOf(report.columns_headers, "ctr")],
                 "cpm": firstLine[_.indexOf(report.columns_headers, "cpm")],
-                "impressions_cost": firstLine[_.indexOf(report.columns_headers, "impressions_cost")],
-                "cpc": firstLine[_.indexOf(report.columns_headers, "cpc")]
+                "impressions_cost": firstLine[_.indexOf(report.columns_headers, "impressions_cost")]
               };
             });
         };
@@ -283,7 +287,7 @@ define(['./module', 'lodash'], function (module, _) {
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
-            metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr",
+            metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr,cpa",
             filters: "organisation==" + organisation_id
           }).$promise.then(function (response) {
               var report = response.data.report_view;

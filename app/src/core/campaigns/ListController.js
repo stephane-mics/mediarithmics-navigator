@@ -3,7 +3,7 @@ define(['./module'], function (module) {
 
   var updateStatistics = function ($scope, CampaignAnalyticsReportService, organisationId) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
-    //Moment is not immutable
+    // Moment is not immutable
     var report = CampaignAnalyticsReportService.allCampaigns(organisationId);
     report.then(function (stats) {
       $scope.displayCampaignsStatistics = stats;

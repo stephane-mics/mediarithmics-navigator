@@ -37,21 +37,23 @@
     <div class="chart-area">
       <div class="kpi-area">
         <dl>
+          <dt ng-if="hasCPA">CPA</dt>
+          <dd ng-if="hasCPA">{{kpis.cpc | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
+          <dt>CPC</dt>
+          <dd>{{kpis.cpc | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
+          <dt>CTR</dt>
+          <dd>{{kpis.ctr | number }} %</dd>
           <dt>CPM</dt>
           <dd>{{kpis.cpm | number:2 | currencyWithSymbol:campaign.currency_code }}</dd>
           <dt>Spent</dt>
           <dd>{{kpis.impressions_cost | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
-          <dt>CTR</dt>
-          <dd>{{kpis.ctr | number }} %</dd>
-          <dt>CPC</dt>
-          <dd>{{kpis.cpc | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
         </dl>
-        <div class="kpi-legend">
-          <dl>
-            <dt>Weekly Budget</dt>
-            <dd>{{campaign.max_daily_budget * 7 | number}} €</dd>
-          </dl>
-        </div>
+        <!--<div class="kpi-legend">-->
+          <!--<dl>-->
+            <!--<dt>Weekly Budget</dt>-->
+            <!--<dd>{{campaign.max_daily_budget * 7 | number}} €</dd>-->
+          <!--</dl>-->
+        <!--</div>-->
       </div>
       <div class="medium-chart">
         <div class="row">
