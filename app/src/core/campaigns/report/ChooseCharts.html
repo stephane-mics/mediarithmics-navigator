@@ -13,11 +13,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="chart in chartsList">
+            <tr ng-repeat="(key, value) in chartsList">
               <td>
                 <label>
-                  <input ng-disabled="charts.chart2 === chart" type="radio" ng-model="charts.chart1" ng-value="chart">
-                  {{chart}}
+                  <input ng-disabled="key == selectedCharts[1]" type="radio" ng-model="selectedCharts[0]" ng-value="key">
+                  {{value}}
                 </label>
               </td>
             </tr>
@@ -32,11 +32,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="chart in chartsList">
+            <tr ng-repeat="(key, value) in chartsList">
               <td>
                 <label>
-                  <input ng-disabled="charts.chart1 === chart" type="radio" ng-model="charts.chart2" ng-value="chart">
-                  {{chart}}
+                  <input ng-disabled="key == selectedCharts[0]" type="radio" ng-model="selectedCharts[1]" ng-value="key">
+                  {{value}}
                 </label>
               </td>
             </tr>

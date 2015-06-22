@@ -26,17 +26,9 @@ define(['./module', 'lodash'], function (module, _) {
     return _.rest(statRow, _.findLastIndex(stats.columns_headers, notMetrics) + 1);
   };
 
-  var updateChartsStatistics = function($scope, campaignId, CampaignAnalyticsReportService, chart1Name, chart2Name) {
-    var chartsMetricNames = [];
-    chartsMetricNames['Clicks'] = 'clicks';
-    chartsMetricNames['Impressions'] = 'impressions';
-    chartsMetricNames['CPC'] = 'cpc';
-    chartsMetricNames['CTR'] = 'ctr';
-    chartsMetricNames['CPM'] = 'cpm';
-    chartsMetricNames['Spent'] = 'impressions_cost';
-
-    var leftMetric = chartsMetricNames[chart1Name];
-    var rightMetric = chartsMetricNames[chart2Name];
+  var updateChartsStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts) {
+    var leftMetric = charts[0];
+    var rightMetric = charts[1];
 
     // Get statistics according to time filter
     if ($scope.timeFilter === $scope.timeFilters[1]) {
@@ -52,8 +44,7 @@ define(['./module', 'lodash'], function (module, _) {
     }
   };
 
-  var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, chart1, chart2) {
-
+  var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
     if (CampaignAnalyticsReportService.dateRangeIsToday()) {
       $scope.timeFilter = $scope.timeFilters[1];
@@ -63,7 +54,7 @@ define(['./module', 'lodash'], function (module, _) {
       CampaignAnalyticsReportService.getEndDate().toDate().getTime()
     ];
 
-    updateChartsStatistics($scope, campaignId, CampaignAnalyticsReportService, chart1, chart2);
+    updateChartsStatistics($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts);
 
     CampaignAnalyticsReportService.adGroupPerformance(campaignId)
       .then(function (data) {
@@ -90,14 +81,15 @@ define(['./module', 'lodash'], function (module, _) {
    * Campaign list controller
    */
   module.controller('core/campaigns/report/BasicReportCampaignController', [
-    '$scope', '$location', '$log', '$stateParams', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal', 'core/common/auth/Session',
-    function ($scope, $location, $log, $stateParams, Restangular, d3, moment, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, $modal, Session) {
+    '$scope', '$location', '$modal', '$log', '$stateParams', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session',
+    function ($scope, $location,  $modal,  $log, $stateParams, ChartsService, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, Session) {
       $scope.valTo = 10;
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
       $scope.timeFilters = ['Daily', 'Hourly']; // Time filters order is important
       $scope.timeFilter = $scope.timeFilters[0];
-      $scope.charts = { chart1: 'Clicks', chart2: 'Impressions' };
+      $scope.charts = ['clicks', 'impressions'];
+      $scope.getChartName = ChartsService.getChartName;
 
       DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
@@ -114,7 +106,7 @@ define(['./module', 'lodash'], function (module, _) {
           });
         });
 
-        $scope.isHourlyMode = function() {
+        $scope.isHourlyMode = function () {
           return $scope.timeFilter === $scope.timeFilters[1];
         };
 
@@ -128,11 +120,11 @@ define(['./module', 'lodash'], function (module, _) {
 
         $scope.$watch('reportDateRange', function () {
           $scope.timeFilter = $scope.timeFilters[0];
-          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, $scope.charts.chart1, $scope.charts.chart2);
+          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
         });
 
         $scope.refresh = function () {
-          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, $scope.charts.chart1, $scope.charts.chart2);
+          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
         };
       });
 
@@ -160,9 +152,9 @@ define(['./module', 'lodash'], function (module, _) {
           }
         });
 
-        modalInstance.result.then(function(charts) {
+        modalInstance.result.then(function (charts) {
           $scope.charts = charts;
-          updateChartsStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, charts.chart1, charts.chart2);
+          updateChartsStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, charts);
         })
       };
 

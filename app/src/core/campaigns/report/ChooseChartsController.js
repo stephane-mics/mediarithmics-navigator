@@ -2,20 +2,14 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/campaigns/report/ChooseChartsController', [
-    '$scope', '$modalInstance', 'charts',
-    function ($scope, $modalInstance, charts) {
-      $scope.charts = { chart1: charts.chart1, chart2: charts.chart2 };
-      $scope.chartsList = [
-        'Clicks',
-        'Impressions',
-        'CPC',
-        'CTR',
-        'CPM',
-        'Spent'
-      ];
+    '$scope', '$modalInstance', 'charts', 'core/campaigns/report/ChartsService',
+    function ($scope, $modalInstance, charts, ChartsService) {
+      $scope.selectedCharts = [charts[0], charts[1]];
+      $scope.chartsList = ChartsService.getChartsList();
+      $scope.getChartName = ChartsService.getChartName;
 
       $scope.save = function () {
-        $modalInstance.close($scope.charts);
+        $modalInstance.close($scope.selectedCharts);
       };
 
       $scope.cancel = function () {
@@ -23,9 +17,9 @@ define(['./module'], function (module) {
       };
 
       $scope.switch = function() {
-        var tmp = $scope.charts.chart1;
-        $scope.charts.chart1 = $scope.charts.chart2;
-        $scope.charts.chart2 = tmp;
+        var tmp = $scope.selectedCharts[0];
+        $scope.selectedCharts[0] = $scope.selectedCharts[1];
+        $scope.selectedCharts[1]= tmp;
       };
     }
   ]);

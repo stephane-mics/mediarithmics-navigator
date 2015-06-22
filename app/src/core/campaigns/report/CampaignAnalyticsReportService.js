@@ -114,8 +114,8 @@ define(['./module', 'lodash'], function (module, _) {
    * Campaign Analytics Report Service
    */
   module.factory('CampaignAnalyticsReportService',
-    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment',
-      function ($resource, Session, AuthenticationService, configuration, moment) {
+    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment', 'core/campaigns/report/ChartsService',
+      function ($resource, Session, AuthenticationService, configuration, moment, ChartsService) {
         var WS_URL = configuration.WS_URL;
 
         /**
@@ -358,14 +358,14 @@ define(['./module', 'lodash'], function (module, _) {
               {
                 area: true,
                 values: y1,
-                key: leftMetric,
+                key: ChartsService.getChartName(leftMetric),
                 color: "#FE5858"
               },
               {
                 values: y2,
                 area: true,
                 right: true,
-                key: rightMetric,
+                key: ChartsService.getChartName(rightMetric),
                 color: "#00AC67"
               }
             ];
