@@ -95,8 +95,8 @@ define(['./module', 'lodash'], function (module, _) {
     "display_network": {name: "Display Network"},
     "ad_group_name": {name: "Ad Group Name"},
     "day": {name: "Date"},
-    "impressions_cost": {name: "Spend", type: "currency"},
-    "cost_impressions": {name: "Spend", type: "currency"}, // DEPRECATED TO BE REMOVED
+    "impressions_cost": {name: "Spent", type: "currency"},
+    "cost_impressions": {name: "Spent", type: "currency"}, // DEPRECATED TO BE REMOVED
     "impressions": {name: "Impressions", type: "number"},
     "cpc": {name: "CPC", type: "currency"},
     "clicks": {name: "Clicks", type: "number"},
