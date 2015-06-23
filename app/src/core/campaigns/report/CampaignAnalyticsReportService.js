@@ -55,7 +55,9 @@ define(['./module', 'lodash'], function (module, _) {
         // Keep all values from the data that is a metric
         var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
         // Replace 'null' with 0 to be able to use the data with the charts
-        var clearedValues = values.map(function(v) { return v === null ? 0 : v });
+        var clearedValues = values.map(function (v) {
+          return v === null ? 0 : v
+        });
         var type = _.map(this.getMetrics(), function (m) {
           return tableHeaders[m].type;
         });
@@ -105,7 +107,7 @@ define(['./module', 'lodash'], function (module, _) {
     "cpa": {name: "CPA", type: "currency"},
 
     // TODO Remove and add hidden dimensions in campaign analytics
-    "weighted_conversions": {name: "Weighted Conversions", type: "number"}
+    "weighted_conversions": {name: "Weighted Conversions", type: "number"},
     "delivery_cost": {name: "Delivery", type: "currency"},
     "click_count": {name: "Click count", type: "number"},
     "view_count": {name: "View count", type: "number"}

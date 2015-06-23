@@ -89,6 +89,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
       $scope.timeFilters = ['Daily', 'Hourly']; // Time filters order is important
       $scope.timeFilter = $scope.timeFilters[0];
+      $scope.chartArea = "chart-area";
       $scope.charts = ['clicks', 'impressions'];
       $scope.getChartName = ChartsService.getChartName;
 
@@ -132,6 +133,15 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Utils
        */
+
+      $scope.showDetails = function () {
+        $scope.details = !$scope.details;
+        if ($scope.chartArea === "chart-area")
+          $scope.chartArea = "chart-area show-details";
+        else
+          $scope.chartArea = "chart-area";
+        updateChartsStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
+      };
 
       $scope.dateRangeIsToday = function () {
         return CampaignAnalyticsReportService.dateRangeIsToday();

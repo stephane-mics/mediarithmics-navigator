@@ -823,16 +823,17 @@ form.mcs-full-page-form {
         dd + dt {
           border-top: 1px solid $mcs-light-grey;
         }
+      }
 
-        .kpi-legend {
-          dd {
-            font-size: 24px;
-            margin-top: 10px;
-          }
-          dt {
-            border-top: 1px solid $mcs-light-grey;
-          }
-          margin-bottom: 20px;
+      .kpi-details {
+        @extend .kpi-area;
+        &.ng-hide {
+          opacity: 0;
+        }
+
+        &.ng-hide-remove.ng-hide-remove-active {
+          -webkit-transition: all linear 0.2s;
+          transition: all linear 0.2s;
         }
       }
 
@@ -867,9 +868,9 @@ form.mcs-full-page-form {
             }
           }
         }
-        .chart-legend {
 
-          /* align it with the chart */
+        .chart-legend {
+          // Align with chart
           padding: 20px 0 0 60px;
 
           .y1-legend:before {
@@ -880,7 +881,6 @@ form.mcs-full-page-form {
           }
           .y1-legend:before, .y2-legend:before {
             content: ' \25CF';
-            /* font-size: $font-size-small; */
             display: inline-block;
             margin-top: -3px;
             margin-right: 5px;
@@ -894,11 +894,12 @@ form.mcs-full-page-form {
             max-height: 3rem;
           }
           .selection-button {
-            padding: 0px 9px;
+            padding: 0 9px;
           }
         ;
         }
       }
+
       .big-chart {
         @include make-md-column(12);
         .chart {
@@ -907,6 +908,13 @@ form.mcs-full-page-form {
         }
       }
     }
+
+    .chart-area.show-details {
+      .medium-chart {
+        @include make-md-column(8);
+      }
+    }
+
     .breakdown-area {
       @include make-row();
       .nav-tabs a {
