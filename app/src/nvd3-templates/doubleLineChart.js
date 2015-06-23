@@ -369,6 +369,7 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
           g.select('.nv-y1.nv-axis')
             .transition()
             .call(yAxis1);
+
           yAxis2
             .scale(y2)
             .ticks(availableHeight / 36)
@@ -420,7 +421,7 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
 
               allData.push({
                 key: series.key,
-                value: chart.y()(point, pointIndex),
+                value: Math.round(chart.y()(point, pointIndex) * 100) / 100,
                 color: color(series, series.seriesIndex)
               });
             });
@@ -439,7 +440,9 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
           }
 
           // Change tooltip title to display hour when hourly mode is selected
-          var timeFormat = function(d) { return d3.time.format('%H:%M')(new Date(d)); };
+          var timeFormat = function (d) {
+            return d3.time.format('%H:%M')(new Date(d));
+          };
           var xValue = xAxis.tickFormat()(chart.x()(singlePoint, pointIndex));
           var tooltipTitle = "";
           if (singleDay || !hourlyMode) {
@@ -452,7 +455,9 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
             .position({left: pointXLocation + margin.left, top: e.mouseY + margin.top})
             .chartContainer(that.parentNode)
             .enabled(tooltips)
-            .valueFormatter(function (d, i) { return yAxis1.tickFormat()(d); })
+            .valueFormatter(function (d, i) {
+              return yAxis1.tickFormat()(d);
+            })
             .data({
               value: tooltipTitle,
               series: allData
