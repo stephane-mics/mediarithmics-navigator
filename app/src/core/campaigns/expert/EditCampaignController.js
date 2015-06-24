@@ -7,21 +7,23 @@ define(['./module', 'moment'], function (module, moment) {
    */
 
   module.controller('core/campaigns/expert/EditCampaignController', [
-    '$scope', 'lodash', '$log', '$location', '$stateParams', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService', "core/common/WaitingService", "core/common/ErrorService", "$modal",
-    function ($scope, _, $log, $location, $stateParams, DisplayCampaignService, CampaignPluginService, waitingService, errorService, $modal) {
+    '$scope', '$modal', '$log', '$location', '$stateParams', 'lodash', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
+    'core/common/WaitingService', 'core/common/ErrorService', 'core/campaigns/goals/GoalsService',
+    function ($scope, $modal, $log, $location, $stateParams, _, DisplayCampaignService, CampaignPluginService, WaitingService, ErrorService, GoalsService) {
       var campaignId = $stateParams.campaign_id;
-
-        function updateGoalSelectionsCount() {
-          $scope.simpleGoals = _.filter(DisplayCampaignService.getGoalSelections(), {"goal_selection_type":"CLICK_ON_AD"});
-          return ;
-        }
-
+      $scope.goalTypes = GoalsService.getGoalTypesList();
+      $scope.isConversionType = GoalsService.isConversionType;
+      $scope.getConversionType = GoalsService.getConversionType;
+      $scope.checkedGoalTypes = [];
+      $scope.conversionGoals = [];
       $scope.campaignScopeHelper = {
-        campaignDateRange : {startDate: moment(), endDate: moment().add(20, 'days')},
-        schedule : ""
+        campaignDateRange: {startDate: moment(), endDate: moment().add(20, 'days')},
+        schedule: ''
       };
-      $log.debug('Expert.EditCampaignController called !');
 
+      function updateSelectedGoals() {
+        $scope.selectedGoals = DisplayCampaignService.getGoalSelections();
+      }
 
       function initView() {
         $scope.moreGoals = false;
@@ -29,8 +31,15 @@ define(['./module', 'moment'], function (module, moment) {
         $scope.adGroups = DisplayCampaignService.getAdGroupValues();
         $scope.inventorySources = DisplayCampaignService.getInventorySources();
         $scope.goalSelections = DisplayCampaignService.getGoalSelections();
-        $scope.campaignScopeHelper.defaultGoalSelection = _.find(DisplayCampaignService.getGoalSelections(), {"default":true});
-        updateGoalSelectionsCount();
+        $scope.campaignScopeHelper.defaultGoalSelection = _.find(DisplayCampaignService.getGoalSelections(), {"default": true});
+        // Init selected goals
+        updateSelectedGoals();
+        for (var i = 0; i < $scope.selectedGoals.length; ++i) {
+          $scope.checkedGoalTypes[$scope.selectedGoals[i].goal_selection_type] = true;
+          if (GoalsService.isConversionType($scope.selectedGoals[i].goal_selection_type)) {
+            $scope.conversionGoals.push($scope.selectedGoals[i]);
+          }
+        }
         $scope.locations = DisplayCampaignService.getLocations();
 
         $scope.campaignScopeHelper.locationSelector = $scope.locations.length ? "custom" : "";
@@ -57,16 +66,11 @@ define(['./module', 'moment'], function (module, moment) {
             });
           }
         } else {
-          // init scope
           initView();
         }
 
         $scope.getAds = function (adGroupId) {
           return DisplayCampaignService.getAds(adGroupId);
-        };
-
-        $scope.toggleMoreGoals = function () {
-          $scope.moreGoals = !$scope.moreGoals;
         };
 
         $scope.getUserGroups = function (adGroupId) {
@@ -87,45 +91,105 @@ define(['./module', 'moment'], function (module, moment) {
             scope: $scope,
             backdrop: 'static',
             controller: 'core/campaigns/ChooseExistingDisplayNetworkController',
-            size: "lg"
+            size: 'lg'
           });
         };
 
-        $scope.addGoal = function (type) {
-          if(type === 'CONVERSION') {
-            $modal.open({
-              templateUrl: 'src/core/goals/ChooseExistingGoal.html',
-              scope: $scope,
-              backdrop: 'static',
-              controller: 'core/goals/ChooseExistingGoalController',
-              size: "lg"
-            });
-          } else {
-            DisplayCampaignService.addGoalSelection({'goal_selection_type':type});
-          }
-           updateGoalSelectionsCount();
+        /**
+         * Goals Management
+         */
 
+        $scope.selectConversion = function (goalType) {
+          var self = this;
+          var type = goalType.key;
+
+          if ($scope.checkedGoalTypes[type]) {
+            // If checkbox has just been checked
+
+            if (GoalsService.isConversionType(type)) {
+              var modalInstance = $modal.open({
+                templateUrl: 'src/core/goals/ChooseExistingGoal.html',
+                scope: $scope,
+                backdrop: 'static',
+                controller: 'core/goals/ChooseExistingGoalController',
+                size: 'lg',
+                resolve: {
+                  goals: function () {
+                    return $scope.conversionGoals;
+                  }
+                }
+              });
+
+              // TODO Right now we only consider the first selected goal. This will be changed later.
+              modalInstance.result.then(function (conversionGoals) {
+                $scope.conversionGoals = conversionGoals;
+                if (!conversionGoals.length) {
+                  $scope.checkedGoalTypes[type] = false;
+                }
+                for (var i = 0; i < conversionGoals.length; ++i) {
+                  self.addGoalSelection({
+                    'goal_selection_type': type,
+                    'goal_id': conversionGoals[i].id,
+                    'goal_name': conversionGoals[i].name
+                  });
+                }
+              });
+            } else {
+              this.addGoalSelection({
+                'goal_selection_type': type,
+                'goal_name': goalType.name
+              });
+            }
+          } else {
+            // If checkbox has been unchecked we remove all the corresponding goals
+
+            if (GoalsService.isConversionType(type)) {
+              $scope.conversionGoals = [];
+            }
+            var goalsToRemove = $.grep($scope.selectedGoals, function (g) {
+              return g.goal_selection_type == type;
+            });
+            self.removeGoals(goalsToRemove);
+          }
         };
 
-        $scope.$on("mics-goal:selected", function (event, goal) {
-          DisplayCampaignService.addGoalSelection({'goal_selection_type':'CONVERSION',"goal_id": goal.id, 'goal_name': goal.name});
-          updateGoalSelectionsCount();
-        });
-
         $scope.updateDefaultGoalSelection = function () {
-          _.forEach(DisplayCampaignService.getGoalSelections(), function(gs) {gs.default=false;});
+          _.forEach(DisplayCampaignService.getGoalSelections(), function (gs) {
+            gs.default = false;
+          });
           $scope.campaignScopeHelper.defaultGoalSelection.default = true;
         };
 
+        $scope.addGoalSelection = function (goalSelection) {
+          DisplayCampaignService.addGoalSelection(goalSelection);
+          updateSelectedGoals();
+        };
+
+        $scope.removeGoalSelection = function (goalSelection) {
+          DisplayCampaignService.removeGoalSelection(goalSelection);
+          updateSelectedGoals();
+
+          // Uncheck conversion checkbox if we have no more conversion goals
+          for (var i = 0; i < $scope.selectedGoals.length; ++i) {
+            if (GoalsService.isConversionType($scope.selectedGoals[i].goal_selection_type)) {
+              return;
+            }
+          }
+          $scope.conversionGoals = [];
+          $scope.checkedGoalTypes[this.getConversionType()] = false;
+        };
+
+        $scope.removeGoals = function (goalsList) {
+          for (var i = 0; i < goalsList.length; ++i) {
+            DisplayCampaignService.removeGoalSelection(goalsList[i]);
+          }
+          updateSelectedGoals();
+        };
 
         $scope.removeInventorySource = function (source) {
           DisplayCampaignService.removeInventorySource(source);
         };
 
-        $scope.removeGoalSelection = function (goalSelection) {
-          DisplayCampaignService.removeGoalSelection(goalSelection);
-          updateGoalSelectionsCount();
-        };
 
         $scope.$on("mics-inventory-source:selected", function (event, inventorySource) {
           DisplayCampaignService.addInventorySource({
@@ -148,7 +212,6 @@ define(['./module', 'moment'], function (module, moment) {
           if (!$scope.locations.length) {
             $scope.campaignScopeHelper.locationSelector = "";
           }
-
         };
 
         $scope.getLocationDescriptor = function (locationList) {
@@ -165,20 +228,15 @@ define(['./module', 'moment'], function (module, moment) {
           }
         };
 
-
-        $log.debug('Expert.EditCampaignController adGroups=', $scope.adGroups);
-
         /**
-         * Ad Group Edition
+         * Ad Group Management
          */
 
-          // New Ad Group
         $scope.newAdGroup = function () {
           var adGroupId = DisplayCampaignService.addAdGroup();
           $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroupId);
         };
 
-        // Edit Ad Group
         $scope.editAdGroup = function (adGroup) {
           $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroup.id);
         };
@@ -191,10 +249,9 @@ define(['./module', 'moment'], function (module, moment) {
 
 
         /**
-         * Campaign Edition
+         * Confirm or cancel campaign editing
          */
 
-          // Save button
         $scope.save = function () {
           if ($scope.campaignScopeHelper.schedule === 'custom') {
             $scope.campaign.start_date = $scope.campaignScopeHelper.campaignDateRange.startDate.valueOf();
@@ -204,16 +261,14 @@ define(['./module', 'moment'], function (module, moment) {
             $scope.campaign.end_date = null;
           }
 
-
-          $log.debug("save campaign : ", $scope.campaign);
-          waitingService.showWaitingModal();
+          WaitingService.showWaitingModal();
           DisplayCampaignService.save().then(function (campaignContainer) {
-            waitingService.hideWaitingModal();
+            WaitingService.hideWaitingModal();
             DisplayCampaignService.reset();
             $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/report/' + campaignContainer.id + '/basic');
           }, function failure(response) {
-            waitingService.hideWaitingModal();
-            errorService.showErrorModal({
+            WaitingService.hideWaitingModal();
+            ErrorService.showErrorModal({
               error: response
             }).then(null, function () {
               DisplayCampaignService.reset();
@@ -221,7 +276,6 @@ define(['./module', 'moment'], function (module, moment) {
           });
         };
 
-        // back button
         $scope.cancel = function () {
           DisplayCampaignService.reset();
           if ($scope.campaign && $scope.campaign.id) {
@@ -232,6 +286,8 @@ define(['./module', 'moment'], function (module, moment) {
         };
       });
     }
-  ]);
-});
+  ])
+  ;
+})
+;
 

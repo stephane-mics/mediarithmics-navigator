@@ -1746,3 +1746,14 @@ a.category-item {
     color: $mcs-green;
   }
 }
+
+// ------------------ Double Line Chart Selection ------------------
+
+.goals-selection {
+  display: block;
+  font-size: 15px;
+  hr {
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+}
