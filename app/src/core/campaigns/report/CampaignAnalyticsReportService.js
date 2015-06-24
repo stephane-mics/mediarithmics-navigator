@@ -203,7 +203,7 @@ define(['./module', 'lodash'], function (module, _) {
             metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
-              return new ReportWrapper(response.report_view);
+              return new ReportWrapper(response.data.report_view);
             });
         };
 
@@ -216,7 +216,7 @@ define(['./module', 'lodash'], function (module, _) {
             metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
-              return new ReportWrapper(response.report_view);
+              return new ReportWrapper(response.data.report_view);
             });
         };
 
@@ -230,7 +230,7 @@ define(['./module', 'lodash'], function (module, _) {
             metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
-              return new ReportWrapper(response.report_view);
+              return new ReportWrapper(response.data.report_view);
             });
         };
 
@@ -244,7 +244,7 @@ define(['./module', 'lodash'], function (module, _) {
             metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
-              return new ReportWrapper(response.report_view);
+              return new ReportWrapper(response.data.report_view);
             });
         };
 
@@ -257,7 +257,7 @@ define(['./module', 'lodash'], function (module, _) {
             metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
-              var report = response.report_view;
+              var report = response.data.report_view;
               var firstLine = report.rows[0];
               if (firstLine === undefined) {
                 return {
@@ -286,7 +286,7 @@ define(['./module', 'lodash'], function (module, _) {
             metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr",
             filters: "organisation==" + organisation_id
           }).$promise.then(function (response) {
-              var report = response.report_view;
+              var report = response.data.report_view;
               return new ReportWrapper(report);
             });
         };
@@ -328,7 +328,7 @@ define(['./module', 'lodash'], function (module, _) {
            * WARNING : dateIter.valueOf returns the timestamp in the navigator timezone
            */
           var dailyStatsMapping = function (response) {
-            var report = new ReportWrapper(response.report_view);
+            var report = new ReportWrapper(response.data.report_view);
             var leftMetricIndex = report.getMetricIndex(leftMetric);
             var rightMetricIndex = report.getMetricIndex(rightMetric);
             var y1 = [], y2 = [];
@@ -392,7 +392,7 @@ define(['./module', 'lodash'], function (module, _) {
            */
           var hourlyStatsMapping = function (response) {
             var y1 = [], y2 = [];
-            var report = new ReportWrapper(response.report_view);
+            var report = new ReportWrapper(response.data.report_view);
             var leftMetricIndex = report.getMetricIndex(leftMetric);
             var rightMetricIndex = report.getMetricIndex(rightMetric);
             var dateIter = startDate();
