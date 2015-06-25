@@ -16,7 +16,7 @@ define(['./module'], function (module) {
         $modalInstance.close(charts);
       };
 
-      $scope.switch = function() {
+      $scope.swap = function() {
         var tmp = $scope.selectedCharts[0];
         $scope.selectedCharts[0] = $scope.selectedCharts[1];
         $scope.selectedCharts[1]= tmp;
