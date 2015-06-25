@@ -15,9 +15,6 @@ define(['./module'], function (module) {
         });
       });
 
-      $scope.propertiesFilter = function (property) {
-        return property.value.technical_name === 'destination_url';
-      };
 
       // Save button
       $scope.save = function (disabledEdition) {

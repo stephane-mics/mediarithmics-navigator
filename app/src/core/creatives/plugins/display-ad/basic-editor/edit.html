@@ -46,6 +46,25 @@
       </div>
     </div>
 
+    <!------------------------ Advanced options ------------------------>
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+              Advanced Options
+            </a>
+          </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse">
+          <div class="panel-body">
+            <div ng-repeat="property in properties | filter:advancedPropertiesFilter">
+              <mcs-pixel-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'PIXEL_TAG'"></mcs-pixel-property>
+            </div>
+	  </div>
+        </div>
+      </div>
+    </div>
     <!-- save or cancel -->
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish" ng-click="save(disabledEdition)">Done</button>

@@ -16,9 +16,12 @@ define(['./module'], function (module) {
 
 
       $scope.propertiesFilter = function (property) {
-        return property.value.technical_name === 'destination_url';
+        return property.value.technical_name === 'destination_url' || property.value.technical_name === 'destination_domain'; 
       };
 
+      $scope.advancedPropertiesFilter = function (property) {
+        return property.value.property_type === 'PIXEL_TAG' ;
+      };	
       $scope.save = function (disabledEdition) {
         $log.debug("save display ad : ", $scope.display_ad);
         if (disabledEdition) {

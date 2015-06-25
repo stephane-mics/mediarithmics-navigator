@@ -1,7 +1,27 @@
 define(['./module'], function (module) {
   'use strict';
 
-  // url property
+   // Pixel property
+  module.directive('mcsPixelProperty', [
+    function () {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: "@",
+          labelFor: '@',
+          property: '=',
+          ngDisabled: '='
+        },
+        templateUrl: '/src/core/common/properties/pixel-property.html',
+        link: function (scope, element, attrs) {
+
+          scope.$watch("property", function () {
+//            console.log(scope.property);
+          });
+        }
+      };
+    }
+  ]); // url property
   module.directive('mcsUrlProperty', [
     function () {
       return {
