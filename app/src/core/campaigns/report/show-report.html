@@ -37,8 +37,8 @@
     <div ng-class="chartArea">
       <div class="kpi-area">
         <dl>
-          <dt ng-if="hasCPA">CPA</dt>
-          <dd ng-if="hasCPA">{{kpis.cpc | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
+          <dt ng-if="kpis.cpa">CPA</dt>
+          <dd ng-if="kpis.cpa">{{kpis.cpa | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
           <dt>CPC</dt>
           <dd>{{kpis.cpc | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
           <dt>CTR</dt>
@@ -65,7 +65,7 @@
                  interpolate="linear"
                  clipEdge="true"
                  data="chartData"
-                 height="100%"
+                 height="110%"
                  width="100%"
                  singleday="dateRangeIsToday()"
                  hourlymode="isHourlyMode()"
@@ -197,7 +197,6 @@
           <tab heading="Sites">
             <table class="mics-table">
               <thead>
-
               <tr>
                 <th>Site</th>
                 <th class="metrics" ng-repeat="header in mediaPerformance.getMetrics()">
@@ -205,8 +204,8 @@
                 </th>
               </tr>
               </thead>
-              <tbody>
 
+              <tbody>
               <tr ng-repeat="row in mediaPerformance.getRows()">
                 <td>{{row[0] | website }}</td>
                 <td class="metrics {{metricValue.type}}"
@@ -223,7 +222,6 @@
                                         <span ng-if="!metricValue.type || metricValue.value == undefined">
                                             -
                                         </span>
-
                 </td>
               </tr>
               </tbody>

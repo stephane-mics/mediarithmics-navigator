@@ -47,8 +47,9 @@ define(['./module', 'lodash'], function (module, _) {
     };
 
     this.decorate = _.memoize(function (row) {
+      var self = this;
       if (row === undefined) {
-        return _.map(new Array(this.getMetrics().length), function () {
+        return _.map(new Array(self.getMetrics().length), function () {
           return 0;
         });
       } else {
@@ -58,7 +59,7 @@ define(['./module', 'lodash'], function (module, _) {
         var clearedValues = values.map(function (v) {
           return v === null ? 0 : v
         });
-        var type = _.map(this.getMetrics(), function (m) {
+        var type = _.map(self.getMetrics(), function (m) {
           return tableHeaders[m].type;
         });
         // Build data array matching data values and data types
@@ -204,7 +205,7 @@ define(['./module', 'lodash'], function (module, _) {
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
+            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view);
@@ -217,7 +218,7 @@ define(['./module', 'lodash'], function (module, _) {
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
+            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view);
@@ -231,13 +232,12 @@ define(['./module', 'lodash'], function (module, _) {
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
+            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view);
             });
         };
-
 
         ReportService.mediaPerformance = function (campaignId) {
           return mediaResource.get({

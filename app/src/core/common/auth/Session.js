@@ -19,14 +19,14 @@ define(['./module'], function (module) {
           $log.debug("Initialize session with user profile:", userProfile);
           self.userProfile = userProfile;
           if (organisationId) {
-            $log.debug("fetching organisation : ", organisationId);
+            $log.debug("Fetching organisation : ", organisationId);
             service.updateWorkspace(organisationId).then(function () {
               self.initialized = true;
               deferred.resolve();
             });
           } else {
             self.currentWorkspace = userProfile.workspaces[userProfile.default_workspace];
-            $log.debug("use default : ", self.currentWorkspace);
+            $log.debug("Use default : ", self.currentWorkspace);
             self.initialized = true;
             deferred.resolve();
           }

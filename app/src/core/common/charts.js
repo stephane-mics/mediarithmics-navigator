@@ -59,8 +59,8 @@ define(['./module', 'd3', 'nv.d3', 'doubleLineChart'], function (module, ignore1
         // Graph Specific
         id: '@',
         width: '@',
-        color: '&',
         height: '@',
+        color: '&',
         nodata: '@',
         margin: '&',
         callback: '&',
