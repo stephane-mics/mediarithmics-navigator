@@ -245,7 +245,7 @@ define(['./module', 'lodash'], function (module, _) {
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost",
+            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
             filters: "campaign_id==" + campaignId
           }).$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view);
