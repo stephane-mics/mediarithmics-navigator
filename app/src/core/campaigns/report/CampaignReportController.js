@@ -55,7 +55,7 @@ define(['./module', 'lodash'], function (module, _) {
   /**
    * Campaign list controller
    */
-  module.controller('core/campaigns/report/BasicReportCampaignController', [
+  module.controller('core/campaigns/report/CampaignReportController', [
     '$scope', '$location', '$modal', '$log', '$stateParams', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session',
     function ($scope, $location, $modal, $log, $stateParams, ChartsService, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, Session) {
       // Chart
