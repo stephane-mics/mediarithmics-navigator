@@ -112,9 +112,9 @@
                   Format
                   <span ng-show="orderBy == 'format'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th ng-click="sortAdsBy(key)" class="metrics" ng-repeat="(key, info) in ads[0].info">
-                  {{ adPerformance.getMetricName(key) }}
-                  <span ng-show="orderBy == key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
+                <th ng-click="sortAdsBy(info.key)" class="metrics" ng-repeat="info in ads[0].info">
+                  {{ adPerformance.getMetricName(info.key) }}
+                  <span ng-show="orderBy == info.key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
               </tr>
               </thead>
@@ -163,9 +163,9 @@
                   Name
                   <span ng-show="orderBy == 'name'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th ng-click="sortAdGroupsBy(key)" class="metrics" ng-repeat="(key, info) in adGroups[0].info">
-                  {{ adPerformance.getMetricName(key) }}
-                  <span ng-show="orderBy == key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
+                <th ng-click="sortAdGroupsBy(info.key)" class="metrics" ng-repeat="info in adGroups[0].info">
+                  {{ adPerformance.getMetricName(info.key) }}
+                  <span ng-show="orderBy == info.key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
               </tr>
               </thead>
@@ -197,9 +197,9 @@
                   Name
                   <span ng-show="orderBy == 'name'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th ng-click="sortSitesBy(key)" class="metrics" ng-repeat="(key, info) in sites[0].info">
-                  {{ adPerformance.getMetricName(key) }}
-                  <span ng-show="orderBy == key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
+                <th ng-click="sortSitesBy(info.key)" class="metrics" ng-repeat="info in sites[0].info">
+                  {{ adPerformance.getMetricName(info.key) }}
+                  <span ng-show="orderBy == info.key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
               </tr>
               </thead>

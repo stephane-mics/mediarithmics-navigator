@@ -75,14 +75,21 @@ define(['./module', 'lodash'], function (module, _) {
         if ($scope.orderBy !== "status") return false;
         var leftActive = left[0].status === "ACTIVE";
         var rightActive = right[0].status === "ACTIVE";
-        console.log("reverseSort: ", $scope.reverseSort, " | left ", leftActive, " | right ", rightActive);
         return (!$scope.reverseSort && leftActive) || ($scope.reverseSort && rightActive);
       };
 
-      var adInfoCompare = function (left, right) {
+      var getInfoValue = function(ad) {
+        for (var i = 0; i < ad.info.length; ++i) {
+          if (ad.info[i].key === $scope.orderBy)
+            return ad.info[i].value;
+        }
+      };
+
+      var infoCompare = function (left, right) {
         if (tableHeadersKeys.indexOf($scope.orderBy) == -1) return false;
-        return (!$scope.reverseSort && left[0].info[$scope.orderBy].value > right[0].info[$scope.orderBy].value) ||
-          ($scope.reverseSort && left[0].info[$scope.orderBy].value < right[0].info[$scope.orderBy].value)
+        var leftValue = getInfoValue(left[0]);
+        var rightValue = getInfoValue(right[0]);
+        return (!$scope.reverseSort && leftValue > rightValue) || ($scope.reverseSort && leftValue < rightValue)
       };
 
       var nameCompare = function (left, right) {
@@ -117,7 +124,7 @@ define(['./module', 'lodash'], function (module, _) {
       var merge = function (left, right) {
         var result = [];
         while (left.length > 0 && right.length > 0) {
-          if (adInfoCompare(left, right) || nameCompare(left, right) || formatCompare(left, right) || statusCompare(left, right)) {
+          if (infoCompare(left, right) || nameCompare(left, right) || formatCompare(left, right) || statusCompare(left, right)) {
             result.push(left.shift());
           } else {
             result.push(right.shift());
@@ -140,22 +147,18 @@ define(['./module', 'lodash'], function (module, _) {
         $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
         $scope.ads = sort($scope.ads);
-        console.log("Sorted ads: ", $scope.ads);
       };
 
       $scope.sortAdGroupsBy = function (key) {
         $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
         $scope.adGroups = sort($scope.adGroups);
-        console.log("Sorted ad groups: ", $scope.adGroups);
       };
 
       $scope.sortSitesBy = function (key) {
         $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
-        console.log("Sorting sites by: ", key);
         $scope.sites = sort($scope.sites);
-        console.log("Sorted sites: ", $scope.sites);
       };
 
       $scope.$watch('mediaPerformance', function () {
@@ -173,14 +176,14 @@ define(['./module', 'lodash'], function (module, _) {
 
           var addSiteInfo = function (site, siteInfo) {
             // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
-            site.info = {};
-            site.info.clicks = {type: siteInfo[siteClicksIdx].type, value: siteInfo[siteClicksIdx].value || 0};
-            site.info.impressions_cost = {type: siteInfo[siteSpentIdx].type, value: siteInfo[siteSpentIdx].value || 0};
-            site.info.impressions = {type: siteInfo[siteImpIdx].type, value: siteInfo[siteImpIdx].value || 0};
-            site.info.cpm = {type: siteInfo[siteCpmIdx].type, value: siteInfo[siteCpmIdx].value || 0};
-            site.info.ctr = {type: siteInfo[siteCtrIdx].type, value: siteInfo[siteCtrIdx].value || 0};
-            site.info.cpc = {type: siteInfo[siteCpcIdx].type, value: siteInfo[siteCpcIdx].value || 0};
-            site.info.cpa = {type: siteInfo[siteCpaIdx].type, value: siteInfo[siteCpaIdx].value || 0};
+            site.info = [];
+            site.info[0] = {key: "impressions", type: siteInfo[siteImpIdx].type, value: siteInfo[siteImpIdx].value || 0};
+            site.info[1] = {key: "cpm", type: siteInfo[siteCpmIdx].type, value: siteInfo[siteCpmIdx].value || 0};
+            site.info[2] = {key: "impressions_cost", type: siteInfo[siteSpentIdx].type, value: siteInfo[siteSpentIdx].value || 0};
+            site.info[3] = {key: "clicks", type: siteInfo[siteClicksIdx].type, value: siteInfo[siteClicksIdx].value || 0};
+            site.info[4] = {key: "ctr", type: siteInfo[siteCtrIdx].type, value: siteInfo[siteCtrIdx].value || 0};
+            site.info[5] = {key: "cpc", type: siteInfo[siteCpcIdx].type, value: siteInfo[siteCpcIdx].value || 0};
+            site.info[6] = {key: "cpa", type: siteInfo[siteCpaIdx].type, value: siteInfo[siteCpaIdx].value || 0};
             return site;
           };
 
@@ -201,7 +204,6 @@ define(['./module', 'lodash'], function (module, _) {
             $scope.adgroups = campaign.ad_groups;
             $scope.ads = [];
             $scope.adGroups = [];
-            console.log("Ad rows: ", $scope.adPerformance.getRows());
 
             // Get ad performance info indexes to identify the ad information
             var adClicksIdx = $scope.adPerformance.getHeaderIndex("clicks");
@@ -223,30 +225,27 @@ define(['./module', 'lodash'], function (module, _) {
 
             var addAdInfo = function (ad, info) {
               // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
-              ad.info = {};
-              ad.info.clicks = {type: info[adClicksIdx].type, value: info[adClicksIdx].value || 0};
-              ad.info.impressions_cost = {type: info[adSpentIdx].type, value: info[adSpentIdx].value || 0};
-              ad.info.impressions = {type: info[adImpIdx].type, value: info[adImpIdx].value || 0};
-              ad.info.cpm = {type: info[adCpmIdx].type, value: info[adCpmIdx].value || 0};
-              ad.info.ctr = {type: info[adCtrIdx].type, value: info[adCtrIdx].value || 0};
-              ad.info.cpc = {type: info[adCpcIdx].type, value: info[adCpcIdx].value || 0};
-              ad.info.cpa = {type: info[adCpaIdx].type, value: info[adCpaIdx].value || 0};
+              ad.info = [];
+              ad.info[0] = {key: "impressions", type: info[adImpIdx].type, value: info[adImpIdx].value || 0};
+              ad.info[1] = {key: "cpm", type: info[adCpmIdx].type, value: info[adCpmIdx].value || 0};
+              ad.info[2] = {key: "impressions_cost", type: info[adSpentIdx].type, value: info[adSpentIdx].value || 0};
+              ad.info[3] = {key: "clicks", type: info[adClicksIdx].type, value: info[adClicksIdx].value || 0};
+              ad.info[4] = {key: "ctr", type: info[adCtrIdx].type, value: info[adCtrIdx].value || 0};
+              ad.info[5] = {key: "cpc", type: info[adCpcIdx].type, value: info[adCpcIdx].value || 0};
+              ad.info[6] = {key: "cpa", type: info[adCpaIdx].type, value: info[adCpaIdx].value || 0};
               return ad;
             };
 
             var addAdGroupInfo = function (adGroup, info) {
               // Build ad group info object using ad group performance values.
-              adGroup.info = {};
-              adGroup.info.clicks = {type: info[adGroupClicksIdx].type, value: info[adGroupClicksIdx].value || 0};
-              adGroup.info.impressions_cost = {
-                type: info[adGroupSpentIdx].type,
-                value: info[adGroupSpentIdx].value || 0
-              };
-              adGroup.info.impressions = {type: info[adGroupImpIdx].type, value: info[adGroupImpIdx].value || 0};
-              adGroup.info.cpm = {type: info[adGroupCpmIdx].type, value: info[adGroupCpmIdx].value || 0};
-              adGroup.info.ctr = {type: info[adGroupCtrIdx].type, value: info[adGroupCtrIdx].value || 0};
-              adGroup.info.cpc = {type: info[adGroupCpcIdx].type, value: info[adGroupCpcIdx].value || 0};
-              adGroup.info.cpa = {type: info[adGroupCpaIdx].type, value: info[adGroupCpaIdx].value || 0};
+              adGroup.info = [];
+              adGroup.info[0] = {key: "impressions", type: info[adGroupImpIdx].type, value: info[adGroupImpIdx].value || 0};
+              adGroup.info[1] = {key: "cpm", type: info[adGroupCpmIdx].type, value: info[adGroupCpmIdx].value || 0};
+              adGroup.info[2] = {key: "impressions_cost", type: info[adGroupSpentIdx].type, value: info[adGroupSpentIdx].value || 0};
+              adGroup.info[3] = {key: "clicks", type: info[adGroupClicksIdx].type, value: info[adGroupClicksIdx].value || 0};
+              adGroup.info[4] = {key: "ctr", type: info[adGroupCtrIdx].type, value: info[adGroupCtrIdx].value || 0};
+              adGroup.info[5] = {key: "cpc", type: info[adGroupCpcIdx].type, value: info[adGroupCpcIdx].value || 0};
+              adGroup.info[6] = {key: "cpa", type: info[adGroupCpaIdx].type, value: info[adGroupCpaIdx].value || 0};
               return adGroup;
             };
 
@@ -263,8 +262,6 @@ define(['./module', 'lodash'], function (module, _) {
 
             $scope.ads = sort($scope.ads);
             $scope.adGroups = sort($scope.adGroups);
-            console.log("Ads : ", $scope.ads);
-            console.log("Ad Groups : ", $scope.adGroups);
           });
         }
       });
