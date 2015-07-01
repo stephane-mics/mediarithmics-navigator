@@ -70,7 +70,8 @@ define(['./module', 'lodash'], function (module, _) {
     });
 
     this.getMetricName = function (input) {
-      return tableHeaders[input].name || input || '';
+      if (angular.isDefined(tableHeaders[input]))
+        return tableHeaders[input].name;
     };
 
     this.getMetricType = function (index) {
@@ -83,11 +84,11 @@ define(['./module', 'lodash'], function (module, _) {
   }
 
   var isMetrics = function (e) {
-    return !(/name|id|day|site|weighted_conversions/).test(e);
+    return !(/name|id|day|site/).test(e);
   };
 
   var notMetrics = function (e) {
-    return (/name|id|day|site|weighted_conversions/).test(e);
+    return (/name|id|day|site/).test(e);
   };
 
   var tableHeaders = {
@@ -100,18 +101,12 @@ define(['./module', 'lodash'], function (module, _) {
     "day": {name: "Date"},
     "impressions_cost": {name: "Spent", type: "currency"},
     "cost_impressions": {name: "Spent", type: "currency"}, // DEPRECATED TO BE REMOVED
-    "impressions": {name: "Impressions", type: "number"},
+    "impressions": {name: "Imp.", type: "number"},
     "cpc": {name: "CPC", type: "currency"},
     "clicks": {name: "Clicks", type: "number"},
     "ctr": {name: "CTR", type: "percent"},
     "cpm": {name: "CPM", type: "currency"},
-    "cpa": {name: "CPA", type: "currency"},
-
-    // TODO Remove and add hidden dimensions in campaign analytics
-    "weighted_conversions": {name: "Weighted Conversions", type: "number"},
-    "delivery_cost": {name: "Delivery", type: "currency"},
-    "click_count": {name: "Click count", type: "number"},
-    "view_count": {name: "View count", type: "number"}
+    "cpa": {name: "CPA", type: "currency"}
   };
 
 
@@ -122,6 +117,7 @@ define(['./module', 'lodash'], function (module, _) {
     ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment', 'core/campaigns/report/ChartsService',
       function ($resource, Session, AuthenticationService, configuration, moment, ChartsService) {
         var WS_URL = configuration.WS_URL;
+
 
         /**
          * Resources definition
@@ -198,6 +194,10 @@ define(['./module', 'lodash'], function (module, _) {
          */
 
         var ReportService = {};
+
+        ReportService.getTableHeaders = function() {
+          return tableHeaders;
+        };
 
         ReportService.creativePerformance = function (campaignId) {
           return creativeResource.get({
