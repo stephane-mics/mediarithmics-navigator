@@ -140,15 +140,59 @@ define(['./module', 'lodash'], function (module, _) {
         $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
         $scope.ads = sort($scope.ads);
-        console.log("Sorted: ", $scope.ads);
+        console.log("Sorted ads: ", $scope.ads);
       };
 
       $scope.sortAdGroupsBy = function (key) {
         $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
         $scope.adGroups = sort($scope.adGroups);
-        console.log("Sorted: ", $scope.adGroups);
+        console.log("Sorted ad groups: ", $scope.adGroups);
       };
+
+      $scope.sortSitesBy = function (key) {
+        $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
+        $scope.orderBy = key;
+        console.log("Sorting sites by: ", key);
+        $scope.sites = sort($scope.sites);
+        console.log("Sorted sites: ", $scope.sites);
+      };
+
+      $scope.$watch('mediaPerformance', function () {
+        if (angular.isDefined($scope.mediaPerformance)) {
+          $scope.sites = [];
+
+          // Get media performance info indexes to identify the media information
+          var siteClicksIdx = $scope.mediaPerformance.getHeaderIndex("clicks");
+          var siteSpentIdx = $scope.mediaPerformance.getHeaderIndex("impressions_cost");
+          var siteImpIdx = $scope.mediaPerformance.getHeaderIndex("impressions");
+          var siteCpmIdx = $scope.mediaPerformance.getHeaderIndex("cpm");
+          var siteCtrIdx = $scope.mediaPerformance.getHeaderIndex("ctr");
+          var siteCpcIdx = $scope.mediaPerformance.getHeaderIndex("cpc");
+          var siteCpaIdx = $scope.mediaPerformance.getHeaderIndex("cpa");
+
+          var addSiteInfo = function (site, siteInfo) {
+            // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
+            site.info = {};
+            site.info.clicks = {type: siteInfo[siteClicksIdx].type, value: siteInfo[siteClicksIdx].value || 0};
+            site.info.impressions_cost = {type: siteInfo[siteSpentIdx].type, value: siteInfo[siteSpentIdx].value || 0};
+            site.info.impressions = {type: siteInfo[siteImpIdx].type, value: siteInfo[siteImpIdx].value || 0};
+            site.info.cpm = {type: siteInfo[siteCpmIdx].type, value: siteInfo[siteCpmIdx].value || 0};
+            site.info.ctr = {type: siteInfo[siteCtrIdx].type, value: siteInfo[siteCtrIdx].value || 0};
+            site.info.cpc = {type: siteInfo[siteCpcIdx].type, value: siteInfo[siteCpcIdx].value || 0};
+            site.info.cpa = {type: siteInfo[siteCpaIdx].type, value: siteInfo[siteCpaIdx].value || 0};
+            return site;
+          };
+
+          var siteRows = $scope.mediaPerformance.getRows();
+          for (var i = 0; i < siteRows.length; ++i) {
+            var site = {name: siteRows[i][0]};
+            var siteInfo = [siteRows[i][0]].concat($scope.mediaPerformance.decorate(siteRows[i]));
+            $scope.sites[i] = addSiteInfo(site, siteInfo);
+          }
+          $scope.sites = sort($scope.sites);
+        }
+      });
 
       $scope.$watch('adPerformance + adGroupPerformance', function () {
         if (angular.isDefined($scope.adPerformance) && angular.isDefined($scope.adGroupPerformance)) {
@@ -168,7 +212,7 @@ define(['./module', 'lodash'], function (module, _) {
             var adCpcIdx = $scope.adPerformance.getHeaderIndex("cpc");
             var adCpaIdx = $scope.adPerformance.getHeaderIndex("cpa");
 
-            // Get ad performance info indexes to identify the ad information
+            // Get ad group performance info indexes to identify the ad group information
             var adGroupClicksIdx = $scope.adGroupPerformance.getHeaderIndex("clicks");
             var adGroupSpentIdx = $scope.adGroupPerformance.getHeaderIndex("impressions_cost");
             var adGroupImpIdx = $scope.adGroupPerformance.getHeaderIndex("impressions");
@@ -191,7 +235,7 @@ define(['./module', 'lodash'], function (module, _) {
             };
 
             var addAdGroupInfo = function (adGroup, info) {
-              // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
+              // Build ad group info object using ad group performance values.
               adGroup.info = {};
               adGroup.info.clicks = {type: info[adGroupClicksIdx].type, value: info[adGroupClicksIdx].value || 0};
               adGroup.info.impressions_cost = {
@@ -212,14 +256,13 @@ define(['./module', 'lodash'], function (module, _) {
               ad_group = addAdGroupInfo(ad_group, adGroupInfo);
               _.forEach(ad_group.ads, function (ad) {
                 var adInfo = [ad.id].concat($scope.adPerformance.getRow(ad.id));
-                //console.log("Ad: ", ad);
-                //console.log("AdInfo: ", adInfo);
                 ad = addAdInfo(ad, adInfo);
                 $scope.ads.push(ad);
               });
             });
 
-            $scope.ads = sort($scope.ads, "clicks");
+            $scope.ads = sort($scope.ads);
+            $scope.adGroups = sort($scope.adGroups);
             console.log("Ads : ", $scope.ads);
             console.log("Ad Groups : ", $scope.adGroups);
           });

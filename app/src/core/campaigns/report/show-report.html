@@ -193,27 +193,27 @@
             <table class="mics-table">
               <thead>
               <tr>
-                <th>Site</th>
-                <th class="metrics" ng-repeat="header in mediaPerformance.getMetrics()">
-                  {{ mediaPerformance.getMetricName(header) }}
+                <th ng-click="sortSitesBy('name')">
+                  Name
+                  <span ng-show="orderBy == 'name'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
+                </th>
+                <th ng-click="sortSitesBy(key)" class="metrics" ng-repeat="(key, info) in sites[0].info">
+                  {{ adPerformance.getMetricName(key) }}
+                  <span ng-show="orderBy == key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="row in mediaPerformance.getRows()">
-                <td>{{row[0] | website }}</td>
-                <td class="metrics {{metricValue.type}}"
-                    ng-repeat="metricValue in  mediaPerformance.decorate(row) track by $index">
-                    <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
-                      {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
-                    </span>
-                    <span ng-if="metricValue.type == 'percent' && metricValue.value != undefined">
-                      {{metricValue.value | number}} %
-                    </span>
-                    <span ng-if="metricValue.type == 'number' && metricValue.value != undefined">
-                      {{metricValue.value | number}}
-                    </span>
-                  <span ng-if="!metricValue.type || metricValue.value == undefined"> - </span>
+              <tr ng-repeat="site in sites">
+                <!--<td>{{row[0] | website }}</td>-->
+                <td>{{site.name}}</td>
+                <td class="metrics" ng-repeat="info in site.info">
+                  <span ng-if="info.type == 'currency' && info.value != undefined">
+                    {{info.value | number:2 | currencyWithSymbol:campaign.currency_code}}
+                  </span>
+                  <span ng-if="info.type == 'percent' && info.value != undefined">{{info.value | number}} %</span>
+                  <span ng-if="info.type == 'number' && info.value != undefined">{{info.value | number}}</span>
+                  <span ng-if="!info.type || info.value == undefined"> - </span>
                 </td>
               </tr>
               </tbody>
