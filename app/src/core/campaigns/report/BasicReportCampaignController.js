@@ -70,32 +70,31 @@ define(['./module', 'lodash'], function (module, _) {
       var tableHeadersKeys = Object.keys(CampaignAnalyticsReportService.getTableHeaders());
       $scope.reverseSort = false;
       $scope.orderBy = "clicks";
-      $scope.tab = "ads"; // ads, adGroups, sites
 
       var statusCompare = function (left, right) {
         if ($scope.orderBy !== "status") return false;
-        var leftActive = left[0].ad.status === "ACTIVE";
-        var rightActive = right[0].ad.status === "ACTIVE";
+        var leftActive = left[0].status === "ACTIVE";
+        var rightActive = right[0].status === "ACTIVE";
         console.log("reverseSort: ", $scope.reverseSort, " | left ", leftActive, " | right ", rightActive);
         return (!$scope.reverseSort && leftActive) || ($scope.reverseSort && rightActive);
       };
 
       var adInfoCompare = function (left, right) {
         if (tableHeadersKeys.indexOf($scope.orderBy) == -1) return false;
-        return (!$scope.reverseSort && left[0].ad.info[$scope.orderBy].value > right[0].ad.info[$scope.orderBy].value) ||
-          ($scope.reverseSort && left[0].ad.info[$scope.orderBy].value < right[0].ad.info[$scope.orderBy].value)
+        return (!$scope.reverseSort && left[0].info[$scope.orderBy].value > right[0].info[$scope.orderBy].value) ||
+          ($scope.reverseSort && left[0].info[$scope.orderBy].value < right[0].info[$scope.orderBy].value)
       };
 
       var nameCompare = function (left, right) {
         if ($scope.orderBy !== "name") return false;
-        return (!$scope.reverseSort && left[0].ad.name > right[0].ad.name) ||
-          ($scope.reverseSort && left[0].ad.name < right[0].ad.name);
+        return (!$scope.reverseSort && left[0].name > right[0].name) ||
+          ($scope.reverseSort && left[0].name < right[0].name);
       };
 
       var formatCompare = function (left, right) {
         if ($scope.orderBy !== "format") return false;
-        var leftValues = left[0].ad.format.split("x");
-        var rightValues = right[0].ad.format.split("x");
+        var leftValues = left[0].format.split("x");
+        var rightValues = right[0].format.split("x");
         var leftWidth = leftValues[0];
         var leftHeight = leftValues[1];
         var rightWidth = rightValues[0];
@@ -127,12 +126,28 @@ define(['./module', 'lodash'], function (module, _) {
         return result.concat(left, right);
       };
 
-      $scope.sortBy = function (key) {
+      $scope.findAdGroup = function (adId) {
+        for (var i = 0; i < $scope.adGroups.length; ++i) {
+          for (var j = 0; j < $scope.adGroups[i].ads.length; ++j) {
+            if ($scope.adGroups[i].ads[j].id === adId) {
+              return $scope.adGroups[i];
+            }
+          }
+        }
+      };
+
+      $scope.sortAdsBy = function (key) {
         $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
-        console.log("Sorting by: ", $scope.orderBy);
-        $scope.adsInfo = sort($scope.adsInfo);
-        console.log("Sorted: ", $scope.adsInfo);
+        $scope.ads = sort($scope.ads);
+        console.log("Sorted: ", $scope.ads);
+      };
+
+      $scope.sortAdGroupsBy = function (key) {
+        $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
+        $scope.orderBy = key;
+        $scope.adGroups = sort($scope.adGroups);
+        console.log("Sorted: ", $scope.adGroups);
       };
 
       $scope.$watch('adPerformance + adGroupPerformance', function () {
@@ -140,7 +155,8 @@ define(['./module', 'lodash'], function (module, _) {
           DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
             $scope.campaign = campaign;
             $scope.adgroups = campaign.ad_groups;
-            $scope.adsInfo = [];
+            $scope.ads = [];
+            $scope.adGroups = [];
             console.log("Ad rows: ", $scope.adPerformance.getRows());
 
             // Get ad performance info indexes to identify the ad information
@@ -178,7 +194,10 @@ define(['./module', 'lodash'], function (module, _) {
               // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
               adGroup.info = {};
               adGroup.info.clicks = {type: info[adGroupClicksIdx].type, value: info[adGroupClicksIdx].value || 0};
-              adGroup.info.impressions_cost = {type: info[adGroupSpentIdx].type, value: info[adGroupSpentIdx].value || 0};
+              adGroup.info.impressions_cost = {
+                type: info[adGroupSpentIdx].type,
+                value: info[adGroupSpentIdx].value || 0
+              };
               adGroup.info.impressions = {type: info[adGroupImpIdx].type, value: info[adGroupImpIdx].value || 0};
               adGroup.info.cpm = {type: info[adGroupCpmIdx].type, value: info[adGroupCpmIdx].value || 0};
               adGroup.info.ctr = {type: info[adGroupCtrIdx].type, value: info[adGroupCtrIdx].value || 0};
@@ -189,19 +208,20 @@ define(['./module', 'lodash'], function (module, _) {
 
             _.forEach(campaign.ad_groups, function (ad_group) {
               var adGroupInfo = [ad_group.id].concat($scope.adGroupPerformance.getRow(ad_group.id));
+              $scope.adGroups.push(ad_group);
               ad_group = addAdGroupInfo(ad_group, adGroupInfo);
               _.forEach(ad_group.ads, function (ad) {
                 var adInfo = [ad.id].concat($scope.adPerformance.getRow(ad.id));
                 //console.log("Ad: ", ad);
-                console.log("AdInfo: ", adInfo);
+                //console.log("AdInfo: ", adInfo);
                 ad = addAdInfo(ad, adInfo);
-                $scope.adsInfo.push({ad_group: ad_group, ad: ad});
+                $scope.ads.push(ad);
               });
             });
 
-            console.log("Ads Info: ", $scope.adsInfo);
-            $scope.adsInfo = sort($scope.adsInfo, "clicks");
-            console.log("Stats: ", $scope.adsInfo);
+            $scope.ads = sort($scope.ads, "clicks");
+            console.log("Ads : ", $scope.ads);
+            console.log("Ad Groups : ", $scope.adGroups);
           });
         }
       });
@@ -294,7 +314,5 @@ define(['./module', 'lodash'], function (module, _) {
         return "/" + Session.getCurrentWorkspace().organisation_id + "/creatives/" + type + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
       };
     }
-  ])
-  ;
-})
-;
+  ]);
+});

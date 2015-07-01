@@ -97,47 +97,47 @@
 
           <!--Ads Tab-->
           <tab heading="Ads">
-            <table class="mics-table" data-toggle="table" data-sort-name="asd" data-sort-order="desc">
+            <table class="mics-table">
               <thead>
               <tr>
-                <th class="status" ng-click="sortBy('status')">
+                <th ng-click="sortAdsBy('status')" class="status">
                   Status
                   <span ng-show="orderBy == 'status'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th ng-click="sortBy('name')">
+                <th ng-click="sortAdsBy('name')">
                   Name
                   <span ng-show="orderBy == 'name'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th ng-click="sortBy('format')">
+                <th ng-click="sortAdsBy('format')">
                   Format
                   <span ng-show="orderBy == 'format'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th ng-click="sortBy(key)" class="metrics" ng-repeat="(key, info) in adsInfo[0].ad.info">
+                <th ng-click="sortAdsBy(key)" class="metrics" ng-repeat="(key, info) in ads[0].info">
                   {{ adPerformance.getMetricName(key) }}
                   <span ng-show="orderBy == key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="row in adsInfo">
+              <tr ng-repeat="ad in ads">
                 <td>
-                  <div mics-ad-status="row.ad" ad-group="row.ad_group" campaign="campaign"></div>
+                  <div mics-ad-status="ad" ad-group="findAdGroup(ad.id)" campaign="campaign"></div>
                   <span class="badge creative-audit-notification-warning"
-                        popover="The creative has the status {{row.ad.creative_audit_status}}"
+                        popover="The creative has the status {{ad.creative_audit_status}}"
                         popover-trigger="mouseenter"
-                        ng-if="row.ad.creative_audit_status == 'NOT_AUDITED'">?</span>
+                        ng-if="ad.creative_audit_status == 'NOT_AUDITED'">?</span>
                   <span class="badge creative-audit-notification-warning"
-                        popover="The creative has the status {{row.ad.creative_audit_status}} and will be used as soon as the audit finish."
+                        popover="The creative has the status {{ad.creative_audit_status}} and will be used as soon as the audit finish."
                         popover-trigger="mouseenter"
-                        ng-if="row.ad.creative_audit_status == 'AUDIT_PENDING'">?</span>
+                        ng-if="ad.creative_audit_status == 'AUDIT_PENDING'">?</span>
                   <span class="badge creative-audit-notification-alert"
                         popover="One or more audits failed, this creative may not be used everywhere !"
                         popover-trigger="mouseenter"
-                        ng-if="row.ad.creative_audit_status == 'AUDIT_FAILED' || row.ad.creative_audit_status == 'AUDIT_PARTIALLY_PASSED'">!</span>
+                        ng-if="ad.creative_audit_status == 'AUDIT_FAILED' || ad.creative_audit_status == 'AUDIT_PARTIALLY_PASSED'">!</span>
                 </td>
-                <td><a href="#{{getCreativeUrl(row.ad)}}">{{row.ad.name}}</a></td>
-                <td>{{row.ad.format}}</td>
-                <td class="metrics" ng-repeat="info in row.ad.info">
+                <td><a href="#{{getCreativeUrl(ad)}}">{{ad.name}}</a></td>
+                <td>{{ad.format}}</td>
+                <td class="metrics" ng-repeat="info in ad.info">
                   <span ng-if="info.type == 'currency' && info.value != undefined">
                     {{info.value | number:2 | currencyWithSymbol:campaign.currency_code}}
                   </span>
@@ -155,43 +155,38 @@
             <table class="mics-table">
               <thead>
               <tr>
-                <th class="status" ng-click="sortBy('adGroupStatus')">
+                <th class="status" ng-click="sortAdGroupsBy('status')">
                   Status
-                  <span ng-show="orderBy == 'adGroupStatus'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
+                  <span ng-show="orderBy == 'status'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th ng-click="sortBy('adGroupName')">
+                <th ng-click="sortAdGroupsBy('name')">
                   Name
-                  <span ng-show="orderBy == 'adGroupName'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
+                  <span ng-show="orderBy == 'name'"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
-                <th class="metrics" ng-repeat="header in adGroupPerformance.getMetrics()">
-                  {{ adPerformance.getMetricName(header) }}
+                <th ng-click="sortAdGroupsBy(key)" class="metrics" ng-repeat="(key, info) in adGroups[0].info">
+                  {{ adPerformance.getMetricName(key) }}
+                  <span ng-show="orderBy == key"><span ng-show="!reverseSort">▼</span><span ng-show="reverseSort">▲</span></span>
                 </th>
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="row in adgroups">
+              <tr ng-repeat="adGroup in adGroups">
                 <td>
-                  <div mics-ad-group-status="row" campaign="campaign"></div>
+                  <div mics-ad-group-status="adGroup" campaign="campaign"></div>
                 </td>
-                <td>{{row.name}}</td>
-                <td class="metrics {{metricValue.type}}"
-                    ng-repeat="metricValue in adGroupPerformance.getRow(row.id) track by $index">
-                    <span ng-if="metricValue.type == 'currency' && metricValue.value != undefined">
-                      {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
-                    </span>
-                    <span ng-if="metricValue.type == 'percent' && metricValue.value != undefined">
-                      {{metricValue.value | number}} %
-                    </span>
-                    <span ng-if="metricValue.type == 'number' && metricValue.value != undefined">
-                      {{metricValue.value | number}}
-                    </span>
-                  <span ng-if="!metricValue.type || metricValue.value == undefined"> - </span>
+                <td>{{adGroup.name}}</td>
+                <td class="metrics" ng-repeat="info in adGroup.info">
+                  <span ng-if="info.type == 'currency' && info.value != undefined">
+                    {{info.value | number:2 | currencyWithSymbol:campaign.currency_code}}
+                  </span>
+                  <span ng-if="info.type == 'percent' && info.value != undefined">{{info.value | number}} %</span>
+                  <span ng-if="info.type == 'number' && info.value != undefined">{{info.value | number}}</span>
+                  <span ng-if="!info.type || info.value == undefined"> - </span>
                 </td>
               </tr>
               </tbody>
             </table>
           </tab>
-
 
           <!--Sites Tab-->
           <tab heading="Sites">
