@@ -111,7 +111,6 @@ define(['./module'], function (module) {
         }
       };
 
-
       DisplayCampaignContainer.prototype.getGoalSelections = function () {
         return this.goalSelections;
       };
@@ -129,7 +128,7 @@ define(['./module'], function (module) {
       };
 
       DisplayCampaignContainer.prototype.removeGoalSelection = function (goalSelection) {
-        for (var i = 0; i < this.goalSelections.length; i++) {
+        for (var i = 0; i < this.goalSelections.length; ++i) {
           if (this.goalSelections[i].id === goalSelection.id) {
             this.goalSelections.splice(i, 1);
             if (goalSelection.id && goalSelection.id.indexOf("T") === -1) {
@@ -391,9 +390,6 @@ define(['./module'], function (module) {
         });
         return deferred.promise;
       };
-
-
-
 
 
       /**

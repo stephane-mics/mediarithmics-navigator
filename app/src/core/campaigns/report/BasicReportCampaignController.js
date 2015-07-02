@@ -83,11 +83,11 @@ define(['./module', 'lodash'], function (module, _) {
   module.controller('core/campaigns/report/BasicReportCampaignController', [
     '$scope', '$location', '$modal', '$log', '$stateParams', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session',
     function ($scope, $location,  $modal,  $log, $stateParams, ChartsService, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, Session) {
-      $scope.valTo = 10;
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
       $scope.timeFilters = ['Daily', 'Hourly']; // Time filters order is important
       $scope.timeFilter = $scope.timeFilters[0];
+      $scope.chartArea = "chart-area";
       $scope.charts = ['clicks', 'impressions'];
       $scope.getChartName = ChartsService.getChartName;
 
@@ -131,6 +131,15 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Utils
        */
+
+      $scope.showDetails = function () {
+        $scope.details = !$scope.details;
+        if ($scope.chartArea === "chart-area")
+          $scope.chartArea = "chart-area show-details";
+        else
+          $scope.chartArea = "chart-area";
+        updateChartsStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
+      };
 
       $scope.dateRangeIsToday = function () {
         return CampaignAnalyticsReportService.dateRangeIsToday();

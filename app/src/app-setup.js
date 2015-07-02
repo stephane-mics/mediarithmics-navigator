@@ -9,6 +9,7 @@ define([
   'ngRoute',
   'restangular',
   'ngSanitize',
+  'ngAnimate',
   'ngTable',
   'ngBootstrap',
   'jsplumb',

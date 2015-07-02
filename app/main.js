@@ -24,6 +24,7 @@ require.config({
     "plupload": "../bower_components/plupload/js/plupload.dev",
 
     // Angular JS modules
+    "ngAnimate": "../bower_components/angular-animate/angular-animate",
     "ngResource": "../bower_components/angular-resource/angular-resource",
     "ngCookies": "../bower_components/angular-cookies/angular-cookies",
     "ngSanitize": "../bower_components/angular-sanitize/angular-sanitize",
@@ -42,6 +43,7 @@ require.config({
     'nvd3': {exports: 'nv'},
     'angularAMD': ['angular'],
     'ngCookies': ['angular'],
+    'ngAnimate': ['angular'],
     'ngResource': ['angular'],
     'ui.bootstrap': ['angular'],
     'ngSanitize': ['angular'],

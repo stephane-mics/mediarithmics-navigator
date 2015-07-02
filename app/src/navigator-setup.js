@@ -5,6 +5,7 @@ define(['angular'], function () {
       'ngCookies',
       'ngResource',
       'ngSanitize',
+      'ngAnimate',
       'ngRoute',
       'restangular',
       'ngBootstrap',

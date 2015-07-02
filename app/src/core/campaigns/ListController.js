@@ -3,7 +3,7 @@ define(['./module'], function (module) {
 
   var updateStatistics = function ($scope, CampaignAnalyticsReportService, organisationId) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
-    //Moment is not immutable
+    // Moment is not immutable
     var report = CampaignAnalyticsReportService.allCampaigns(organisationId);
     report.then(function (stats) {
       $scope.displayCampaignsStatistics = stats;
@@ -34,12 +34,15 @@ define(['./module'], function (module) {
       if ($scope.administrator) {
         params = {administration_id: currentWorkspace.organisation_id};
       }
+
       Restangular.all('display_campaigns').getList(params).then(function (displayCampaigns) {
         $scope.displayCampaigns = displayCampaigns;
       });
+
       Restangular.all('email_campaigns').getList(params).then(function (emailCampaigns) {
         $scope.emailCampaigns = emailCampaigns;
       });
+
       $scope.$watch('reportDateRange', function () {
         updateStatistics($scope, CampaignAnalyticsReportService, currentWorkspace.organisation_id);
       });
@@ -87,7 +90,6 @@ define(['./module'], function (module) {
           backdrop: 'static',
           controller: 'core/campaigns/DeleteController'
         });
-
         return false;
       };
     }
