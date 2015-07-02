@@ -14,8 +14,9 @@ define(['./module'], function (module) {
    * Campaign list controller
    */
   module.controller('core/campaigns/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
-    function ($scope, $location, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
+    '$scope', '$location', '$modal', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session',
+    'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/files/ExportService',
+    function ($scope, $location, $modal, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
       var currentWorkspace = Session.getCurrentWorkspace();
 
       $scope.currentPageDisplayCampaign = 1;
@@ -46,6 +47,10 @@ define(['./module'], function (module) {
       $scope.$watch('reportDateRange', function () {
         updateStatistics($scope, CampaignAnalyticsReportService, currentWorkspace.organisation_id);
       });
+
+      $scope.export = function() {
+        ExportService.exportData([], 'TestExport');
+      };
 
       $scope.getCampaignDashboardUrl = function (campaign) {
         return "/" + campaign.organisation_id + "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";

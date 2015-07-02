@@ -17,6 +17,8 @@ define([
   'ui.router',
   'ui.router.extras',
   'lodash',
+  'js-xlsx',
+  'jszipGlobal',
   'core/configuration',
   'core/adblock/index',
   'core/queries/index',

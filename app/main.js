@@ -23,6 +23,11 @@ require.config({
     "moxie": "../bower_components/plupload/js/moxie",
     "plupload": "../bower_components/plupload/js/plupload.dev",
 
+    "jszip": "../bower_components/js-xlsx/jszip",
+    "jszipGlobal": "../src/core/common/globals/jszipGlobal",
+    "js-xlsx": "../bower_components/js-xlsx/xlsx",
+    "file-saver": "../bower_components/file-saver.js/FileSaver",
+
     // Angular JS modules
     "ngAnimate": "../bower_components/angular-animate/angular-animate",
     "ngResource": "../bower_components/angular-resource/angular-resource",
@@ -61,6 +66,8 @@ require.config({
     'ui.router': ['angular'],
     'ui.router.extras': ['angular', 'ui.router'],
     'ngload': ['angularAMD'],
+    'jszipGlobal': ['jszip'],
+    'js-xlsx': ['angular', 'jszipGlobal', 'file-saver'],
     // Navigator configuration
     'core/configuration': ['angular']
   },
