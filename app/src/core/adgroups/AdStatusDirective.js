@@ -18,7 +18,7 @@ define(['./module'], function (module) {
 
             var updateAdStatus = function (ad, status) {
               Restangular.one("display_campaigns", $scope.campaign.id).one('ad_groups', $scope.adGroup.id).one('ads', ad.id).customPUT({
-                status: status,
+                status: status
               }).then(function (returnedAd) {
                 ad.status = returnedAd.status;
               }, function failure(response) {
