@@ -1,5 +1,7 @@
 define([], {
   load: function (moduleName, parentRequire, onload, config) {
+    "use strict";
+
     var onLoadSuccess = function (moduleInstance) {
       // Module successfully loaded, call the onload callback so that
       // RequireJS can work its internal magic.

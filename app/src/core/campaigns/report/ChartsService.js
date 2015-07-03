@@ -22,6 +22,6 @@ define(['./module'], function (module) {
     return {
       getChartsList: getChartsList,
       getChartName: getChartName
-    }
+    };
   });
 });

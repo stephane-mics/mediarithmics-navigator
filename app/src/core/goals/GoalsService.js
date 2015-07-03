@@ -37,6 +37,6 @@ define(['./module'], function (module) {
       isConversionType: isConversionType,
       isClickType: isClickType,
       isVisitType: isVisitType
-    }
+    };
   });
 });

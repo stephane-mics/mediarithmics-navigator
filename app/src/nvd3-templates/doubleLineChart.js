@@ -448,7 +448,7 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
           if (singleDay || !hourlyMode) {
             tooltipTitle = xValue;
           } else {
-            tooltipTitle = xValue + " - " + timeFormat(chart.x()(singlePoint, pointIndex))
+            tooltipTitle = xValue + " - " + timeFormat(chart.x()(singlePoint, pointIndex));
           }
 
           interactiveLayer.tooltip
