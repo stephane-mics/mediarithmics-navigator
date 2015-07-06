@@ -31,20 +31,17 @@ define(['./module', 'lodash'], function (module, _) {
 
     updateChartsStatistics($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts);
 
-    CampaignAnalyticsReportService.adGroupPerformance(campaignId)
-      .then(function (data) {
-        $scope.adGroupPerformance = data;
-      });
+    CampaignAnalyticsReportService.adGroupPerformance(campaignId, $scope.hasCpa).then(function (data) {
+      $scope.adGroupPerformance = data;
+    });
 
-    CampaignAnalyticsReportService.adPerformance(campaignId)
-      .then(function (data) {
-        $scope.adPerformance = data;
-      });
+    CampaignAnalyticsReportService.adPerformance(campaignId, $scope.hasCpa).then(function (data) {
+      $scope.adPerformance = data;
+    });
 
-    CampaignAnalyticsReportService.mediaPerformance(campaignId)
-      .then(function (data) {
-        $scope.mediaPerformance = data;
-      });
+    CampaignAnalyticsReportService.mediaPerformance(campaignId, $scope.hasCpa).then(function (data) {
+      $scope.mediaPerformance = data;
+    });
 
     CampaignAnalyticsReportService.kpi(campaignId)
       .then(function (data) {
@@ -76,10 +73,11 @@ define(['./module', 'lodash'], function (module, _) {
       Restangular.one('campaigns/' + $stateParams.campaign_id + '/goal_selections').get().then(function (goals) {
         for (var i = 0; i < goals.length; ++i) {
           if (GoalsService.isConversionType(goals[i].goal_selection_type)) {
-            $scope.hasConversionGoal = true;
+            $scope.hasCpa = true;
             return;
           }
         }
+        $scope.hasCpa = false;
       });
 
       /**
@@ -104,7 +102,6 @@ define(['./module', 'lodash'], function (module, _) {
           performance = $scope.adGroupPerformance;
         }
         var metrics = performance.getMetrics();
-        console.log(metricsType + " | " + metrics);
         // TODO get metrics with formatted names
         for (var i = 0; i < metrics.length; ++i) {
           headers = headers.concat(performance.getMetricName(metrics[i]));
@@ -138,7 +135,7 @@ define(['./module', 'lodash'], function (module, _) {
         var metricsHeaders = [];
         if (metricsType === metricsTypes.overview) {
           metricsHeaders = ["CPC", "CTR", "CPM", "Spent"];
-          if ($scope.hasConversionGoal) {
+          if ($scope.hasCpa) {
             metricsHeaders = ["CPA", "CPC", "CTR", "CPM", "Spent"];
           }
         } else {
@@ -159,10 +156,6 @@ define(['./module', 'lodash'], function (module, _) {
         var adsData = buildExportData($scope.ads, metricsTypes.ads, buildExportHeader(metricsTypes.ads));
         var adGroupsData = buildExportData($scope.adGroups, metricsTypes.adGroups, buildExportHeader(metricsTypes.adGroups));
         var sitesData = buildExportData($scope.sites, metricsTypes.sites, buildExportHeader(metricsTypes.sites));
-        //console.log("Overview Data", overviewData);
-        //console.log("Ads Data", adsData);
-        //console.log("Ad Groups Data", adGroupsData);
-        //console.log("Sites Data", sitesData);
         return [
           {name: "Overview", data: overviewData},
           {name: "Ads", data: adsData},
@@ -304,7 +297,9 @@ define(['./module', 'lodash'], function (module, _) {
             };
             site.info[4] = {key: "ctr", type: siteInfo[siteCtrIdx].type, value: siteInfo[siteCtrIdx].value || 0};
             site.info[5] = {key: "cpc", type: siteInfo[siteCpcIdx].type, value: siteInfo[siteCpcIdx].value || 0};
-            site.info[6] = {key: "cpa", type: siteInfo[siteCpaIdx].type, value: siteInfo[siteCpaIdx].value || 0};
+            if ($scope.hasCpa) {
+              site.info[6] = {key: "cpa", type: siteInfo[siteCpaIdx].type, value: siteInfo[siteCpaIdx].value || 0};
+            }
             return site;
           };
 
@@ -322,7 +317,6 @@ define(['./module', 'lodash'], function (module, _) {
         if (angular.isDefined($scope.adPerformance) && angular.isDefined($scope.adGroupPerformance)) {
           DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
             $scope.campaign = campaign;
-            //console.log("$scope.campaign", campaign.getMeta());
             $scope.adgroups = campaign.ad_groups;
             $scope.ads = [];
             $scope.adGroups = [];
@@ -354,7 +348,9 @@ define(['./module', 'lodash'], function (module, _) {
               ad.info[3] = {key: "clicks", type: info[adClicksIdx].type, value: info[adClicksIdx].value || 0};
               ad.info[4] = {key: "ctr", type: info[adCtrIdx].type, value: info[adCtrIdx].value || 0};
               ad.info[5] = {key: "cpc", type: info[adCpcIdx].type, value: info[adCpcIdx].value || 0};
-              ad.info[6] = {key: "cpa", type: info[adCpaIdx].type, value: info[adCpaIdx].value || 0};
+              if ($scope.hasCpa) {
+                ad.info[6] = {key: "cpa", type: info[adCpaIdx].type, value: info[adCpaIdx].value || 0};
+              }
               return ad;
             };
 
@@ -379,7 +375,9 @@ define(['./module', 'lodash'], function (module, _) {
               };
               adGroup.info[4] = {key: "ctr", type: info[adGroupCtrIdx].type, value: info[adGroupCtrIdx].value || 0};
               adGroup.info[5] = {key: "cpc", type: info[adGroupCpcIdx].type, value: info[adGroupCpcIdx].value || 0};
-              adGroup.info[6] = {key: "cpa", type: info[adGroupCpaIdx].type, value: info[adGroupCpaIdx].value || 0};
+              if ($scope.hasCpa) {
+                adGroup.info[6] = {key: "cpa", type: info[adGroupCpaIdx].type, value: info[adGroupCpaIdx].value || 0};
+              }
               return adGroup;
             };
 
@@ -404,9 +402,11 @@ define(['./module', 'lodash'], function (module, _) {
        * Stats
        */
 
-      $scope.$watch('reportDateRange', function () {
-        $scope.timeFilter = $scope.timeFilters[0];
-        updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
+      $scope.$watch('reportDateRange + hasCpa', function () {
+        if (angular.isDefined($scope.hasCpa)) {
+          $scope.timeFilter = $scope.timeFilters[0];
+          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
+        }
       });
 
       $scope.refresh = function () {
@@ -479,10 +479,6 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Utils
        */
-
-      $scope.hasCPA = function () {
-        //if ($scope.campaign.)
-      }
 
       $scope.getCreativeUrl = function (ad) {
         var type = "display-ad";

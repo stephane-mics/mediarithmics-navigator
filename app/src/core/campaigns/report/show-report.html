@@ -11,8 +11,8 @@
         <div class="dropdown dropdown-export">
           <button class="mics-btn mics-btn-finish btn-xs" dropdown-toggle type="button">Export</button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="Choose Export Format">
-            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">XLSX</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('csv')">CSV</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">Excel (.xlsx)</a></li>
+            <!--<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('csv')">CSV</a></li>-->
           </ul>
         </div>
         <div mics-campaign-status="campaign"></div>
@@ -43,8 +43,8 @@
     <div ng-class="chartArea">
       <div class="kpi-area">
         <dl>
-          <dt ng-if="hasConversionGoal">CPA</dt>
-          <dd ng-if="hasConversionGoal">{{kpis.cpa | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
+          <dt ng-if="hasCpa">CPA</dt>
+          <dd ng-if="hasCpa">{{kpis.cpa | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
           <dt>CPC</dt>
           <dd>{{kpis.cpc | number:2 | currencyWithSymbol:campaign.currency_code}}</dd>
           <dt>CTR</dt>

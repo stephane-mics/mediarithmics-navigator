@@ -210,8 +210,8 @@ define(['./module'], function (module) {
       /**
        * GoalSelections methods
        */
-      service.hasConversionGoal = function () {
-        return this.campaignCtn.hasConversionGoal();
+      service.hasCpa = function () {
+        return this.campaignCtn.hasCpa();
       };
 
       service.getGoalSelections = function () {

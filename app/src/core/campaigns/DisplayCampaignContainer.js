@@ -115,7 +115,7 @@ define(['./module'], function (module) {
         return this.goalSelections;
       };
 
-      DisplayCampaignContainer.prototype.hasConversionGoal = function () {
+      DisplayCampaignContainer.prototype.hasCpa = function () {
         for (var i = 0; i < this.goalSelections.length; ++i) {
           if (GoalsService.isConversionType(this.goalSelections[i].goal_selection_type)) {
             return true;
