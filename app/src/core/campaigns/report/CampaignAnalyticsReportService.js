@@ -81,6 +81,15 @@ define(['./module', 'lodash'], function (module, _) {
     this.getRows = function () {
       return report.rows;
     };
+
+    this.getHeaders = function() {
+      var headers = [];
+      var metrics = this.getMetrics();
+      for (var i = 0; i < metrics.length; ++i) {
+        headers.push(this.getMetricName(metrics[i]));
+      }
+      return headers;
+    };
   }
 
   var isMetrics = function (e) {

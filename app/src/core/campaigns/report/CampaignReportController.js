@@ -101,12 +101,7 @@ define(['./module', 'lodash'], function (module, _) {
           headers = ["Status", "Name"];
           performance = $scope.adGroupPerformance;
         }
-        var metrics = performance.getMetrics();
-        // TODO get metrics with formatted names
-        for (var i = 0; i < metrics.length; ++i) {
-          headers = headers.concat(performance.getMetricName(metrics[i]));
-        }
-        return headers;
+        return headers.concat(performance.getHeaders());
       };
 
       var buildExportData = function (metrics, metricsType, header) {
@@ -127,17 +122,17 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
       var buildExportOverview = function (header) {
-        var metrics = [$scope.kpis.cpa, $scope.kpis.cpc, $scope.kpis.ctr, $scope.kpis.cpm, $scope.kpis.impressions_cost];
+        var metrics = [$scope.kpis.cpc, $scope.kpis.ctr, $scope.kpis.cpm, $scope.kpis.impressions_cost];
+        if ($scope.hasCpa) {
+          metrics.unshift($scope.kpis.cpa)
+        }
         return header.concat([metrics]);
       };
 
       var buildExportHeader = function (metricsType) {
         var metricsHeaders = [];
         if (metricsType === metricsTypes.overview) {
-          metricsHeaders = ["CPC", "CTR", "CPM", "Spent"];
-          if ($scope.hasCpa) {
-            metricsHeaders = ["CPA", "CPC", "CTR", "CPM", "Spent"];
-          }
+          metricsHeaders = $scope.hasCpa ? ["CPA", "CPC", "CTR", "CPM", "Spent"] : ["CPC", "CTR", "CPM", "Spent"];
         } else {
           metricsHeaders = buildMetricsExportHeaders(metricsType);
         }
