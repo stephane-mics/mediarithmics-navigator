@@ -18,26 +18,19 @@ define(['./module'], function (module) {
       service.getDisplayNetworkAccess = function () {
         return this.getDisplayNetworkAccessPromise().$object;
       };
+
       service.getDisplayNetworkAccessPromise = function () {
         var params = {organisation_id: Session.getCurrentWorkspace().organisation_id};
         return Restangular.all('display_network_accesses').getList(params);
       };
 
-
-      
-
-
       service.getDeepCampaignView = function (campaignId) {
         var root = Restangular.one('display_campaigns', campaignId);
-        // send requests to get the value and the list of
-        // ad group ids
+        // Send request to get the value and the list of ad group ids
         return root.get({view: "deep"});
       };
 
-
       service.initCreateCampaign = function (template) {
-
-
         var campaignCtn = new DisplayCampaignContainer(template.template_group_id, template.template_artifact_id);
         campaignCtn.id = IdGenerator.getId();
         campaignCtn.organisationId = Session.getCurrentWorkspace().organisation_id;
@@ -45,9 +38,9 @@ define(['./module'], function (module) {
         // set currency ...
         this.campaignCtn = campaignCtn;
 
-        var defered = $q.defer();
-        defered.resolve(campaignCtn.id);
-        return defered.promise;
+        var deferred = $q.defer();
+        deferred.resolve(campaignCtn.id);
+        return deferred.promise;
       };
 
       service.initEditCampaign = function (campaignId, template) {
@@ -217,6 +210,10 @@ define(['./module'], function (module) {
       /**
        * GoalSelections methods
        */
+      service.hasConversionGoal = function () {
+        return this.campaignCtn.hasConversionGoal();
+      };
+
       service.getGoalSelections = function () {
         return this.campaignCtn.getGoalSelections();
       };

@@ -56,8 +56,10 @@ define(['./module', 'lodash'], function (module, _) {
    * Campaign list controller
    */
   module.controller('core/campaigns/report/CampaignReportController', [
-    '$scope', '$location', '$modal', '$log', '$stateParams', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session',
-    function ($scope, $location, $modal, $log, $stateParams, ChartsService, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, Session) {
+    '$scope', '$location', '$modal', '$log', '$stateParams', 'Restangular', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService',
+    'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session', 'core/common/files/ExportService', 'core/campaigns/goals/GoalsService',
+    function ($scope, $location, $modal, $log, $stateParams, Restangular, ChartsService, DisplayCampaignService,
+              CampaignAnalyticsReportService, CampaignPluginService, Session, ExportService, GoalsService) {
       // Chart
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
@@ -71,6 +73,113 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.reverseSort = false;
       $scope.orderBy = "clicks";
 
+      Restangular.one('campaigns/' + $stateParams.campaign_id + '/goal_selections').get().then(function (goals) {
+        for (var i = 0; i < goals.length; ++i) {
+          if (GoalsService.isConversionType(goals[i].goal_selection_type)) {
+            $scope.hasConversionGoal = true;
+            return;
+          }
+        }
+      });
+
+      /**
+       * Data Table Export
+       */
+
+      var metricsTypes = {
+        overview: "Overview",
+        ads: "Ads",
+        adGroups: "Ad Groups",
+        sites: "Sites"
+      };
+
+      var buildMetricsExportHeaders = function (metricsType) {
+        var performance = $scope.adPerformance;
+        var headers = ["Status", "Name", "Format"];
+        if (metricsType === metricsTypes.sites) {
+          headers = ["Name"];
+          performance = $scope.mediaPerformance;
+        } else if (metricsType === metricsTypes.adGroups) {
+          headers = ["Status", "Name"];
+          performance = $scope.adGroupPerformance;
+        }
+        var metrics = performance.getMetrics();
+        console.log(metricsType + " | " + metrics);
+        // TODO get metrics with formatted names
+        for (var i = 0; i < metrics.length; ++i) {
+          headers = headers.concat(performance.getMetricName(metrics[i]));
+        }
+        return headers;
+      };
+
+      var buildExportData = function (metrics, metricsType, header) {
+        var data = [];
+        for (var i = 0; i < metrics.length; ++i) {
+          var row = [metrics[i].status, metrics[i].name, metrics[i].format];
+          if (metricsType === metricsTypes.adGroups) {
+            row = [metrics[i].status, metrics[i].name];
+          } else if (metricsType === metricsTypes.sites) {
+            row = [metrics[i].name];
+          }
+          for (var j = 0; j < metrics[i].info.length; ++j) {
+            row.push(metrics[i].info[j].value || '');
+          }
+          data.push(row);
+        }
+        return header.concat(data);
+      };
+
+      var buildExportOverview = function (header) {
+        var metrics = [$scope.kpis.cpa, $scope.kpis.cpc, $scope.kpis.ctr, $scope.kpis.cpm, $scope.kpis.impressions_cost];
+        return header.concat([metrics]);
+      };
+
+      var buildExportHeader = function (metricsType) {
+        var metricsHeaders = [];
+        if (metricsType === metricsTypes.overview) {
+          metricsHeaders = ["CPC", "CTR", "CPM", "Spent"];
+          if ($scope.hasConversionGoal) {
+            metricsHeaders = ["CPA", "CPC", "CTR", "CPM", "Spent"];
+          }
+        } else {
+          metricsHeaders = buildMetricsExportHeaders(metricsType);
+        }
+        return [
+          ["Organisation:", Session.getOrganisationName($scope.campaign.organisation_id)],
+          ["Campaign: ", $scope.campaign.name],
+          ["From " + $scope.reportDateRange.startDate.format("DD-MM-YYYY"), "To " + $scope.reportDateRange.endDate.format("DD-MM-YYYY")],
+          [],
+          [metricsType],
+          metricsHeaders
+        ];
+      };
+
+      $scope.buildCampaignMetricsExportData = function () {
+        var overviewData = buildExportOverview(buildExportHeader(metricsTypes.overview));
+        var adsData = buildExportData($scope.ads, metricsTypes.ads, buildExportHeader(metricsTypes.ads));
+        var adGroupsData = buildExportData($scope.adGroups, metricsTypes.adGroups, buildExportHeader(metricsTypes.adGroups));
+        var sitesData = buildExportData($scope.sites, metricsTypes.sites, buildExportHeader(metricsTypes.sites));
+        //console.log("Overview Data", overviewData);
+        //console.log("Ads Data", adsData);
+        //console.log("Ad Groups Data", adGroupsData);
+        //console.log("Sites Data", sitesData);
+        return [
+          {name: "Overview", data: overviewData},
+          {name: "Ads", data: adsData},
+          {name: "Ad Groups", data: adGroupsData},
+          {name: "Sites", data: sitesData}
+        ];
+      };
+
+      $scope.export = function (extension) {
+        var dataExport = $scope.buildCampaignMetricsExportData();
+        ExportService.exportData(dataExport, $scope.campaign.name + '-Metrics', extension);
+      };
+
+      /**
+       * Data Table
+       */
+
       var statusCompare = function (left, right) {
         if ($scope.orderBy !== "status") return false;
         var leftActive = left[0].status === "ACTIVE";
@@ -78,7 +187,7 @@ define(['./module', 'lodash'], function (module, _) {
         return (!$scope.reverseSort && leftActive) || ($scope.reverseSort && rightActive);
       };
 
-      var getInfoValue = function(ad) {
+      var getInfoValue = function (ad) {
         for (var i = 0; i < ad.info.length; ++i) {
           if (ad.info[i].key === $scope.orderBy)
             return ad.info[i].value;
@@ -177,10 +286,22 @@ define(['./module', 'lodash'], function (module, _) {
           var addSiteInfo = function (site, siteInfo) {
             // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
             site.info = [];
-            site.info[0] = {key: "impressions", type: siteInfo[siteImpIdx].type, value: siteInfo[siteImpIdx].value || 0};
+            site.info[0] = {
+              key: "impressions",
+              type: siteInfo[siteImpIdx].type,
+              value: siteInfo[siteImpIdx].value || 0
+            };
             site.info[1] = {key: "cpm", type: siteInfo[siteCpmIdx].type, value: siteInfo[siteCpmIdx].value || 0};
-            site.info[2] = {key: "impressions_cost", type: siteInfo[siteSpentIdx].type, value: siteInfo[siteSpentIdx].value || 0};
-            site.info[3] = {key: "clicks", type: siteInfo[siteClicksIdx].type, value: siteInfo[siteClicksIdx].value || 0};
+            site.info[2] = {
+              key: "impressions_cost",
+              type: siteInfo[siteSpentIdx].type,
+              value: siteInfo[siteSpentIdx].value || 0
+            };
+            site.info[3] = {
+              key: "clicks",
+              type: siteInfo[siteClicksIdx].type,
+              value: siteInfo[siteClicksIdx].value || 0
+            };
             site.info[4] = {key: "ctr", type: siteInfo[siteCtrIdx].type, value: siteInfo[siteCtrIdx].value || 0};
             site.info[5] = {key: "cpc", type: siteInfo[siteCpcIdx].type, value: siteInfo[siteCpcIdx].value || 0};
             site.info[6] = {key: "cpa", type: siteInfo[siteCpaIdx].type, value: siteInfo[siteCpaIdx].value || 0};
@@ -201,6 +322,7 @@ define(['./module', 'lodash'], function (module, _) {
         if (angular.isDefined($scope.adPerformance) && angular.isDefined($scope.adGroupPerformance)) {
           DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
             $scope.campaign = campaign;
+            //console.log("$scope.campaign", campaign.getMeta());
             $scope.adgroups = campaign.ad_groups;
             $scope.ads = [];
             $scope.adGroups = [];
@@ -239,10 +361,22 @@ define(['./module', 'lodash'], function (module, _) {
             var addAdGroupInfo = function (adGroup, info) {
               // Build ad group info object using ad group performance values.
               adGroup.info = [];
-              adGroup.info[0] = {key: "impressions", type: info[adGroupImpIdx].type, value: info[adGroupImpIdx].value || 0};
+              adGroup.info[0] = {
+                key: "impressions",
+                type: info[adGroupImpIdx].type,
+                value: info[adGroupImpIdx].value || 0
+              };
               adGroup.info[1] = {key: "cpm", type: info[adGroupCpmIdx].type, value: info[adGroupCpmIdx].value || 0};
-              adGroup.info[2] = {key: "impressions_cost", type: info[adGroupSpentIdx].type, value: info[adGroupSpentIdx].value || 0};
-              adGroup.info[3] = {key: "clicks", type: info[adGroupClicksIdx].type, value: info[adGroupClicksIdx].value || 0};
+              adGroup.info[2] = {
+                key: "impressions_cost",
+                type: info[adGroupSpentIdx].type,
+                value: info[adGroupSpentIdx].value || 0
+              };
+              adGroup.info[3] = {
+                key: "clicks",
+                type: info[adGroupClicksIdx].type,
+                value: info[adGroupClicksIdx].value || 0
+              };
               adGroup.info[4] = {key: "ctr", type: info[adGroupCtrIdx].type, value: info[adGroupCtrIdx].value || 0};
               adGroup.info[5] = {key: "cpc", type: info[adGroupCpcIdx].type, value: info[adGroupCpcIdx].value || 0};
               adGroup.info[6] = {key: "cpa", type: info[adGroupCpaIdx].type, value: info[adGroupCpaIdx].value || 0};
@@ -345,6 +479,10 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Utils
        */
+
+      $scope.hasCPA = function () {
+        //if ($scope.campaign.)
+      }
 
       $scope.getCreativeUrl = function (ad) {
         var type = "display-ad";
