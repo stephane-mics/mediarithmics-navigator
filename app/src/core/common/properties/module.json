@@ -1,2 +1,4 @@
-{"name": "core/common/properties",
-  "dependencies":[]}
+{
+  "name": "core/common/properties",
+  "dependencies": []
+}

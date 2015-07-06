@@ -3,6 +3,8 @@
   "dependencies": [
     "core/common/auth",
     "core/common/properties",
-    "core/common/ads"
+    "core/common/ads",
+    "core/common/files",
+    "core/common/globals"
   ]
 }

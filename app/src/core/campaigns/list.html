@@ -5,10 +5,16 @@
     <div class="campaign-list-heading">
       <h1>
         All Campaigns
+        <div class="dropdown">
+          <button class="mics-btn mics-btn-finish btn-xs" dropdown-toggle type="button">Export</button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="Choose Export Format">
+            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">Excel (.xlsx)</a></li>
+            <!--<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('csv')">CSV</a></li>-->
+          </ul>
+        </div>
         <div class="pull-right">
           <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
-            <span class="glyphicon glyphicon-refresh"></span>
-            Refresh
+            <span class="glyphicon glyphicon-refresh"></span>Refresh
           </button>
         </div>
       </h1>

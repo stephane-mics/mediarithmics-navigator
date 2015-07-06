@@ -1,5 +1,8 @@
-{"name": "core/common/auth",
-  "dependencies": ["restangular"]
+{
+  "name": "core/common/auth",
+  "dependencies": [
+    "restangular"
+  ]
 }
 
 

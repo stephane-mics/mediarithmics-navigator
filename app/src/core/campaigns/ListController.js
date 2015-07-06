@@ -14,8 +14,9 @@ define(['./module'], function (module) {
    * Campaign list controller
    */
   module.controller('core/campaigns/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session', 'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', '$modal',
-    function ($scope, $location, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, $modal) {
+    '$scope', '$location', '$modal', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session',
+    'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/files/ExportService',
+    function ($scope, $location, $modal, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
       var currentWorkspace = Session.getCurrentWorkspace();
 
       $scope.currentPageDisplayCampaign = 1;
@@ -46,6 +47,53 @@ define(['./module'], function (module) {
       $scope.$watch('reportDateRange', function () {
         updateStatistics($scope, CampaignAnalyticsReportService, currentWorkspace.organisation_id);
       });
+
+      var buildAllCampaignsExportHeaders = function (report) {
+        var headers = ["Status", "Name"];
+        if ($scope.administrator) {
+          headers = headers.concat("Organisation");
+        }
+        var metrics = report.getMetrics();
+        // TODO get metrics with formatted names
+        for (var i = 0; i < metrics.length; ++i) {
+          headers = headers.concat(report.getMetricName(metrics[i]));
+        }
+        return headers;
+      };
+
+      $scope.buildAllCampaignsExportData = function () {
+        return CampaignAnalyticsReportService.allCampaigns().then(function (report) {
+          var dataExport = [
+            ["All Campaigns"],
+            ["From " + $scope.reportDateRange.startDate.format("DD-MM-YYYY"), "To " + $scope.reportDateRange.endDate.format("DD-MM-YYYY")],
+            [],
+            buildAllCampaignsExportHeaders(report)
+          ];
+          for (var i = 0; i < $scope.displayCampaigns.length; ++i) {
+            var campaign = $scope.displayCampaigns[i];
+            var row = [campaign.status, campaign.name];
+            if ($scope.administrator) {
+              row.push($scope.organisationName($scope.organisation_id));
+            }
+            var campaignMetrics = report.getRow(campaign.id);
+            for (var j = 0; j < campaignMetrics.length; ++j) {
+              row.push(campaignMetrics[j].value || '');
+            }
+            row = row.concat();
+            dataExport = dataExport.concat([row]);
+          }
+          return dataExport;
+        });
+      };
+
+      $scope.export = function (extension) {
+        $scope.buildAllCampaignsExportData().then(function (dataExport) {
+          ExportService.exportData([{
+            name: "All Campaigns",
+            data: dataExport
+          }], 'AllCampaigns-' + currentWorkspace.organisation_id, extension);
+        });
+      };
 
       $scope.getCampaignDashboardUrl = function (campaign) {
         return "/" + campaign.organisation_id + "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";

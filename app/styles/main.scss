@@ -686,6 +686,9 @@ form.mcs-full-page-form {
     @extend .mcs-default-content;
     .campaign-list-heading {
       @extend .mcs-default-heading;
+      .dropdown {
+        display: inline-block;
+      }
     }
     .campaign-list-controller {
       @include make-row();
@@ -744,6 +747,9 @@ form.mcs-full-page-form {
   .report {
     .campaign-heading {
       @extend .mcs-default-heading;
+      .dropdown-export {
+        display: inline-block;
+      }
       h2 {
         & > span {
           @include use-bold-font();

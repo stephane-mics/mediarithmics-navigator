@@ -5,9 +5,9 @@ define(['./module'], function (module) {
    * Campaign Container
    */
 
-  module.factory("core/campaigns/DisplayCampaignContainer", [
-    "$q", "Restangular", "core/common/IdGenerator", "async", "core/campaigns/AdGroupContainer", "$log", 'core/common/promiseUtils', "lodash",
-    function ($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _) {
+  module.factory('core/campaigns/DisplayCampaignContainer', [
+    '$q', 'Restangular', 'core/common/IdGenerator', 'async', 'core/campaigns/AdGroupContainer', '$log', 'core/common/promiseUtils', 'lodash',  'core/campaigns/goals/GoalsService',
+    function ($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _, GoalsService) {
       var DisplayCampaignContainer = function DisplayCampaignContainer(templateGroupId, templateArtifactId) {
         this.creationMode = true;
         this.adGroups = [];
@@ -113,6 +113,15 @@ define(['./module'], function (module) {
 
       DisplayCampaignContainer.prototype.getGoalSelections = function () {
         return this.goalSelections;
+      };
+
+      DisplayCampaignContainer.prototype.hasCpa = function () {
+        for (var i = 0; i < this.goalSelections.length; ++i) {
+          if (GoalsService.isConversionType(this.goalSelections[i].goal_selection_type)) {
+            return true;
+          }
+        }
+        return false;
       };
 
       DisplayCampaignContainer.prototype.addGoalSelection = function (goalSelection) {

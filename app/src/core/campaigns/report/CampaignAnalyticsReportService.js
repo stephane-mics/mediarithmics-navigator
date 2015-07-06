@@ -81,6 +81,15 @@ define(['./module', 'lodash'], function (module, _) {
     this.getRows = function () {
       return report.rows;
     };
+
+    this.getHeaders = function() {
+      var headers = [];
+      var metrics = this.getMetrics();
+      for (var i = 0; i < metrics.length; ++i) {
+        headers.push(this.getMetricName(metrics[i]));
+      }
+      return headers;
+    };
   }
 
   var isMetrics = function (e) {
@@ -114,10 +123,10 @@ define(['./module', 'lodash'], function (module, _) {
    * Campaign Analytics Report Service
    */
   module.factory('CampaignAnalyticsReportService',
-    ['$resource', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration', 'moment', 'core/campaigns/report/ChartsService',
-      function ($resource, Session, AuthenticationService, configuration, moment, ChartsService) {
+    ['$resource', 'Restangular', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration',
+      'moment', 'core/campaigns/report/ChartsService', 'core/campaigns/goals/GoalsService',
+      function ($resource, Restangular, Session, AuthenticationService, configuration, moment, ChartsService, GoalsService) {
         var WS_URL = configuration.WS_URL;
-
 
         /**
          * Resources definition
@@ -195,108 +204,87 @@ define(['./module', 'lodash'], function (module, _) {
 
         var ReportService = {};
 
-        ReportService.getTableHeaders = function() {
+        ReportService.getTableHeaders = function () {
           return tableHeaders;
         };
 
-        ReportService.creativePerformance = function (campaignId) {
-          return creativeResource.get({
+        ReportService.getPerformance = function (resource, metrics, filters) {
+          return resource.get({
             organisation_id: Session.getCurrentWorkspace().organisation_id,
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
-            filters: "campaign_id==" + campaignId
-          }).$promise.then(function (response) {
+            metrics: metrics,
+            filters: filters
+          })
+        };
+
+        ReportService.buildPerformanceReport = function (resource, metrics, filters) {
+          return this.getPerformance(resource, metrics, filters)
+            .$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view);
             });
         };
 
-        ReportService.adGroupPerformance = function (campaignId) {
-          return adGroupResource.get({
-            organisation_id: Session.getCurrentWorkspace().organisation_id,
-            start_date: startDate().format('YYYY-MM-D'),
-            end_date: endDate().format('YYYY-MM-D'),
-            dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
-            filters: "campaign_id==" + campaignId
-          }).$promise.then(function (response) {
-              return new ReportWrapper(response.data.report_view);
-            });
+        ReportService.creativePerformance = function (campaignId, hasCpa) {
+          var cpa = hasCpa ? ",cpa" : "";
+          return this.buildPerformanceReport(
+            creativeResource,
+            "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
+            "campaign_id==" + campaignId
+          );
         };
 
-
-        ReportService.adPerformance = function (campaignId) {
-          return adResource.get({
-            organisation_id: Session.getCurrentWorkspace().organisation_id,
-            start_date: startDate().format('YYYY-MM-D'),
-            end_date: endDate().format('YYYY-MM-D'),
-            dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
-            filters: "campaign_id==" + campaignId
-          }).$promise.then(function (response) {
-              return new ReportWrapper(response.data.report_view);
-            });
+        ReportService.adGroupPerformance = function (campaignId, hasCpa) {
+          var cpa = hasCpa ? ",cpa" : "";
+          return this.buildPerformanceReport(
+            adGroupResource,
+            "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
+            "campaign_id==" + campaignId
+          );
         };
 
-        ReportService.mediaPerformance = function (campaignId) {
-          return mediaResource.get({
-            organisation_id: Session.getCurrentWorkspace().organisation_id,
-            start_date: startDate().format('YYYY-MM-D'),
-            end_date: endDate().format('YYYY-MM-D'),
-            dimension: "",
-            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
-            filters: "campaign_id==" + campaignId
-          }).$promise.then(function (response) {
-              return new ReportWrapper(response.data.report_view);
-            });
+        ReportService.adPerformance = function (campaignId, hasCpa) {
+          var cpa = hasCpa ? ",cpa" : "";
+          return this.buildPerformanceReport(
+            adResource,
+            "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
+            "campaign_id==" + campaignId
+          );
         };
 
-        ReportService.kpi = function (campaignId) {
-          return displayCampaignResource.get({
-            organisation_id: Session.getCurrentWorkspace().organisation_id,
-            start_date: startDate().format('YYYY-MM-D'),
-            end_date: endDate().format('YYYY-MM-D'),
-            dimension: "",
-            metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr,cpa",
-            filters: "campaign_id==" + campaignId
-          }).$promise.then(function (response) {
+        ReportService.mediaPerformance = function (campaignId, hasCpa) {
+          var cpa = hasCpa ? ",cpa" : "";
+          return this.buildPerformanceReport(
+            mediaResource,
+            "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
+            "campaign_id==" + campaignId
+          );
+        };
+
+        ReportService.kpi = function (campaignId, hasCpa) {
+          var cpa = hasCpa ? ",cpa" : "";
+          return this.getPerformance(mediaResource, "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa, "campaign_id==" + campaignId)
+            .$promise.then(function (response) {
               var report = response.data.report_view;
-              var firstLine = report.rows[0];
-              if (firstLine === undefined) {
-                return {
-                  "cpa": 0,
-                  "cpc": 0,
-                  "ctr": 0,
-                  "cpm": 0,
-                  "impressions_cost": 0
-                };
-              }
+              var firstLine = report.rows[0] || [];
               return {
-                "cpa": firstLine[_.indexOf(report.columns_headers, "cpa")],
-                "cpc": firstLine[_.indexOf(report.columns_headers, "cpc")],
-                "ctr": firstLine[_.indexOf(report.columns_headers, "ctr")],
-                "cpm": firstLine[_.indexOf(report.columns_headers, "cpm")],
-                "impressions_cost": firstLine[_.indexOf(report.columns_headers, "impressions_cost")]
+                "cpa": firstLine[_.indexOf(report.columns_headers, "cpa")] || 0,
+                "cpc": firstLine[_.indexOf(report.columns_headers, "cpc")] || 0,
+                "ctr": firstLine[_.indexOf(report.columns_headers, "ctr")] || 0,
+                "cpm": firstLine[_.indexOf(report.columns_headers, "cpm")] || 0,
+                "impressions_cost": firstLine[_.indexOf(report.columns_headers, "impressions_cost")] || 0
               };
             });
         };
 
-
         ReportService.allCampaigns = function (organisation_id) {
-          return displayCampaignResource.get({
-            organisation_id: Session.getCurrentWorkspace().organisation_id,
-            start_date: startDate().format('YYYY-MM-D'),
-            end_date: endDate().format('YYYY-MM-D'),
-            dimension: "",
-            metrics: "impressions,clicks,cpm,cpc,impressions_cost,ctr,cpa",
-            filters: "organisation==" + organisation_id
-          }).$promise.then(function (response) {
-              var report = response.data.report_view;
-              return new ReportWrapper(report);
-            });
+          return this.buildPerformanceReport(
+            displayCampaignResource,
+            "impressions,clicks,cpm,ctr,cpc,impressions_cost,cpa",
+            "organisation==" + organisation_id
+          );
         };
-
 
         ReportService.getDefaultDateRanges = function () {
           return {
