@@ -7,7 +7,7 @@
       <h4>{{getRendererTitle(displayAd)}}</h4>
     </div>
   </div>
-  <form role="form" class="mcs-default-content mcs-full-page-form">
+  <form name="form" role="form" class="mcs-default-content mcs-full-page-form">
     <div class="mcs-default-heading">
       <h1>Display Ad</h1>
     </div>
@@ -29,8 +29,19 @@
     </div>
 
     <div class="row">
+        <div class="col-md-8">
+            <div mcs-form-group="full" label-for="destination_dom" label-text="Destination domain">
+
+            <input ng-disabled="disabledEdition" ng-model="displayAd.destination_domain" type="text" class="form-control input" id="destination_dom" pattern="^([a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9]\.)+([a-zA-Z0-9]{3,5})$">
+            <span id="helpBlock" class="help-block">This is the final redirect location domain (without http or params) <br />
+                eg: destination.mybrand.com</span>
+        </div>
+      </div>
+      </div>
+
+    <div class="row">
       <div class="col-md-12">
-        <h4>Preview</h4>
+        <h3>Preview</h3>
         <iframe width="{{previewWidth}}" height="{{previewHeight}}" ng-src="{{previewUrl}}"></iframe>
       </div>
     </div>
@@ -39,7 +50,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <h4>Properties</h4>
+        <h3>Properties</h3>
 
         <div ng-repeat="property in properties">
           <mcs-number-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'INT'"></mcs-number-property>
@@ -51,12 +62,11 @@
         </div>
       </div>
     </div>
-
     <!-- save or cancel -->
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish" ng-click="save(disabledEdition)">Done</button>
-      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
-      <button ng-disabled="disabledEdition" class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
+      <button ng-disabled="disabledEdition || !form.$valid" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
+      <button ng-disabled="disabledEdition || !form.$valid" class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
 
   </form>

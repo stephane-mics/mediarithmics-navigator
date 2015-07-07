@@ -3,9 +3,15 @@ define(['./module'], function (module) {
 
   module.controller('core/creatives/plugins/display-ad/basic-editor/EditController', [
 
-    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state',
+    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state','lodash',
 
-    function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state) {
+    function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state, _) {
+
+      function getUrlParser(href) {
+        var l = document.createElement("a");
+        l.href = href;
+        return l;
+      }
 
       $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
 
@@ -13,15 +19,24 @@ define(['./module'], function (module) {
         // The parent controller has loaded the creative, you can use it now (check DisplayAdService)
         $log.info("display-ad:loaded");
       });
+      $scope.$watch('properties', function(properties) {
+
+        var destinationUrlProperty = _.find(properties, function(property){
+          return property.value.technical_name === 'destination_url' || property.value.technical_name === 'click_url'  ;
+        });
+        if(destinationUrlProperty) {
+          $scope.destinationUrlProperty = destinationUrlProperty.value; 
+        }
+        var pixelTagProperty = _.find(properties, function(property){
+          return property.value.technical_name === 'tag' ;
+        });
+        if(pixelTagProperty) {
+          $scope.pixelTagProperty = pixelTagProperty.value; 
+        }
+
+      });
 
 
-      $scope.propertiesFilter = function (property) {
-        return property.value.technical_name === 'destination_url' || property.value.technical_name === 'destination_domain'; 
-      };
-
-      $scope.advancedPropertiesFilter = function (property) {
-        return property.value.property_type === 'PIXEL_TAG' ;
-      };	
       $scope.save = function (disabledEdition) {
         $log.debug("save display ad : ", $scope.display_ad);
         if (disabledEdition) {

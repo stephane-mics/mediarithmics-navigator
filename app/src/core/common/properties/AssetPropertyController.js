@@ -7,9 +7,12 @@ define(['./module'], function (module) {
    */
 
   module.controller('core/common/properties/AssetPropertyController', [
-    '$scope', '$modal', '$log',
+    '$scope', '$modal', '$log','core/configuration',
 
-    function($scope, $modal, $log) {
+    function($scope, $modal, $log, configuration) {
+      if( $scope.property.value.file_path){
+        $scope.image =  configuration.ASSETS_URL + $scope.property.value.file_path;
+      }
 
       // upload an asset
       $scope.uploadAsset = function() {
@@ -37,9 +40,12 @@ define(['./module'], function (module) {
         });
       };
 
+      $scope.toggleImage = false;
       // view file
       $scope.viewFile = function() {
         $log.debug("view file");
+        $scope.toggleImage = !$scope.toggleImage;
+
       };
 
     }]);  
