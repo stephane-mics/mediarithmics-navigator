@@ -23,8 +23,8 @@ require.config({
     "moxie": "../bower_components/plupload/js/moxie",
     "plupload": "../bower_components/plupload/js/plupload.dev",
 
+    "jszipGlobal": "./core/common/globals/jszipGlobal",
     "jszip": "../bower_components/js-xlsx/jszip",
-    "jszipGlobal": "../src/core/common/globals/jszipGlobal",
     "js-xlsx": "../bower_components/js-xlsx/xlsx",
     "file-saver": "../bower_components/file-saver.js/FileSaver",
 
@@ -66,7 +66,6 @@ require.config({
     'ui.router': ['angular'],
     'ui.router.extras': ['angular', 'ui.router'],
     'ngload': ['angularAMD'],
-    'jszipGlobal': ['jszip'],
     'js-xlsx': ['angular', 'jszipGlobal', 'file-saver'],
     // Navigator configuration
     'core/configuration': ['angular']
