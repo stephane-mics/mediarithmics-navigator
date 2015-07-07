@@ -27,6 +27,17 @@
         </div>
       </div>
     </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div mcs-form-group="full" label-for="destination_dom" label-text="Destination domain">
+
+            <input ng-disabled="disabledEdition" ng-model="videoAd.destination_domain" type="text" class="form-control input" id="destination_dom" pattern="^([a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9]\.)+([a-zA-Z0-9]{3,5})$">
+            <span id="helpBlock" class="help-block">This is the final redirect location domain (without http or params) <br />
+                eg: destination.mybrand.com</span>
+        </div>
+      </div>
+      </div>
+
 
     <div class="row" ng-show="previewUrl">
       <div class="col-md-8">
