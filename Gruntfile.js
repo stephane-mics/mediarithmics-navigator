@@ -42,7 +42,9 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-shell');
 
-  var version = grunt.file.readJSON("package.json").version;
+  // var version = grunt.file.readJSON("package.json").version;
+  var version = "1.0-build-" + (process.env.BUILD_NUMBER || "DEV") + "-rev-" + require('child_process').execSync("git rev-parse --short HEAD").toString().trim();
+
   var isSnapshot = version.indexOf("SNAPSHOT") !== -1;
 
   // Define the configuration for all the tasks
@@ -71,7 +73,7 @@ module.exports = function (grunt) {
     nexusDeployer: {
       release: {
         options: {
-          groupId: "com.mediarithmics",
+          groupId: "com.mediarithmics.web",
           artifactId: "navigator",
           version: version,
           packaging: 'zip',
