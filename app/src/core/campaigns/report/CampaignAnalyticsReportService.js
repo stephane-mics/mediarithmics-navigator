@@ -82,7 +82,7 @@ define(['./module', 'lodash'], function (module, _) {
       return report.rows;
     };
 
-    this.getHeaders = function() {
+    this.getHeaders = function () {
       var headers = [];
       var metrics = this.getMetrics();
       for (var i = 0; i < metrics.length; ++i) {
@@ -264,7 +264,7 @@ define(['./module', 'lodash'], function (module, _) {
 
         ReportService.kpi = function (campaignId, hasCpa) {
           var cpa = hasCpa ? ",cpa" : "";
-          return this.getPerformance(mediaResource, "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa, "campaign_id==" + campaignId)
+          return this.getPerformance(displayCampaignResource, "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa, "campaign_id==" + campaignId)
             .$promise.then(function (response) {
               var report = response.data.report_view;
               var firstLine = report.rows[0] || [];
