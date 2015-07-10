@@ -57,7 +57,7 @@ define(['./module', 'lodash'], function (module, _) {
         var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
         // Replace 'null' with 0 to be able to use the data with the charts
         var clearedValues = values.map(function (v) {
-          return v === null ? 0 : v
+          return v === null ? 0 : v;
         });
         var type = _.map(self.getMetrics(), function (m) {
           return tableHeaders[m].type;
@@ -70,8 +70,9 @@ define(['./module', 'lodash'], function (module, _) {
     });
 
     this.getMetricName = function (input) {
-      if (angular.isDefined(tableHeaders[input]))
+      if (angular.isDefined(tableHeaders[input])) {
         return tableHeaders[input].name;
+      }
     };
 
     this.getMetricType = function (index) {
@@ -216,7 +217,7 @@ define(['./module', 'lodash'], function (module, _) {
             dimension: "",
             metrics: metrics,
             filters: filters
-          })
+          });
         };
 
         ReportService.buildPerformanceReport = function (resource, metrics, filters) {

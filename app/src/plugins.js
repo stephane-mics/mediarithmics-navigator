@@ -1,3 +1,4 @@
+/* jshint -W097 */
 'use strict';
 
 window.PLUGINS_TO_REQUIRE = [];

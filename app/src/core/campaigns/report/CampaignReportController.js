@@ -124,7 +124,7 @@ define(['./module', 'lodash'], function (module, _) {
       var buildExportOverview = function (header) {
         var metrics = [$scope.kpis.cpc, $scope.kpis.ctr, $scope.kpis.cpm, $scope.kpis.impressions_cost];
         if ($scope.hasCpa) {
-          metrics.unshift($scope.kpis.cpa)
+          metrics.unshift($scope.kpis.cpa);
         }
         return header.concat([metrics]);
       };
@@ -169,7 +169,9 @@ define(['./module', 'lodash'], function (module, _) {
        */
 
       var statusCompare = function (left, right) {
-        if ($scope.orderBy !== "status") return false;
+        if ($scope.orderBy !== "status") {
+          return false;
+        }
         var leftActive = left[0].status === "ACTIVE";
         var rightActive = right[0].status === "ACTIVE";
         return (!$scope.reverseSort && leftActive) || ($scope.reverseSort && rightActive);
@@ -177,26 +179,33 @@ define(['./module', 'lodash'], function (module, _) {
 
       var getInfoValue = function (ad) {
         for (var i = 0; i < ad.info.length; ++i) {
-          if (ad.info[i].key === $scope.orderBy)
+          if (ad.info[i].key === $scope.orderBy) {
             return ad.info[i].value;
+          }
         }
       };
 
       var infoCompare = function (left, right) {
-        if (tableHeadersKeys.indexOf($scope.orderBy) == -1) return false;
+        if (tableHeadersKeys.indexOf($scope.orderBy) === -1) {
+          return false;
+        }
         var leftValue = getInfoValue(left[0]);
         var rightValue = getInfoValue(right[0]);
-        return (!$scope.reverseSort && leftValue > rightValue) || ($scope.reverseSort && leftValue < rightValue)
+        return (!$scope.reverseSort && leftValue > rightValue) || ($scope.reverseSort && leftValue < rightValue);
       };
 
       var nameCompare = function (left, right) {
-        if ($scope.orderBy !== "name") return false;
+        if ($scope.orderBy !== "name") {
+          return false;
+        }
         return (!$scope.reverseSort && left[0].name > right[0].name) ||
           ($scope.reverseSort && left[0].name < right[0].name);
       };
 
       var formatCompare = function (left, right) {
-        if ($scope.orderBy !== "format") return false;
+        if ($scope.orderBy !== "format") {
+          return false;
+        }
         var leftValues = left[0].format.split("x");
         var rightValues = right[0].format.split("x");
         var leftWidth = leftValues[0];
@@ -204,7 +213,11 @@ define(['./module', 'lodash'], function (module, _) {
         var rightWidth = rightValues[0];
         var rightHeight = rightValues[1];
         if (leftWidth === rightWidth) {
-          leftHeight > rightHeight ? leftWidth += rightWidth : rightWidth += leftWidth;
+          if (leftHeight > rightHeight) {
+           leftWidth += rightWidth;
+          } else {
+             rightWidth += leftWidth;
+          }
         }
         return (!$scope.reverseSort && leftWidth > rightWidth) || ($scope.reverseSort && leftWidth < rightWidth);
       };
@@ -241,19 +254,19 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
       $scope.sortAdsBy = function (key) {
-        $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
+        $scope.reverseSort = (key !== $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
         $scope.ads = sort($scope.ads);
       };
 
       $scope.sortAdGroupsBy = function (key) {
-        $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
+        $scope.reverseSort = (key !== $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
         $scope.adGroups = sort($scope.adGroups);
       };
 
       $scope.sortSitesBy = function (key) {
-        $scope.reverseSort = (key != $scope.orderBy) ? false : !$scope.reverseSort;
+        $scope.reverseSort = (key !== $scope.orderBy) ? false : !$scope.reverseSort;
         $scope.orderBy = key;
         $scope.sites = sort($scope.sites);
       };
@@ -437,7 +450,7 @@ define(['./module', 'lodash'], function (module, _) {
         modalInstance.result.then(function (charts) {
           $scope.charts = charts;
           updateChartsStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, charts);
-        })
+        });
       };
 
       //$scope.showDetails = function () {

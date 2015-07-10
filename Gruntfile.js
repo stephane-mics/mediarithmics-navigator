@@ -573,6 +573,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'jshint:all',
       'shell:iab_placeholder',
       'genRequireJsFiles:config',
       'concurrent:server',
@@ -588,6 +589,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
+    'jshint:all',
     'genRequireJsFiles:config',
     'concurrent:test',
     'connect:test',
@@ -596,6 +598,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+    'jshint:all',
     'shell:iab_placeholder',
     'useminPrepare',
     'genRequireJsFiles:config',

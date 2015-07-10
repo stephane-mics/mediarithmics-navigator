@@ -1,3 +1,4 @@
+/* global videojs */
 define(['./module'], function (module) {
   'use strict';
 
