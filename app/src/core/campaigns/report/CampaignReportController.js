@@ -321,8 +321,8 @@ define(['./module', 'lodash'], function (module, _) {
         }
       });
 
-      $scope.$watch('adPerformance + adGroupPerformance', function () {
-        if (angular.isDefined($scope.adPerformance) && angular.isDefined($scope.adGroupPerformance)) {
+      $scope.$watchGroup(['adPerformance', 'adGroupPerformance'], function (values) {
+        if (angular.isDefined(values[0]) && angular.isDefined(values[1])) {
           DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
             $scope.campaign = campaign;
             $scope.adgroups = campaign.ad_groups;
@@ -409,9 +409,8 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Stats
        */
-
-      $scope.$watch('reportDateRange + hasCpa', function () {
-        if (angular.isDefined($scope.hasCpa)) {
+      $scope.$watchGroup(['reportDateRange', 'hasCpa'], function(values) {
+        if (angular.isDefined(values[0]) && angular.isDefined(values[1])) {
           $scope.timeFilter = $scope.timeFilters[0];
           updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
         }
