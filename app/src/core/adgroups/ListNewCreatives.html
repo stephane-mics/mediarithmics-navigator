@@ -3,7 +3,6 @@
   <tr>
     <th>Size</th>
     <th>Ad Name</th>
-    <th>Url</th>
     <th ng-if="showDelete">Delete</th>
   </tr>
   </thead>
@@ -12,10 +11,7 @@
     <td mics-asset-thumbnail asset="wrapper.asset">
     </td>
     <td>
-      <input required ng-model="wrapper.creative.name">
-    </td>
-    <td>
-      <input required type="url" ng-model="wrapper.creative.url_target">
+      <input class="form-control" required ng-model="wrapper.creative.name">
     </td>
     <td ng-if="showDelete" class="delete-action">
       <a ng-click="onDelete(wrapper)">x</a>

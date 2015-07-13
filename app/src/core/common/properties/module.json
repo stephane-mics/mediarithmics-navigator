@@ -1,4 +1,4 @@
 {
   "name": "core/common/properties",
-  "dependencies": []
+  "dependencies":["core/layout"]
 }

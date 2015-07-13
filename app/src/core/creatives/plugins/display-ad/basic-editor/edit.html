@@ -7,7 +7,7 @@
       <h4>{{getRendererTitle(displayAd)}}</h4>
     </div>
   </div>
-  <form role="form" class="mcs-default-content mcs-full-page-form">
+  <form name="form" role="form" class="mcs-default-content mcs-full-page-form">
     <div class="mcs-default-heading">
       <h1>Display Ad</h1>
     </div>
@@ -25,24 +25,41 @@
         </div>
       </div>
     </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div mcs-form-group="full" label-for="destination_dom" label-text="Destination domain">
+
+            <input ng-disabled="disabledEdition" ng-model="displayAd.destination_domain" type="text" class="form-control input" id="destination_dom" pattern="^([a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9]\.)+([a-zA-Z0-9]{3,5})$">
+            <span id="helpBlock" class="help-block">This is the final redirect location domain (without http or params) <br />
+                eg: destination.mybrand.com</span>
+        </div>
+      </div>
+      </div>
+
+
 
     <div ng-include="'src/core/creatives/plugins/display-ad/common/AuditStatus.inc.html'"></div>
-
-    <div class="row">
+        <div class="row">
       <div class="col-md-12">
-        <h4>Preview</h4>
+        <h3>Preview</h3>
         <iframe width="{{previewWidth}}" height="{{previewHeight}}" ng-src="{{previewUrl}}"></iframe>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
-        <h4>Properties</h4>
+        <h3>Properties</h3>
 
-        <div ng-repeat="property in properties | filter:propertiesFilter">
-          <mcs-url-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
-          <mcs-asset-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
-        </div>
+<div mcs-form-group="" label-for="destinationUrlProperty-{{destinationUrlProperty.id}}" label-text="Destination URL" ng-show="destinationUrlProperty">
+    <input class="form-control" ng-disabled="ngdisabled" ng-model="destinationUrlProperty.value.url" type="url" id="destinationUrlProperty-{{destinationUrlProperty.id}}">
+    <span id="helpBlock" class="help-block">This is the URL where the user will be redirected to. 
+        If you use a click tracker, please check the box and fill the final destination domain. Otherwise, you may experience blocking on some ad exchanges.<br /><span ng-show="isFinalUrl">Currently <strong>{{$parent.$parent.displayAd.destination_domain}}</strong></span>
+
+</span>
+</div>
+
+
+
       </div>
     </div>
 
@@ -58,8 +75,8 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse">
           <div class="panel-body">
-            <div ng-repeat="property in properties | filter:advancedPropertiesFilter">
-              <mcs-pixel-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'PIXEL_TAG'"></mcs-pixel-property>
+            <div>
+              <mcs-pixel-property ng-disabled="disabledEdition"label-text="Pixel Tag" property="pixelTagProperty"></mcs-pixel-property>
             </div>
 	  </div>
         </div>
@@ -68,8 +85,8 @@
     <!-- save or cancel -->
     <div class="mcs-actions-group">
       <button class="mics-btn mics-btn-finish" ng-click="save(disabledEdition)">Done</button>
-      <button ng-if="!disabledEdition" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
-      <button ng-if="!disabledEdition" class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
+      <button ng-if="!disabledEdition || !form.$valid" class="mics-btn mics-btn-finish" ng-click="saveAndRefresh()">Save &amp; Refresh</button>
+      <button ng-if="!disabledEdition || !form.$valid" class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
     </div>
 
   </form>

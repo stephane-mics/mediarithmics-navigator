@@ -1764,3 +1764,10 @@ a.category-item {
     margin-bottom: 6px;
   }
 }
+
+
+input.ng-invalid {
+    border-color: $brand-danger !important;
+}
+
+

@@ -9,7 +9,13 @@ define(['./module'], function (module) {
 
       // For the directive mics-pl-upload
       $scope.uploadedFiles = [];
-
+      $scope.next = function () {
+        $scope.step = 'step2';
+      };
+      
+      $scope.step = 'step0';
+      $scope.destination_domain = null;
+      $scope.url = null;
       // For the page
       $scope.newCreativesWrapper = [];
 
@@ -41,6 +47,7 @@ define(['./module'], function (module) {
             rendererProperties: []
           });
           $scope.$emit("display-ad/basic-editor:asset-added");
+          $scope.step = 'step1';
         }
       });
 
@@ -63,8 +70,9 @@ define(['./module'], function (module) {
 
         creativeContainer.value.name = userDefinedCreative.creative.name;
         creativeContainer.value.format = userDefinedCreative.asset.width + "x" + userDefinedCreative.asset.height;
+        creativeContainer.value.destination_domain = $scope.destination_domain;
         creativeContainer.value.subtype = "BANNER";
-        creativeContainer.getOrCreatePropertyValueByTechnicalName("destination_url").value = {"url": userDefinedCreative.creative.url_target};
+        creativeContainer.getOrCreatePropertyValueByTechnicalName("destination_url").value = {"url": $scope.url};
         if (isFlash) {
           creativeContainer.getOrCreatePropertyValueByTechnicalName("flash").value = {"asset_id": userDefinedCreative.asset.id};
         } else {
