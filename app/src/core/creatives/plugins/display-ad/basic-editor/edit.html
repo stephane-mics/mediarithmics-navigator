@@ -13,18 +13,22 @@
     </div>
 
     <div class="row">
-      <div class="col-md-8">
-        <div mcs-form-group="full" label-for="name" label-text="Ad name">
-          <input ng-disabled="disabledEdition" ng-model="displayAd.name" type="text" class="form-control input-lg" id="name">
-        </div>
-      </div>
+	    <!-- Name -->
+	    <div class="col-md-8">
+		    <div mcs-form-group="full" label-for="name" label-text="Ad name">
+			    <input ng-disabled="disabledEdition" ng-model="displayAd.name" type="text" class="form-control input-lg" id="name">
+		    </div>
+	    </div>
 
-      <div class="col-md-4">
-        <div mcs-form-group="full" label-for="format" label-text="Format">
-          <input ng-disabled="disabledEdition"  ng-model="displayAd.format" type="text" class="form-control input-lg" id="format">
-        </div>
-      </div>
+	    <!-- Format -->
+	    <div class="col-md-4">
+		    <div mcs-form-group="full" label-for="format" label-text="Format">
+			    <select ng-disabled="disabledEdition" ng-model="displayAd.format" ng-options="iabAdSize for iabAdSize in iabAdSizes" id="format"></select>
+		    </div>
+	    </div>
     </div>
+
+
     <div class="row">
         <div class="col-md-8">
             <div mcs-form-group="full" label-for="destination_dom" label-text="Destination domain">
