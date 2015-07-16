@@ -45,8 +45,8 @@ define(['./module'], function (module) {
         $scope.disabledEdition = $scope.displayAd.audit_status !== "NOT_AUDITED";
         $scope.previewUrl = $sce.trustAsResourceUrl(configuration.ADS_PREVIEW_URL + "?ctx=PREVIEW&rid=" + $scope.displayAd.id + "&caid=preview");
         var sizes = $scope.displayAd.format.split("x");
-        $scope.previewWidth = parseInt(sizes[0]) + 10;
-        $scope.previewHeight = parseInt(sizes[1]) + 10;
+        $scope.previewWidth = parseInt(sizes[0]);
+        $scope.previewHeight = parseInt(sizes[1]);
         $scope.$emit("display-ad:loaded");
       });
     }
