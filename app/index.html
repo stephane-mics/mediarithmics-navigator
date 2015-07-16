@@ -40,7 +40,9 @@
   <script src="bower_components/video.js/dist/video-js/video.js"></script>
   <script src="bower_components/videojs-contrib-ads/src/videojs.ads.js"></script>
   <script src="bower_components/vast-client-js/vast-client.js"></script>
-  <script src="bower_components/videojs-vast/videojs.vast.js"></script>
+	<script src="bower_components/videojs-vast/videojs.vast.js"></script>
+	<!-- The xlsx lib checks if jszip exists before anything. AGAIN we need jszip and then xlsx after minification.-->
+	<script src="bower_components/js-xlsx/jszip.js"></script>
   <!-- endbuild -->
   <script>var require = {paths: {'core/configuration': '../conf/app-configuration'}};</script>
   <script src="conf/plugins-configuration.js"></script>

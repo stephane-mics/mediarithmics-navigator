@@ -1765,9 +1765,15 @@ a.category-item {
   }
 }
 
+// -------------------- Fields Validation --------------------------
 
 input.ng-invalid {
     border-color: $brand-danger !important;
 }
 
 
+// -------------------- Creative Editor ----------------------------
+
+.creative-preview {
+  border: 1px solid #111111
+}

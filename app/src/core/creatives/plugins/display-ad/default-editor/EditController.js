@@ -2,7 +2,7 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/plugins/display-ad/default-editor/EditController', [
-    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService','$controller', "core/common/ErrorService", '$state', 'core/common/IabService', 'lodash',
+    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state', 'core/common/IabService', 'lodash',
     function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state, IabService, _) {
 
       $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
@@ -53,6 +53,5 @@ define(['./module'], function (module) {
       };
     }
   ]);
-
 });
 

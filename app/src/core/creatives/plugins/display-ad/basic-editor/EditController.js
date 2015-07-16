@@ -2,16 +2,15 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/plugins/display-ad/basic-editor/EditController', [
+    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session',
+    'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state', 'core/common/IabService', 'lodash',
+    function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state, IabService, _) {
 
-    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state','lodash',
-
-    function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state, _) {
-
-      function getUrlParser(href) {
-        var l = document.createElement("a");
-        l.href = href;
-        return l;
-      }
+      $scope.$on("display-ad:loaded", function () {
+        $scope.iabAdSizes = _.map(IabService.getAdSizes($scope.displayAd.subtype), function (size) {
+          return size.format;
+        });
+      });
 
       $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
 
@@ -19,23 +18,21 @@ define(['./module'], function (module) {
         // The parent controller has loaded the creative, you can use it now (check DisplayAdService)
         $log.info("display-ad:loaded");
       });
-      $scope.$watch('properties', function(properties) {
+      $scope.$watch('properties', function (properties) {
 
-        var destinationUrlProperty = _.find(properties, function(property){
-          return property.value.technical_name === 'destination_url' || property.value.technical_name === 'click_url'  ;
+        var destinationUrlProperty = _.find(properties, function (property) {
+          return property.value.technical_name === 'destination_url' || property.value.technical_name === 'click_url';
         });
-        if(destinationUrlProperty) {
-          $scope.destinationUrlProperty = destinationUrlProperty.value; 
+        if (destinationUrlProperty) {
+          $scope.destinationUrlProperty = destinationUrlProperty.value;
         }
-        var pixelTagProperty = _.find(properties, function(property){
-          return property.value.technical_name === 'tag' ;
+        var pixelTagProperty = _.find(properties, function (property) {
+          return property.value.technical_name === 'tag';
         });
-        if(pixelTagProperty) {
-          $scope.pixelTagProperty = pixelTagProperty.value; 
+        if (pixelTagProperty) {
+          $scope.pixelTagProperty = pixelTagProperty.value;
         }
-
       });
-
 
       $scope.save = function (disabledEdition) {
         $log.debug("save display ad : ", $scope.display_ad);
@@ -73,6 +70,5 @@ define(['./module'], function (module) {
       };
     }
   ]);
-
 });
 

@@ -66,7 +66,7 @@ require.config({
     'ui.router': ['angular'],
     'ui.router.extras': ['angular', 'ui.router'],
     'ngload': ['angularAMD'],
-    'js-xlsx': ['angular', 'jszipGlobal', 'file-saver'],
+    'js-xlsx': ['angular', 'file-saver'],
     // Navigator configuration
     'core/configuration': ['angular']
   },

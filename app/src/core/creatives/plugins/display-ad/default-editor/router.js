@@ -19,6 +19,5 @@ define(['./module'], function (module) {
         });
     }
   ]);
-
 });
 
