@@ -4,7 +4,7 @@ set -e
 
 npm install;
 bower install;
-grunt build;
+grunt build $@;
 
 if [ -d ./navigator-zip ] ; then
     rm -rf ./navigator-zip;
