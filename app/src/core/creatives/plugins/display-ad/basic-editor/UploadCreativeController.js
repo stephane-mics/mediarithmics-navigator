@@ -12,7 +12,7 @@ define(['./module'], function (module) {
       $scope.next = function () {
         $scope.step = 'step2';
       };
-      
+
       $scope.step = 'step0';
       $scope.destination_domain = null;
       $scope.url = null;

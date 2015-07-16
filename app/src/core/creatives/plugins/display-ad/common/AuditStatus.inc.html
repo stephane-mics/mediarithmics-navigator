@@ -5,7 +5,7 @@
       <div class="col-md-1">
         <div class="status" ng-show="displayAd.audit_status == 'AUDIT_FAILED'" style="background-color:#FE5858;">Failed</div>
         <div class="status" ng-show="displayAd.audit_status == 'AUDIT_PASSED'" style="background-color:#00AD68;">Success</div>
-        <div class="status"  ng-show="displayAd.audit_status == 'AUDIT_PENDING'" style="background-color:#FE8F10;">Pending</div>
+        <div class="status" ng-show="displayAd.audit_status == 'AUDIT_PENDING'" style="background-color:#FE8F10;">Pending</div>
       </div>
       <div class="col-md-1">
         <div ng-repeat="action in displayAd.available_user_audit_actions">
