@@ -1735,6 +1735,23 @@ a.category-item {
     padding: 0 1rem 0 1rem;
     font-size: 17px;
     display: inline-block;
+    color: #FFFFFF;
+  }
+
+  .failed {
+    background-color: #FE5858;
+  }
+
+  .success {
+    background-color: #00AD68;
+  }
+
+  .partially-passed {
+    background-color: #092f56;
+  }
+
+  .pending {
+    background-color: #FE8F10;
   }
 }
 
@@ -1768,9 +1785,8 @@ a.category-item {
 // -------------------- Fields Validation --------------------------
 
 input.ng-invalid {
-    border-color: $brand-danger !important;
+  border-color: $brand-danger !important;
 }
-
 
 // -------------------- Creative Editor ----------------------------
 
