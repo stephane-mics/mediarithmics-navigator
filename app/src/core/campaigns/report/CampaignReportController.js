@@ -313,7 +313,7 @@ define(['./module', 'lodash'], function (module, _) {
 
           var siteRows = $scope.mediaPerformance.getRows();
           for (var i = 0; i < siteRows.length; ++i) {
-            var site = {name: siteRows[i][0]};
+            var site = {name: siteRows[i][0].replace("site:web:", "")};
             var siteInfo = [siteRows[i][0]].concat($scope.mediaPerformance.decorate(siteRows[i]));
             $scope.sites[i] = addSiteInfo(site, siteInfo);
           }
