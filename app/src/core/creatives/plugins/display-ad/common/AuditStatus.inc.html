@@ -2,12 +2,13 @@
   <div class="col-md-12">
     <h3>Audit Status</h3>
     <div class="row">
-      <div class="col-md-1">
-        <div class="status" ng-show="displayAd.audit_status == 'AUDIT_FAILED'" style="background-color:#FE5858;">Failed</div>
-        <div class="status" ng-show="displayAd.audit_status == 'AUDIT_PASSED'" style="background-color:#00AD68;">Success</div>
-        <div class="status" ng-show="displayAd.audit_status == 'AUDIT_PENDING'" style="background-color:#FE8F10;">Pending</div>
+      <div class="col-xs-2">
+        <div class="status failed" ng-show="displayAd.audit_status == 'AUDIT_FAILED'">Failed</div>
+        <div class="status success" ng-show="displayAd.audit_status == 'AUDIT_PASSED'">Success</div>
+        <div class="status pending" ng-show="displayAd.audit_status == 'AUDIT_PENDING'">Pending</div>
+        <div class="status partially-passed" ng-show="displayAd.audit_status == 'AUDIT_PARTIALLY_PASSED'">Partially Passed</div>
       </div>
-      <div class="col-md-1">
+      <div class="col-xs-2">
         <div ng-repeat="action in displayAd.available_user_audit_actions">
           <a class="mics-btn mics-btn-action" ng-click="doAction(action)" ng-if="action == 'START_AUDIT' && displayAd.audit_status != 'AUDIT_FAILED'">Submit to Audit</a>
           <a class="mics-btn mics-btn-action" ng-click="doAction(action)" ng-if="action == 'START_AUDIT' && displayAd.audit_status == 'AUDIT_FAILED'">Re-submit to Audit</a>
