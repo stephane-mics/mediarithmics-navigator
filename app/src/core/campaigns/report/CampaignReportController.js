@@ -91,6 +91,7 @@ define(['./module', 'lodash'], function (module, _) {
         sites: "Sites"
       };
 
+      // TODO Generate Headers Dynamically
       var buildMetricsExportHeaders = function (metricsType) {
         var headers = ["Status", "Name", "Format"];
         if (metricsType === metricsTypes.sites) {
@@ -270,9 +271,12 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
       $scope.sortSitesBy = function (key) {
-        $scope.reverseSort = (key !== $scope.orderBy) ? false : !$scope.reverseSort;
-        $scope.orderBy = key;
-        $scope.sites = sort($scope.sites);
+        CampaignAnalyticsReportService.mediaPerformance($stateParams.campaign_id, $scope.hasCpa, 30).then(function (mediaPerformance) {
+          $scope.mediaPerformance = mediaPerformance;
+          $scope.reverseSort = (key !== $scope.orderBy) ? false : !$scope.reverseSort;
+          $scope.orderBy = key;
+          $scope.sites = sort(buildSites(mediaPerformance));
+        });
       };
 
       var buildSites = function(mediaPerformance) {
