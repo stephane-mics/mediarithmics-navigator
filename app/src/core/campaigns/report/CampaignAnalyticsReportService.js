@@ -254,13 +254,19 @@ define(['./module', 'lodash'], function (module, _) {
           );
         };
 
-        ReportService.mediaPerformance = function (campaignId, hasCpa) {
+        ReportService.mediaPerformance = function (campaignId, hasCpa, limit) {
           var cpa = hasCpa ? ",cpa" : "";
-          return this.buildPerformanceReport(
-            mediaResource,
-            "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
-            "campaign_id==" + campaignId
-          );
+          return mediaResource.get({
+            organisation_id: Session.getCurrentWorkspace().organisation_id,
+            start_date: startDate().format('YYYY-MM-D'),
+            end_date: endDate().format('YYYY-MM-D'),
+            dimension: "",
+            metrics: "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
+            filters: "campaign_id==" + campaignId,
+            limit: limit
+          }).$promise.then(function (response) {
+              return new ReportWrapper(response.data.report_view);
+            });
         };
 
         ReportService.kpi = function (campaignId, hasCpa) {

@@ -211,7 +211,6 @@
               </thead>
               <tbody>
               <tr ng-repeat="site in sites">
-                <!--<td>{{row[0] | website }}</td>-->
                 <td>{{site.name}}</td>
                 <td class="metrics" ng-repeat="info in site.info">
                   <span ng-if="info.type == 'currency' && info.value != undefined">
