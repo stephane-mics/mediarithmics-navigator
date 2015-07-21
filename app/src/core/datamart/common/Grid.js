@@ -59,7 +59,7 @@ define(['./module'], function (module) {
           if (scope.data && scope.data.metadata && scope.data.metadata.paging) {
             pc = Math.min(Math.floor(scope.data.metadata.paging.count / scope.elementsPerPage), 9);
             // if offset changed in the meantime (from the data provider's side, for.ex term based search), reset the current page to 0
-            if (scope.data.metadata.paging.offset !== scope.currentOffset + '' && scope.currentPage !== 0) {
+            if (scope.data.metadata.paging.first_result !== scope.currentOffset && scope.currentPage !== 0) {
               scope.currentPage = 0;
             }
           }

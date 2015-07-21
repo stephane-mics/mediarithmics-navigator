@@ -7,6 +7,7 @@ require.config({
     "ngload": "../bower_components/angularAMD/ngload",
     "jqCookie": "../bower_components/jquery-cookie/jquery.cookie",
     "moment": "../bower_components/momentjs/moment",
+    "moment-duration-format": "../bower_components/moment-duration-format/lib/moment-duration-format",
     "jsplumb": "../bower_components/jsplumb/dist/js/dom.jsPlumb-1.7.2",
 
     "lodash": "../bower_components/lodash/dist/lodash.compat",
@@ -58,6 +59,7 @@ require.config({
     'bootstrap': ['jquery'],
     'jqCookie': ['jquery'],
     'jqDaterangepicker': ['jquery', 'moment'],
+    'moment-duration-format': ['moment'],
     'autofill-event': ['jquery'],
     'ngBootstrap': ['angular', 'bootstrap', 'jqDaterangepicker'],
     'ui': ['angular'],

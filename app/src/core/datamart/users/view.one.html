@@ -6,31 +6,35 @@
     <!-- Account details -->
     <div class="col-md-6 col-xs-6">
         <table class="datamart table table-hover timeline-aligned">
-        <tr ng-hide="user.first_name == null">
+        <tr ng-hide="user.$first_name == null">
           <td>First name</td>
-          <td><strong>{{ user.first_name }}</strong></td>
+          <td><strong>{{ user.$first_name }}</strong></td>
         </tr>
-        <tr ng-hide="user.last_name == null">
+        <tr ng-hide="user.$last_name == null">
           <td>Last name</td>
-          <td><strong>{{ user.last_name }}</strong></td>
+          <td><strong>{{ user.$last_name }}</strong></td>
         </tr>
-        <tr ng-hide="user.email == null">
+        <tr ng-hide="user.$email == null">
           <td>Email</td>
-          <td>{{ user.email }}</td>
+          <td>{{ user.$email }}</td>
         </tr>
-        <tr ng-hide="user.user_account_id == null">
+        <tr ng-hide="user.$user_account_id == null">
           <td>Account ID</td>
-          <td><code>{{ user.user_account_id }}</code></td>
+          <td><code>{{ user.$user_account_id }}</code></td>
         </tr>
-        <tr ng-hide="user.gender == null">
-          <td>Gender</td>
-          <td>{{ user.gender }}</td>
-        </tr>
-        </tr>
-        <tr ng-hide="user.account_creation_date == null">
-          <td>Account created on</td>
-          <td>{{ user.account_creation_date | date }}</td>
-        </tr>
+          <!-- display custom properties -->
+          <tr ng-repeat="(key,value) in user">
+            <td> {{key}} </td> <td> {{ value }} </td>
+            <!--<td><strong>{{ user.$first_name }}</strong></td>-->
+          </tr>
+        <!--<tr ng-hide="user.gender == null">-->
+          <!--<td>Gender</td>-->
+          <!--<td>{{ user.gender }}</td>-->
+        <!--</tr>-->
+        <!--<tr ng-hide="user.account_creation_date == null">-->
+          <!--<td>Account created on</td>-->
+          <!--<td>{{ user.account_creation_date | date }}</td>-->
+        <!--</tr>-->
       </table>
     </div>
 
@@ -43,9 +47,9 @@
       <li  ng-repeat="timelineEvent in timeline  " class="with_purchase">
 
         <!-- datetime -->
-        <time class="datamart-timeline-datetime" datetime="{{ timelineEvent.$start | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
-          <span>{{ timelineEvent.$start | date : 'mediumDate' }}</span>
-          <span>{{ timelineEvent.$start | date : 'shortTime' }}</span>
+        <time class="datamart-timeline-datetime" datetime="{{ timelineEvent.$ts | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
+          <span>{{ timelineEvent.$ts | date : 'mediumDate' }}</span>
+          <span>{{ timelineEvent.$ts | date : 'shortTime' }}</span>
         </time>
         <!--User account : {{timelineEvent.$user_account_id  }}-->
         <!--User agent : {{timelineEvent.$user_agent_id  }}-->
@@ -59,27 +63,64 @@
         <!--&lt;!&ndash; content -->
         <div class="datamart-timeline-content">
         <div class="datamart-timeline-content-header">
-        <h2>{{ activity.agent.device_type }}<description>{{ activity.agent.user_agent_type }}, {{ activity.agent.operating_system }}</description></h2>
-        Duration: {{ toHumanReadableDuration(timelineEvent.$duration) }}
+        <h2>{{ timelineEvent.$type }}</h2>
+        <div ng-if="timelineEvent.$type == 'SITE_VISIT'" >Duration: {{ toHumanReadableDuration(timelineEvent.$session_duration) }}</div>
         </div>
 
         <!-- actions during visit -->
         <div class="datamart-timeline-content-details" >
           <ul class="list-group">
-            <li class="list-group-item" ng-repeat="item in timelineEvent.$items">
+            <li class="list-group-item" ng-repeat="event in timelineEvent.$events">
 
               <!-- perfomed_action -->
-              <span ng-show="item.$$type == '$performed_action'">{{ item.$details.name }}</span>
+              <!--<span ng-show="item.$$type == '$performed_action'">{{ item.$details.name }}</span>-->
+              <span ng-if="event.$event_name == '$item_view'">
+                Item view
+                <ul ng-show="event.$properties">
+                  <li ng-repeat="item in event.$properties.$items">
+                    <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
+                  </li>
+                </ul>
+              </span>
 
+              <span ng-if="event.$event_name == '$basket_view'">
+                Basket view
+                <ul ng-show="event.$properties">
+                  <li ng-repeat="item in event.$properties.$items">
+                    <span class="badge" style="float: right" >{{ item.$qty }}</span>
+                    <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
+                  </li>
+                </ul>
+              </span>
+
+              <span ng-if="event.$event_name == '$transaction_confirmed'">
+                Transaction confirmed (ID : {{event.$properties.$transaction_id}})
+                <ul ng-show="event.$properties">
+                  <span class="badge" style="float: right" >{{ item.$qty }}</span>
+                  <li ng-repeat="item in event.$properties.$items">
+                    <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
+                  </li>
+
+                </ul>
+              </span>
+
+              <span ng-if="event.$event_name != '$item_view' && event.$event_name != '$basket_view' && event.$event_name != '$transaction_confirmed'">
+                {{ event.$event_name }}
+                <ul ng-show="event.$properties">
+                  <li ng-repeat="(name,value) in event.$properties">
+                    Property name : {{name}}, property value : {{value}}
+                  </li>
+                </ul>
+              </span>
               <!-- view_item -->
-              <span class="badge" ng-show="item.$type == '$viewed' || item.$type == '$added_to_cart'">{{ item.$count }}</span>
-              <span ng-show="item.$type == '$viewed'">Viewed item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>
-              <span ng-show="item.$type == '$added_to_cart'">Added item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">item.$catalog_id}}</a> to cart</span>
+              <!--<span class="badge" ng-show="item.$event_name == '$item_iew' || item.$type == '$added_to_cart'">{{ item.$count }}</span>-->
+              <!--<span ng-show="item.$event_name == '$item_view'">Viewed item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>-->
+              <!--<span ng-show="item.$type == '$added_to_cart'">Added item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">item.$catalog_id}}</a> to cart</span>-->
 
 
-              <!-- purchase_item -->
-              <span class="badge" ng-show="item.$type == '$purchased'">{{ item.$count }}</span>
-              <span ng-show="item.$type == '$purchased'">Purchased item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>
+              <!--&lt;!&ndash; purchase_item &ndash;&gt;-->
+              <!--<span class="badge" ng-show="item.$type == '$purchased'">{{ item.$count }}</span>-->
+              <!--<span ng-show="item.$type == '$purchased'">Purchased item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>-->
             </li>
           </ul>
           <!-- expand/collapse switch -->
