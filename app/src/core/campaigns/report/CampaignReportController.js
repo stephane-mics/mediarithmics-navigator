@@ -100,8 +100,9 @@ define(['./module', 'lodash'], function (module, _) {
           headers = ["Status", "Name"];
         }
         headers = headers.concat(["Imp.", "CPM", "Spent", "Clicks", "CTR", "CPC"]);
-        if ($scope.hasCpa)
+        if ($scope.hasCpa) {
           headers.push("CPA");
+        }
         return headers;
       };
 
