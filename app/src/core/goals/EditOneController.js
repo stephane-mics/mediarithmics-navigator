@@ -16,8 +16,8 @@ define(['./module'], function (module) {
       } else {
         Restangular.one("goals", goalId).get().then(function (goal) {
           $scope.goal = goal;
-          $scope.triggers = goal.all("triggers").getList().$object;
-           goal.all("attribution_models").getList().then(function (attributionModels) {
+
+          goal.all("attribution_models").getList().then(function (attributionModels) {
             $scope.attributionModels = attributionModels;
 
             $scope.defaultAttributionModel = _.find(attributionModels, {'default': true}, 'id').id;
@@ -41,23 +41,6 @@ define(['./module'], function (module) {
         return;
       };
 
-      $scope.addTrigger = function (type) {
-        $scope.triggers.post({"type":"GOAL_TRIGGER", "goal_trigger_type":type}).then(function (r) {
-          $scope.editTrigger(r);
-        });
-
-        return;
-      };
-
-      $scope.deleteTrigger = function (trigger) {
-        trigger.remove({"scenario_id": goalId}).then(function (r) {
-          $state.transitionTo($state.current, $stateParams, {
-            reload: true, inherit: true, notify: true
-          });
-        });
-
-        return;
-      };
 
       $scope.$on("mics-attribution-model:selected", function (event, attributionModel) {
           $scope.attributionModels.post({"attribution_model_id":attributionModel.id, "attribution_type": 'WITH_PROCESSOR'}).then(function (r) {
@@ -99,8 +82,8 @@ define(['./module'], function (module) {
         return;
       };
 
-      $scope.editTrigger = function (trigger) {
-        $state.go('library/queries/edit', {"organisation_id": Session.getCurrentWorkspace().organisation_id,"query_id":trigger.query_id, "ctx":"goal", "returnState": $location.path()}, {
+      $scope.editTrigger = function (goal) {
+        $state.go('library/queries/edit', {"organisation_id": Session.getCurrentWorkspace().organisation_id,"query_id":goal.query_id, "ctx":"goal", "returnState": $location.path()}, {
             
           });
         
