@@ -209,19 +209,20 @@ define(['./module', 'lodash'], function (module, _) {
           return tableHeaders;
         };
 
-        ReportService.getPerformance = function (resource, metrics, filters) {
+        ReportService.getPerformance = function (resource, metrics, filters, limit) {
           return resource.get({
             organisation_id: Session.getCurrentWorkspace().organisation_id,
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
             dimension: "",
             metrics: metrics,
-            filters: filters
+            filters: filters,
+            limit: limit || null
           });
         };
 
-        ReportService.buildPerformanceReport = function (resource, metrics, filters) {
-          return this.getPerformance(resource, metrics, filters)
+        ReportService.buildPerformanceReport = function (resource, metrics, filters, limit) {
+          return this.getPerformance(resource, metrics, filters, limit)
             .$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view);
             });
@@ -254,12 +255,13 @@ define(['./module', 'lodash'], function (module, _) {
           );
         };
 
-        ReportService.mediaPerformance = function (campaignId, hasCpa) {
+        ReportService.mediaPerformance = function (campaignId, hasCpa, limit) {
           var cpa = hasCpa ? ",cpa" : "";
           return this.buildPerformanceReport(
             mediaResource,
             "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
-            "campaign_id==" + campaignId
+            "campaign_id==" + campaignId,
+            limit
           );
         };
 
