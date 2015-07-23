@@ -130,8 +130,8 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
             newResponse.metadata = {
               paging: {
                 count: response.count,
-                offset: response.offset,
-                limit: response.limit
+                first_result: response.first_result,
+                max_result: response.max_result
               }
             };
           } else {

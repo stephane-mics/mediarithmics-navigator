@@ -23,6 +23,7 @@ define(['./module'], function (module) {
         $scope.workspaces = Session.getWorkspaces();
         $scope.hasDatamart = Session.hasDatamart();
         $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
+        $scope.datamartId = Session.getCurrentDatamartId();
       }
 
       if (Session.isInitialized()) {

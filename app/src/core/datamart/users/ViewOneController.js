@@ -1,11 +1,11 @@
-define(['./module'], function (module) {
+define(['./module','moment-duration-format'], function (module) {
 
   'use strict';
 
 
   module.controller('core/datamart/users/ViewOneController', [
-    '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session','lodash',
-    function($scope, $stateParams, Restangular, Common, $, Session, lodash) {
+    '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session','lodash', 'moment',
+    function($scope, $stateParams, Restangular, Common, $, Session, lodash, moment) {
 
       $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
       $scope.INITIAL_VISITS = 10;
@@ -19,7 +19,7 @@ define(['./module'], function (module) {
       $scope.activities = [];
       $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $stateParams.userId);
       $scope.userEndpoint.get().then(function (user) {
-        $scope.user = user;
+        $scope.user = Restangular.stripRestangular(user);
         $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
       });
 
@@ -94,12 +94,7 @@ define(['./module'], function (module) {
 
       // Transforms a duration to human a readable 'X days Y hours Z minutes' format
       $scope.toHumanReadableDuration = function(duration) {
-        var cd = 24 * 60 * 60 * 1000,
-        ch = 60 * 60 * 1000,
-        d = Math.floor(duration / cd),
-        h = '0' + Math.floor( (duration - d * cd) / ch),
-        m = '0' + Math.round( (duration - d * cd - h * ch) / 60000);
-        return [d + ' days', h.substr(-2) + ' hours', m.substr(-2) + ' minutes'].join(' ');
+        return moment.duration(duration,'seconds').format("d [days] h [hours] m [minutes] s [seconds]");
       };
 
       // Determines the number of actions to display for a visit depending on it's expanded/collapsed state

@@ -42,11 +42,13 @@ define(['./module'], function (module) {
         },
         controller: [ "$scope", "Restangular",
         	function ($scope, Restangular) {
+              if($scope.id) {
 	            Restangular.one("queries", $scope.id).all("conditions").getList().then(
 	              function (conditions) {
 	                $scope.conditions = conditions;
 	              }
 	            );
+              }
 	        }
         ]
       };
