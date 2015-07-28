@@ -28,6 +28,10 @@ define(['./module','moment-duration-format'], function (module) {
         e.stopPropagation();
       });
 
+      $scope.getMapKeys = function(obj){
+        return Object.keys(obj);
+      };
+
       // Callbacks
 
       // Loads all agents, then all their visits
