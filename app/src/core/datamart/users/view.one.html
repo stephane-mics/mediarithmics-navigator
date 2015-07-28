@@ -75,7 +75,7 @@
               <!-- perfomed_action -->
               <!--<span ng-show="item.$$type == '$performed_action'">{{ item.$details.name }}</span>-->
               <span ng-if="event.$event_name == '$item_view'">
-                Item view
+                <strong>Item view</strong>
                 <ul ng-show="event.$properties">
                   <li ng-repeat="item in event.$properties.$items">
                     <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
@@ -84,31 +84,34 @@
               </span>
 
               <span ng-if="event.$event_name == '$basket_view'">
-                Basket view
+                <strong>Basket view</strong><br/>
+                <i>currency : {{event.$properties.$currency}}</i>
                 <ul ng-show="event.$properties">
                   <li ng-repeat="item in event.$properties.$items">
                     <span class="badge" style="float: right" >{{ item.$qty }}</span>
-                    <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
+                    <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>)
                   </li>
                 </ul>
               </span>
 
               <span ng-if="event.$event_name == '$transaction_confirmed'">
-                Transaction confirmed (ID : {{event.$properties.$transaction_id}})
+                <strong>Transaction confirmed</strong><br/>
+                 <i>currency : {{event.$properties.$currency}}</i><br/>
+                 <i>transaction_id : {{event.$properties.$transaction_id}}</i>
                 <ul ng-show="event.$properties">
                   <span class="badge" style="float: right" >{{ item.$qty }}</span>
                   <li ng-repeat="item in event.$properties.$items">
-                    <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
+                    <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>)
                   </li>
 
                 </ul>
               </span>
 
               <span ng-if="event.$event_name != '$item_view' && event.$event_name != '$basket_view' && event.$event_name != '$transaction_confirmed'">
-                {{ event.$event_name }}
+                <strong>{{ event.$event_name }}</strong>
                 <ul ng-show="event.$properties">
-                  <li ng-repeat="(name,value) in event.$properties">
-                    Property name : {{name}}, property value : {{value}}
+                  <li ng-repeat="key in getMapKeys(event.$properties)">
+                    {{key}} : {{""+event.$properties[key]}} <!-- ""+ is for casting in string in order to display null value -->
                   </li>
                 </ul>
               </span>
