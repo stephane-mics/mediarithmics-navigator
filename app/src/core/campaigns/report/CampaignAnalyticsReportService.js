@@ -116,7 +116,10 @@ define(['./module', 'lodash'], function (module, _) {
     "clicks": {name: "Clicks", type: "number"},
     "ctr": {name: "CTR", type: "percent"},
     "cpm": {name: "CPM", type: "currency"},
-    "cpa": {name: "CPA", type: "currency"}
+    "cpa": {name: "CPA", type: "currency"},
+    "delivery_cost": {name: "Delivery Cost", type: "number"},
+    "click_count": {name: "Click Count", type: "number"},
+    "view_count": {name: "View Count", type: "number"}
   };
 
 

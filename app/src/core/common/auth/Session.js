@@ -59,7 +59,10 @@ define(['./module'], function (module) {
       };
 
       service.getCurrentDatamartId = function () {
-        return service.getCurrentWorkspace().datamarts[0].datamart_id;
+        var datamarts = service.getCurrentWorkspace().datamarts;
+        if (datamarts.length) {
+          return datamarts[0].datamart_id;
+        }
       };
 
       service.hasDatamart = function () {
