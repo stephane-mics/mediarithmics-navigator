@@ -99,8 +99,9 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
         max = 0;
       }
 
+      max = (max < 1) ? Math.ceil(max * 10) / 10 : Math.ceil(max);
       return {
-        min: Math.floor(min), max: Math.ceil(max), xRange: [minX, maxX],
+        min: Math.floor(min), max: max, xRange: [minX, maxX],
         allPositive: function () {
           return min >= 0 && max >= 0;
         },
@@ -114,10 +115,13 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
     }
 
     function rescale(bounds) {
-      var scaleMax = Math.floor(Math.log(bounds.max) / Math.LN10);
-      var max = comprehensibleValues.filter(function (elem) {
-          return elem * Math.pow(10, scaleMax) >= bounds.max;
-        })[0] * Math.pow(10, scaleMax);
+      var max = bounds.max;
+      if (bounds.max >= 1) {
+        var scaleMax = Math.floor(Math.log(bounds.max) / Math.LN10);
+        max = comprehensibleValues.filter(function (elem) {
+            return elem * Math.pow(10, scaleMax) >= bounds.max;
+          })[0] * Math.pow(10, scaleMax);
+      }
       var neg = false;
       if (bounds.min < 0) {
         neg = true;
@@ -127,8 +131,8 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
         return elem * Math.pow(10, scaleMin) <= neg ? -bounds.min : bounds.min;
       })[0] * Math.pow(10, scaleMin);
 
-//    bounds.min =  neg ? -min : min;
-//    bounds.max = max;
+      bounds.min = neg ? -min : min;
+      bounds.max = max;
       return bounds;
     }
 
