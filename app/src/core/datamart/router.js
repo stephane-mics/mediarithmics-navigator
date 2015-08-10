@@ -32,6 +32,10 @@ define(['./module'], function (module) {
         .state('datamart/users/:userId', {
           url: '/datamart/users/:userId',
           templateUrl: 'src/core/datamart/users/view.one.html'
+        })
+        .state('datamart/users/upid/:upid', {
+          url: '/datamart/users/upid/:upid',
+          templateUrl: 'src/core/datamart/users/view.one.html'
         });
     }
   ]);
