@@ -17,7 +17,11 @@ define(['./module','moment-duration-format'], function (module) {
 
       // fetch UserAccount
       $scope.activities = [];
-      $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $stateParams.userId);
+      if ($stateParams.upid) {
+        $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users/upid/', $stateParams.upid);
+      } else {
+        $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $stateParams.userId);
+      }
       $scope.userEndpoint.get().then(function (user) {
         $scope.user = Restangular.stripRestangular(user);
         $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
