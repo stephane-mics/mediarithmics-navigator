@@ -12,8 +12,8 @@ define(['./module','moment-duration-format'], function (module) {
 
       $scope.datamartId = Session.getCurrentDatamartId();
 
-      $scope.agentUrl = "#/datamart/users/" + $stateParams.userId + "/agents";
-      $scope.itemUrl = "#datamart/items/";
+      $scope.agentUrl = '#/'  + $stateParams.organisation_id + '/datamart/users/' + $stateParams.userId + '/agents';
+      $scope.itemUrl = '#/' + $stateParams.organisation_id + '/datamart/items/';
 
       // fetch UserAccount
       $scope.activities = [];

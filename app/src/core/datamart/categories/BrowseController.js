@@ -7,9 +7,9 @@ define(['./module'], function (module) {
 
     function($scope, $location, $stateParams, Restangular, Common, Session, lodash) {
 
-      $scope.catalogBase = '#/datamart/categories/';
-      $scope.baseUrl = '#/datamart/categories/'+$stateParams.catalogId;
-      $scope.itemUrl = '#/datamart/items';
+      $scope.catalogBase = '#/' + $stateParams.organisation_id + 'datamart/categories/';
+      $scope.baseUrl = '#/' + $stateParams.organisation_id + '/datamart/categories/' + $stateParams.catalogId;
+      $scope.itemUrl = '#/' + $stateParams.organisation_id + '/datamart/items';
 
       $scope.datamartId = Session.getCurrentDatamartId();
       $scope.categoriesPerPage = 10;
