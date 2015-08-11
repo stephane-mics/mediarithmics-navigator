@@ -3,8 +3,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.factory('core/datamart/common/Common', [
-    '$state',
-    function($state) {
+    '$state', '$stateParams',
+    function($state, $stateParams) {
 
       /* Utility methods for collections */
 
@@ -22,9 +22,9 @@ define(['./module'], function (module) {
 
       var locations = {};
       locations.all = [
-        { href: '/datamart/users', name: 'Users'},
-        { href: '/datamart/categories/', name: 'Categories'},
-        { href: '/datamart/items', name: 'Items' }
+        { href: $stateParams.organisation_id + '/datamart/users', name: 'Users'},
+        { href: $stateParams.organisation_id + '/datamart/categories/', name: 'Categories'},
+        { href: $stateParams.organisation_id + '/datamart/items', name: 'Items' }
       ];
 
       locations.isCurrent = function(location) {

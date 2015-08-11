@@ -15,7 +15,7 @@
 
       <ul class="nav navbar-nav mcs-main-nav">
         <li ng-show="hasDatamart" ng-class="category == 'datamart' ? 'active' : ''">
-          <a href="#/datamart/users">Audience</a></li>
+          <a href="#/{{organisationId}}/datamart/users">Audience</a></li>
         <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#/{{organisationId}}/campaigns">Campaigns</a>
         </li>
         <li ng-class="category == 'creatives' ? 'active' : ''"><a href="#/{{organisationId}}/creatives">Creatives</a>

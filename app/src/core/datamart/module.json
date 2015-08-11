@@ -1,8 +1,11 @@
-{"name": "core/datamart", "dependencies": [
-  "core/datamart/common",
-  "core/datamart/items",
-  "core/datamart/users",
-  "core/datamart/categories",
-  "core/common/auth",
-  "restangular"
-]}
+{
+  "name": "core/datamart",
+  "dependencies": [
+    "core/datamart/common",
+    "core/datamart/items",
+    "core/datamart/users",
+    "core/datamart/categories",
+    "core/common/auth",
+    "restangular"
+  ]
+}
