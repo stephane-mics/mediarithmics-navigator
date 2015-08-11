@@ -75,7 +75,7 @@
               <!-- perfomed_action -->
               <!--<span ng-show="item.$$type == '$performed_action'">{{ item.$details.name }}</span>-->
               <span ng-if="event.$event_name == '$item_view'">
-                <strong>Item view</strong>
+                <strong>Item view</strong> at {{ event.$ts | date : 'mediumTime' }}
                 <ul ng-show="event.$properties">
                   <li ng-repeat="item in event.$properties.$items">
                     <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
@@ -84,7 +84,7 @@
               </span>
 
               <span ng-if="event.$event_name == '$basket_view'">
-                <strong>Basket view</strong><br/>
+                <strong>Basket view</strong> at {{ event.$ts | date : 'mediumTime' }}<br/>
                 <i>currency : {{event.$properties.$currency}}</i>
                 <ul ng-show="event.$properties">
                   <li ng-repeat="item in event.$properties.$items">
@@ -95,7 +95,7 @@
               </span>
 
               <span ng-if="event.$event_name == '$transaction_confirmed'">
-                <strong>Transaction confirmed</strong><br/>
+                <strong>Transaction confirmed</strong> at {{ event.$ts | date : 'mediumTime' }}<br/>
                  <i>currency : {{event.$properties.$currency}}</i><br/>
                  <i>transaction_id : {{event.$properties.$transaction_id}}</i>
                 <ul ng-show="event.$properties">
@@ -108,7 +108,7 @@
               </span>
 
               <span ng-if="event.$event_name != '$item_view' && event.$event_name != '$basket_view' && event.$event_name != '$transaction_confirmed'">
-                <strong>{{ event.$event_name }}</strong>
+                <strong>{{ event.$event_name }}</strong> at {{ event.$ts | date : 'mediumTime' }}
                 <ul ng-show="event.$properties">
                   <li ng-repeat="key in getMapKeys(event.$properties)">
                     {{key}} : {{""+event.$properties[key]}} <!-- ""+ is for casting in string in order to display null value -->
