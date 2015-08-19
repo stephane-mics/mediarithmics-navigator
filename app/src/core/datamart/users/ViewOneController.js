@@ -17,15 +17,19 @@ define(['./module','moment-duration-format'], function (module) {
 
       // fetch UserAccount
       $scope.activities = [];
+      $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId);
+
       if ($stateParams.upid) {
-        $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users/upid', $stateParams.upid);
+        $scope.userEndpoint.one('user_profiles', $stateParams.upid).get().then(function (user) {
+            $scope.user = Restangular.stripRestangular(user);
+            $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
+        });
       } else {
-        $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId).one('users', $stateParams.userId);
+        $scope.userEndpoint.customGET('user_profiles/user_account_id='+ $stateParams.userId).then(function (user) {
+            $scope.user = Restangular.stripRestangular(user);
+            $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
+        });
       }
-      $scope.userEndpoint.get().then(function (user) {
-        $scope.user = Restangular.stripRestangular(user);
-        $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
-      });
 
       // prevent dropdown from closing on checkbox interaction
       $('.dropdown-menu').click(function(e){
@@ -41,13 +45,22 @@ define(['./module','moment-duration-format'], function (module) {
       // Loads all agents, then all their visits
       $scope.getAgentsAndVisits = function(visitLimit) {
         // fetch UserAgents
-        $scope.userEndpoint.all('agents').getList().then(function (agents){
-          $scope.agents = agents;
-        });
-        $scope.userEndpoint.all('timeline').getList().then(function (timeline){
-          $scope.timeline = timeline;
-          $scope.handleVisits(timeline);
-        });
+//        $scope.userEndpoint.all('agents').getList().then(function (agents){
+//          $scope.agents = agents;
+//        });
+
+         if ($stateParams.upid) {
+            $scope.userEndpoint.one('user_timelines', $stateParams.upid).getList().then(function (timeline){
+              $scope.timeline = timeline;
+              $scope.handleVisits(timeline);
+            });
+         } else {
+            $scope.userEndpoint.customGETLIST('user_timelines/user_account_id='+ $stateParams.userId).then(function (timeline){
+              $scope.timeline = timeline;
+              $scope.handleVisits(timeline);
+            });
+         }
+
       };
 
       // Handles the loaded timeline by constructing an activity for each visit, then loads all actions for each

@@ -12,7 +12,7 @@ define(['./module'], function (module) {
       $scope.datamartId = Session.getCurrentDatamartId();
 
       $scope.refreshUsers = function (offset, limit) {
-        Restangular.one('datamarts', $scope.datamartId).all('users/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit}).then(function (result) {
+        Restangular.one('datamarts', $scope.datamartId).all('user_profiles/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit}).then(function (result) {
           $scope.users = result;
         });
       };
