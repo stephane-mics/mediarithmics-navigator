@@ -12,9 +12,10 @@ define(['./module'], function (module) {
             this.setup = function (location) {
 
               $scope.$watch(location, function (newValue, oldValue, scope) {
-                if (!newValue) {
+                if (!newValue || !newValue.postal_code) {
                   return;
                 }
+                // TODO handle more than postal_code
                 var locationList = Restangular.one("geoname", newValue.country).all(newValue.postal_code);
                 $scope.locationList = locationList.getList().$object;
               });
