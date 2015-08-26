@@ -26,6 +26,7 @@ define(['./module'], function (module) {
           postalCodeAdded = $scope.addedPostalCodes[i];
           $scope.$emit("mics-location:postal-code-added", {
             id: IdGenerator.getId(),
+            type: 'POSTAL_CODE',
             country: $scope.input.country,
             postal_code : postalCodeAdded
           });

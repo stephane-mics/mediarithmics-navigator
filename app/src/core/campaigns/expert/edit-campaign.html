@@ -78,8 +78,14 @@
           <td>
             {{location.type}}
           </td>
-          <td mcs-location="location">
+          <td mcs-location="location" ng-if="location.type == 'POSTAL_CODE'">
             {{location.postal_code}}: {{getLocationDescriptor(locationList)}}
+          </td>
+          <td mcs-location="location" ng-if="location.type == 'GEONAME'">
+            {{location.country}}:{{location.admin1}}:{{location.admin2}}
+          </td>
+          <td mcs-location="location" ng-if="location.type == 'URBAN_AREA'">
+            {{location.urban_area_code}}
           </td>
           <td class="actions">
             <button class="mics-btn mics-btn-delete" ng-click="deleteLocation(location)">Delete</button>
