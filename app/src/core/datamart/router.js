@@ -30,11 +30,11 @@ define(['./module'], function (module) {
           templateUrl: 'src/core/datamart/users/view.all.html'
         })
         .state('datamart/users/:userId', {
-          url: '/:organisation_id/datamart/users/:userId',
+          url: '/:organisation_id/datamart/users/:userId?live',
           templateUrl: 'src/core/datamart/users/view.one.html'
         })
         .state('datamart/users/upid/:upid', {
-          url: '/:organisation_id/datamart/users/upid/:upid',
+          url: '/:organisation_id/datamart/users/upid/:upid?live',
           templateUrl: 'src/core/datamart/users/view.one.html'
         });
     }

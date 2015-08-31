@@ -24,7 +24,6 @@ define(['./module','moment-duration-format'], function (module) {
             $scope.user = Restangular.stripRestangular(user);
             $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
         }, function(response) {
-          console.log(response);
           $scope.error = response.data.error;
         });
       } else {
@@ -53,16 +52,15 @@ define(['./module','moment-duration-format'], function (module) {
 //        });
 
          if ($stateParams.upid) {
-            $scope.userEndpoint.one('user_timelines', $stateParams.upid).getList().then(function (timeline){
+            $scope.userEndpoint.one('user_timelines', $stateParams.upid).getList({live: $stateParams.live}).then(function (timeline){
               $scope.timeline = timeline;
               $scope.handleVisits(timeline);
             }, function(response) {
-              console.log(response);
               $scope.error = response.data.error;
             });
 
          } else {
-            $scope.userEndpoint.customGETLIST('user_timelines/user_account_id='+ $stateParams.userId).then(function (timeline){
+            $scope.userEndpoint.customGETLIST('user_timelines/user_account_id='+ $stateParams.userId + "?live="+ $stateParams.live).then(function (timeline){
               $scope.timeline = timeline;
               $scope.handleVisits(timeline);
             });
