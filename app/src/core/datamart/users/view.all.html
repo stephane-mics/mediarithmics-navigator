@@ -12,8 +12,8 @@
         <div class="mics-table-toolbar">
           <div class="col-md-8" >
             <form class="datamart form-horizontal" role="form">
-                <div mcs-form-group="" label-for="searchTermInput" label-text="Search">
-                <input type="search" class="form-control" id="searchTermInput" placeholder="Search" ng-model="searchTerms">
+                <div mcs-form-group="" label-for="searchTermInput" label-text="Search user account">
+                <input type="search" class="form-control" id="searchTermInput" placeholder="Search" ng-model="searchTerms" ng-change="refreshUsers(searchTerms,0,20)"/>
                 </div>
             </form>
           </div>
