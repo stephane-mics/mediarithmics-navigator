@@ -23,6 +23,9 @@ define(['./module','moment-duration-format'], function (module) {
         $scope.userEndpoint.one('user_profiles', $stateParams.upid).get().then(function (user) {
             $scope.user = Restangular.stripRestangular(user);
             $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
+        }, function(response) {
+          console.log(response);
+          $scope.error = response.data.error;
         });
       } else {
         $scope.userEndpoint.customGET('user_profiles/user_account_id='+ $stateParams.userId).then(function (user) {
@@ -53,7 +56,11 @@ define(['./module','moment-duration-format'], function (module) {
             $scope.userEndpoint.one('user_timelines', $stateParams.upid).getList().then(function (timeline){
               $scope.timeline = timeline;
               $scope.handleVisits(timeline);
+            }, function(response) {
+              console.log(response);
+              $scope.error = response.data.error;
             });
+
          } else {
             $scope.userEndpoint.customGETLIST('user_timelines/user_account_id='+ $stateParams.userId).then(function (timeline){
               $scope.timeline = timeline;

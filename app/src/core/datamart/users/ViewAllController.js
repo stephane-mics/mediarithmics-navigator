@@ -10,6 +10,7 @@ define(['./module'], function (module) {
       $scope.baseUrl = '#' + Common.locations.current.href;
 
       $scope.datamartId = Session.getCurrentDatamartId();
+      $scope.myTimelineHref = "#/"+Session.getCurrentDatamartId() +"/datamart/users/upid/my_user_point_id";
 
       $scope.refreshUsers = function (offset, limit) {
         Restangular.one('datamarts', $scope.datamartId).all('user_profiles/search/').getList({ terms: $scope.searchTerms, offset: offset, limit: limit}).then(function (result) {
