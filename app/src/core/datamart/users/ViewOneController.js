@@ -59,7 +59,7 @@ define(['./module','moment-duration-format'], function (module) {
 //        });
 
          if ($stateParams.upid) {
-            $scope.userEndpoint.one('user_timelines', $stateParams.upid).getList({live: $stateParams.live === "true"}).then(function (timeline){
+            $scope.userEndpoint.one('user_timelines', $stateParams.upid).customGETLIST('',{live: $stateParams.live === "true"}).then(function (timeline){
               $scope.timeline = timeline;
               $scope.handleVisits(timeline);
             }, function(response) {
@@ -67,7 +67,8 @@ define(['./module','moment-duration-format'], function (module) {
             });
 
          } else {
-            $scope.userEndpoint.customGETLIST('user_timelines/user_account_id='+ $stateParams.userId + "?live="+ $stateParams.live === "true").then(function (timeline){
+           var url = 'user_timelines/user_account_id='+ $stateParams.userId + "?live="+ ($stateParams.live === "true");
+            $scope.userEndpoint.customGETLIST(url).then(function (timeline){
               $scope.timeline = timeline;
               $scope.handleVisits(timeline);
             });
