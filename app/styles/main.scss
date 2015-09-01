@@ -1203,6 +1203,7 @@ form.datamart {
     padding: 15px;
     border-color: $mcs-light-grey;
     color: $dark-blue;
+    overflow: hidden;
     .badge {
       background: $dark-blue;
     }
@@ -1302,6 +1303,16 @@ a.category-item {
 
 .datamart-timeline > li.with_purchase .datamart-timeline-content {
   border-left: 6px solid $mcs-red;
+}
+
+
+
+.datamart-timeline-content-header {
+ .live-event-header {
+    @extend .label; 
+    @extend .label-success; 
+    float: right;
+ }
 }
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header {
