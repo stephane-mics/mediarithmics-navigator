@@ -30,11 +30,19 @@ define(['./module'], function (module) {
           templateUrl: 'src/core/datamart/users/view.all.html'
         })
         .state('datamart/users/:userId', {
-          url: '/:organisation_id/datamart/users/:userId?live',
+          url: '/:organisation_id/datamart/users/:userId',
           templateUrl: 'src/core/datamart/users/view.one.html'
         })
         .state('datamart/users/upid/:upid', {
-          url: '/:organisation_id/datamart/users/upid/:upid?live',
+          url: '/:organisation_id/datamart/users/upid/:upid',
+          templateUrl: 'src/core/datamart/users/view.one.html'
+        })
+        .state('datamart/users/:userId/live', {
+          url: '/:organisation_id/datamart/users/:userId/live/:live',
+          templateUrl: 'src/core/datamart/users/view.one.html'
+        })
+        .state('datamart/users/upid/:upid/live', {
+          url: '/:organisation_id/datamart/users/upid/:upid/live/:live',
           templateUrl: 'src/core/datamart/users/view.one.html'
         });
     }
