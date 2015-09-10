@@ -18,6 +18,7 @@ define([
   'ui.router.extras',
   'lodash',
   'js-xlsx',
+  'bootstrap-tokenfield',
   'core/configuration',
   'core/adblock/index',
   'core/queries/index',

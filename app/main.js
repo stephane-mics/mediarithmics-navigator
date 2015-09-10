@@ -42,7 +42,10 @@ require.config({
     "ngBootstrap": "../bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker",
     "ngTable": "../bower_components/ng-table/ng-table",
     "checklist-model": "../bower_components/checklist-model/checklist-model",
-    "ui.bootstrap": "../bower_components/angular-bootstrap/ui-bootstrap-tpls"
+    "ui.bootstrap": "../bower_components/angular-bootstrap/ui-bootstrap-tpls",
+    "lvl.directives.dragdrop": "../bower_components/lvlDragDrop/script/lvl-drag-drop",
+    "lvlUuid": "../bower_components/lvlDragDrop/script/lvl-uuid",
+    "bootstrap-tokenfield": "../bower_components/bootstrap-tokenfield/dist/bootstrap-tokenfield"
   },
   shim: {
     'angular': {deps: ['jquery'], exports: 'angular'},
@@ -70,7 +73,8 @@ require.config({
     'ngload': ['angularAMD'],
     'js-xlsx': ['angular', 'file-saver'],
     // Navigator configuration
-    'core/configuration': ['angular']
+    'core/configuration': ['angular'],
+    'lvl.directives.dragdrop':['lvlUuid']
   },
   deps: ['app']
 });

@@ -5,6 +5,7 @@
     "core/datamart/items",
     "core/datamart/users",
     "core/datamart/categories",
+    "core/datamart/queries",
     "core/common/auth",
     "restangular"
   ]

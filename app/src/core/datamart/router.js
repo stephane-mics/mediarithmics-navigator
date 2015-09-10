@@ -44,6 +44,10 @@ define(['./module'], function (module) {
         .state('datamart/users/upid/:upid/live', {
           url: '/:organisation_id/datamart/users/upid/:upid/live/:live',
           templateUrl: 'src/core/datamart/users/view.one.html'
+        })
+        .state('datamart/queries/:queryId', {
+          url: '/:organisation_id/datamart/queries/:queryId',
+          templateUrl: 'src/core/datamart/queries/builder.html'
         });
     }
   ]);
