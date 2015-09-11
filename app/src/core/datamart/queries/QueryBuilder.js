@@ -77,7 +77,7 @@ define(['./module'], function (module) {
             };
 
             $scope.toHumanReadableDuration = function(duration) {
-                return moment.duration(duration,'ns').format("d [days] h [hours] m [minutes] s [seconds]");
+                return moment.duration(duration,'ms').format("d [days] h [hours] m [minutes] s [seconds]");
             };
 
             $scope.save = function (queryContainer) {
