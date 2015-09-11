@@ -2,7 +2,7 @@ define(['./module'], function (module) {
 
     'use strict';
 
-    module.directive('mcsQueryCondition', [ 'core/datamart/common/Common', function (Common) {
+    module.directive('mcsQueryCondition', [ 'core/datamart/queries/common/Common', function (Common) {
         return {
             restrict: 'E',
             scope: {

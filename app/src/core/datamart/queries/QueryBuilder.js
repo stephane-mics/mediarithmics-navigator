@@ -4,7 +4,7 @@ define(['./module'], function (module) {
 
     module.controller('core/datamart/queries/QueryBuilder', [
         '$scope', '$stateParams', 'Restangular', '$q', 'lodash', 'core/common/auth/Session',
-        'core/datamart/common/Common', '$modal', "async", 'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment',
+        'core/datamart/queries/common/Common', '$modal', "async", 'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment',
 
         function ($scope, $stateParams, Restangular, $q, lodash, Session, Common, $modal, async, promiseUtils, $log, QueryContainer, moment) {
 
