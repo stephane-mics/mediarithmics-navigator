@@ -74,9 +74,9 @@ define(['./module'], function (module) {
 
                 if (scope.condition.value.from && scope.condition.value.to){
                     scope.datefield = {
-                        from:moment(scope.condition.value.from).format("MM/DD/YYYY"),
-                        to:moment(scope.condition.value.to).format("MM/DD/YYYY")
-                    }
+                        from:moment(scope.condition.value.from).format("L"),
+                        to:moment(scope.condition.value.to).format("L")
+                    };
                 }else{
                     scope.datefield = {from:"",to:""};
                 }
@@ -118,11 +118,10 @@ define(['./module'], function (module) {
                 var datefieldInput = elem.find('input[name="simpleDateInputField"]');
 
                 if (scope.condition.value){
-                    scope.datefield = {date:moment(scope.condition.value).format("MM/DD/YYYY")};
+                    scope.datefield = {date:moment(scope.condition.value).format("L")};
                 }else{
                     scope.datefield = {date:""};
                 }
-
 
                 datefieldInput.daterangepicker({
                     singleDatePicker: true,
@@ -169,11 +168,11 @@ define(['./module'], function (module) {
 
 
                 scope.$watch('relativeDateNumber', function(newValue, oldValue){
-                    updateCondition(scope)
+                    updateCondition(scope);
                 });
 
                 scope.$watch('relativeDateMagnitude', function(newValue, oldValue){
-                    updateCondition(scope)
+                    updateCondition(scope);
                 });
 
             }
