@@ -1804,3 +1804,14 @@ input.ng-invalid {
 .creative-preview {
   border: 1px solid #111111
 }
+
+// -------------------- Draggable element : used for query ui ----------------------------
+
+.lvl-target {
+  background-color: #ddd;
+  opacity: .5;
+}
+
+[draggable] {
+  cursor: move;
+}

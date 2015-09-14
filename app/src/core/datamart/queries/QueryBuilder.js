@@ -70,7 +70,7 @@ define(['./module'], function (module) {
                     $scope.statistics.total = result.total;
                     $scope.statistics.hasEmail = result.total_with_email;
                     $scope.statistics.hasCookie = result.total_with_cookie;
-                    $scope.statistics.executionTime = result.execution_time;
+                    $scope.statistics.executionTimeInMs = result.execution_time_in_ms;
                 }, function() {
                     $scope.statsError = "There was an error executing query";
                 });
