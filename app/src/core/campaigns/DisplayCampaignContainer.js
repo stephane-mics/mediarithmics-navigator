@@ -366,7 +366,11 @@ define(['./module'], function (module) {
           $log.info("saving goalSelection", goalSelection.id);
           var promise;
           if ((goalSelection.id && goalSelection.id.indexOf('T') === -1) || (typeof(goalSelection.modified) !== "undefined")) {
-            promise = goalSelection.put();
+            //  promise = goalSelection.put();
+            // we don't handle updates on goal selections for the moment
+            var deferred = $q.defer();
+            promise = deferred.promise;
+            deferred.resolve();
 
           } else {
             promise = Restangular
