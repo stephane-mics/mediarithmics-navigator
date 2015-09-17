@@ -1,0 +1,60 @@
+<div class="row">
+<div class="col-md-2">
+    {{condition.property_selector_name === 'CUSTOM_PROPERTY' ? condition.property_selector_parameters : condition.property_selector_name}}
+</div>
+<div class="col-md-4">
+    <select class="form-control input-sm" ng-model="condition.operator" ng-change="initConditionValue(condition)">
+        <option ng-repeat="propertyOperator in operators" ng-selected="{{condition.operator == propertyOperator.operator}}" value="{{propertyOperator.operator}}">{{propertyOperator.label}}</option>
+    </select>
+</div>
+<div class="col-md-6">
+    <mcs-query-condition-datefield condition="condition" operator=""></mcs-query-condition-datefield>
+    <div class="row">
+        <div ng-switch="condition.property_selector_value_type">
+            <div ng-switch-when="STRING">
+                <div ng-show="condition.operator == 'CONTAINS' || condition.operator == 'NOT_CONTAINS'">
+                    <div class="col-md-12">
+                        <mcs-query-condition-value-tokenfield condition="condition"></mcs-query-condition-value-tokenfield>
+                    </div>
+                </div>
+                <div ng-show="condition.operator != 'CONTAINS' && condition.operator != 'NOT_CONTAINS'">
+                    <div class="col-md-12">
+                        <input type="search" class="form-control" ng-model="condition.value">
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-when="NUMBER">
+                <div class="col-md-12">
+                    <input type="search" class="form-control" ng-model="condition.value">
+                </div>
+            </div>
+            <div ng-switch-when="BOOLEAN">
+                <div class="col-md-12">
+                    <select class="form-control input-sm" ng-model="condition.value">
+                        <option value="TRUE">TRUE</option>
+                        <option value="FALSE">FALSE</option>
+                    </select>
+                </div>
+            </div>
+            <div ng-switch-when="DATE">
+                <div ng-switch="condition.operator">
+                    <div ng-switch-when="RELATIVE_GT">
+                        <mcs-query-condition-value-relative-date condition="condition"></mcs-query-condition-value-relative-date>
+                    </div>
+                    <div ng-switch-when="RELATIVE_LT">
+                        <mcs-query-condition-value-relative-date condition="condition"></mcs-query-condition-value-relative-date>
+                    </div>
+                    <div ng-switch-when="BETWEEN">
+                        <mcs-query-condition-value-date-range condition="condition"></mcs-query-condition-value-date-range>
+                    </div>
+                    <div ng-switch-default>
+                        <mcs-query-condition-value-simple-date condition="condition"></mcs-query-condition-value-simple-date>
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-default></div>
+        </div>
+    </div>
+
+</div>
+</div>

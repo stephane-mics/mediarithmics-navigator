@@ -1,0 +1,11 @@
+<div class="col-md-4">
+    <input type="search" class="form-control" ng-model="relativeDateNumber">
+</div>
+<div class="col-md-4">
+    <select class="form-control input-sm" ng-model="relativeDateMagnitude">
+        <option ng-repeat="magnitude in magnitudes" ng-selected="{{relativeDateMagnitude == magnitude.letter}}" value="{{magnitude.letter}}">{{magnitude.label}}</option>
+    </select>
+</div>
+<div class="col-md-4">
+    ago
+</div>

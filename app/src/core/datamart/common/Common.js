@@ -24,11 +24,12 @@ define(['./module'], function (module) {
       locations.all = [
         { href: $stateParams.organisation_id + '/datamart/users', name: 'Users'},
         { href: $stateParams.organisation_id + '/datamart/categories/', name: 'Categories'},
-        { href: $stateParams.organisation_id + '/datamart/items', name: 'Items' }
+        { href: $stateParams.organisation_id + '/datamart/items', name: 'Items' },
+        { href: $stateParams.organisation_id + '/datamart/queries', name: 'Queries' }
       ];
 
       locations.isCurrent = function(location) {
-        return $state.current.url.search(location.href) > -1;
+        return locations.current.href.search(location.href) > -1;
       };
 
       locations.set = function(location) {
