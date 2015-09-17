@@ -1802,9 +1802,9 @@ input.ng-invalid {
 // -------------------- Creative Editor ----------------------------
 
 .creative-preview {
-  border: 1px solid #111111
+  border: 1px solid #111111;
+  box-sizing: content-box
 }
-
 // -------------------- Draggable element : used for query ui ----------------------------
 
 .lvl-target {
