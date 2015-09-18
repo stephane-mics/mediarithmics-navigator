@@ -1,0 +1,115 @@
+<!-- timeline -->
+<div ng-controller="core/datamart/timeline/timeline" class="col-md-8 col-xs-8" >
+
+    <ul class="datamart-timeline">
+        <li  ng-repeat="timelineEvent in timeline  " class="with_purchase">
+
+            <!-- datetime -->
+            <time class="datamart-timeline-datetime" datetime="{{ timelineEvent.$ts | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
+                <span>{{ timelineEvent.$ts | date : 'mediumDate' }}</span>
+                <span>{{ timelineEvent.$ts | date : 'shortTime' }}</span>
+            </time>
+            <!--User account : {{timelineEvent.$user_account_id  }}-->
+            <!--User agent : {{timelineEvent.$user_agent_id  }}-->
+            <!-- icon -->
+            <div class="datamart-timeline-icon">
+                <!--<img src="images/datamart/device_phone.svg" width="24" height="24" ng-show="activity.agent.device_type == 'smartphone'" />-->
+                <!--<img src="images/datamart/device_tablet.svg" width="24" height="24" ng-show="activity.agent.device_type == 'tablet'" />-->
+                <img src="../../../../images/datamart/device_pc.svg" width="24" height="24"  />
+            </div>
+
+            <!--&lt;!&ndash; content -->
+            <div class="datamart-timeline-content">
+                <div class="datamart-timeline-content-header">
+                    <h2>{{ timelineEvent.$type }}<span ng-if="timelineEvent.$session_status == 'SESSION_SNAPSHOT'" class="live-event-header">Live</span>
+                    </h2>
+                    <div ng-if="timelineEvent.$type == 'SITE_VISIT'" >Duration: {{ toHumanReadableDuration(timelineEvent.$session_duration) }}</div>
+
+                </div>
+
+                <!-- actions during visit -->
+                <div class="datamart-timeline-content-details" >
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="event in timelineEvent.$events">
+
+                            <!-- perfomed_action -->
+                            <!--<span ng-show="item.$$type == '$performed_action'">{{ item.$details.name }}</span>-->
+                      <span ng-if="event.$event_name == '$item_view'">
+                        <strong>Item view</strong> at {{ event.$ts | date : 'mediumTime' }}
+                        <ul ng-show="event.$properties">
+                            <li ng-repeat="item in event.$properties.$items">
+                                <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
+                            </li>
+                        </ul>
+                      </span>
+
+                      <span ng-if="event.$event_name == '$basket_view'">
+                        <strong>Basket view</strong> at {{ event.$ts | date : 'mediumTime' }}<br/>
+                        <i>currency : {{event.$properties.$currency}}</i>
+                        <ul ng-show="event.$properties">
+                            <li ng-repeat="item in event.$properties.$items">
+                                <span class="badge" style="float: right" >{{ item.$qty }}</span>
+                                <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>)
+                            </li>
+                        </ul>
+                      </span>
+
+                      <span ng-if="event.$event_name == '$transaction_confirmed'">
+                        <strong>Transaction confirmed</strong> at {{ event.$ts | date : 'mediumTime' }}<br/>
+                         <i>currency : {{event.$properties.$currency}}</i><br/>
+                         <i>transaction_id : {{event.$properties.$transaction_id}}</i>
+                        <ul ng-show="event.$properties">
+                            <span class="badge" style="float: right" >{{ item.$qty }}</span>
+                            <li ng-repeat="item in event.$properties.$items">
+                                <a href="{{ itemUrl +item.$catalog_id +'/' + item.$id }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>)
+                            </li>
+
+                        </ul>
+                      </span>
+
+                      <span ng-if="event.$event_name != '$item_view' && event.$event_name != '$basket_view' && event.$event_name != '$transaction_confirmed'">
+                        <strong>{{ event.$event_name }}</strong> at {{ event.$ts | date : 'mediumTime' }}
+                        <ul ng-show="event.$properties">
+                            <li ng-repeat="key in getMapKeys(event.$properties)">
+                                {{key}} : {{""+event.$properties[key]}} <!-- ""+ is for casting in string in order to display null value -->
+                            </li>
+                        </ul>
+                      </span>
+                            <!-- view_item -->
+                            <!--<span class="badge" ng-show="item.$event_name == '$item_iew' || item.$type == '$added_to_cart'">{{ item.$count }}</span>-->
+                            <!--<span ng-show="item.$event_name == '$item_view'">Viewed item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>-->
+                            <!--<span ng-show="item.$type == '$added_to_cart'">Added item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">item.$catalog_id}}</a> to cart</span>-->
+
+
+                            <!--&lt;!&ndash; purchase_item &ndash;&gt;-->
+                            <!--<span class="badge" ng-show="item.$type == '$purchased'">{{ item.$count }}</span>-->
+                            <!--<span ng-show="item.$type == '$purchased'">Purchased item <a href="{{ itemUrl +item.$catalog_id +'/' + item.$item_id }}">{{ item.$item_id }}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a></span>-->
+                        </li>
+                    </ul>
+                    <!-- expand/collapse switch -->
+                    <div class="clearfix" ng-show="activity.actions && activity.actions.length > INITIAL_ACTIONS_PER_ACTIVITY">
+                        <a href class="mics-btn mics-btn-edit pull-right" ng-click="activity.expanded = !activity.expanded">
+                            <span ng-hide="activity.expanded">Expand</span>
+                            <span ng-show="activity.expanded">Collapse</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </li>
+        <!-- timeline item -->
+        <!--<li ng-init="newestFirst = true" ng-repeat="activity in activities | filter:{agent.visible:true} | orderBy:orderByVisitStartDate:!newestFirst" ng-class="{ 'with_action': activity.actions && activity.actions.length > 0, 'with_purchase': activity.with_purchase }">-->
+
+
+        <!--</li>-->
+
+        <li class="datamart-timeline-footer-node" ng-show="isTimeLineReady()">
+            <div class="datamart-timeline-icon">
+                <img src="../../../../images/datamart/more.svg" width="24" height="24" />
+            </div>
+            <div class="datamart-timeline-content" ng-click="loadMoreVisits()">
+                <span>Load all</span>
+            </div>
+        </li>
+    </ul>
+</div>
