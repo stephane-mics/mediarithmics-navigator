@@ -74,6 +74,7 @@ require.config({
     'js-xlsx': ['angular', 'file-saver'],
     // Navigator configuration
     'core/configuration': ['angular'],
+    'lvlUuid':['angular'],
     'lvl.directives.dragdrop':['lvlUuid']
   },
   deps: ['app']
