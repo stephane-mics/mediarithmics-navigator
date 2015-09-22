@@ -52,29 +52,34 @@ define(['./module','moment-duration-format'], function (module) {
 //        });
 
             if ($stateParams.upid) {
-                $scope.userEndpoint.one('user_timelines', $stateParams.upid).customGETLIST('',{live: $stateParams.live === "true"}).then(function (timeline){
-                    $scope.timeline = timeline;
+                $scope.userEndpoint.one('user_timelines', $stateParams.upid).customGETLIST('',{live: $stateParams.live === "true"}).then(function (timelines){
+                    $scope.timelines = timelines;
                     //$scope.handleVisits(timeline);
+                    $scope.showMore = true;
                 }, function(response) {
                     $scope.error = response.data.error;
                 });
 
             } else {
                 var url = 'user_timelines/user_account_id='+ $stateParams.userId + "?live="+ ($stateParams.live === "true");
-                $scope.userEndpoint.customGETLIST(url).then(function (timeline){
-                    $scope.timeline = timeline;
+                $scope.userEndpoint.customGETLIST(url).then(function (timelines){
+                    $scope.timelines = timelines;
+                    $scope.showMore = true;
                     //$scope.handleVisits(timeline);
                 });
             }
 
         };
 
+        /*
+        TODO: actually,the loadMoreActions function just hides the load more button one the timeline view,because
+              we load all the timeline in the first call (getAgentsAndVisits). we can rewrite this function when we implement the function to load
+              just a part of the timeline
+         */
+        $scope.loadMoreActions = function(){
+            $scope.showMore = false;
 
-
-
-
-
-
+        };
 
 
     }

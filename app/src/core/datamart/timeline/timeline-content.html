@@ -1,8 +1,8 @@
 <!-- timeline -->
-<div ng-controller="core/datamart/timeline/timeline" class="col-md-8 col-xs-8" >
+<div class="col-md-8 col-xs-8" >
 
     <ul class="datamart-timeline">
-        <li  ng-repeat="timelineEvent in timeline  " class="with_purchase">
+        <li  ng-repeat="timelineEvent in timelines  " class="with_purchase">
 
             <!-- datetime -->
             <time class="datamart-timeline-datetime" datetime="{{ timelineEvent.$ts | date : 'yyyy-MM-ddTHH:mm:ssTZD' }}">
@@ -15,7 +15,7 @@
             <div class="datamart-timeline-icon">
                 <!--<img src="images/datamart/device_phone.svg" width="24" height="24" ng-show="activity.agent.device_type == 'smartphone'" />-->
                 <!--<img src="images/datamart/device_tablet.svg" width="24" height="24" ng-show="activity.agent.device_type == 'tablet'" />-->
-                <img src="../../../../images/datamart/device_pc.svg" width="24" height="24"  />
+                <img src="images/datamart/device_pc.svg" width="24" height="24"  />
             </div>
 
             <!--&lt;!&ndash; content -->
@@ -103,11 +103,11 @@
 
         <!--</li>-->
 
-        <li class="datamart-timeline-footer-node" ng-show="isTimeLineReady()">
+        <li class="datamart-timeline-footer-node" ng-show="isTimeLineReady() && showMore"  >
             <div class="datamart-timeline-icon">
-                <img src="../../../../images/datamart/more.svg" width="24" height="24" />
+                <img src="images/datamart/more.svg" width="24" height="24" />
             </div>
-            <div class="datamart-timeline-content" ng-click="loadMoreVisits()">
+            <div class="datamart-timeline-content" ng-click="loadMoreActions()">
                 <span>Load all</span>
             </div>
         </li>
