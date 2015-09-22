@@ -8,13 +8,9 @@ define(['./module','moment-duration-format'], function (module) {
       'lodash', 'moment',
     function($scope, $stateParams, Restangular, Common, $, Session, lodash, moment) {
 
-        $scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
         $scope.INITIAL_VISITS = 10;
 
         $scope.datamartId = Session.getCurrentDatamartId();
-
-        $scope.agentUrl = '#/'  + $stateParams.organisation_id + '/datamart/users/' + $stateParams.userId + '/agents';
-        $scope.itemUrl = '#/' + $stateParams.organisation_id + '/datamart/items/';
 
 
         // fetch UserAccount
