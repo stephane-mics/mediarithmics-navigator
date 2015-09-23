@@ -11,7 +11,7 @@ define(['./module','moment-duration-format'], function (module) {
         $scope.INITIAL_VISITS = 10;
 
         $scope.datamartId = Session.getCurrentDatamartId();
-
+        $scope.organisationId = $stateParams.organisation_id;
 
         // fetch UserAccount
         $scope.activities = [];

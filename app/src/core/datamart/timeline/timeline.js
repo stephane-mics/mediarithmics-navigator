@@ -3,22 +3,24 @@ define(['./module'], function (module) {
     'use strict';
 
     module.directive('mcsTimeline',[
-         '$stateParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
-        'lodash', 'moment',function($stateParams, Restangular, Common, $, Session, lodash, moment){
+         'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
+        'lodash', 'moment',function(Restangular, Common, $, Session, lodash, moment){
 
         return {
                 restrict: 'E',
                 scope: {
                     timelines: '=',
                     loadMoreActions : '=',
-                    showMore: '='
-                },
+                    showMore: '=',
+                    organisationId: '='
+
+        },
                 link: function link(scope, element, attrs){
 
                     scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
-
-                    scope.agentUrl = '#/'  + $stateParams.organisation_id + '/datamart/users/' + $stateParams.userId + '/agents';
-                    scope.itemUrl = '#/' + $stateParams.organisation_id + '/datamart/items/';
+                    scope.itemUrl = function (catalogId, itemId) {
+                        return '#/' + scope.organisationId + '/datamart/items/' + catalogId + '/' + itemId;
+                    };
 
                     // Transforms a duration to human a readable 'X days Y hours Z minutes' format
                     scope.toHumanReadableDuration = function(duration) {
