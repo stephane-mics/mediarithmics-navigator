@@ -56,54 +56,46 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
           .state('login', {
             url: '/login',
             templateUrl: 'src/core/login/main.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           })
           .state('email-sent', {
             url: '/email-sent',
             templateUrl: 'src/core/password/email-sent.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           })
           .state('request-password-reset', {
             url: '/request-password-reset?error',
             templateUrl: 'src/core/password/request-password-reset.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           })
           .state('set-password', {
             url: '/set-password?email&token',
             templateUrl: 'src/core/password/set-password.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           })
           .state('logout', {
             url: '/logout',
             templateUrl: 'src/core/login/logout.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           })
           .state('remember-me', {
             url: '/remember-me',
             templateUrl: 'src/core/login/remember-me.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           })
           .state('init-session/withOrganisation', {
             url: '/init-session/:organisationId',
             templateUrl: 'src/core/login/init-session.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           }).state('init-session/withoutOrganisation', {
             url: '/init-session',
             templateUrl: 'src/core/login/init-session.html',
-            publicUrl: true,
-            sidebar: false
+            publicUrl: true
           });
 
         $urlRouterProvider.when('/', '/home');
         $urlRouterProvider.when('', '/home');
-        $urlRouterProvider.when('/home', '/campaigns');
+        $urlRouterProvider.when('/home', '/campaigns/display');
         $logProvider.debugEnabled(true);
       }
     ]);

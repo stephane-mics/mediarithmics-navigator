@@ -20,13 +20,35 @@ define(['./module'], function (module) {
           templateUrl: 'src/core/campaigns/expert/edit-ad-group.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         })
-        .state('campaigns', {
-          url: '/{organisation_id}/campaigns',
-          templateUrl: 'src/core/campaigns/list.html'
+        .state('campaigns/display', {
+          url: '/{organisation_id}/campaigns/display',
+          templateUrl: 'src/core/campaigns/list-display-campaigns.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
+              selected: 'display_campaigns'
+            }
+          }
+        })
+        .state('campaigns/email', {
+          url: '/{organisation_id}/campaigns/email',
+          templateUrl: 'src/core/campaigns/list-email-campaigns.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
+              selected: 'email_campaigns'
+            }
+          }
         })
         .state('allCampaigns', {
-          url: '/campaigns',
-          templateUrl: 'src/core/campaigns/list.html'
+          url: '/campaigns/display',
+          templateUrl: 'src/core/campaigns/list-display-campaigns.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
+              selected: 'display_campaigns'
+            }
+          }
         });
     }
   ]);

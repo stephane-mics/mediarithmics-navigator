@@ -1,12 +1,8 @@
 
 <div class="mcs-default-container " ng-controller="core/datamart/categories/BrowseController">
-  <div class="mcs-default-sidebar">
-  </div>
   <div class="mcs-default-content">
 
-    <div ng-include src="'src/core/datamart/nav.html'" class="row"></div>
-  
-      <div  class="row">
+
 
         <!-- Search form -->
         <div class="mics-table-toolbar">
@@ -61,7 +57,7 @@
 
       <!-- Sub-categories -->
       <div mics-datamart-grid template="'src/core/datamart/categories/category-grid.template.html'" element-template="'src/core/datamart/categories/category-grid-element.template.html'" data="categories" refresh="refreshCategories" url-prefix="baseUrl" page-size="categoriesPerPage" ng-show="categories.length > 0"></div>
-    </div>
+
 
     <div mics-datamart-grid element-template="'src/core/datamart/items/item-grid-element.template.html'" data="datasheets" refresh="refreshDatasheets" url-prefix="itemUrl"></div>
 

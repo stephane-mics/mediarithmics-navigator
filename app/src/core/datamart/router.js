@@ -11,43 +11,117 @@ define(['./module'], function (module) {
         })
         .state('datamart/items', {
           url: '/:organisation_id/datamart/items',
-          templateUrl: 'src/core/datamart/items/view.all.html'
+          templateUrl: 'src/core/datamart/items/view.all.html',
+          category: 'catalog',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/catalog-sidebar.html',
+              selected: 'items'
+            }
+          }
         })
         .state('datamart/items/:catalogId/:itemId', {
           url: '/:organisation_id/datamart/items/:catalogId/:itemId',
-          templateUrl: 'src/core/datamart/items/view.one.html'
+          templateUrl: 'src/core/datamart/items/view.one.html',
+          category: 'catalog',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/catalog-sidebar.html',
+              selected: 'items'
+            }
+          }
         })
         .state('datamart/categories/:catalogId', {
           url: '/:organisation_id/datamart/categories/:catalogId',
-          templateUrl: 'src/core/datamart/categories/browse.html'
+          templateUrl: 'src/core/datamart/categories/browse.html',
+          category: 'catalog',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/catalog-sidebar.html',
+              selected: 'categories'
+            }
+          }
         })
         .state('datamart/categories/:catalogId/:categoryId', {
           url: '/:organisation_id/datamart/categories/:catalogId/:categoryId',
-          templateUrl: 'src/core/datamart/categories/browse.html'
+          templateUrl: 'src/core/datamart/categories/browse.html',
+          category: 'catalog',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/catalog-sidebar.html',
+              selected: 'categories'
+            }
+          }
         })
         .state('datamart/users', {
           url: '/:organisation_id/datamart/users',
-          templateUrl: 'src/core/datamart/users/view.all.html'
+          templateUrl: 'src/core/datamart/users/view.all.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'search'
+            }
+          }
         })
         .state('datamart/users/:userId', {
           url: '/:organisation_id/datamart/users/:userId',
-          templateUrl: 'src/core/datamart/users/view.one.html'
+          templateUrl: 'src/core/datamart/users/view.one.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'search'
+            }
+          }
         })
         .state('datamart/users/upid/:upid', {
           url: '/:organisation_id/datamart/users/upid/:upid',
-          templateUrl: 'src/core/datamart/users/view.one.html'
+          templateUrl: 'src/core/datamart/users/view.one.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'search'
+            }
+          }
         })
         .state('datamart/users/:userId/live', {
           url: '/:organisation_id/datamart/users/:userId/live/:live',
-          templateUrl: 'src/core/datamart/users/view.one.html'
+          templateUrl: 'src/core/datamart/users/view.one.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'search'
+            }
+          }
         })
         .state('datamart/users/upid/:upid/live', {
           url: '/:organisation_id/datamart/users/upid/:upid/live/:live',
-          templateUrl: 'src/core/datamart/users/view.one.html'
+          templateUrl: 'src/core/datamart/users/view.one.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'search'
+            }
+          }
+        })
+        .state('datamart/queries', {
+          url: '/:organisation_id/datamart/queries',
+          templateUrl: 'src/core/datamart/queries/builder.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'query'
+            }
+          }
         })
         .state('datamart/queries/:queryId', {
           url: '/:organisation_id/datamart/queries/:queryId',
-          templateUrl: 'src/core/datamart/queries/builder.html'
+          templateUrl: 'src/core/datamart/queries/builder.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'query'
+            }
+          }
         });
     }
   ]);

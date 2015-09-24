@@ -8,7 +8,13 @@ define(['./module'], function (module) {
         // list creatives
         .state('creatives', {
           url: '/{organisation_id}/creatives',
-          templateUrl: 'src/core/creatives/list.html'
+          templateUrl: 'src/core/creatives/list.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/creatives/creatives-sidebar.html',
+              selected: 'all_creatives'
+            }
+          }
         })
         // create a new creative
         .state('creatives/select-creative-template', {

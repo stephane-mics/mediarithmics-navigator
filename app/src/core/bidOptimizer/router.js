@@ -8,7 +8,14 @@ define(['./module'], function (module) {
         // list creatives
         .state('bid-optimizers/list', {
           url:'/{organisation_id}/library/bidOptimizers',
-          templateUrl: 'src/core/bidOptimizer/view.all.html'
+          templateUrl: 'src/core/bidOptimizer/view.all.html',
+          category: 'library',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/library/library-sidebar.html',
+              selected: 'bid_optimizers'
+            }
+          }
         })
         // create a new creative
         .state('bid-optimizer/edit', {

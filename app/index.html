@@ -58,7 +58,7 @@
     };
   </script>
 </head>
-<body class="mcs-app">
+<body class="mcs-app" ng-controller="LayoutController">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please
   <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -66,9 +66,11 @@
 
 <div ng-include="'src/core/layout/header/header.html'"></div>
 
-<div class="sidebar-placeholder" ng-show="sidebar"></div>
-<!-- Add your site or application content here -->
-<div ui-view="" class="container-fluid"></div>
+<div ng-include="'src/core/layout/sidebar/sidebar.html'"  ng-class="{'hidden': !showSidebar }"></div>
+
+<div ng-class="{'content-with-sidebar': showSidebar }">
+  <div ui-view="" class="container-fluid"></div>
+</div>
 
 <!--[if lt IE 9]>
 <script src="bower_components/es5-shim/es5-shim.js"></script>

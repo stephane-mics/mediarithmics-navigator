@@ -31,7 +31,7 @@ define(['./module'], function (module) {
         EmailCampaignService.save()
           .then(function success(campaignContainer) {
             $log.info("success");
-            $location.path("/campaigns/");
+            $location.path("/campaigns/email");
             EmailCampaignService.reset();
           }, function failure() {
             $log.info("failure");

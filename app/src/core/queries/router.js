@@ -12,7 +12,13 @@ define(['./module'], function (module) {
               data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
           }).state('library/queries', {
               url:'/{organisation_id}/library/queries',
-              templateUrl: 'src/core/queries/view.all.html'
+              templateUrl: 'src/core/queries/view.all.html',
+              data: {
+                  sidebar: {
+                      templateUrl : 'src/core/library/library-sidebar.html',
+                      selected: 'queries'
+                  }
+              }
           });
 
     }

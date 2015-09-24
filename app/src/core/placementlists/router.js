@@ -8,7 +8,13 @@ define(['./module'], function (module) {
       $stateProvider
         .state('library/placementlists', {
           url:'/{organisation_id}/library/placementlists',
-          templateUrl: 'src/core/placementlists/view.all.html'
+          templateUrl: 'src/core/placementlists/view.all.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/library/library-sidebar.html',
+              selected: 'placement_lists'
+            }
+          }
         })
         .state('library/placementlists/new', {
           url:'/{organisation_id}/library/placementlists/new',

@@ -11,7 +11,14 @@ define(['./module'], function (module) {
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         }).state('library/goals', {
           url: '/{organisation_id}/library/goals',
-          templateUrl: 'src/core/goals/view.all.html'
+          templateUrl: 'src/core/goals/view.all.html',
+          category: 'campaigns',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
+              selected: 'goals'
+            }
+          }
         });
     }
   ]);

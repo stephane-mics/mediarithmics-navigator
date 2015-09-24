@@ -8,7 +8,13 @@ define(['./module'], function (module) {
       $stateProvider
         .state('library/usergroups', {
           url:'/{organisation_id}/library/usergroups',
-          templateUrl: 'src/core/usergroups/view.all.html'
+          templateUrl: 'src/core/usergroups/view.all.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/library/library-sidebar.html',
+              selected: 'user_groups'
+            }
+          }
         })
         .state('library/usergroups/edit', {
           url:'/{organisation_id}/library/usergroups/:type/:usergroup_id',

@@ -4,10 +4,10 @@ define(['./module'], function (module) {
 
 
   module.controller('core/datamart/items/ViewAllController', [
-    '$scope', '$stateParams', '$route', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session', 'lodash',
-    function($scope, $stateParams, $route, Restangular, Common, Session, _) {
+    '$scope', '$stateParams', '$route', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session', 'lodash', '$location',
+    function($scope, $stateParams, $route, Restangular, Common, Session, _, $location) {
 
-      $scope.baseUrl = '#' + Common.locations.current.href;
+      $scope.baseUrl = '#' + $location.path();
 
       $scope.datamartId = Session.getCurrentDatamartId();
 
