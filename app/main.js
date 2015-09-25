@@ -10,7 +10,7 @@ require.config({
     "moment-duration-format": "../bower_components/moment-duration-format/lib/moment-duration-format",
     "jsplumb": "../bower_components/jsplumb/dist/js/dom.jsPlumb-1.7.2",
 
-    "lodash": "../bower_components/lodash/dist/lodash.compat",
+    "lodash": "../bower_components/lodash/lodash.min",
     "d3": "../bower_components/d3/d3",
     "nv.d3": "../bower_components/nvd3/build/nv.d3",
     "doubleLineChart": "nvd3-templates/doubleLineChart",

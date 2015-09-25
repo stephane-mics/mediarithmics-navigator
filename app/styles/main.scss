@@ -792,7 +792,7 @@ form.mcs-full-page-form {
   }
 }
 
-.campaign-report {
+.report {
   .report-top-tab {
     .organisation-name {
       @include make-md-column(12)
@@ -805,7 +805,7 @@ form.mcs-full-page-form {
   }
 
   .report {
-    .campaign-heading {
+    .report-heading {
       @extend .mcs-default-heading;
       .dropdown-export {
         display: inline-block;
@@ -1007,6 +1007,37 @@ form.mcs-full-page-form {
       }
     }
   }
+}
+.campaign-report {
+    @extend .report;
+}
+
+.goal-report {
+    @extend .report;
+    .attributions {
+        .attribution-kpis {
+           
+
+            @include make-row(); 
+            padding-bottom: 10px;
+            .attribution-kpi {
+                @include make-md-column(3);
+                .kpi-title {
+                    @extend .text-left;
+                    color: $mcs-light-blue;
+                    font-weight: normal;
+                    @include use-bold-font();
+                    font-size: 12px;
+
+                }
+                .kpi-value {
+                    @extend .text-left;
+                    font-size: 20px;
+                    @include use-bold-font();
+                }
+            }
+        }
+    }
 }
 
 .edit-campaign-expert {

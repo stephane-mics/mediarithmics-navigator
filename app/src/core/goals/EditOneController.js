@@ -3,7 +3,6 @@ define(['./module'], function (module) {
   'use strict';
 
 
-  // TODO retreive and use angular.module('keywords') instead ?
 
   module.controller('core/goals/EditOneController', [
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state','$modal',

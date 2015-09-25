@@ -1,105 +1,6 @@
-define(['./module', 'lodash'], function (module, _) {
+define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, ReportWrapper) {
   'use strict';
 
-  /**
-   * The Report Wrapper is used to retrieve data from the json report object
-   */
-  function ReportWrapper(report) {
-    var self = this;
-
-    // Return the list of the report metrics (excluding the dimensions)
-    this.getMetrics = function () {
-      return _.filter(report.columns_headers, isMetrics);
-    };
-
-    // Return the index of a metric in the list of metrics (excluding the dimensions)
-    this.getMetricIndex = function (metric) {
-      return self.getMetrics().indexOf(metric);
-    };
-
-    // Get the first row where the first column matches the id
-    this.getRow = _.memoize(function (id) {
-      var row = _.select(report.rows, function (r) {
-        return (r[0] + "") === (id + "");
-      })[0];
-      return self.decorate(row);
-    });
-
-    this.getHeaderIndex = _.memoize(function (header) {
-      return report.columns_headers.indexOf(header);
-    });
-
-    this.getRowWithHeader = function (header, id) {
-      var index = self.getHeaderIndex(header);
-      var selectedRow = _.select(report.rows, function (row) {
-        return (row[index] + "") === (id + "");
-      })[0];
-      return self.decorate(selectedRow);
-    };
-
-    this.getRowWithHeaders = function (header1, id1, header2, id2) {
-      var index1 = self.getHeaderIndex(header1);
-      var index2 = self.getHeaderIndex(header2);
-      var selectedRow = _.select(report.rows, function (row) {
-        return (row[index1] + "") === (id1 + "") && (row[index2] + "") === (id2 + "");
-      })[0];
-      return self.decorate(selectedRow);
-    };
-
-    this.decorate = _.memoize(function (row) {
-      var self = this;
-      if (row === undefined) {
-        return _.map(new Array(self.getMetrics().length), function () {
-          return 0;
-        });
-      } else {
-        // Keep all values from the data that is a metric
-        var values = _.rest(row, _.findLastIndex(report.columns_headers, notMetrics) + 1);
-        // Replace 'null' with 0 to be able to use the data with the charts
-        var clearedValues = values.map(function (v) {
-          return v === null ? 0 : v;
-        });
-        var type = _.map(self.getMetrics(), function (m) {
-          return tableHeaders[m].type;
-        });
-        // Build data array matching data values and data types
-        return _.map(_.zip([clearedValues, type]), function (t) {
-          return {value: t[0], type: t[1]};
-        });
-      }
-    });
-
-    this.getMetricName = function (input) {
-      if (angular.isDefined(tableHeaders[input])) {
-        return tableHeaders[input].name;
-      }
-    };
-
-    this.getMetricType = function (index) {
-      return tableHeaders[this.getMetrics()[index]].type;
-    };
-
-    this.getRows = function () {
-      return report.rows;
-    };
-
-    this.getHeaders = function () {
-      var headers = [];
-      var metrics = this.getMetrics();
-      for (var i = 0; i < metrics.length; ++i) {
-        headers.push(this.getMetricName(metrics[i]));
-      }
-      return headers;
-    };
-  }
-
-  var isMetrics = function (e) {
-    return !(/name|id|day|site/).test(e);
-  };
-
-  var notMetrics = function (e) {
-    return (/name|id|day|site/).test(e);
-  };
 
   var tableHeaders = {
     "creative_id": {name: "Id"},
@@ -227,7 +128,7 @@ define(['./module', 'lodash'], function (module, _) {
         ReportService.buildPerformanceReport = function (resource, metrics, filters, limit) {
           return this.getPerformance(resource, metrics, filters, limit)
             .$promise.then(function (response) {
-              return new ReportWrapper(response.data.report_view);
+              return new ReportWrapper(response.data.report_view, tableHeaders);
             });
         };
 
@@ -328,7 +229,7 @@ define(['./module', 'lodash'], function (module, _) {
            * WARNING : dateIter.valueOf returns the timestamp in the navigator timezone
            */
           var dailyStatsMapping = function (response) {
-            var report = new ReportWrapper(response.data.report_view);
+            var report = new ReportWrapper(response.data.report_view, tableHeaders);
             var leftMetricIndex = report.getMetricIndex(leftMetric);
             var rightMetricIndex = report.getMetricIndex(rightMetric);
             var y1 = [], y2 = [];
@@ -392,7 +293,7 @@ define(['./module', 'lodash'], function (module, _) {
            */
           var hourlyStatsMapping = function (response) {
             var y1 = [], y2 = [];
-            var report = new ReportWrapper(response.data.report_view);
+            var report = new ReportWrapper(response.data.report_view, tableHeaders);
             var leftMetricIndex = report.getMetricIndex(leftMetric);
             var rightMetricIndex = report.getMetricIndex(rightMetric);
             var dateIter = startDate();
