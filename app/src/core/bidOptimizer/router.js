@@ -9,8 +9,8 @@ define(['./module'], function (module) {
         .state('bid-optimizers/list', {
           url:'/{organisation_id}/library/bidOptimizers',
           templateUrl: 'src/core/bidOptimizer/view.all.html',
-          category: 'library',
           data: {
+            category: 'library',
             sidebar: {
               templateUrl : 'src/core/library/library-sidebar.html',
               selected: 'bid_optimizers'

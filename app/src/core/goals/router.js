@@ -12,8 +12,8 @@ define(['./module'], function (module) {
         }).state('library/goals', {
           url: '/{organisation_id}/library/goals',
           templateUrl: 'src/core/goals/view.all.html',
-          category: 'campaigns',
           data: {
+            category: 'campaigns',
             sidebar: {
               templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
               selected: 'goals'

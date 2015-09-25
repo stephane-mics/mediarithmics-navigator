@@ -28,8 +28,8 @@ define(['app-setup', 'angularAMD'],
             Session.updateWorkspace(toParams.organisation_id);
           }
 
-          if (toState.category){
-            $rootScope.category = toState.category;
+          if (toState.data && toState.data.category){
+            $rootScope.category = toState.data.category;
           } else {
             var urlMatch = toState.name.match(/\/?(\w+)\/?/);
             if (urlMatch) {

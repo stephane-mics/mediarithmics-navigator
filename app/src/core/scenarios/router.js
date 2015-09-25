@@ -9,8 +9,8 @@ define(['./module'], function (module) {
         .state('library/scenarios', {
           url:'/{organisation_id}/library/scenarios',
           templateUrl: 'src/core/scenarios/view.all.html',
-          category: 'campaigns',
           data: {
+            category: 'campaigns',
             sidebar: {
               templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
               selected: 'scenarios'

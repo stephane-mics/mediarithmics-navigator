@@ -12,8 +12,8 @@ define(['./module'], function (module) {
         .state('datamart/items', {
           url: '/:organisation_id/datamart/items',
           templateUrl: 'src/core/datamart/items/view.all.html',
-          category: 'catalog',
           data: {
+            category: 'catalog',
             sidebar: {
               templateUrl : 'src/core/datamart/catalog-sidebar.html',
               selected: 'items'
@@ -23,8 +23,8 @@ define(['./module'], function (module) {
         .state('datamart/items/:catalogId/:itemId', {
           url: '/:organisation_id/datamart/items/:catalogId/:itemId',
           templateUrl: 'src/core/datamart/items/view.one.html',
-          category: 'catalog',
           data: {
+            category: 'catalog',
             sidebar: {
               templateUrl : 'src/core/datamart/catalog-sidebar.html',
               selected: 'items'
@@ -34,8 +34,8 @@ define(['./module'], function (module) {
         .state('datamart/categories/:catalogId', {
           url: '/:organisation_id/datamart/categories/:catalogId',
           templateUrl: 'src/core/datamart/categories/browse.html',
-          category: 'catalog',
           data: {
+            category: 'catalog',
             sidebar: {
               templateUrl : 'src/core/datamart/catalog-sidebar.html',
               selected: 'categories'
@@ -45,8 +45,8 @@ define(['./module'], function (module) {
         .state('datamart/categories/:catalogId/:categoryId', {
           url: '/:organisation_id/datamart/categories/:catalogId/:categoryId',
           templateUrl: 'src/core/datamart/categories/browse.html',
-          category: 'catalog',
           data: {
+            category: 'catalog',
             sidebar: {
               templateUrl : 'src/core/datamart/catalog-sidebar.html',
               selected: 'categories'
