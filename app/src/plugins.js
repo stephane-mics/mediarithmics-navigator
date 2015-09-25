@@ -35,12 +35,15 @@ if (localStorage.plugins) {
           return data.baseUrl;
         };
 
-        pluginService.createState = function (name, url, template, navbar) {
+        pluginService.createState = function (name, url, template, navbar, category) {
           return {
             name: name,
             url: pluginService.getBaseUrl() + url,
             templateUrl: pluginService.getBaseTemplateUrl() + template,
-            data: {navbar: pluginService.getBaseTemplateUrl() + navbar}
+            data: {
+              category: category,
+              navbar: pluginService.getBaseTemplateUrl() + navbar
+            }
           };
         };
 
