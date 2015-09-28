@@ -54,6 +54,7 @@
     "vast-client-js": "^1.3.3",
     "d3": "~3.5.5",
     "jquery": "~1.10.2",
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "lodash": "~3.10.1"
   }
 }
