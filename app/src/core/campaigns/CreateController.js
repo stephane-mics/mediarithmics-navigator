@@ -25,7 +25,7 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function () {
-        $location.path('/campaigns');
+        $location.path('/campaigns/display');
       };
     }
   ]);

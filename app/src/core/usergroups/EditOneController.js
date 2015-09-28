@@ -33,7 +33,7 @@ define(['./module'], function (module) {
             $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaign.id + "/basic");
             break;
           default:
-            $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns");
+            $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display");
             break;
         }
       };

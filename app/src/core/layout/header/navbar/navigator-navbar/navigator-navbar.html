@@ -8,29 +8,23 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#/{{organisationId}}/campaigns"><img ng-src="{{getBrandLogo()}}"/></a>
+      <a class="navbar-brand" href="#/{{organisationId}}/campaigns/display"><img ng-src="{{getBrandLogo()}}"/></a>
     </div>
 
     <div class="navbar-collapse collapse" ng-if="isLogged">
 
       <ul class="nav navbar-nav mcs-main-nav">
         <li ng-show="hasDatamart" ng-class="category == 'datamart' ? 'active' : ''">
-          <a href="#/{{organisationId}}/datamart/users">Audience</a></li>
-        <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#/{{organisationId}}/campaigns">Campaigns</a>
+          <a href="#/{{organisationId}}/datamart/users">Audience</a>
+        </li>
+        <li ng-show="hasDatamart" ng-class="category == 'catalog' ? 'active' : ''">
+          <a href="#/{{organisationId}}/datamart/categories/">Catalogs</a>
+        </li>
+        <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#/{{organisationId}}/campaigns/display">Campaigns</a>
         </li>
         <li ng-class="category == 'creatives' ? 'active' : ''"><a href="#/{{organisationId}}/creatives">Creatives</a>
         </li>
-        <li ng-class="category == 'library' ? 'active' : ''" class="dropdown">
-          <a href="#" dropdown-toggle>Library</a>
-          <ul class="dropdown-menu">
-            <li><a href="#/{{organisationId}}/library/usergroups">User Groups</a></li>
-            <li><a href="#/{{organisationId}}/library/scenarios">Scenarios</a></li>
-            <li><a href="#/{{organisationId}}/library/goals">Goals</a></li>
-            <li><a href="#/{{organisationId}}/library/queries">User Datamart Queries</a></li>
-            <li><a href="#/{{organisationId}}/library/placementlists">Placement Lists</a></li>
-            <li><a href="#/{{organisationId}}/library/keywordslists">Keywords Lists</a></li>
-            <li><a href="#/{{organisationId}}/library/bidOptimizers">Bid Optimizers</a></li>
-          </ul>
+        <li ng-class="category == 'library' ? 'active' : ''"><a href="#/{{organisationId}}/library/usergroups">Library</a>
         </li>
       </ul>
 

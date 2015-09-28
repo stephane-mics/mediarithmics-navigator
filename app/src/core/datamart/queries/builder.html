@@ -1,22 +1,16 @@
 <div class="mcs-default-container " ng-controller="core/datamart/queries/QueryBuilder">
-    <div class="mcs-default-sidebar"></div>
     <div class="mcs-default-content">
-        <div ng-include src="'src/core/datamart/nav.html'" class="row"></div>
         <div class="mcs-default-heading">
-            <div class="row">
-                <div class="col-md-8">
-                    <h2>Audience Segment Query</h2>
-                </div>
-                <div class="col-md-4">
+            <h2>Audience Segment Query</h2>
+                <!--<div class="col-md-4">
                     <div class="pull-right">
                         <button class="mics-btn mics-btn-finish" ng-click="save(queryContainer)">Save</button>
                     </div>
-                </div>
-            </div>
+                </div>-->
         </div>
         <div class="row">
             <div class="col-md-3">
-                <div class="row">
+
                     <h4>List of criteria</h4>
 
                     <div class="panel-group" id="accordion">
@@ -45,7 +39,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
             </div>
             <div class="col-md-9">
                 <div class="row">
@@ -62,16 +56,16 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-sm-3">
                                         <span class="glyphicon glyphicon-user"></span> {{statistics.total}}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-sm-3">
                                         <span class="glyphicon glyphicon-envelope"></span> {{statistics.hasEmail}}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-sm-3">
                                         <span class="glyphicon glyphicon-globe"></span> {{statistics.hasCookie}}
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-sm-3">
                                         <button type="button" class="mics-btn mics-btn-action btn-xs"
                                                 ng-click="refreshQuery(queryContainer)">
                                             <span class="glyphicon glyphicon-refresh"></span>Refresh

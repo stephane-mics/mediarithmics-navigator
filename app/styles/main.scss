@@ -24,6 +24,7 @@ $mcs-green-not: #fff;
 $mcs-orange: #FE8F10;
 $mcs-orange-not: #fff;
 $mcs-light-grey: #E6E6E6;
+$mcs-dark-grey: #5C5C5C;
 $mcs-grey: #CBCBCB;
 $body-bg: #fff;
 
@@ -629,9 +630,12 @@ form.mcs-full-page-form {
 
 .mcs-default-sidebar {
   /* override right and width to the good values but keep the overall behavior */
-  @include make-xs-column(3);
-  width: 20% !important;
-  float: right;
+  @include make-xs-column(2);
+  background-color: $mcs-light-grey;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
   ul {
     @extend .nav;
     @extend .nav-pills;
@@ -650,22 +654,74 @@ form.mcs-full-page-form {
   }
 }
 
-.sidebar-placeholder {
-  /* override right and width to the good values but keep the overall behavior */
-  @include make-xs-column(3);
-  width: 20% !important;
-  background-color: $mcs-light-grey;
+.content-with-sidebar {
+  margin-left:210px;
+  /*margin-right:210px;*/
+  min-width: 768px;
+  height:100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
+.sidebar {
+
+  #hide-show {
+    float: right;
+  }
+  .sidebar-background {
+
+    width:200px;
+    border-right: 1px solid $mcs-light-grey;
+    position: fixed;
+    height: 100%;
+    top:0;
+    bottom: 0;
+  }
+}
+
+
+.sidebar-content{
+  width:185px;
+  max-width: 185px;
+  padding-left: 20px;
+  padding-right: 10px;
+  float: left;
+
+
+  .mcs-lm-nav {
+    @extend .nav;
+  }
+
+  .mcs-lm-nav-pills {
+    @extend .nav-pills;
+  }
+
+  .mcs-lm-nav-stacked {
+    @extend .nav-stacked;
+    > li {
+
+      // Active state
+      &.active > a {
+        &,
+        &:hover,
+        &:focus {
+          color: $dark-blue;
+          background-color: white;
+          font-weight: bold;
+          border-left: 4px solid $dark-blue;
+        }
+      }
+    }
+  }
 }
 
 .mcs-default-content {
-  /* override right and width to the good values but keep the overall behavior */
-  @include make-xs-column(9, 100px);
-  width: 80% !important;
+  @include make-sm-column(12);
+}
+
+.mcs-default-edit-content {
+  margin-top: 40px;
+  @include make-sm-column(10);
 }
 
 .mcs-default-heading {
@@ -706,6 +762,10 @@ form.mcs-full-page-form {
           font-size: ceil(($font-size-base * 1.5));
         }
         @extend .text-right;
+
+        > * {
+          margin-left: 10px;
+        }
       }
       margin-bottom: 20px;
     }
@@ -768,7 +828,9 @@ form.mcs-full-page-form {
       @include make-row();
 
       /* compensate the bootstrap margin */
-      margin: 0;
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 15px;
 
       padding: 8px 0;
       border-top: 1px solid $dark-blue;
@@ -789,18 +851,22 @@ form.mcs-full-page-form {
           }
         }
       }
-      .report-date-controller {
-        @include make-md-column(8);
-        min-width: 270px;
-        padding: 0;
-        input.range {
-          width: 240px;
-          background-color: $mcs-light-blue;
-          color: $mcs-light-blue-not;
-          @include use-bold-font();
-          font-size: ceil(($font-size-base * 1.5));
-        }
-        @extend .text-right;
+
+    }
+    .report-date-controller {
+      min-width: 270px;
+      padding: 0;
+      input.range {
+        width: 240px;
+        background-color: $mcs-light-blue;
+        color: $mcs-light-blue-not;
+        @include use-bold-font();
+        font-size: ceil(($font-size-base * 1.5));
+      }
+      @extend .text-right;
+
+      > * {
+        margin-left: 10px;
       }
     }
     .chart-area {

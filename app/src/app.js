@@ -21,18 +21,22 @@ define(['app-setup', 'angularAMD'],
 
           var options = defaults(toState, {
             publicUrl: false,
-            sidebar: true,
             topbar: true
           });
 
           if (Session.isInitialized() && Session.getCurrentWorkspace().organisation_id !== toParams.organisation_id) {
             Session.updateWorkspace(toParams.organisation_id);
           }
-          $rootScope.sidebar = options.sidebar;
-          var urlMatch = toState.name.match(/\/?(\w+)\/?/);
-          if (urlMatch) {
-            $rootScope.category = urlMatch[1];
+
+          if (toState.data && toState.data.category){
+            $rootScope.category = toState.data.category;
+          } else {
+            var urlMatch = toState.name.match(/\/?(\w+)\/?/);
+            if (urlMatch) {
+              $rootScope.category = urlMatch[1];
+            }
           }
+
           $rootScope.topbar = options.topbar;
           if (!options.publicUrl) {
 

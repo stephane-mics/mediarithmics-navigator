@@ -132,9 +132,11 @@ define(['./module'], function (module) {
 
 
             var QueryContainer = function QueryContainer(value) {
-                this.value = value;
-                this.datamartId = value.datamart_id;
-                this.id = value.id;
+                if (value){
+                    this.value = value;
+                    this.datamartId = value.datamart_id;
+                    this.id = value.id;
+                }
 
                 this.conditionGroupContainers = [];
                 this.removedConditionGroupContainers = [];

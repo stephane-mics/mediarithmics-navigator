@@ -8,7 +8,13 @@ define(['./module'], function (module) {
       $stateProvider
         .state('library/keywordslists', {
           url:'/{organisation_id}/library/keywordslists',
-          templateUrl: 'src/core/keywords/view.all.html'
+          templateUrl: 'src/core/keywords/view.all.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/library/library-sidebar.html',
+              selected: 'keywords_lists'
+            }
+          }
         })
         .state('library/keywordslists/new', {
           url:'/{organisation_id}/library/keywordslists/new',

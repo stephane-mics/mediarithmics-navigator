@@ -1,4 +1,4 @@
-{"name":"core/layout", "dependencies": ["core/common", "core/layout/header"]}
+{"name":"core/layout", "dependencies": ["core/common", "core/layout/header", "core/layout/sidebar"]}
 
 
 

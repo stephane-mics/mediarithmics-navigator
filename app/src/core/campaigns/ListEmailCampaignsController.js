@@ -13,13 +13,12 @@ define(['./module'], function (module) {
   /**
    * Campaign list controller
    */
-  module.controller('core/campaigns/ListController', [
+  module.controller('core/campaigns/ListEmailCampaignsController', [
     '$scope', '$location', '$modal', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session',
     'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/files/ExportService',
     function ($scope, $location, $modal, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
       var currentWorkspace = Session.getCurrentWorkspace();
 
-      $scope.currentPageDisplayCampaign = 1;
       $scope.currentPageEmailCampaign = 1;
       $scope.itemsPerPage = 10;
 
@@ -35,10 +34,6 @@ define(['./module'], function (module) {
       if ($scope.administrator) {
         params = {administration_id: currentWorkspace.organisation_id};
       }
-
-      Restangular.all('display_campaigns').getList(params).then(function (displayCampaigns) {
-        $scope.displayCampaigns = displayCampaigns;
-      });
 
       Restangular.all('email_campaigns').getList(params).then(function (emailCampaigns) {
         $scope.emailCampaigns = emailCampaigns;

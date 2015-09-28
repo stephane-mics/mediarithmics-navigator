@@ -87,7 +87,7 @@ define(['./module'], function (module) {
             $log.debug("Broadcast workspace change event ", result);
             $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
             if (!noredirect) {
-              $location.path(result.organisation_id + '/campaigns');
+              $location.path(result.organisation_id + '/campaigns/display');
             }
           });
           return promise;

@@ -12,7 +12,6 @@ define(['./module'], function (module) {
             angular.element.event.props.push('dataTransfer');
 
             var datamartId = Session.getCurrentDatamartId();
-            var queryId = $stateParams.queryId;
 
             $scope.statistics = { total:0, hasEmail:0, hasCookie:0 };
 
@@ -29,13 +28,16 @@ define(['./module'], function (module) {
 
             $scope.propertySelectorOperators = Common.propertySelectorOperators;
 
-            var pQueryContainer = QueryContainer.load(datamartId, queryId);
+            //var pQueryContainer = QueryContainer.load(datamartId, queryId);
+            var pQueryContainer = new QueryContainer();
 
-            pQueryContainer.then(function(queryContainer){
+            /*pQueryContainer.then(function(queryContainer){
                 $scope.queryContainer = queryContainer;
-            });
+            });*/
 
-            $scope.addGroup = function (queryContainer) {
+            $scope.queryContainer = pQueryContainer;
+
+                $scope.addGroup = function (queryContainer) {
                 queryContainer.addConditionGroup();
             };
 
@@ -80,9 +82,9 @@ define(['./module'], function (module) {
                 return moment.duration(duration,'ms').format("d [days] h [hours] m [minutes] s [seconds]");
             };
 
-            $scope.save = function (queryContainer) {
+            /*$scope.save = function (queryContainer) {
                 queryContainer.save();
-            };
+            };*/
 
 
             $scope.$on("mics-datamart-query:addProperty", function (event, params) {

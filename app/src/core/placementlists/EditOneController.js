@@ -77,7 +77,7 @@ define(['./module'], function (module) {
             $location.path( '/' + campaign.organisation_id + "/campaigns/display/report/" + campaign.id + "/basic");
             break;
           default:
-            $location.path("/campaigns");
+            $location.path("/campaigns/display");
             break;
         }
       };
