@@ -6,8 +6,16 @@ define(['./module'], function (module) {
     function ($stateProvider) {
       $stateProvider
         .state('goals/report', {
+
           url: '/{organisation_id}/goals/:goal_id/report',
-          templateUrl: 'src/core/goals/report/show-report.html'
+          templateUrl: 'src/core/goals/report/show-report.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
+              selected: 'goals'
+            }
+          }
+
         });
     }
   ]);

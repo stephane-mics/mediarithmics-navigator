@@ -13,7 +13,7 @@ define(['./module'], function (module) {
       });
 
       $scope.createGoal = function (type) {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/goals/");
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/goals/");
       };
 
       $scope.editGoal = function (goal, $event) {
@@ -22,7 +22,7 @@ define(['./module'], function (module) {
           $event.stopPropagation();
         }
 
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/goals/"+ goal.id);
+        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/goals/"+ goal.id);
       };
 
       $scope.deleteGoal = function (goal, $event) {

@@ -9,6 +9,7 @@ define(['./module'], function (module) {
           url: '/{organisation_id}/campaigns/display/report/:campaign_id/:template',
           templateUrl: 'src/core/campaigns/report/show-report.html',
           data: {
+            category: 'campaigns',
             sidebar: {
               templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
               selected: 'display_campaigns'
