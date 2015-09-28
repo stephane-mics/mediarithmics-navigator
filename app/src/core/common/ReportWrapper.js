@@ -77,14 +77,14 @@ define(['lodash'], function (_) {
       }
 
       var keys = _.indexOf(report.columns_headers, dimensionAsMetric);
-      var rows = _(report.rows)
-      var metricsLength = report.columns_headers.length - keys
+      var rows = _(report.rows);
+      var metricsLength = report.columns_headers.length - keys;
       var allDimensionAsMetricValues = rows.map( function(r) {return r[keys];}).uniq();
       var newRows = rows.groupBy(function(r) {
         return _.slice(r,0,keys);
       }).map(function(allRowByKey) {
         var key = _.slice(allRowByKey[0],0,keys);
-        var rowsByKey = allRowByKey.map(function(row) {return _.slice(row,keys);})
+        var rowsByKey = allRowByKey.map(function(row) {return _.slice(row,keys);});
         var rowsGroupedByValue = _.groupBy(rowsByKey,function(row) {return row[0];});
         // x represent the metrics, one line by type
         var x = allDimensionAsMetricValues.map(function(value) {
@@ -96,7 +96,7 @@ define(['lodash'], function (_) {
         });
         var row =  x.reduce(function(total, n) { 
           var metrics = _.map(n)[0];
-          _.forEach(metrics, function(m) {return total.push(m)});
+          _.forEach(metrics, function(m) {return total.push(m);});
 
           return  total; 
         }, key).valueOf();
@@ -116,7 +116,7 @@ define(['lodash'], function (_) {
         allDimensionAndTotal =  allDimensionAsMetricValues.concat(["TOTAL"]);
       }
 
-      var x = allDimensionAndTotal.map(function(d) {return report.columns_headers.slice(keys +1).map(function(h){return h+ "." + d;})}).flatten().valueOf()
+      var x = allDimensionAndTotal.map(function(d) {return report.columns_headers.slice(keys +1).map(function(h){return h+ "." + d;});}).flatten().valueOf();
 
       var newReport = {};
       newReport.rows = newRows;

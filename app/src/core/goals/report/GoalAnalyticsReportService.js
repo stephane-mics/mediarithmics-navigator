@@ -112,7 +112,7 @@ var tableHeaders = {
 
 
                      ReportService.kpi = function (goalId, hasCpa) {
-                       return this.getPerformance(conversionPerformanceResource, "", "conversions,price,value", "goal_id==" + goalId+",main_goal==1")
+                       return this.getPerformance(conversionPerformanceResource, "", "conversions,price,value", "goal_id==" + goalId)
                        .$promise.then(function (response) {
                          var report = response.data.report_view;
                          var firstLine = report.rows[0] || [];
@@ -124,7 +124,7 @@ var tableHeaders = {
                      };
 
                      ReportService.attributionKpi = function (goalId, attributionModelId) {
-                       return this.getPerformance(conversionPerformanceResource, "interaction_type", "weighted_conversions,interaction_to_conversion_duration", "goal_id==" + goalId + ",attribution_model_id==" + attributionModelId)
+                       return this.getPerformance(conversionAttributionResource, "interaction_type", "weighted_conversions,interaction_to_conversion_duration", "goal_id==" + goalId + ",attribution_model_id==" + attributionModelId)
                        .$promise.then(function (response) {
                          var report = response.data.report_view;
                          var firstLine = report.rows[0] || [];
@@ -243,7 +243,7 @@ var tableHeaders = {
                          end_date: endDate().format('YYYY-MM-D'),
                          dimension: "day",
                          metrics: leftMetric + "," + rightMetric,
-                         filters: "goal_id==" + goalId + ",main_goal==1"
+                         filters: "goal_id==" + goalId 
                        }).$promise.then(dailyStatsMapping);
                      };
 
