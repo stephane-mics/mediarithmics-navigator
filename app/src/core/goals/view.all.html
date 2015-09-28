@@ -26,7 +26,7 @@
       <tbody>
       <tr ng-repeat="goal in goals">
 
-        <td>{{goal.name}}</td>
+          <td><a ng-href="#/{{goal.organisation_id}}/goals/{{goal.id}}/report">{{goal.name}}</a></td>
         <td class="actions">
           <a class="mics-btn mics-btn-action" ng-click="editGoal(goal, $event)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteGoal(goal, $event)">Delete</a>

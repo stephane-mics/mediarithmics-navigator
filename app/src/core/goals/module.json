@@ -1,5 +1,6 @@
 {"name": "core/goals", "dependencies": [
   "restangular",
   "core/queries",
+  "core/goals/report",
   "checklist-model"
 ]}

@@ -1,7 +1,7 @@
 <div class="mcs-default-container campaign-report" ng-controller="core/campaigns/report/CampaignReportController">
   <div class="report mcs-default-content">
 
-    <div class="campaign-heading">
+    <div class="report-heading">
       <h2>
         <div class="pull-right">
           <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign)">Edit Campaign</a>
@@ -24,8 +24,8 @@
         </ul>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
+    <div class="report-toolbar">
+      <div class="date-export-toolbar">
         <div class="report-date-controller">
           <form class="form-inline pull-right" role="form">
             <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L"

@@ -5,16 +5,17 @@ define(['./module'], function (module) {
     "$stateProvider",
     function ($stateProvider) {
       $stateProvider
-        .state('campaigns/display/report', {
-          url: '/{organisation_id}/campaigns/display/report/:campaign_id/:template',
-          templateUrl: 'src/core/campaigns/report/show-report.html',
+        .state('goals/report', {
+
+          url: '/{organisation_id}/goals/:goal_id/report',
+          templateUrl: 'src/core/goals/report/show-report.html',
           data: {
-            category: 'campaigns',
             sidebar: {
               templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
-              selected: 'display_campaigns'
+              selected: 'goals'
             }
           }
+
         });
     }
   ]);

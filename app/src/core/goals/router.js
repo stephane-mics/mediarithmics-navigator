@@ -6,7 +6,7 @@ define(['./module'], function (module) {
     function ($stateProvider) {
       $stateProvider
         .state('library/goals/edit', {
-          url: '/{organisation_id}/library/goals/{goal_id}',
+          url: '/{organisation_id}/goals/{goal_id}',
           templateUrl: 'src/core/goals/edit.one.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         }).state('library/goals', {

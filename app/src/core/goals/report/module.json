@@ -1,0 +1,8 @@
+{
+  "name": "core/goals/report",
+  "dependencies": [
+    "restangular",
+    "ngResource",
+    "ui.bootstrap"
+  ]
+}
