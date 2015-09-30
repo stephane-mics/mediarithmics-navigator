@@ -11,18 +11,10 @@
                            ng-model="searchTerms.term" ng-change="refreshUsers(0,10)"/>
 
                 </div>
-                <button type="submit" class="btn btn-primary" data-toggle="collapse" data-target="#mytimeline">Advanced</button>
-            </form>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div id="mytimeline" class="panel panel-info collapse">
-                    <div class="panel-body">
-                        <a class="mics-btn mics-btn-action" ng-href="{{myTimelineHref}}">My timeline</a>
-                    </div>
+                <div class="pull-right">
+                    <a class="btn btn-default" ng-href="{{myTimelineHref}}">My timeline</a>
                 </div>
+            </form>
             </div>
         </div>
 

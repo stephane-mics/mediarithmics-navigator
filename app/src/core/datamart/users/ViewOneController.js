@@ -28,16 +28,16 @@ define(['./module','moment-duration-format'], function (module) {
         if ($stateParams.upid) {
             $scope.userEndpoint.one('user_profiles', $stateParams.upid).get().then(function (user) {
                 $scope.user = Restangular.stripRestangular(user);
-                $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
             }, function(response) {
                 $scope.error = response.data.error;
             });
         } else {
             $scope.userEndpoint.customGET('user_profiles/user_account_id='+ $stateParams.userId).then(function (user) {
                 $scope.user = Restangular.stripRestangular(user);
-                $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
             });
         }
+
+
 
 
 // Loads all agents, then all their visits
@@ -66,6 +66,8 @@ define(['./module','moment-duration-format'], function (module) {
             }
 
         };
+
+        $scope.getAgentsAndVisits($scope.INITIAL_VISITS);
 
         /*
         TODO: actually,the loadMoreActions function just hides the load more button one the timeline view,because
