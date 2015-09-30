@@ -8,7 +8,7 @@ define(['./module'], function (module) {
   module.factory('core/campaigns/DisplayCampaignContainer', [
     '$q', 'Restangular', 'core/common/IdGenerator', 'async', 'core/campaigns/AdGroupContainer', '$log', 'core/common/promiseUtils', 'lodash',  'core/campaigns/goals/GoalsService',
     function ($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _, GoalsService) {
-      var DisplayCampaignContainer = function DisplayCampaignContainer(templateGroupId, templateArtifactId) {
+      var DisplayCampaignContainer = function DisplayCampaignContainer(groupId, artifactId) {
         this.creationMode = true;
         this.adGroups = [];
         this.removedAdGroups = [];
@@ -19,7 +19,7 @@ define(['./module'], function (module) {
         this.locations = [];
         this.removedLocations = [];
 
-        this.value = {type: "DISPLAY", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
+        this.value = {type: "DISPLAY", group_id: groupId, artifact_id: artifactId};
         $log.info("DisplayCampaignContainer", this.value);
       };
 
@@ -490,48 +490,35 @@ define(['./module'], function (module) {
       }
 
       DisplayCampaignContainer.prototype.persist = function persist() {
-
         var deferred = $q.defer();
-
         var self = this;
 
         Restangular.all('display_campaigns').post(this.value, {organisation_id: this.organisationId})
           .then(angular.bind(this, function (campaign) {
-
             self.id = campaign.id;
-
             persistDependencies.call(null, self, campaign.id, self.adGroups).then(function () {
               deferred.resolve(campaign);
             }, deferred.reject);
-
           }), function (reason) {
             deferred.reject(reason);
           });
-
         return deferred.promise;
       };
 
       DisplayCampaignContainer.prototype.update = function update() {
-
         var deferred = $q.defer();
-
         var self = this;
 
         this.value.put().then(function (campaign) {
-
           persistDependencies.call(null, self, campaign.id, self.adGroups).then(function () {
             deferred.resolve(campaign);
           }, deferred.reject);
-
         }, function (reason) {
           deferred.reject(reason);
         });
-
         return deferred.promise;
       };
-
       return DisplayCampaignContainer;
     }
   ]);
 });
-

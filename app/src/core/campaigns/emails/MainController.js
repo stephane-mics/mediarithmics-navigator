@@ -13,7 +13,7 @@ define(['./module'], function (module) {
         $scope.userGroupClickFeed = EmailCampaignService.getCampaign().userGroupClickFeed;
       }
 
-      CampaignPluginService.getCampaignTemplate("com.mediarithmics.campaign.email", "expert-template").then(function (template) {
+      CampaignPluginService.getCampaignEditor("com.mediarithmics.campaign.email", "expert-template").then(function (template) {
         if (!campaignId || EmailCampaignService.isTemporaryId(campaignId)) {
           EmailCampaignService.initCreateCampaign(template).then(initView);
         } else {
