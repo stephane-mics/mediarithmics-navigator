@@ -11,7 +11,9 @@
                            ng-model="searchTerms.term" ng-change="refreshUsers(0,10)"/>
 
                 </div>
-                <button type="submit" class="btn btn-primary">Advanced</button>
+                <div class="pull-right">
+                    <a class="btn btn-default" ng-href="{{myTimelineHref}}">My timeline</a>
+                </div>
             </form>
             </div>
         </div>
