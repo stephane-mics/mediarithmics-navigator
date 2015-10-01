@@ -263,13 +263,13 @@ define(['./module'], function (module) {
                 };
             };
 
-            QueryContainer.prototype.prepareJsonQuery = function () {
+            QueryContainer.prototype.prepareJsonQuery = function (datamartId) {
                 var conditionGroups = lodash.map(this.conditionGroupContainers, function(conditionGroupContainer){
                     return conditionGroupContainer.buildInfoResource();
                 });
                 return {
                   /*id:this.id,*/
-                  datamart_id:this.datamartId,
+                  datamart_id:datamartId,
                   condition_groups:conditionGroups
                 };
             };
