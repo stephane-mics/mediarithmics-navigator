@@ -67,7 +67,7 @@ define(['./module'], function (module) {
             };
 
             $scope.refreshQuery = function (queryContainer) {
-                var jsonQuery = queryContainer.prepareJsonQuery();
+                var jsonQuery = queryContainer.prepareJsonQuery(datamartId);
                 Restangular.one('datamarts', datamartId).customPOST(jsonQuery,'query_executions').then(function(result){
                     $scope.statistics.total = result.total;
                     $scope.statistics.hasEmail = result.total_with_email;
