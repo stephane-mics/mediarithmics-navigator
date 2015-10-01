@@ -1,6 +1,6 @@
 <div class="row">
 <div class="col-md-2">
-    {{condition.property_selector_name === 'CUSTOM_PROPERTY' ? condition.property_selector_parameters : condition.property_selector_name}}
+    {{condition.property_selector_name === 'CUSTOM_PROPERTY' || condition.property_selector_name === 'CUSTOM_EVENT' ? condition.property_selector_parameters : condition.property_selector_name}}
 </div>
 <div class="col-md-4">
     <select class="form-control input-sm" ng-model="condition.operator" ng-change="initConditionValue(condition)">
