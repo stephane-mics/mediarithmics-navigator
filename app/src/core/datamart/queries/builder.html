@@ -27,8 +27,8 @@
                                 <div class="panel-body">
                                     <div ng-repeat="selector in propertySelectors">
                                         <div x-lvl-draggable='true'>
-                                            <span ng-if="selector.indexed" id="{{selector.id}}" title="indexed property">{{selector.selector_name === 'CUSTOM_PROPERTY' ? selector.selector_parameters : selector.selector_name}} (i)</span>
-                                            <span ng-if="!selector.indexed" id="{{selector.id}}">{{selector.selector_name === 'CUSTOM_PROPERTY' ? selector.selector_parameters : selector.selector_name}}</span>
+                                            <span ng-if="selector.indexed" id="{{selector.id}}" title="indexed property">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}} (i)</span>
+                                            <span ng-if="!selector.indexed" id="{{selector.id}}">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}}</span>
                                         </div>
                                     </div>
                                     <hr/>
