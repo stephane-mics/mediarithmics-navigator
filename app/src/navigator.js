@@ -52,7 +52,11 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
     // Configure the application
     navigator.config(["$stateProvider", "$logProvider", "$urlRouterProvider",
       function ($stateProvider, $logProvider, $urlRouterProvider) {
+
         $stateProvider
+          .state('404', {
+            template: '<div>404 Not Found</div>'
+          })
           .state('login', {
             url: '/login',
             templateUrl: 'src/core/login/main.html',
@@ -96,7 +100,15 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
         $urlRouterProvider.when('/', '/home');
         $urlRouterProvider.when('', '/home');
         $urlRouterProvider.when('/home', '/campaigns/display');
+
+        $urlRouterProvider.otherwise(function($injector, $location){
+          var state = $injector.get('$state');
+          state.go('404');
+          return $location.path();
+        });
+
         $logProvider.debugEnabled(true);
+
       }
     ]);
 
