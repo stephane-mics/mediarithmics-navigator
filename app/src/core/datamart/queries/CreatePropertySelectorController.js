@@ -3,7 +3,7 @@ define(['./module'], function (module) {
     'use strict';
 
     module.controller('core/datamart/queries/CreatePropertySelectorController', [
-        '$scope', '$modalInstance', 'Restangular', 'core/common/auth/Session', 'core/datamart/common/Common',
+        '$scope', '$modalInstance', 'Restangular', 'core/common/auth/Session', 'core/datamart/queries/common/Common',
 
         function ($scope, $modalInstance, Restangular, Session, Common) {
 
