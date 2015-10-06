@@ -73,13 +73,18 @@ define(['./module'], function (module) {
                     $scope.statistics.hasEmail = result.total_with_email;
                     $scope.statistics.hasCookie = result.total_with_cookie;
                     $scope.statistics.executionTimeInMs = result.execution_time_in_ms;
+                    $scope.statsError = null;
                 }, function() {
+                    $scope.statistics.total = 0;
+                    $scope.statistics.hasEmail = 0;
+                    $scope.statistics.hasCookie = 0;
+                    $scope.statistics.executionTimeInMs = 0;
                     $scope.statsError = "There was an error executing query";
                 });
             };
 
             $scope.toHumanReadableDuration = function(duration) {
-                return moment.duration(duration,'ms').format("d [days] h [hours] m [minutes] s [seconds]");
+                return moment.duration(duration,'ms').format("d [days] h [hours] m [minutes] s [seconds] S [ms]");
             };
 
             /*$scope.save = function (queryContainer) {

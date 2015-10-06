@@ -1,6 +1,6 @@
 <div class="row">
 <div class="col-md-2">
-    {{condition.property_selector_name === 'CUSTOM_PROPERTY' ? condition.property_selector_parameters : condition.property_selector_name}}
+    {{condition.property_selector_name === 'CUSTOM_PROPERTY' || condition.property_selector_name === 'CUSTOM_EVENT' ? condition.property_selector_parameters : condition.property_selector_name}}
 </div>
 <div class="col-md-4">
     <select class="form-control input-sm" ng-model="condition.operator" ng-change="initConditionValue(condition)">
@@ -31,8 +31,8 @@
             <div ng-switch-when="BOOLEAN">
                 <div class="col-md-12">
                     <select class="form-control input-sm" ng-model="condition.value">
-                        <option value="TRUE">TRUE</option>
-                        <option value="FALSE">FALSE</option>
+                        <option value="true">TRUE</option>
+                        <option value="false">FALSE</option>
                     </select>
                 </div>
             </div>
