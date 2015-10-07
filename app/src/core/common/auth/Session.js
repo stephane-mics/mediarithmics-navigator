@@ -2,10 +2,12 @@ define(['./module'], function (module) {
   'use strict';
 
   module.factory('core/common/auth/Session', [
-    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants',  'core/configuration',
-    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, coreConfig) {
+    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants',  'core/configuration', 'core/common/auth/AuthenticationService',
+    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, coreConfig, AuthenticationService) {
       var service = {};
       service.initialized = false;
+
+      var expirationTimer = null;
 
       service.isInitialized = function () {
         return this.initialized;
@@ -18,6 +20,20 @@ define(['./module'], function (module) {
         Restangular.one('connected_user').get().then(function (userProfile) {
           $log.debug("Initialize session with user profile:", userProfile);
           self.userProfile = userProfile;
+
+          if (!expirationTimer && AuthenticationService.hasAccessToken() && !AuthenticationService.hasRefreshToken()) {
+            var expirationDate = AuthenticationService.getAccessTokenExpirationDate();
+            var waitTime = expirationDate.getTime() - new Date().getTime() + 1 * 1000;
+            expirationTimer = setTimeout(function () {
+              var isExpired = AuthenticationService.getAccessTokenExpirationDate().getTime() < new Date().getTime();
+              if (isExpired) {
+                $rootScope.$emit("global-message", {
+                  message: "Your session has expired, you should log in again."
+                });
+              }
+            }, waitTime);
+          }
+
           if (organisationId) {
             $log.debug("Fetching organisation : ", organisationId);
             service.updateWorkspace(organisationId).then(function () {
@@ -101,6 +117,11 @@ define(['./module'], function (module) {
         this.initialized = false;
         this.currentWorkspace = null;
         this.userProfile = null;
+
+        if (expirationTimer) {
+          clearTimeout(expirationTimer);
+          expirationTimer = null;
+        }
       };
 
       return service;

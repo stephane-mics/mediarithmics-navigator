@@ -41,6 +41,9 @@ define(['app-setup', 'angularAMD'],
           if (!options.publicUrl) {
 
             if (AuthenticationService.hasAccessToken()) {
+              if (AuthenticationService.hasRefreshToken()) {
+                AuthenticationService.setupTokenRefresher();
+              }
               if (!Session.isInitialized()) {
                 AuthenticationService.pushPendingPath($location.url());
                 if (toParams.organisation_id) {
