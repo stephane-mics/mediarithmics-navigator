@@ -8,7 +8,7 @@ define(['./module'], function (module) {
     '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'core/common/auth/Session',
     function($scope, $stateParams, Restangular, Common, Session) {
 
-      $scope.categoryUrl = '#/datamart/categories/' + $stateParams.catalogId ;
+      $scope.categoryUrl = '#/' + $stateParams.organisation_id + '/datamart/categories/' + $stateParams.catalogId ;
 
       // pass datamartId from other controller
       var datamartId =  Session.getCurrentDatamartId();
