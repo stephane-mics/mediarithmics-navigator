@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/adblock/ShowWarningController', [
-    '$scope', '$resource', '$rootScope',
-    function ($scope, $resource, $rootScope) {
+    '$scope', '$resource', '$rootScope', '$http',
+    function ($scope, $resource, $rootScope, $http) {
       $scope.messages = [];
 
       $rootScope.$on("global-message", function (evt, args) {
@@ -11,6 +11,27 @@ define(['./module'], function (module) {
           $scope.messages.push(args.message);
         });
       });
+
+      var currentVersion = null;
+      function checkVersion() {
+        $http.get("./version.txt").then(function (response) {
+          var newVersion = response.data;
+
+          if (!newVersion || response.status !== 200) {
+            return;
+          }
+
+          if(currentVersion && currentVersion !== newVersion) {
+            $scope.messages.push("A new version of Mediarithmics Navigator is available, you should reload this page.");
+          }
+
+          currentVersion = newVersion;
+
+          setTimeout(checkVersion, 10 * 1000);
+
+        } /* ignore errors for now */);
+      }
+      checkVersion();
 
       $resource("./src/core/adblock/display-ads/beacon.html").get({}, function () {
       }, function () {
