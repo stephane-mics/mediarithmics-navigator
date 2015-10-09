@@ -21,6 +21,8 @@ define([
   'bootstrap-tokenfield',
   'core/configuration',
   'core/adblock/index',
+  'core/adlayouts/index',
+  'core/bidOptimizer/index',
   'core/queries/index',
   'core/goals/index',
   'core/scenarios/index',
