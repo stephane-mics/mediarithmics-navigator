@@ -83,7 +83,7 @@ define(['./module'], function (module) {
 
       $scope.changeCatalog =  function() {
         if($scope.catalog) {
-          $location.path('/datamart/categories/'+$scope.catalog.$catalog_id);
+          $location.path('/' + $stateParams.organisation_id + '/datamart/categories/'+$scope.catalog.$catalog_id);
         }
       };
 

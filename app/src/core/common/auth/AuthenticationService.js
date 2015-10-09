@@ -6,13 +6,16 @@ define(['./module'], function (module) {
     '$q', '$log', '$document', 'Restangular', "jquery",
     function($q, $log, $document, Restangular, $) {
 
+      var tokenRefresherTimer = null;
+
       var service = {};
       service.pendingPath = '/home';
 
       /* access token */
-      service.setAccessToken = function(accessToken) {
+      service.setAccessToken = function(accessToken, expiresIn) {
         // set the token for REST API calls
         $.cookie("access_token", accessToken);
+        $.cookie("access_token_expiration_date", new Date().getTime() + expiresIn * 1000);
       };
 
       service.getAccessToken = function() {
@@ -21,13 +24,22 @@ define(['./module'], function (module) {
         return $.cookie("access_token");
       };
 
+      service.getAccessTokenExpirationDate = function () {
+        var date = new Date(0);
+        try {
+          date = new Date(parseInt($.cookie("access_token_expiration_date")));
+        } catch (e) {}
+
+        return date;
+      };
+
       service.resetAccessToken = function() {
         $.removeCookie("access_token");
       };
 
       service.hasAccessToken = function() {
         var accessToken = $.cookie("access_token");
-        if (typeof(accessToken) !== "undefined") {
+        if (accessToken) {
           Restangular.setDefaultHeaders({Authorization: accessToken});
           return true;
         } else {
@@ -39,6 +51,8 @@ define(['./module'], function (module) {
       service.setRefreshToken = function(refreshToken, expires) {
         // store the refresh token in a cookie
         $.cookie("refresh_token", refreshToken, {expires: expires});
+        service.resetTokenRefresher();
+        service.setupTokenRefresher();
       };
 
       service.getRefreshToken = function() {
@@ -49,15 +63,35 @@ define(['./module'], function (module) {
 
       service.resetRefreshToken = function() {
         $.removeCookie("refresh_token");
+        this.resetTokenRefresher();
       };
 
       service.hasRefreshToken = function() {
         var refreshToken = $.cookie("refresh_token");
-        if (typeof(refreshToken) !== "undefined") {
-          return true;
-        } else {
-          return false;
+        return !!refreshToken;
+      };
+
+      service.setupTokenRefresher = function () {
+        if (tokenRefresherTimer) {
+          return;
         }
+
+        var expirationDate = service.getAccessTokenExpirationDate();
+
+        var waitTime = (expirationDate.getTime() - new Date().getTime()) || 10 * 1000;
+        $log.info("The access token will expire at", expirationDate, "scheduling a refresh in " + waitTime + " ms.");
+        tokenRefresherTimer = setTimeout(function () {
+          $log.info("The access token will soon expire, refreshing.");
+          service.createAccessToken();
+        }, waitTime);
+      };
+
+      service.resetTokenRefresher = function () {
+        if (tokenRefresherTimer) {
+          $log.info("Reseting the token refresher.");
+          clearTimeout(tokenRefresherTimer);
+        }
+        tokenRefresherTimer = null;
       };
 
       /* pending path */
@@ -95,19 +129,17 @@ define(['./module'], function (module) {
           return $q.reject("No available credentials");
         }
 
-        $log.debug("createAccessToken : ", post);
-
         var deferred = $q.defer();
 
         Restangular.all("authentication/access_tokens").post(post)
         .then(function (data) {
           // success
           var accessToken = data.access_token;
-          self.setAccessToken(accessToken);
+          self.setAccessToken(accessToken, data.expires_in);
           Restangular.setDefaultHeaders({Authorization: accessToken});
 
           var newRefreshToken = data.refresh_token;
-          if (typeof(newRefreshToken) !== "undefined") {
+          if (newRefreshToken) {
 
             // store the refresh token during 7 days
             self.setRefreshToken(newRefreshToken, 7);
@@ -149,6 +181,7 @@ define(['./module'], function (module) {
           // failure
           self.resetAccessToken();
           self.resetRefreshToken();
+          self.resetTokenRefresher();
           Restangular.setDefaultHeaders({});
 
           deferred.reject();
@@ -165,6 +198,7 @@ define(['./module'], function (module) {
         service.resetPendingPath();
         service.resetAccessToken();
         service.resetRefreshToken();
+        service.resetTokenRefresher();
       };
 
       return service;

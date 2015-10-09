@@ -526,6 +526,11 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('versionFile', function() {
+    var path = require("path");
+    grunt.file.write(path.join(grunt.config('yeoman.dist'), "version.txt"), version);
+  });
+
   grunt.registerMultiTask('genRequireJsFiles', function () {
     var fs = require('fs');
     var path = require('path');
@@ -614,6 +619,7 @@ module.exports = function (grunt) {
     'usemin',
     'copy:generated_iab',
     'htmlmin',
+    'versionFile',
     'compress'
   ]);
 

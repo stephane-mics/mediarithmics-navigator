@@ -21,6 +21,9 @@ define(['./module'], function (module) {
                     scope.itemUrl = function (catalogId, itemId) {
                         return '#/' + scope.organisationId + '/datamart/items/' + catalogId + '/' + itemId;
                     };
+                    scope.catalogUrl = function (catalogId) {
+                        return "#/" + scope.organisationId + "/datamart/categories/" + catalogId;
+                    };
 
                     // Transforms a duration to human a readable 'X days Y hours Z minutes' format
                     scope.toHumanReadableDuration = function(duration) {

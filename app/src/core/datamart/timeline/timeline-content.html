@@ -38,7 +38,16 @@
                         <strong>Item view</strong> at {{ event.$ts | date : 'mediumTime' }}
                         <ul ng-show="event.$properties">
                             <li ng-repeat="item in event.$properties.$items">
-                                <a href="{{ itemUrl(item.$catalog_id, item.$id) }}">{{item.$id}}</a> in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>
+                              <a href="{{ itemUrl(item.$catalog_id, item.$id) }}">{{item.$id}}</a> in catalog <a href="{{ catalogUrl(item.$catalog_id) }}">{{item.$catalog_id}}</a>
+                            </li>
+                        </ul>
+                      </span>
+
+                      <span ng-if="event.$event_name == '$item_list_view'">
+                        <strong>Item list view</strong> at {{ event.$ts | date : 'mediumTime' }}
+                        <ul ng-show="event.$properties">
+                            <li ng-repeat="item in event.$properties.$items">
+                              <a href="{{ itemUrl(item.$catalog_id, item.$id) }}">{{item.$id}}</a> in catalog <a href="{{ catalogUrl(item.$catalog_id) }}">{{item.$catalog_id}}</a>
                             </li>
                         </ul>
                       </span>
@@ -49,7 +58,7 @@
                         <ul ng-show="event.$properties">
                             <li ng-repeat="item in event.$properties.$items">
                                 <span class="badge" style="float: right" >{{ item.$qty }}</span>
-                                <a href="{{ itemUrl(item.$catalog_id, item.$id) }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>)
+                                <a href="{{ itemUrl(item.$catalog_id, item.$id) }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="{{ catalogUrl(item.$catalog_id) }}">{{item.$catalog_id}}</a>)
                             </li>
                         </ul>
                       </span>
@@ -61,13 +70,13 @@
                         <ul ng-show="event.$properties">
                             <span class="badge" style="float: right" >{{ item.$qty }}</span>
                             <li ng-repeat="item in event.$properties.$items">
-                                <a href="{{ itemUrl(item.$catalog_id, item.$id) }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="#/datamart/categories/{{item.$catalog_id}}">{{item.$catalog_id}}</a>)
+                              <a href="{{ itemUrl(item.$catalog_id, item.$id) }}">{{item.$id}}</a> (unit price : {{item.$price}} in catalog <a href="{{ catalogUrl(item.$catalog_id) }}">{{item.$catalog_id}}</a>)
                             </li>
 
                         </ul>
                       </span>
 
-                      <span ng-if="event.$event_name != '$item_view' && event.$event_name != '$basket_view' && event.$event_name != '$transaction_confirmed'">
+                      <span ng-if="event.$event_name != '$item_view' && event.$event_name != '$basket_view' && event.$event_name != '$transaction_confirmed' && event.$event_name != '$item_list_view'">
                         <strong>{{ event.$event_name }}</strong> at {{ event.$ts | date : 'mediumTime' }}
                         <ul ng-show="event.$properties">
                             <li ng-repeat="key in getMapKeys(event.$properties)">
