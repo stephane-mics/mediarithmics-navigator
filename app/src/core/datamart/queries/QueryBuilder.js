@@ -19,7 +19,11 @@ define(['./module'], function (module) {
                 Restangular.one('datamarts', datamartId).all('property_selectors').getList().then(function (result) {
                     $scope.propertySelectors = result;
                     $scope.selectorFamilies = lodash.groupBy(result, function (selector) {
-                        return selector.selector_family;
+                        if (selector.selector_family === 'EVENTS'){
+                            return selector.family_parameters;
+                        }else{
+                            return selector.selector_family;
+                        }
                     });
                 });
             };
