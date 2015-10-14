@@ -6,8 +6,8 @@ define(['./module'], function (module) {
     function ($stateProvider) {
       $stateProvider
         // List ad layouts
-        .state('ad-layouts/list', {
-          url: '/{organisation_id}/library/adLayouts',
+        .state('adlayouts/list', {
+          url: '/{organisation_id}/library/adlayouts',
           templateUrl: 'src/core/adlayouts/view.all.html',
           data: {
             category: 'library',
@@ -16,13 +16,17 @@ define(['./module'], function (module) {
               selected: 'ad_layouts'
             }
           }
+        })
+        .state('library/adlayouts/new', {
+          url: '/{organisation_id}/library/adlayouts/new',
+          templateUrl: 'src/core/adlayouts/edit.one.html',
+          data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
+        })
+        .state('library/adlayouts/edit', {
+          url: '/{organisation_id}/library/adlayouts/:adlayout_id',
+          templateUrl: 'src/core/adlayouts/edit.one.html',
+          data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         });
-        // Create ad layout
-        //.state('ad-layouts/edit', {
-        //  url: '/{organisation_id}/library/adLayouts/:id',
-        //  templateUrl: 'src/core/adlayouts/edit.one.html',
-        //  data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
-        //});
     }
   ]);
 });

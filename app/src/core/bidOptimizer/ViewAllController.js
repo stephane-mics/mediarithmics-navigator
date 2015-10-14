@@ -6,7 +6,7 @@ define(['./module'], function (module) {
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal', '$state', '$stateParams',
     function($scope, Restangular, Session, $location, $modal, $state, $stateParams) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
-      $scope.bidOptimizers = Restangular.all("bid_optimizers").getList({
+      $scope.adLayouts = Restangular.all("bid_optimizers").getList({
         organisation_id : organisationId
       }).$object;
       $scope.organisationId = organisationId;

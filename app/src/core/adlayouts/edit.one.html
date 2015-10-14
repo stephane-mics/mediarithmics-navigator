@@ -7,7 +7,45 @@
   <form ng-submit="next()" class="mcs-default-edit-content mcs-full-page-form">
 
     <div class="mcs-default-heading">
-      <h1>Edit Ad Layout</h1>
+      <h1 ng-if="isCreationMode">Create Ad Layout</h1>
+      <h1 ng-if="!isCreationMode">Edit Ad Layout</h1>
+    </div>
+
+    <div class="row">
+      <!-- Name -->
+      <div class="col-md-4">
+        <div mcs-form-group="full" label-for="adLayoutName" label-text="Name">
+          <input required class="input-lg" ng-model="adLayout.name" type="text" id="adLayoutName">
+        </div>
+      </div>
+
+      <!-- Format -->
+      <div class="col-md-2">
+        <div mcs-form-group="full" label-for="format" label-text="Compatible Format">
+          <select ng-model="adLayout.format" ng-options="adSize for adSize in adSizes" id="format"></select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Ad Renderer -->
+      <div class="col-md-2">
+        <div mcs-form-group="full" label-for="adRenderer" label-text="Ad Renderer">
+          <select ng-model="adLayout.adRenderer" ng-options="key for (key, value) in adRenderers" id="adRenderer"></select>
+        </div>
+      </div>
+
+      <!-- Ad Renderer Version -->
+      <div class="col-md-2" ng-show="adRendererVersions">
+        <div mcs-form-group="full" label-for="adRendererVersion" label-text="Ad Renderer Version Id">
+          <select ng-model="adLayout.adRendererVersion" ng-options="adRendererVersion for adRendererVersion in adRendererVersions" id="adRendererVersion"></select>
+        </div>
+      </div>
+    </div>
+
+    <div mics-pl-upload="pluploadOptions" class="btn-group">
+      <a class="browse-button mics-btn mics-btn-add" ng-click="uploadTemplate()">Upload Template</a>
+      <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
     </div>
 
     <div class="mcs-actions-group">
@@ -16,4 +54,3 @@
     </div>
   </form>
 </div>
-

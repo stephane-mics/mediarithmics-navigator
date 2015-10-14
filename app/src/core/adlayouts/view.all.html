@@ -1,4 +1,4 @@
-<div ng-controller="core/adlayouts/EditAllController" class="mcs-default-container">
+<div ng-controller="core/adlayouts/ViewAllController" class="mcs-default-container">
   <div class="mcs-default-content">
     <div class="mcs-default-heading">
       <h1>Ad Layouts</h1>
@@ -6,9 +6,9 @@
     <div class="mics-table-toolbar">
       <div class="col-md-6">
         <div class="dropdown">
-          <button class="mics-btn mics-btn-add" type="button" ng-click="createLayout()">
-            New Layout
-          </button>
+          <a href="#/{{organisationId}}/library/adlayouts/new" class="mics-btn mics-btn-add">
+            New Ad Layout
+          </a>
         </div>
       </div>
     </div>
@@ -20,8 +20,8 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="layout in layouts">
-        <td>{{layout.name}}</td>
+      <tr ng-repeat="adLayout in adLayouts">
+        <td>{{adLayout.name}}</td>
         <td class="actions">
           <a class="mics-btn mics-btn-action" ng-click="editLayout(layout, $event)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteLayout(layout, $event)">Delete</a>
