@@ -47,6 +47,7 @@ define(['./module'], function (module) {
                     property_selector_family: propertySelector.selector_family,
                     property_selector_id: propertySelector.id,
                     property_selector_name: propertySelector.selector_name,
+                    property_selector_family_parameter: propertySelector.family_parameters,
                     property_selector_parameters: propertySelector.selector_parameters,
                     property_selector_value_type: propertySelector.value_type
                 };
