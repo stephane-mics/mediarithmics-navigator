@@ -4,9 +4,9 @@ define(['./module'], function (module) {
 
     module.controller('core/datamart/queries/QueryBuilder', [
         '$scope', '$stateParams', 'Restangular', '$q', 'lodash', 'core/common/auth/Session',
-        'core/datamart/queries/common/Common', '$modal', "async", 'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment',
+        'core/datamart/queries/common/Common', '$modal', "async", 'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment', '$rootScope',
 
-        function ($scope, $stateParams, Restangular, $q, lodash, Session, Common, $modal, async, promiseUtils, $log, QueryContainer, moment) {
+        function ($scope, $stateParams, Restangular, $q, lodash, Session, Common, $modal, async, promiseUtils, $log, QueryContainer, moment, $rootScope) {
 
             //dataTransfer hack : The jQuery event object does not have a dataTransfer property... true, but one can try:
             angular.element.event.props.push('dataTransfer');
@@ -41,33 +41,58 @@ define(['./module'], function (module) {
 
             $scope.queryContainer = pQueryContainer;
 
-                $scope.addGroup = function (queryContainer) {
-                queryContainer.addConditionGroup();
+            $scope.addGroup = function (queryContainer) {
+                queryContainer.addGroupContainer();
             };
 
             $scope.removeGroup = function (queryContainer,conditionGroupContainer) {
-                queryContainer.removeConditionGroup(conditionGroupContainer);
+                queryContainer.removeGroupContainer(conditionGroupContainer);
             };
 
             $scope.toggleExclude = function (conditionGroupContainer) {
                 conditionGroupContainer.toggleExclude();
             };
 
-            $scope.removeCond = function (conditionGroupContainer,condition) {
-                conditionGroupContainer.removeCondition(condition);
+            $scope.removeCond = function (elementContainer,condition) {
+                elementContainer.removeCondition(condition);
             };
 
-            //called when an selector is drap&drop
-            $scope.dropped = function (dragEl, dropEl, conditionGroupContainer) {
+            $scope.removeElem = function (conditionGroupContainer,elementContainer) {
+                conditionGroupContainer.removeElementContainer(elementContainer);
+            };
+
+            $rootScope.$on("LVL-DRAG-START", function () {
+                $scope.$apply(function () {
+                    $scope.onGoingDrag = true;
+                });
+            });
+
+            $rootScope.$on("LVL-DRAG-END", function () {
+                $scope.$apply(function () {
+                    $scope.onGoingDrag = false;
+                });
+            });
+
+            $scope.addElement = function (dragEl, dropEl, conditionGroupContainer) {
 
                 var drag = angular.element(document.getElementById(dragEl));
                 var dragPropertySelectorId = drag.children('span').attr('id');
                 var propertySelector = getDragSelector(dragPropertySelectorId);
 
                 $scope.$apply(function () {
-                    conditionGroupContainer.createCondition(propertySelector);
+                    conditionGroupContainer.createElementWithCondition(propertySelector);
                 });
+            };
 
+            $scope.addCondition = function (dragEl, dropEl, elementContainer) {
+
+                var drag = angular.element(document.getElementById(dragEl));
+                var dragPropertySelectorId = drag.children('span').attr('id');
+                var propertySelector = getDragSelector(dragPropertySelectorId);
+
+                $scope.$apply(function () {
+                    elementContainer.createCondition(propertySelector);
+                });
             };
 
             $scope.refreshQuery = function (queryContainer) {
