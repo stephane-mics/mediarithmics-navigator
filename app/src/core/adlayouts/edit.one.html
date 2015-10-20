@@ -43,14 +43,13 @@
       </div>
     </div>
 
-    <div mics-pl-upload="pluploadOptions" class="btn-group">
-      <a class="browse-button mics-btn mics-btn-add" ng-click="uploadTemplate()">Upload Template</a>
-      <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
-    </div>
-
     <div class="mcs-actions-group">
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
-      <button class="mics-btn mics-btn-finish">Done</button>
+      <div mics-pl-upload="pluploadOptions" automatic-upload="false" class="btn-group">
+        <a class="browse-button mics-btn mics-btn-add">Select Template</a>
+        <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
+        <button ng-click="done()" class="upload-button mics-btn mics-btn-finish">Done</button>
+      </div>
     </div>
   </form>
 </div>

@@ -8,11 +8,17 @@ define(['./module', "plupload"], function (module) {
         scope: {
           uploadedFiles: '=',
           multiSelection: '=',
-          micsPlUpload: '='
+          micsPlUpload: '=',
+          automaticUpload: '=',
+          name: '='
         },
-        link: function ($scope, element, attributes) {
-          $scope.uploadError = null;
+        link: function (scope, element, attributes) {
+          scope.uploadError = null;
           var rootId = attributes.id;
+          if (scope.automaticUpload.length === 0) {
+            scope.automaticUpload = true;
+          }
+          console.log("AU:" + scope.automaticUpload);
 
           /**
            * Plupload Options
@@ -25,6 +31,21 @@ define(['./module', "plupload"], function (module) {
               Authorization: AuthenticationService.getAccessToken()
             }
           };
+
+          // Find upload button
+          var uploadButton = element.find('.upload-button');
+          if (uploadButton.length === 1 && !scope.automaticUpload) {
+            uploadButton.bind('click', function () {
+              if (name.length === 0) {
+                $log.info("Needs a name");
+              } else {
+                $log.info("Uploading selected files");
+                uploader.start();
+              }
+            });
+          } else if (!scope.automaticUpload) {
+            throw new Error("Plupload: Automatic upload was disabled but no .upload-button was found.");
+          }
 
           // Find and setup browse button
           var browseButton = element.find('.browse-button');
@@ -46,16 +67,17 @@ define(['./module', "plupload"], function (module) {
           }
 
           // Merge options and default options
-          var options = angular.extend({}, defaultOptions, $scope.micsPlUpload);
+          var options = angular.extend({}, defaultOptions, scope.micsPlUpload);
           console.log("Plupload options: ", options);
+
 
           /**
            * Private Methods
            */
 
           function handleError(uploader, err) {
-            $scope.uploadError = err.message;
-            $scope.$apply();
+            scope.uploadError = err.message;
+            scope.$apply();
             $log.warn('Error :', err);
           }
 
@@ -87,18 +109,18 @@ define(['./module', "plupload"], function (module) {
           }
 
           function handleFilesAdded(uploader, files) {
-            $scope.uploadError = null;
-            //$scope.$apply();
-
+            scope.uploadError = null;
             $log.debug("Files Added: ", files);
-            uploader.start();
+            if (scope.automaticUpload) {
+              uploader.start();
+            }
           }
 
           function handleFileUploaded(uploader, file, response) {
             var responseObj = $.parseJSON(response.response);
-            if (responseObj.status === "ok" && responseObj.data && $scope.uploadedFiles) {
-              $scope.$apply(function () {
-                $scope.uploadedFiles.push(responseObj.data);
+            if (responseObj.status === "ok" && responseObj.data && scope.uploadedFiles) {
+              scope.$apply(function () {
+                scope.uploadedFiles.push(responseObj.data);
               });
             }
           }
@@ -129,7 +151,7 @@ define(['./module', "plupload"], function (module) {
             uploader.refresh();
           }, 500);
 
-          $scope.$on('$destroy', function() {
+          scope.$on('$destroy', function () {
             $log.debug("Stopping Plupload refresh");
             clearInterval(refreshInterval);
             uploader.destroy();

@@ -12,14 +12,6 @@ define(['./module'], function (module) {
         return size.format;
       });
 
-//curl -X PUT http://api.mediarithmics.com/v1/data_file/data\?uri\=mics%3A%2F%2Fdata_file%2Ftenants%2F1029%2Fads_templates%2Fpmb_pretargeting_160x600_septembre.ssp
-// -H  "Authorization: gkqKkunjyV6AXZKvnnTjovGE6NrpTy7A"  -H "Content-Type: application/json"
-// --data @dist/ssp_prod/pmb_pretargeting_160x600.ssp -v
-
-      //console.log("here: ",  Restangular.one('data_file/data').customPUT({'uri': 'hello'}).getRestangularUrl());
-
-
-
       Restangular.all("plugins").getList({plugin_type: "DISPLAY_AD_RENDERER"}).then(function (renderers) {
         for (var i = 0; i < renderers.length; ++i) {
           $scope.adRenderers[renderers[i].artifact_id] = renderers[i].id;
@@ -45,8 +37,8 @@ define(['./module'], function (module) {
       });
 
       $scope.pluploadOptions = {
-        multi_selection: true,
-        url: configuration.WS_URL + "/data_file/data?uri=" + encodeURIComponent("mics://data_file/tenants/" + organisationId + "/ads_templates/"),
+        url: configuration.WS_URL + "/ad_templates?organisationId=" + organisationId,
+        chunks_size: '100kb',
         filters: {
           mime_types: [
             {title: "Ad Layout Templates", extensions: "ssp"}
@@ -55,13 +47,14 @@ define(['./module'], function (module) {
         }
       };
 
-      $scope.uploadTemplate = function () {
-
+      $scope.done = function () {
       };
 
       $scope.cancel = function () {
         $location.path('/' + organisationId + "/library/adlayouts");
       };
     }
-  ]);
-});
+  ])
+  ;
+})
+;
