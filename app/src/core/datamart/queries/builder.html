@@ -10,31 +10,31 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <div id="criterias">
-                    <h4>List of criteria</h4>
+                <h4>List of criteria</h4>
 
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default" ng-repeat="(family,propertySelectors) in selectorFamilies">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       data-target="#{{family}}">
-                                        {{family}}
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="{{family}}" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div ng-repeat="selector in propertySelectors">
-                                        <div x-lvl-draggable='true'>
-                                            <span ng-if="selector.indexed" id="{{selector.id}}" title="indexed property">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}} (i)</span>
-                                            <span ng-if="!selector.indexed" id="{{selector.id}}">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}}</span>
-                                        </div>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default" ng-repeat="(family,propertySelectors) in selectorFamilies">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   data-target="#{{family}}">
+                                    {{family}}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="{{family}}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div ng-repeat="selector in propertySelectors">
+                                    <div x-lvl-draggable='true'>
+                                        <span ng-if="selector.indexed" id="{{selector.id}}" title="indexed property">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}} (i)</span>
+                                        <span ng-if="!selector.indexed" id="{{selector.id}}">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}}</span>
                                     </div>
-                                    <hr/>
-                                    <div>
-                                        <button type="button" class="btn btn-link" ng-click="addPropertySelector(family)">Add custom property</button>
-                                    </div>
+                                </div>
+                                <hr/>
+                                <div>
+                                    <button type="button" class="btn btn-link" ng-click="addPropertySelector(family)">
+                                        Add custom property
+                                    </button>
                                 </div>
                             </div>
                         </div>
