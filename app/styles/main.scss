@@ -1913,9 +1913,12 @@ input.ng-invalid {
 }
 // -------------------- Draggable element : used for query ui ----------------------------
 
-.lvl-target {
-  background-color: #ddd;
-  opacity: .5;
+.ongoing-drag-decorate {
+  .droppable-zone {
+    height: 25px;
+    background: #f5f5f5;
+    border: 2px dashed #ddd;
+  }
 }
 
 [draggable] {

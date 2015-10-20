@@ -10,36 +10,36 @@
         </div>
         <div class="row">
             <div class="col-md-3">
+                <h4>List of criteria</h4>
 
-                    <h4>List of criteria</h4>
-
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default" ng-repeat="(family,propertySelectors) in selectorFamilies">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       data-target="#{{family}}">
-                                        {{family}}
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="{{family}}" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div ng-repeat="selector in propertySelectors">
-                                        <div x-lvl-draggable='true'>
-                                            <span ng-if="selector.indexed" id="{{selector.id}}" title="indexed property">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}} (i)</span>
-                                            <span ng-if="!selector.indexed" id="{{selector.id}}">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}}</span>
-                                        </div>
+                <div class="panel-group" id="accordion">
+                    <div class="panel panel-default" ng-repeat="(family,propertySelectors) in selectorFamilies">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion"
+                                   data-target="#{{family}}">
+                                    {{family}}
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="{{family}}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div ng-repeat="selector in propertySelectors">
+                                    <div x-lvl-draggable='true'>
+                                        <span ng-if="selector.indexed" id="{{selector.id}}" title="indexed property">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}} (i)</span>
+                                        <span ng-if="!selector.indexed" id="{{selector.id}}">{{selector.selector_name === 'CUSTOM_PROPERTY' || selector.selector_name === 'CUSTOM_EVENT' ? selector.selector_parameters : selector.selector_name}}</span>
                                     </div>
-                                    <hr/>
-                                    <div>
-                                        <button type="button" class="btn btn-link" ng-click="addPropertySelector(family)">Add custom property</button>
-                                    </div>
+                                </div>
+                                <hr/>
+                                <div>
+                                    <button type="button" class="btn btn-link" ng-click="addPropertySelector(family)">
+                                        Add custom property
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                </div>
             </div>
             <div class="col-md-9">
                 <div class="row">
@@ -86,38 +86,54 @@
                         </div>
                         <div class="tab-content">
                             <div class="tab-pane active" style="margin-top: 15px">
-                                <div ng-repeat="(i,conditionGroupContainer) in queryContainer.conditionGroupContainers">
-                                    <div ng-class="{'panel panel-success':!conditionGroupContainer.value.excluded, 'panel panel-danger':conditionGroupContainer.value.excluded}">
+                                <div ng-repeat="(i,groupContainer) in queryContainer.groupContainers">
+                                    <div ng-class="{'panel panel-success':!groupContainer.value.excluded, 'panel panel-danger':groupContainer.value.excluded}">
                                         <div class="panel-heading">
                                             <div class="pull-right">
                                                 <button type="button" class="btn btn-default btn-xs" aria-label="remove"
-                                                        ng-click="removeGroup(queryContainer,conditionGroupContainer)">
+                                                        ng-click="removeGroup(queryContainer,groupContainer)">
                                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                                 </button>
                                             </div>
                                             Group #{{i+1}}
-                                            <span ng-if="!conditionGroupContainer.value.excluded" class="glyphicon glyphicon-ok" aria-hidden="true" title="Include group" ng-click="toggleExclude(conditionGroupContainer)"></span>
-                                            <span ng-if="conditionGroupContainer.value.excluded" class="glyphicon glyphicon-remove-circle" aria-hidden="true" title="Exclude group" ng-click="toggleExclude(conditionGroupContainer)"></span>
+                                            <span ng-if="!groupContainer.value.excluded" class="glyphicon glyphicon-ok" aria-hidden="true" title="Include group" ng-click="toggleExclude(groupContainer)"></span>
+                                            <span ng-if="groupContainer.value.excluded" class="glyphicon glyphicon-remove-circle" aria-hidden="true" title="Exclude group" ng-click="toggleExclude(groupContainer)"></span>
                                         </div>
-                                        <div class="panel-body" x-lvl-drop-target='true'
-                                             x-on-drop='dropped(dragEl, dropEl , conditionGroupContainer)'>
-                                            <div id="{{conditionGroupContainer.id}}" ng-repeat=" (j,condition) in conditionGroupContainer.conditions">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-10">
-                                                            <mcs-query-condition
-                                                                    condition="condition"></mcs-query-condition>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                        <button type="button" class="btn btn-default pull-right"
-                                                                aria-label="remove"
-                                                                ng-click="removeCond(conditionGroupContainer, condition)">
+                                        <div class="panel-body"  ng-class="{'ongoing-drag-decorate':onGoingDrag}" >
+                                            <div id="group {{groupContainer.id}}" ng-repeat="(j,elementContainer) in groupContainer.elementContainers">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <div class="pull-right">
+                                                            <button type="button" class="btn btn-default btn-xs" aria-label="remove"
+                                                                    ng-click="removeElem(groupContainer,elementContainer)">
                                                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                                        </button>
+                                                            </button>
+                                                        </div>
+                                                        {{elementContainer.getName()}}
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div ng-repeat="(k,condition) in elementContainer.conditions">
+                                                            <div class="form-group">
+                                                                <div class="row">
+                                                                    <div class="col-md-10">
+                                                                        <mcs-query-condition
+                                                                                condition="condition"></mcs-query-condition>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <button type="button" class="btn btn-default pull-right"
+                                                                                aria-label="remove"
+                                                                                ng-click="removeCond(elementContainer, condition)">
+                                                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
+                                                        </div>
+                                                        <div class="droppable-zone" x-lvl-drop-target='true' x-on-drop='addCondition(dragEl, dropEl , elementContainer)'></div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="droppable-zone" x-lvl-drop-target='true' x-on-drop='addElement(dragEl, dropEl , groupContainer)'></div>
                                         </div>
                                     </div>
                                 </div>

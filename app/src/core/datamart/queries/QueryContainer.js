@@ -6,7 +6,60 @@ define(['./module'], function (module) {
 
         function (Restangular, $q, lodash, Session, async, promiseUtils, $log) {
 
-            var ConditionGroupContainer = function ConditionGroupContainer(queryContainer, value) {
+            var ElementContainer = function ElementContainer(value) {
+                if (value) {
+                    this.value = value;
+                    this.id = value.id;
+                }
+
+                this.conditions = [];
+                this.removedConditions = [];
+
+            };
+
+            ElementContainer.prototype.getName = function () {
+                if (this.conditions[0].property_selector_family === 'EVENTS'){
+                    return this.conditions[0].property_selector_family_parameter;
+                }else{
+                    return this.conditions[0].property_selector_family;
+                }
+            };
+
+            ElementContainer.prototype.createCondition = function (propertySelector) {
+
+                var condition = {
+                    property_selector_family: propertySelector.selector_family,
+                    property_selector_id: propertySelector.id,
+                    property_selector_name: propertySelector.selector_name,
+                    property_selector_family_parameter: propertySelector.family_parameters,
+                    property_selector_parameters: propertySelector.selector_parameters,
+                    property_selector_value_type: propertySelector.value_type
+                };
+
+                this.conditions.push(condition);
+            };
+
+            ElementContainer.prototype.removeCondition = function (condition) {
+                if (condition.id) {
+                    this.removedConditions.push(condition);
+                }
+                var i = this.conditions.indexOf(condition);
+                this.conditions.splice(i, 1);
+            };
+
+            ElementContainer.prototype.buildInfoResource = function () {
+                return {conditions:Restangular.stripRestangular(this.conditions)};
+            };
+
+            /*ElementContainer.prototype.loadConditions = function () {
+                var self = this;
+                return this.value.all('conditions').getList().then(function (conditions) {
+                    self.conditions = conditions;
+                    return self.conditions;
+                });
+            };*/
+
+            var GroupContainer = function GroupContainer(queryContainer, value) {
                 if (value) {
                     this.value = value;
                     this.id = value.id;
@@ -16,34 +69,41 @@ define(['./module'], function (module) {
 
                 this.queryContainer = queryContainer;
 
-                this.conditions = [];
-                this.removedConditions = [];
+                this.elementContainers = [];
+                this.removedElementContainers = [];
             };
 
-            ConditionGroupContainer.prototype.toggleExclude = function () {
+            GroupContainer.prototype.toggleExclude = function () {
                 this.value.excluded = !this.value.excluded;
             };
 
-            ConditionGroupContainer.prototype.loadConditions = function () {
+           /* GroupContainer.prototype.loadElements = function () {
                 var self = this;
-                return this.value.all('conditions').getList().then(function (conditions) {
-                    self.conditions = conditions;
-                    return self.conditions;
+                return this.value.all('elements').getList().then(function (elements) {
+                    return lodash.map(elements, function(element){
+                        var elementContainer = new ElementContainer(element)
+                        var conditionsP = elementContainer.loadConditions();
+                        self.elementContainers.push(elementContainer);
+
+                        return $q.all(conditionsP).then(function () {
+                            return self;
+                        });
+                    });
+
                 });
-            };
+            };*/
 
-            ConditionGroupContainer.prototype.removeCondition = function (condition) {
-                if (condition.id) {
-                    this.removedConditions.push(condition);
+            GroupContainer.prototype.removeElementContainer = function (element) {
+                if (element.id) {
+                    this.removedElementContainers.push(element);
                 }
-                var i = this.conditions.indexOf(condition);
-                this.conditions.splice(i, 1);
+                var i = this.elementContainers.indexOf(element);
+                this.elementContainers.splice(i, 1);
             };
 
-            ConditionGroupContainer.prototype.createCondition = function (propertySelector) {
+            GroupContainer.prototype.createElementWithCondition = function (propertySelector) {
 
                 var condition = {
-                    condition_group_id: this.id,
                     property_selector_family: propertySelector.selector_family,
                     property_selector_id: propertySelector.id,
                     property_selector_name: propertySelector.selector_name,
@@ -52,19 +112,20 @@ define(['./module'], function (module) {
                     property_selector_value_type: propertySelector.value_type
                 };
 
-                if (conditionIsAbsent(this.conditions, condition)) {
-                    this.conditions.push(condition);
-                }
+                var elementContainer = new ElementContainer();
+                elementContainer.conditions.push(condition);
+
+                this.elementContainers.push(elementContainer);
             };
 
-            var conditionIsAbsent = function (conditions, condition) {
+            /*var conditionIsAbsent = function (conditions, condition) {
                 var found = lodash.find(conditions, function (cond) {
                     return cond.property_selector_id === condition.property_selector_id;
                 });
                 return !found;
-            };
+            };*/
 
-            ConditionGroupContainer.prototype.saveTasks = function () {
+            /*GroupContainer.prototype.saveTasks = function () {
                 var addConditions = lodash.filter(this.conditions, function (condition) {
                     return !condition.id;
                 });
@@ -75,15 +136,15 @@ define(['./module'], function (module) {
 
                 var self = this;
                 var pAddConditionTasks = lodash.map(addConditions, function (condition) {
-                    return ConditionGroupContainer.addConditionTask(self, condition);
+                    return GroupContainer.addConditionTask(self, condition);
                 });
 
                 var pUpdateConditionTasks = lodash.map(updateConditions, function (condition) {
-                    return ConditionGroupContainer.updateConditionTask(condition);
+                    return GroupContainer.updateConditionTask(condition);
                 });
 
                 var pDeleteConditionTasks = lodash.map(this.removedConditions, function (condition) {
-                    return ConditionGroupContainer.deleteConditionTask(condition);
+                    return GroupContainer.deleteConditionTask(condition);
                 });
 
                 var pList = [];
@@ -92,9 +153,9 @@ define(['./module'], function (module) {
                 pList = pList.concat(pAddConditionTasks);
 
                 return pList;
-            };
+            };*/
 
-            ConditionGroupContainer.updateConditionTask = function (condition) {
+           /* GroupContainer.updateConditionTask = function (condition) {
                 return function (callback) {
                     $log.info("update condition : ", condition.id);
                     var promise = condition.put();
@@ -102,7 +163,7 @@ define(['./module'], function (module) {
                 };
             };
 
-            ConditionGroupContainer.addConditionTask = function (conditionGroupContainer, condition) {
+            GroupContainer.addConditionTask = function (conditionGroupContainer, condition) {
                 return function (callback) {
                     $log.info("saving condition on groupId : " + conditionGroupContainer.id + ', ', condition);
                     var conditionsEndpoint;
@@ -119,16 +180,22 @@ define(['./module'], function (module) {
                 };
             };
 
-            ConditionGroupContainer.deleteConditionTask = function (condition) {
+            GroupContainer.deleteConditionTask = function (condition) {
                 return function (callback) {
                     $log.info("delete condition : ", condition.id);
                     var promise = condition.remove();
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
-            };
+            };*/
 
-            ConditionGroupContainer.prototype.buildInfoResource = function () {
-                return {excluded:this.value.excluded,conditions:Restangular.stripRestangular(this.conditions)};
+            GroupContainer.prototype.buildInfoResource = function () {
+                var _elements = lodash.map(this.elementContainers, function(elementContainer){
+                    return elementContainer.buildInfoResource();
+                });
+                return {
+                    excluded:this.value.excluded,
+                    elements:_elements
+                };
             };
 
 
@@ -139,73 +206,73 @@ define(['./module'], function (module) {
                     this.id = value.id;
                 }
 
-                this.conditionGroupContainers = [];
-                this.removedConditionGroupContainers = [];
+                this.groupContainers = [];
+                this.removedGroupContainers = [];
             };
 
-            QueryContainer.load = function (datamartId, queryId) {
+            /*QueryContainer.load = function (datamartId, queryId) {
 
                 var queryEndpoint = Restangular.one('datamarts', datamartId).one('queries', queryId);
 
                 var pQuery = queryEndpoint.get();
-                var pConditionGroups = queryEndpoint.all('condition_groups').getList();
+                var pGroups = queryEndpoint.all('groups').getList();
 
-                return $q.all([pQuery, pConditionGroups]).then(function (result) {
+                return $q.all([pQuery, pGroups]).then(function (result) {
                     //query
                     var queryContainer = new QueryContainer(result[0]);
                     //conditionGroups
-                    queryContainer.conditionGroupContainers = lodash.sortBy(result[1], function (group) {
+                    queryContainer.groupContainers = lodash.sortBy(result[1], function (group) {
                         return group.id;
-                    }).map(function (conditionGroup) {
-                        return new ConditionGroupContainer(queryContainer, conditionGroup);
+                    }).map(function (group) {
+                        return new GroupContainer(queryContainer, group);
                     });
 
-                    var conditionsP = lodash.map(queryContainer.conditionGroupContainers, function (groupContainer) {
-                        return groupContainer.loadConditions();
+                    var elementsP = lodash.map(queryContainer.groupContainers, function (groupContainer) {
+                        return groupContainer.loadElements();
                     });
 
-                    return $q.all(conditionsP).then(function () {
+                    return $q.all(elementsP).then(function () {
                         return queryContainer;
                     });
 
                 });
+            };*/
+
+            QueryContainer.prototype.addGroupContainer = function () {
+                this.groupContainers.push(new GroupContainer(this));
             };
 
-            QueryContainer.prototype.addConditionGroup = function () {
-                this.conditionGroupContainers.push(new ConditionGroupContainer(this));
-            };
-
-            QueryContainer.prototype.removeConditionGroup = function (conditionGroupContainer) {
-                if (conditionGroupContainer.id) {
-                    this.removedConditionGroupContainers.push(conditionGroupContainer);
+            QueryContainer.prototype.removeGroupContainer = function (groupContainer) {
+                if (groupContainer.id) {
+                    this.removedGroupContainers.push(groupContainer);
                 }
-                var i = this.conditionGroupContainers.indexOf(conditionGroupContainer);
-                this.conditionGroupContainers.splice(i, 1);
+                var i = this.groupContainers.indexOf(groupContainer);
+                this.groupContainers.splice(i, 1);
             };
 
-            QueryContainer.prototype.save = function () {
-                var addConditionGroupContainers = lodash.filter(this.conditionGroupContainers, function (conditionGroupContainer) {
-                    return !conditionGroupContainer.id;
+           /* QueryContainer.prototype.save = function () {
+                var addGroupContainers = lodash.filter(this.groupContainers, function (groupContainer) {
+                    return !groupContainer.id;
                 });
 
-                var updateConditionGroupContainers = lodash.filter(this.conditionGroupContainers, function (conditionGroupContainer) {
-                    return conditionGroupContainer.id;
+                var updateGroupContainers = lodash.filter(this.groupContainers, function (groupContainer) {
+                    return groupContainer.id;
                 });
 
-                var pAddConditionGroupTasks = lodash.map(addConditionGroupContainers, function (conditionGroupContainer) {
-                    return QueryContainer.addConditionGroupTask(conditionGroupContainer);
+                var pAddConditionGroupTasks = lodash.map(addGroupContainers, function (groupContainer) {
+                    return QueryContainer.addConditionGroupTask(groupContainer);
                 });
 
-                var pUpdateConditionGroupTasks = lodash.map(updateConditionGroupContainers, function (conditionGroupContainer) {
-                    return QueryContainer.updateConditionGroupTask(conditionGroupContainer);
+                var pUpdateConditionGroupTasks = lodash.map(updateGroupContainers, function (groupContainer) {
+                    return QueryContainer.updateConditionGroupTask(groupContainer);
                 });
 
-                var pDeleteConditionGroupTasks = lodash.map(this.removedConditionGroupContainers, function (conditionGroupContainer) {
-                    return QueryContainer.deleteConditionGroupTask(conditionGroupContainer);
+                var pDeleteConditionGroupTasks = lodash.map(this.removedGroupContainers, function (groupContainer) {
+                    return QueryContainer.deleteConditionGroupTask(groupContainer);
                 });
 
-                var pConditionTasks = lodash.flatten(lodash.map(updateConditionGroupContainers, function (conditionGroupContainer) {
-                    return conditionGroupContainer.saveTasks();
+                var pConditionTasks = lodash.flatten(lodash.map(updateGroupContainers, function (groupContainer) {
+                    return groupContainer.saveTasks();
                 }));
 
                 var pList = [];
@@ -232,7 +299,7 @@ define(['./module'], function (module) {
 
                     pConditionGroup.then(function (savedGroup) {
                         var pConditions = lodash.map(conditionGroupContainer.conditions, function (condition) {
-                            return ConditionGroupContainer.addConditionTask(new ConditionGroupContainer(conditionGroupContainer.queryContainer, savedGroup), condition);
+                            return GroupContainer.addConditionTask(new GroupContainer(conditionGroupContainer.queryContainer, savedGroup), condition);
                         });
                         async.series(pConditions, function (err, res) {
                             if (err) {
@@ -262,16 +329,16 @@ define(['./module'], function (module) {
                     var promise = conditionGroupContainer.value.remove();
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
-            };
+            };*/
 
             QueryContainer.prototype.prepareJsonQuery = function (datamartId) {
-                var conditionGroups = lodash.map(this.conditionGroupContainers, function(conditionGroupContainer){
-                    return conditionGroupContainer.buildInfoResource();
+                var _groups = lodash.map(this.groupContainers, function(groupContainer){
+                    return groupContainer.buildInfoResource();
                 });
                 return {
                   /*id:this.id,*/
                   datamart_id:datamartId,
-                  condition_groups:conditionGroups
+                  groups:_groups
                 };
             };
 
