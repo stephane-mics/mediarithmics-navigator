@@ -8,7 +8,7 @@ define(['./module'], function (module) {
   module.factory('core/campaigns/DisplayCampaignContainer', [
     '$q', 'Restangular', 'core/common/IdGenerator', 'async', 'core/campaigns/AdGroupContainer', '$log', 'core/common/promiseUtils', 'lodash',  'core/campaigns/goals/GoalsService',
     function ($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _, GoalsService) {
-      var DisplayCampaignContainer = function DisplayCampaignContainer(groupId, artifactId) {
+      var DisplayCampaignContainer = function DisplayCampaignContainer(editorVersionId) {
         this.creationMode = true;
         this.adGroups = [];
         this.removedAdGroups = [];
@@ -19,7 +19,7 @@ define(['./module'], function (module) {
         this.locations = [];
         this.removedLocations = [];
 
-        this.value = {type: "DISPLAY", group_id: groupId, artifact_id: artifactId};
+        this.value = {type: "DISPLAY", editor_version_id: editorVersionId};
         $log.info("DisplayCampaignContainer", this.value);
       };
 

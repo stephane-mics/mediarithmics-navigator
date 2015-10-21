@@ -31,7 +31,7 @@ define(['./module'], function (module) {
       };
 
       service.initCreateCampaign = function (template) {
-        var campaignCtn = new DisplayCampaignContainer(template.group_id, template.artifact_id);
+        var campaignCtn = new DisplayCampaignContainer(template.editor_version_id);
         campaignCtn.id = IdGenerator.getId();
         campaignCtn.organisationId = Session.getCurrentWorkspace().organisation_id;
 
@@ -44,7 +44,7 @@ define(['./module'], function (module) {
       };
 
       service.initEditCampaign = function (campaignId, template) {
-        var campaignCtn = new DisplayCampaignContainer(template.group_id, template.artifact_id);
+        var campaignCtn = new DisplayCampaignContainer(template.editor_version_id);
         this.campaignCtn = campaignCtn;
         return campaignCtn.load(campaignId);
       };
