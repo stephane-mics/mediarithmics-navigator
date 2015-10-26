@@ -6,11 +6,10 @@ define(['./module'], function (module) {
    */
   module.controller('core/campaigns/CreateController', [
     '$scope', '$location', '$log', 'core/common/auth/Session', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
-
     function ($scope, $location, $log, Session, DisplayCampaignService, CampaignPluginService) {
 
-      CampaignPluginService.getAllCampaignTemplates().then(function (templates) {
-        $scope.campaignTemplates = templates;
+      CampaignPluginService.getAllCampaignEditors().then(function (editors) {
+        $scope.campaignTemplates = editors;
       });
 
       // create button

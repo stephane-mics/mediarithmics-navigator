@@ -483,7 +483,7 @@ define(['./module', 'lodash'], function (module, _) {
        */
 
       $scope.editCampaign = function (campaign) {
-        CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
+        CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
           var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
           $location.path(location);
         });

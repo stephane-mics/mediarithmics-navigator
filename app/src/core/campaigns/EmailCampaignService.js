@@ -16,7 +16,7 @@ define(['./module'], function (module) {
        * @return {$q.promise} the promise of the creation.
        */
       service.initCreateCampaign = function (template) {
-        var campaignCtn = new EmailCampaignContainer(template.template_group_id, template.template_artifact_id);
+        var campaignCtn = new EmailCampaignContainer(template.group_id, template.artifact_id);
         campaignCtn.id = IdGenerator.getId();
         campaignCtn.organisationId = Session.getCurrentWorkspace().organisation_id;
         this.campaignCtn = campaignCtn;
@@ -32,7 +32,7 @@ define(['./module'], function (module) {
        * @return {$q.promise} the promise of the load.
        */
       service.initEditCampaign = function (campaignId, template) {
-        var campaignCtn = new EmailCampaignContainer(template.template_group_id, template.template_artifact_id);
+        var campaignCtn = new EmailCampaignContainer(template.group_id, template.artifact_id);
         this.campaignCtn = campaignCtn;
         return campaignCtn.load(campaignId);
       };

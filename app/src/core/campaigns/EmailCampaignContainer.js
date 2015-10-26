@@ -7,11 +7,11 @@ define(['./module'], function (module) {
   module.factory("core/campaigns/EmailCampaignContainer", [
     "$q", "Restangular", "core/common/IdGenerator", "async", "$log",
     function ($q, Restangular, IdGenerator, async, $log) {
-      var EmailCampaignContainer = function EmailCampaignContainer(templateGroupId, templateArtifactId) {
+      var EmailCampaignContainer = function EmailCampaignContainer(groupId, artifactId) {
         this.creationMode = true;
         this.userGroupClickFeed = null;
         this.userGroupOpeningFeed = null;
-        this.value = {type: "EMAIL", template_group_id: templateGroupId, template_artifact_id: templateArtifactId};
+        this.value = {type: "EMAIL", group_id: groupId, artifact_id: artifactId};
       };
 
       /**

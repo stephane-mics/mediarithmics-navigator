@@ -14,17 +14,17 @@ define(['./module'], function (module) {
       };
 
       PropertyContainer.prototype.update = function update() {
-
           var deferred = $q.defer();
 
-          var self = this;
+          if (this.value.origin === 'PLUGIN_STATIC') {
+            deferred.resolve();
+            return deferred.promise;
+          }
 
-          this.value.put().then(function(property) {
+          this.value.customPUT(this.value, 'technical_name=' + this.value.technical_name).then(function(property) {
             deferred.resolve(property);
-
           }, function(reason) {
             deferred.reject(reason);
-
           });
 
           return deferred.promise;
