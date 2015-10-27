@@ -206,6 +206,7 @@ define(['./module'], function (module) {
                     this.id = value.id;
                 }
 
+                this.selectedValues = [];
                 this.groupContainers = [];
                 this.removedGroupContainers = [];
             };
@@ -248,6 +249,15 @@ define(['./module'], function (module) {
                 }
                 var i = this.groupContainers.indexOf(groupContainer);
                 this.groupContainers.splice(i, 1);
+            };
+
+            QueryContainer.prototype.createSelectedValue = function (propertySelector) {
+                this.selectedValues.push(propertySelector);
+            };
+
+            QueryContainer.prototype.removeSelectedValue = function (selectedValue) {
+                var i = this.selectedValues.indexOf(selectedValue);
+                this.selectedValues.splice(i, 1);
             };
 
            /* QueryContainer.prototype.save = function () {
@@ -338,7 +348,8 @@ define(['./module'], function (module) {
                 return {
                   /*id:this.id,*/
                   datamart_id:datamartId,
-                  groups:_groups
+                  groups:_groups,
+                  property_selectors:this.selectedValues
                 };
             };
 
