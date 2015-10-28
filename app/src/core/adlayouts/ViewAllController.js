@@ -8,7 +8,6 @@ define(['./module'], function (module) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.adLayouts = Restangular.all("ad_layouts").getList({organisation_id: organisationId}).$object;
       $scope.organisationId = organisationId;
-
     }
   ]);
 

@@ -12,16 +12,26 @@
         </div>
       </div>
     </div>
-    <table class="mics-table js-auto-hide-actions" ng-show="layouts.length">
+    <table class="mics-table js-auto-hide-actions" ng-show="adLayouts.length">
       <thead>
       <tr>
-        <th>Name</th>
+        <th>Id</th>
+        <th>Format</th>
+        <th>Renderer Id</th>
+        <th>Renderer Version Id</th>
+        <th>Current Version Id</th>
+        <th>Organisation Id</th>
         <th class="actions">Actions</th>
       </tr>
       </thead>
       <tbody>
       <tr ng-repeat="adLayout in adLayouts">
-        <td>{{adLayout.name}}</td>
+        <td>{{adLayout.id}}</td>
+        <td>{{adLayout.format}}</td>
+        <td>{{adLayout.renderer_id}}</td>
+        <td>{{adLayout.renderer_version_id}}</td>
+        <td>{{adLayout.current_version_id}}</td>
+        <td>{{adLayout.organisation_id}}</td>
         <td class="actions">
           <a class="mics-btn mics-btn-action" ng-click="editLayout(layout, $event)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteLayout(layout, $event)">Delete</a>

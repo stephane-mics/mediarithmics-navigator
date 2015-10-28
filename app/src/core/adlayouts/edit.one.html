@@ -15,7 +15,7 @@
       <!-- Name -->
       <div class="col-md-4">
         <div mcs-form-group="full" label-for="adLayoutName" label-text="Name">
-          <input required class="input-lg" ng-model="adLayout.name" type="text" id="adLayoutName">
+          <input required class="input-lg" ng-model="adLayoutVersion.name" type="text" id="adLayoutName" pattern="[a-zA-Z0-9-_]{2,}">
         </div>
       </div>
 
@@ -31,24 +31,26 @@
       <!-- Ad Renderer -->
       <div class="col-md-2">
         <div mcs-form-group="full" label-for="adRenderer" label-text="Ad Renderer">
-          <select ng-model="adLayout.adRenderer" ng-options="key for (key, value) in adRenderers" id="adRenderer"></select>
+          <select ng-model="adLayout.renderer_id" ng-options="key for (key, value) in adRenderers" id="adRenderer"></select>
         </div>
       </div>
 
       <!-- Ad Renderer Version -->
-      <div class="col-md-2" ng-show="adRendererVersions">
+      <div class="col-md-2">
         <div mcs-form-group="full" label-for="adRendererVersion" label-text="Ad Renderer Version Id">
-          <select ng-model="adLayout.adRendererVersion" ng-options="adRendererVersion for adRendererVersion in adRendererVersions" id="adRendererVersion"></select>
+          <select ng-model="adLayout.renderer_version_id" ng-options="adRendererVersion for adRendererVersion in adRendererVersions" id="adRendererVersion"></select>
         </div>
       </div>
     </div>
 
-    <div class="mcs-actions-group">
-      <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
-      <div mics-pl-upload="pluploadOptions" automatic-upload="false" class="btn-group">
-        <a class="browse-button mics-btn mics-btn-add">Select Template</a>
-        <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
-        <button ng-click="done()" class="upload-button mics-btn mics-btn-finish">Done</button>
+    <div mics-pl-upload="pluploadOptions" automatic-upload="false" files="files" class="btn-group">
+      <div ng-show="files.length">Selected file: {{files[0].name}}</div>
+      <a class="browse-button mics-btn mics-btn-add"><span ng-show="!files.length">Select Template</span><span ng-show="files.length">Change Template</span></a>
+      <br/>
+      <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
+      <div class="mcs-actions-group">
+        <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
+        <button ng-click="done()" ng-disabled="!files.length || !adLayoutVersion.name.length" class="mics-btn mics-btn-finish">Done</button>
       </div>
     </div>
   </form>

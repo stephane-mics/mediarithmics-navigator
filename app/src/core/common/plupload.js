@@ -10,7 +10,8 @@ define(['./module', "plupload"], function (module) {
           multiSelection: '=',
           micsPlUpload: '=',
           automaticUpload: '=',
-          name: '='
+          files: '=',
+          fileName: '='
         },
         link: function (scope, element, attributes) {
           scope.uploadError = null;
@@ -18,7 +19,6 @@ define(['./module', "plupload"], function (module) {
           if (scope.automaticUpload.length === 0) {
             scope.automaticUpload = true;
           }
-          console.log("AU:" + scope.automaticUpload);
 
           /**
            * Plupload Options
@@ -36,16 +36,22 @@ define(['./module', "plupload"], function (module) {
           var uploadButton = element.find('.upload-button');
           if (uploadButton.length === 1 && !scope.automaticUpload) {
             uploadButton.bind('click', function () {
-              if (name.length === 0) {
-                $log.info("Needs a name");
+              if (scope.fileName.length === 0) {
+                $log.info("Plupload: Please specify the files names");
               } else {
-                $log.info("Uploading selected files");
+                $log.info("Plupload: Uploading selected files");
+                uploader.settings.multipart_params["names"] = scope.fileName;
                 uploader.start();
               }
             });
-          } else if (!scope.automaticUpload) {
-            throw new Error("Plupload: Automatic upload was disabled but no .upload-button was found.");
           }
+
+          // Manual upload
+          scope.$on("adlayout:upload", function(event, args) {
+            $log.info("Plupload: Manual adlayout upload, args: ", args);
+            uploader.settings.multipart_params["names"] = args.adLayoutId + "." + args.adLayoutVersionId + ".template";
+            uploader.start();
+          });
 
           // Find and setup browse button
           var browseButton = element.find('.browse-button');
@@ -54,7 +60,7 @@ define(['./module', "plupload"], function (module) {
             browseButton.attr("id", currentEltId + "-browse-button");
             defaultOptions.browse_button = currentEltId + "-browse-button";
           } else {
-            throw new Error("Plupload : no .browse-button button found, aborting");
+            throw new Error("Plupload: no .browse-button button found, aborting");
           }
 
           // Find and setup drag'n'drop target
@@ -63,7 +69,7 @@ define(['./module', "plupload"], function (module) {
             dropTarget.attr("id", currentEltId + "-drop-target");
             defaultOptions.drop_element = currentEltId + "-drop-target";
           } else {
-            $log.info("plupload : no .drop-target found, ignoring drop_element");
+            $log.info("Plupload: no .drop-target found, ignoring drop_element");
           }
 
           // Merge options and default options
@@ -110,7 +116,9 @@ define(['./module', "plupload"], function (module) {
 
           function handleFilesAdded(uploader, files) {
             scope.uploadError = null;
-            $log.debug("Files Added: ", files);
+            scope.$apply(function () {
+              scope.files = files;
+            });
             if (scope.automaticUpload) {
               uploader.start();
             }
@@ -118,9 +126,15 @@ define(['./module', "plupload"], function (module) {
 
           function handleFileUploaded(uploader, file, response) {
             var responseObj = $.parseJSON(response.response);
-            if (responseObj.status === "ok" && responseObj.data && scope.uploadedFiles) {
+            console.log("Uploaded? ", responseObj);
+            if (responseObj.status === "ok") {
               scope.$apply(function () {
-                scope.uploadedFiles.push(responseObj.data);
+                if (scope.uploadedFiles && responseObj.data) {
+                  scope.uploadedFiles.push(responseObj.data);
+                }
+                console.log("FILE: ", file);
+                console.log("Response: ", response);
+                scope.$emit('plupload:uploaded');
               });
             }
           }
