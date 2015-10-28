@@ -17,11 +17,18 @@ define(['./module'], function (module) {
 
       DisplayAdPropertyContainer.prototype.update = function update() {
         var deferred = $q.defer();
-        this.value.put().then(function (property) {
+
+        if (this.value.origin === 'PLUGIN_STATIC') {
+          deferred.resolve();
+          return deferred.promise;
+        }
+
+        this.value.customPUT(this.value, 'technical_name=' + this.value.technical_name).then(function (property) {
           deferred.resolve(property);
         }, function (reason) {
           deferred.reject(reason);
         });
+
         return deferred.promise;
       };
 
@@ -33,5 +40,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-
-

@@ -3,7 +3,7 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/campaigns/keywords/MainController', [
-    "$scope", 'core/campaigns/DisplayCampaignContainer', 'core/campaigns/DisplayCampaignService', '$stateParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', 'core/keywords/KeywordListContainer',
+    '$scope', 'core/campaigns/DisplayCampaignContainer', 'core/campaigns/DisplayCampaignService', '$stateParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', 'core/keywords/KeywordListContainer',
     function ($scope, DisplayCampaignContainer, DisplayCampaignService, $stateParams, CampaignPluginService, _, Restangular, KeywordListContainer) {
       var campaignId = $stateParams.campaign_id;
 
@@ -49,7 +49,7 @@ define(['./module'], function (module) {
         $scope.campaign.per_day_impression_capping = 10;
       }
 
-      CampaignPluginService.getCampaignTemplate("com.mediarithmics.campaign.display", "keywords-targeting-template").then(function (template) {
+      CampaignPluginService.getCampaignEditor("com.mediarithmics.campaign.display", "keywords-targeting-template").then(function (template) {
         // TODO load the campaign (no effect if already in cache or if this is a temporary id)
         if (!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
           if (!campaignId || DisplayCampaignService.isTemporaryId(campaignId)) {

@@ -8,8 +8,9 @@ define(['./module'], function (module) {
 
       var campaignTemplates = [{
         name: "Multi Targeting",
-        template_group_id: "com.mediarithmics.campaign.display",
-        template_artifact_id: "default-template",
+        editor_version_id: "11",
+        group_id: "com.mediarithmics.campaign.display",
+        artifact_id: "default-template",
         image: "/images/plugins/multi-targeting-small.png",
         editor: {
           create_path: "/{organisation_id}/campaigns/display/expert/edit/{id}",
@@ -17,8 +18,9 @@ define(['./module'], function (module) {
         }
       }, {
         name: "Keywords Targeting",
-        template_group_id: "com.mediarithmics.campaign.display",
-        template_artifact_id: "keywords-targeting-template",
+        editor_version_id: "12",
+        group_id: "com.mediarithmics.campaign.display",
+        artifact_id: "keywords-targeting-template",
         image: "/images/plugins/keywords-targeting-small.png",
         editor: {
           create_path: "/{organisation_id}/campaigns/display/keywords",
@@ -26,8 +28,9 @@ define(['./module'], function (module) {
         }
       }, {
         name: "Email campaign",
-        template_group_id: "com.mediarithmics.campaign.email",
-        template_artifact_id: "expert-template",
+        editor_version_id: "17",
+        group_id: "com.mediarithmics.campaign.email",
+        artifact_id: "expert-template",
         image: "/images/plugins/email-campaign-expert-small.png",
         editor: {
           create_path: "/{organisation_id}/campaigns/email/expert",
@@ -39,12 +42,11 @@ define(['./module'], function (module) {
       }
 
       CampaignPluginService.prototype = {
-
         /**
          * Get all the campaign templates, asynchronously.
          * @return {$q.promise} the promise with the templates.
          */
-        getAllCampaignTemplates: function () {
+        getAllCampaignEditors: function () {
           var deferred = $q.defer();
 
           setTimeout(function () {
@@ -56,20 +58,40 @@ define(['./module'], function (module) {
 
         /**
          * Get the campaign template for a given group/artifact id.
-         * @param {String} templateGroupId the group id of the template.
-         * @param {String} templateArtifactId the artifact id of the template.
+         * @param {String} groupId the group id of the editor.
+         * @param {String} artifactId the artifact id of the editor.
          * @return {$q.promise} the promise with the template.
          */
-        getCampaignTemplate: function (templateGroupId, templateArtifactId) {
+        getCampaignEditor: function (groupId, artifactId) {
           var deferred = $q.defer();
-          this.getAllCampaignTemplates().then(function success(templates) {
-            var matchingTemplate = _.find(templates, function (template) {
-              return template.template_group_id === templateGroupId && template.template_artifact_id === templateArtifactId;
+          this.getAllCampaignEditors().then(function success(editors) {
+            var matchingEditor = _.find(editors, function (editor) {
+              return editor.group_id === groupId && editor.artifact_id === artifactId;
             });
-            if (matchingTemplate) {
-              deferred.resolve(matchingTemplate);
+            if (matchingEditor) {
+              deferred.resolve(matchingEditor);
             } else {
-              deferred.reject(new Error("can't find a template for " + templateGroupId + ":" + templateArtifactId));
+              deferred.reject(new Error("Can't find a template for group_id:" + groupId + " / artifact_id: " + artifactId));
+            }
+          });
+          return deferred.promise;
+        },
+
+        /**
+         * Get the campaign template for a given group/artifact id.
+         * @param {String} editorVersionId the editor version id of the editor.
+         * @return {$q.promise} the promise with the template.
+         */
+        getCampaignEditorFromVersionId: function (editorVersionId) {
+          var deferred = $q.defer();
+          this.getAllCampaignEditors().then(function success(editors) {
+            var matchingEditor = _.find(editors, function (editor) {
+              return editor.editor_version_id === editorVersionId;
+            });
+            if (matchingEditor) {
+              deferred.resolve(matchingEditor);
+            } else {
+              deferred.reject(new Error("Can't find a template for editor version id" + editorVersionId));
             }
           });
           return deferred.promise;
@@ -77,24 +99,22 @@ define(['./module'], function (module) {
 
         /**
          * Get the campaign editor for a given group/artifact id.
-         * @param {String} templateGroupId the group id of the template.
-         * @param {String} templateArtifactId the artifact id of the template.
+         * @param {String} groupId the group id of the editor.
+         * @param {String} artifactId the artifact id of the editor.
          * @return {$q.promise} the promise with the editor.
          */
-        getEditor: function (templateGroupId, templateArtifactId) {
+        getEditor: function (groupId, artifactId) {
           var deferred = $q.defer();
 
-          this.getCampaignTemplate(templateGroupId, templateArtifactId).then(
+          this.getCampaignEditor(groupId, artifactId).then(
             function success(template) {
               deferred.resolve(template.editor);
             }, deferred.reject
           );
-
-
           return deferred.promise;
         }
-      };
 
+      };
       return new CampaignPluginService();
     }
   ]);

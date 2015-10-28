@@ -32,7 +32,7 @@
     <div class="row">
       <div class="col-md-8">
         <div mcs-form-group="full" label-for="destination_dom" label-text="Destination domain">
-          <input ng-disabled="disabledEdition" ng-model="displayAd.destination_domain" type="text" class="form-control input" id="destination_dom" pattern="^([a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9]\.)+([a-zA-Z0-9]{3,5})$">
+          <input ng-disabled="disabledEdition" ng-model="displayAd.destination_domain" type="text" class="form-control input" id="destination_dom" pattern="^([a-zA-Z0-9][-a-zA-Z0-9]*[a-zA-Z0-9]\.)+([a-zA-Z0-9]{2,})$">
           <span id="helpBlock" class="help-block">This is the final redirect location domain (without http or params)<br/>eg: destination.mybrand.com</span>
         </div>
       </div>
@@ -52,12 +52,12 @@
         <h3>Properties</h3>
 
         <div ng-repeat="property in properties">
-          <mcs-number-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'INT'"></mcs-number-property>
-          <mcs-url-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
-          <mcs-pixel-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'PIXEL_TAG'"></mcs-pixel-property>
-          <mcs-data-file-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'DATA_FILE'"></mcs-data-file-property>
-          <mcs-asset-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
-          <mcs-text-property ng-disabled="disabledEdition" property="property.value" ng-if="property.value.property_type == 'STRING'"></mcs-text-property>
+          <mcs-number-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'INT'"></mcs-number-property>
+          <mcs-url-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'URL'"></mcs-url-property>
+          <mcs-pixel-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'PIXEL_TAG'"></mcs-pixel-property>
+          <mcs-data-file-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'DATA_FILE'"></mcs-data-file-property>
+          <mcs-asset-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
+          <mcs-text-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'STRING'"></mcs-text-property>
         </div>
       </div>
     </div>

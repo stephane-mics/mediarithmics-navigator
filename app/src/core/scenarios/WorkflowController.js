@@ -152,7 +152,7 @@ define(['./module'], function (module) {
                     $event.stopPropagation();
                 }
 
-                CampaignPluginService.getCampaignTemplate(campaign.template_group_id, campaign.template_artifact_id).then(function (template) {
+                CampaignPluginService.getCampaignEditor(campaign.group_id, campaign.artifact_id).then(function (template) {
                     var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
                     $location.path(location);
                 });
