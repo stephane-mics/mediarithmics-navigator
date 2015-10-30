@@ -1956,6 +1956,32 @@ input.ng-invalid {
   margin: 10px 16px;
 }
 
+// ------------ Ad layouts table
+
+.mics-sub-table {
+  padding: 0 0 0 160px;
+}
+
+.table-hover > tbody > tr.disable-highlight:hover > td,
+.disable-highlight > td {
+  background-color: transparent;
+}
+
+.mics-sub-table-actions {
+  width: 70px;
+  a {
+    padding: 0 8px;
+    font-size: 12px;
+  }
+}
+
+.clickableRow {
+  cursor: pointer;
+}
+
+.hiddenRow {
+  padding: 0 !important;
+}
 .query-tab {
   margin-top: 15px;
 }

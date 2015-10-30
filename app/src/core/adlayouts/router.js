@@ -23,7 +23,7 @@ define(['./module'], function (module) {
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         })
         .state('library/adlayouts/edit', {
-          url: '/{organisation_id}/library/adlayouts/:adlayout_id',
+          url: '/{organisation_id}/library/adlayouts/:ad_layout_id/versions/:version_id?mode',
           templateUrl: 'src/core/adlayouts/edit.one.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         });

@@ -12,29 +12,58 @@
         </div>
       </div>
     </div>
-    <table class="mics-table js-auto-hide-actions" ng-show="adLayouts.length">
+    <table class="mics-table table-hover js-auto-hide-actions" ng-show="adLayouts.length">
       <thead>
       <tr>
-        <th>Id</th>
-        <th>Format</th>
-        <th>Renderer Id</th>
-        <th>Renderer Version Id</th>
-        <th>Current Version Id</th>
-        <th>Organisation Id</th>
+        <th>Name</th>
+        <th>Creation Date</th>
+        <th>Status</th>
+        <th>Version</th>
         <th class="actions">Actions</th>
       </tr>
       </thead>
-      <tbody>
-      <tr ng-repeat="adLayout in adLayouts">
-        <td>{{adLayout.id}}</td>
-        <td>{{adLayout.format}}</td>
-        <td>{{adLayout.renderer_id}}</td>
-        <td>{{adLayout.renderer_version_id}}</td>
-        <td>{{adLayout.current_version_id}}</td>
-        <td>{{adLayout.organisation_id}}</td>
+      <tbody data-ng-repeat="adLayout in adLayouts">
+      <tr data-target="#demo{{$index}}" data-toggle="collapse" class="accordion-toggle clickableRow" title="Click to collapse/expand this ad layout versions">
+        <td>{{adLayout.currentVersion.name}}</td>
+        <td>{{adLayout.currentVersion.creation_date}}</td>
+        <td>{{adLayout.currentVersion.status}}</td>
+        <td>{{adLayout.currentVersion.version_id}}</td>
         <td class="actions">
-          <a class="mics-btn mics-btn-action" ng-click="editLayout(layout, $event)">Edit</a>
-          <a class="mics-btn mics-btn-delete" ng-click="deleteLayout(layout, $event)">Delete</a>
+          <a ng-show="adLayout.currentVersion.status != 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{adLayout.currentVersion.ad_layout_id}}/versions/{{adLayout.currentVersion.id}}?mode=duplicate" class="mics-btn mics-btn-add">New Version</a>
+          <a ng-show="adLayout.currentVersion.status == 'DRAFT'" ng-click="publish(adLayout.currentVersion, $event)" class="mics-btn mics-btn-finish">Publish</a>
+          <a ng-show="adLayout.currentVersion.status == 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{adLayout.currentVersion.ad_layout_id}}/versions/{{adLayout.currentVersion.id}}?mode=edit" class="mics-btn mics-btn-action">Edit</a>
+          <a ng-show="adLayout.currentVersion.status != 'ARCHIVED'" class="mics-btn mics-btn-delete" ng-click="archive(adLayout.currentVersion, $event)">Archive</a>
+        </td>
+      </tr>
+      <tr ng-show="adLayout.versions.length" class="disable-highlight">
+        <td colspan="6" class="hiddenRow ">
+          <div class="accordian-body collapse mics-sub-table" id="demo{{$index}}">
+            <h4>Older versions</h4>
+            <div class="span12">
+              <table class="table table-condensed table-striped">
+                <thead style=" background-color: #092f56;">
+                <tr>
+                  <th>Name</th>
+                  <th>Creation Date</th>
+                  <th>Status</th>
+                  <th>Version</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="adLayoutVersion in adLayout.versions">
+                  <td>{{adLayoutVersion.name}}</td>
+                  <td>{{adLayoutVersion.creation_date}}</td>
+                  <td>{{adLayoutVersion.status}}</td>
+                  <td>{{adLayoutVersion.version_id}}</td>
+                  <td class="mics-sub-table-actions">
+                    <a ng-show="adLayout.currentVersion.status != 'ARCHIVED'" class="mics-btn mics-btn-delete pull-right" ng-click="archive(adLayoutVersion, $event)">Archive</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </td>
       </tr>
       </tbody>
