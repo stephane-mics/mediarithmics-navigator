@@ -24,8 +24,8 @@ define(['./module'], function (module) {
         this.ads = [];
         this.removedAds = [];
 
-        this.userGroups = [];
-        this.removedUserGroups = [];
+        this.audienceSegments = [];
+        this.removedAudienceSegments = [];
 
         this.keywordLists = [];
         this.removedKeywordLists = [];
@@ -39,21 +39,21 @@ define(['./module'], function (module) {
       AdGroupContainer.prototype.load = function load() {
         var pValue = this.value.get();
         var pAds = this.value.getList('ads');
-        var pUserGroups = this.value.getList('user_groups');
+        var pAudienceSegments = this.value.getList('audience_segments');
         var pKeywords = this.value.getList('keyword_lists');
         var pPlacements = this.value.getList('placement_lists');
 
         var self = this;
 
         var deferred = $q.defer();
-        var list = [pValue, pAds, pUserGroups, pKeywords, pPlacements];
+        var list = [pValue, pAds, pAudienceSegments, pKeywords, pPlacements];
 
         $q.all(list)
           .then(function (result) {
             self.value = result[0];
             self.id = self.value.id;
             self.ads = result[1];
-            self.userGroups = result[2];
+            self.audienceSegments = result[2];
             self.keywordLists = result[3];
             self.placementLists = result[4];
             // return the loaded container
@@ -144,18 +144,18 @@ define(['./module'], function (module) {
         }
       };
 
-      AdGroupContainer.prototype.addUserGroup = function addUserGroup(userGroupSelection) {
-        userGroupSelection.id = IdGenerator.getId();
-        this.userGroups.push(userGroupSelection);
-        return userGroupSelection.id;
+      AdGroupContainer.prototype.addAudienceSegment = function addAudienceSegment(selection) {
+        selection.id = IdGenerator.getId();
+        this.audienceSegments.push(selection);
+        return selection.id;
       };
 
-      AdGroupContainer.prototype.removeUserGroup = function removeUserGroup(userGroup) {
-        for (var i = 0; i < this.userGroups.length; i++) {
-          if (this.userGroups[i].user_group_id === userGroup.user_group_id) {
-            this.userGroups.splice(i, 1);
-            if (userGroup.id && userGroup.id.indexOf("T") === -1) {
-              this.removedUserGroups.push(userGroup);
+      AdGroupContainer.prototype.removeAudienceSegment = function removeAudienceSegment(segment) {
+        for (var i = 0; i < this.audienceSegments.length; i++) {
+          if (this.audienceSegments[i].audience_segment_id === segment.audience_segment_id) {
+            this.audienceSegments.splice(i, 1);
+            if (segment.id && segment.id.indexOf("T") === -1) {
+              this.removedAudienceSegments.push(segment);
             }
             return;
           }
@@ -211,44 +211,44 @@ define(['./module'], function (module) {
 
       /**
        * Create a task (to be used by async.series) to save the given user group.
-       * @param {Object} userGroup the user group to save.
+       * @param {Object} segment the audience segment to save.
        * @param {String} campaignId the id of the current campaign.
        * @param {String} adGroupId the id of the current ad group.
        * @param {String} adGroupName the name of the current ad group.
        * @return {Function} the task.
        */
-      function saveUserGroupTask(userGroup, campaignId, adGroupId, adGroupName) {
+      function saveAudienceSegmentTask(segment, campaignId, adGroupId, adGroupName) {
         return function (callback) {
-          $log.info("saving user group", userGroup.id);
+          $log.info("saving audience segment", segment.id);
           var promise;
-          if ((userGroup.id && userGroup.id.indexOf('T') === -1) || (typeof(userGroup.modified) !== "undefined")) {
+          if ((segment.id && segment.id.indexOf('T') === -1) || (typeof(segment.modified) !== "undefined")) {
             // update the user group
-            promise = userGroup.put();
+            promise = segment.put();
 
           } else {
-            // create the user group
+            // create the audience segment selection
             promise = Restangular.one('display_campaigns', campaignId)
               .one('ad_groups', adGroupId)
-              .post('user_groups', userGroup);
+              .post('audience_segments', segment);
           }
           promiseUtils.bindPromiseCallback(promise, callback);
         };
       }
 
       /**
-       * Create a task (to be used by async.series) to delete the given user group.
-       * @param {Object} userGroup the user group to delete.
+       * Create a task (to be used by async.series) to delete the given audience segment.
+       * @param {Object} segment the audience segment to delete.
        * @return {Function} the task.
        */
-      function deleteUserGroupTask(userGroup) {
+      function deleteAudienceSegmentTask(segment) {
         return function (callback) {
-          $log.info("deleting user group", userGroup.id);
+          $log.info("deleting audience segment", segment.id);
           var promise;
-          if (userGroup.id && userGroup.id.indexOf('T') === -1) {
-            // delete the user group
-            promise = userGroup.remove();
+          if (segment.id && segment.id.indexOf('T') === -1) {
+            // delete the audience segment selection
+            promise = segment.remove();
           } else {
-            // the user group was not persisted, nothing to do
+            // the audience segment selection was not persisted, nothing to do
             var deferred = $q.defer();
             promise = deferred.promise;
             deferred.resolve();
@@ -364,13 +364,13 @@ define(['./module'], function (module) {
           pAds.push(deleteAdTask(adGroupContainer.removedAds[i]));
         }
 
-        // update/persist user groups
-        var pUserGroups = [];
-        for (i = 0; i < adGroupContainer.userGroups.length; i++) {
-          pUserGroups.push(saveUserGroupTask(adGroupContainer.userGroups[i], campaignId, adGroup.id, adGroup.name));
+        // update/persist audience segments
+        var pAudienceSegments = [];
+        for (i = 0; i < adGroupContainer.audienceSegments.length; i++) {
+          pAudienceSegments.push(saveAudienceSegmentTask(adGroupContainer.audienceSegments[i], campaignId, adGroup.id, adGroup.name));
         }
-        for (i = 0; i < adGroupContainer.removedUserGroups.length; i++) {
-          pUserGroups.push(deleteUserGroupTask(adGroupContainer.removedUserGroups[i]));
+        for (i = 0; i < adGroupContainer.removedAudienceSegments.length; i++) {
+          pAudienceSegments.push(deleteAudienceSegmentTask(adGroupContainer.removedAudienceSegments[i]));
         }
 
         // update/persist keyword lists
@@ -393,7 +393,7 @@ define(['./module'], function (module) {
 
         var pList = [];
         pList = pList.concat(pAds);
-        pList = pList.concat(pUserGroups);
+        pList = pList.concat(pAudienceSegments);
         pList = pList.concat(pKeywordLists);
         pList = pList.concat(pPlacementLists);
 
@@ -461,8 +461,8 @@ define(['./module'], function (module) {
         this.removedAds = this.removedAds.concat(this.ads);
         this.ads = [];
 
-        this.removedUserGroups = this.removedUserGroups.concat(this.userGroups);
-        this.userGroups = [];
+        this.removedAudienceSegments = this.removedAudienceSegments.concat(this.audienceSegments);
+        this.audienceSegments = [];
 
         this.removedKeywordLists = this.removedKeywordLists.concat(this.keywordLists);
         this.keywordLists = [];

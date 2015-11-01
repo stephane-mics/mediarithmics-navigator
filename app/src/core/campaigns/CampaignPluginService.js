@@ -7,7 +7,7 @@ define(['./module'], function (module) {
     function ($log, $q, _) {
 
       var campaignTemplates = [{
-        name: "Multi Targeting",
+        name: "Desktop & Mobile",
         template_group_id: "com.mediarithmics.campaign.display",
         template_artifact_id: "default-template",
         image: "/images/plugins/multi-targeting-small.png",
@@ -16,7 +16,7 @@ define(['./module'], function (module) {
           edit_path: "/{organisation_id}/campaigns/display/expert/edit/{id}"
         }
       }, {
-        name: "Keywords Targeting",
+        name: "Simplified Keywords Targeting",
         template_group_id: "com.mediarithmics.campaign.display",
         template_artifact_id: "keywords-targeting-template",
         image: "/images/plugins/keywords-targeting-small.png",
@@ -24,16 +24,20 @@ define(['./module'], function (module) {
           create_path: "/{organisation_id}/campaigns/display/keywords",
           edit_path: "/{organisation_id}/campaigns/display/keywords/{id}"
         }
-      }, {
-        name: "Email campaign",
-        template_group_id: "com.mediarithmics.campaign.email",
-        template_artifact_id: "expert-template",
-        image: "/images/plugins/email-campaign-expert-small.png",
-        editor: {
-          create_path: "/{organisation_id}/campaigns/email/expert",
-          edit_path: "/{organisation_id}/campaigns/email/expert/{id}"
+      }
+/*
+      , {
+          name: "Email campaign",
+          template_group_id: "com.mediarithmics.campaign.email",
+          template_artifact_id: "expert-template",
+          image: "/images/plugins/email-campaign-expert-small.png",
+          editor: {
+            create_path: "/{organisation_id}/campaigns/email/expert",
+            edit_path: "/{organisation_id}/campaigns/email/expert/{id}"
+          }
         }
-      }];
+        */
+      ];
 
       function CampaignPluginService() {
       }
@@ -44,7 +48,7 @@ define(['./module'], function (module) {
          * Get all the campaign templates, asynchronously.
          * @return {$q.promise} the promise with the templates.
          */
-        getAllCampaignTemplates: function () {
+        getAllDisplayCampaignTemplates: function () {
           var deferred = $q.defer();
 
           setTimeout(function () {
@@ -52,6 +56,11 @@ define(['./module'], function (module) {
           }, 0);
 
           return deferred.promise;
+        },
+
+        getAllCampaignTemplates : function () {
+
+          return this.getAllDisplayCampaignTemplates();
         },
 
         /**

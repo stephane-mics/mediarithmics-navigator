@@ -34,8 +34,8 @@ define(['./module'], function (module) {
         return DisplayCampaignService.removeAd(adGroupId, adId);
       };
 
-      $scope.getUserGroups = function (adGroupId) {
-        return DisplayCampaignService.getUserGroups(adGroupId);
+      $scope.getAudienceSegments = function (adGroupId) {
+        return DisplayCampaignService.getAudienceSegments(adGroupId);
       };
 
       $scope.getKeywordLists = function (adGroupId) {
@@ -54,26 +54,26 @@ define(['./module'], function (module) {
         return DisplayCampaignService.removePlacementList(adGroupId, placementList);
       };
 
-      $scope.deleteUserGroup = function (userGroup) {
-        return DisplayCampaignService.removeUserGroup(adGroupId, userGroup);
+      $scope.deleteAudienceSegment = function (segment) {
+        return DisplayCampaignService.removeAudienceSegment(adGroupId, segment);
       };
 
       $scope.getBidOptimizer = function (adGroupId) {
         return DisplayCampaignService.getBidOptimizer(adGroupId);
       };
 
-      $scope.$on("mics-user-group:selected", function (event, params) {
-        var existing = _.find(DisplayCampaignService.getUserGroups(adGroupId), function (userGroupSelection) {
-          return userGroupSelection.user_group_id === params.usergroup.id;
+      $scope.$on("mics-audience-segment:selected", function (event, params) {
+        var existing = _.find(DisplayCampaignService.getAudienceSegments(adGroupId), function (selection) {
+          return selection.audience_segment_id === params.audience_segment.id;
         });
         if (!existing) {
-          var userGroupSelection = {
-            user_group_id: params.usergroup.id,
-            name: params.usergroup.name,
-            technical_name: params.usergroup.technicalName,
+          var selection = {
+            audience_segment_id: params.audience_segment.id,
+            name: params.audience_segment.name,
+            technical_name: params.audience_segment.technicalName,
             exclude: params.exclude
           };
-          DisplayCampaignService.addUserGroup(adGroupId, userGroupSelection);
+          DisplayCampaignService.addAudienceSegment(adGroupId, selection);
         }
       });
 

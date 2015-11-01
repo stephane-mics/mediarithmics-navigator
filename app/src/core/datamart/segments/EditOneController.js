@@ -17,7 +17,7 @@ define(['./module'], function (module) {
         };
       } else {
         Restangular.one('audience_segments', segmentId).get().then(function (segment) {
-          $scope.userGroup = segment;
+          $scope.segment = segment;
         });
 
       }

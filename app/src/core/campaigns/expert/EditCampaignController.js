@@ -73,8 +73,8 @@ define(['./module', 'moment'], function (module, moment) {
           return DisplayCampaignService.getAds(adGroupId);
         };
 
-        $scope.getUserGroups = function (adGroupId) {
-          return DisplayCampaignService.getUserGroups(adGroupId);
+        $scope.getAudienceSegments = function (adGroupId) {
+          return DisplayCampaignService.getAudienceSegments(adGroupId);
         };
 
         $scope.getKeywordLists = function (adGroupId) {

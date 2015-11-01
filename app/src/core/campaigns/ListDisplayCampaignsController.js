@@ -47,6 +47,22 @@ define(['./module'], function (module) {
         updateStatistics($scope, CampaignAnalyticsReportService, currentWorkspace.organisation_id);
       };
 
+      // load display campaign templates
+      CampaignPluginService.getAllDisplayCampaignTemplates().then(function (templates) {
+        $scope.campaignTemplates = templates;
+      });
+
+      // create button
+      $scope.create = function (template) {
+        var organisationId = Session.getCurrentWorkspace().organisation_id;
+        DisplayCampaignService.reset();
+        DisplayCampaignService.initCreateCampaign(template, organisationId).then(function (campaignId) {
+          var location = template.editor.create_path.replace(/{id}/g, campaignId).replace(/{organisation_id}/, organisationId);
+          $log.debug("campaign init , campaign_id = ", campaignId);
+          $location.path(location);
+        });
+      };
+
       var buildAllCampaignsExportHeaders = function (report) {
         var headers = ["Status", "Name"];
         if ($scope.administrator) {

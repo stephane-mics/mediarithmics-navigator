@@ -1,7 +1,7 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/datamart/segments/ChooseExistingAudienceSegmentsPopingController', [
+  module.controller('core/datamart/segments/ChooseExistingAudienceSegmentsPopinController', [
     '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
     function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
 
@@ -16,8 +16,8 @@ define(['./module'], function (module) {
         var segment;
         for (var i = 0; i < $scope.selectedSegments.length; i++) {
           segment = $scope.selectedSegments[i];
-          $scope.$emit("mics-user-group:selected", {
-            segment : segment,
+          $scope.$emit("mics-audience-segment:selected", {
+            audience_segment : segment,
             exclude : segment.exclude // TODO use a wrapper ?
           });
         }
