@@ -43,23 +43,23 @@
       </div>
     </div>
 
-    <div mics-pl-upload="pluploadOptions" automatic-upload="false" files="file">
-      <div ng-show="file.length">Selected file: {{file[0].name}}</div>
+    <div mics-pl-upload="pluploadOptions" automatic-upload="false" files="selectedFiles">
+      <div ng-show="adLayoutVersion.filename.length">Selected file: {{adLayoutVersion.filename}}</div>
       <div class="row">
         <div class="col-xs-2">
           <button class="browse-button mics-btn mics-btn-add">
-            <span ng-show="!file.length && mode === 'new'">Select Template</span>
-            <span ng-show="file.length || mode != 'new'">Change Template</span>
+            <span ng-show="!selectedFiles.length && mode === 'new'">Select Template</span>
+            <span ng-show="selectedFiles.length || mode != 'new'">Change Template</span>
           </button>
         </div>
         <div class="col-xs-2">
-          <button ng-show="mode != 'new' && file.length" ng-click="removeSelectedFile()" class="mics-btn mics-btn-cancel">Remove Template</button>
+          <button ng-show="mode != 'new' && selectedFiles.length" ng-click="removeSelectedFiles()" class="mics-btn mics-btn-cancel">Remove Template</button>
         </div>
       </div>
       <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
       <div class="mcs-actions-group">
         <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
-        <button ng-click="done()" ng-disabled="!adLayoutVersion.name.length || (!file.length && mode === 'new')" class="mics-btn mics-btn-finish">Done</button>
+        <button ng-click="done()" ng-disabled="!adLayoutVersion.name.length || (!selectedFiles.length && mode === 'new')" class="mics-btn mics-btn-finish">Done</button>
       </div>
     </div>
   </form>

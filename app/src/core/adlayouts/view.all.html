@@ -17,6 +17,7 @@
       <tr>
         <th>Name</th>
         <th>Creation Date</th>
+        <th>Filename</th>
         <th>Status</th>
         <th>Version</th>
         <th class="actions">Actions</th>
@@ -26,12 +27,13 @@
       <tr data-target="#demo{{$index}}" data-toggle="collapse" class="accordion-toggle clickableRow" title="Click to collapse/expand this ad layout versions">
         <td>{{adLayout.currentVersion.name}}</td>
         <td>{{adLayout.currentVersion.creation_date}}</td>
+        <td>{{adLayout.currentVersion.filename}}</td>
         <td>{{adLayout.currentVersion.status}}</td>
         <td>{{adLayout.currentVersion.version_id}}</td>
         <td class="actions">
-          <a ng-show="adLayout.currentVersion.status != 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{adLayout.currentVersion.ad_layout_id}}/versions/{{adLayout.currentVersion.id}}?mode=duplicate" class="mics-btn mics-btn-add">New Version</a>
           <a ng-show="adLayout.currentVersion.status == 'DRAFT'" ng-click="publish(adLayout.currentVersion, $event)" class="mics-btn mics-btn-finish">Publish</a>
           <a ng-show="adLayout.currentVersion.status == 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{adLayout.currentVersion.ad_layout_id}}/versions/{{adLayout.currentVersion.id}}?mode=edit" class="mics-btn mics-btn-action">Edit</a>
+          <a ng-show="adLayout.currentVersion.status != 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{adLayout.currentVersion.ad_layout_id}}/versions/{{adLayout.currentVersion.id}}?mode=duplicate" class="mics-btn mics-btn-add">New Version</a>
           <a ng-show="adLayout.currentVersion.status != 'ARCHIVED'" class="mics-btn mics-btn-delete" ng-click="archive(adLayout.currentVersion, $event)">Archive</a>
         </td>
       </tr>
@@ -45,6 +47,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Creation Date</th>
+                  <th>Filename</th>
                   <th>Status</th>
                   <th>Version</th>
                   <th></th>
@@ -54,10 +57,12 @@
                 <tr ng-repeat="adLayoutVersion in adLayout.versions">
                   <td>{{adLayoutVersion.name}}</td>
                   <td>{{adLayoutVersion.creation_date}}</td>
+                  <td>{{adLayoutVersion.filename}}</td>
                   <td>{{adLayoutVersion.status}}</td>
                   <td>{{adLayoutVersion.version_id}}</td>
-                  <td class="mics-sub-table-actions">
-                    <a ng-show="adLayout.currentVersion.status != 'ARCHIVED'" class="mics-btn mics-btn-delete pull-right" ng-click="archive(adLayoutVersion, $event)">Archive</a>
+                  <td class="mics-sub-table-actions ">
+                    <a ng-show="adLayoutVersion.status != 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{adLayoutVersion.ad_layout_id}}/versions/{{adLayoutVersion.id}}?mode=duplicate" class="mics-btn mics-btn-add pull-right">New Version</a>
+                    <a ng-hide="adLayoutVersion.status == 'ARCHIVED'" class="mics-btn mics-btn-delete pull-right" ng-click="archive(adLayoutVersion, $event)">Archive</a>
                   </td>
                 </tr>
                 </tbody>

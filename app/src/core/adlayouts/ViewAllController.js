@@ -16,7 +16,7 @@ define(['./module'], function (module) {
           for (i = $scope.page; i < adlayouts.length && i < $scope.maxElements; ++i) {
             Restangular.one("ad_layouts", adlayouts[i].id).one("versions").get({organisation_id: organisationId}).then(function (versions) {
               versions.sort(function (a, b) {
-                return a.id < b.id;
+                return a.creation_date < b.creation_date;
               });
               for (var j = 0; j < versions.length; ++j) {
                 var d = new Date(versions[j].creation_date);

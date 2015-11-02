@@ -6,7 +6,7 @@ define(['./module'], function (module) {
     function ($scope, $log, Restangular, Session, _, $modal, $stateParams, $location, IabService, configuration) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.mode = $stateParams.mode || "new";
-      $scope.file = "";
+      $scope.selectedFiles = [];
       $scope.adLayoutVersion = {};
       $scope.adSizes = _.map(IabService.getAdSizes("DISPLAY_AD"), function (size) {
         return size.format;
@@ -20,31 +20,18 @@ define(['./module'], function (module) {
           ],
           max_file_size: "100kb"
         },
-        multipart_params: {names: $scope.adLayoutVersion.name}
+        multipart_params: {names: ""}
       };
-
-      function getRendererVersions(rendererId) {
-        Restangular.all("plugins/" + rendererId + "/versions").getList().then(function (versions) {
-          $scope.adRendererVersions = [];
-          for (var i = 0; i < versions.length; ++i) {
-            $scope.adRendererVersions.push(versions[i].id);
-          }
-          if ($scope.mode === "new") {
-            $scope.adLayout.renderer_version_id = versions[0].id;
-          }
-        });
-      }
 
       // Setup ad layout and ad layout version
       if ($scope.mode === "new") {
         $scope.adLayout = {organisation_id: organisationId, current_version_id: 0};
-        $scope.adLayoutVersion = {
+        $.extend($scope.adLayoutVersion, {
           organisation_id: organisationId,
           template: "mics://data_file/tenants/" + organisationId + "/ads_templates/",
           version_id: "1.0.0",
           status: "DRAFT"
-        };
-        getRendererVersions($scope.adLayout.renderer_id);
+        });
       } else {
         Restangular.one("ad_layouts", $stateParams.ad_layout_id).get({organisation_id: organisationId}).then(function (adLayout) {
           $scope.adLayout = {
@@ -61,10 +48,11 @@ define(['./module'], function (module) {
             $scope.adLayoutVersion = {
               name: version.name,
               status: $scope.mode === 'duplicate' ? "DRAFT" : version.status,
-              template: version.template,
+              template: "mics://data_file/tenants/" + organisationId + "/ads_templates/",
               version_id: version.version_id,
               organisation_id: organisationId,
-              ad_layout_id: $scope.adLayout.id
+              ad_layout_id: $scope.adLayout.id,
+              filename: version.filename
             };
           });
         });
@@ -86,25 +74,33 @@ define(['./module'], function (module) {
         }
       });
 
+      function optionalUpload(adLayoutId, adLayoutVersionId) {
+        if ($scope.selectedFiles.length) {
+          $scope.$broadcast("adlayout:upload", {
+            adLayoutId: adLayoutId,
+            adLayoutVersionId: adLayoutVersionId
+          });
+        } else {
+          $location.path('/' + organisationId + "/library/adlayouts");
+        }
+      }
+
       $scope.done = function () {
         if ($scope.mode === "duplicate") {
           Restangular.all('ad_layouts/' + $scope.adLayout.id + '/versions').post($scope.adLayoutVersion).then(function (adLayoutVersion) {
             Restangular.all('ad_layouts/' + $scope.adLayout.id + '/current_version/' + adLayoutVersion.id).customPUT({}, undefined, {organisation_id: organisationId}).then(function () {
-              if ($scope.file) {
-                $scope.$broadcast("adlayout:upload", {
-                  adLayoutId: $scope.adLayout.id,
-                  adLayoutVersionId: adLayoutVersion.id
-                });
-              } else {
-                $location.path('/' + organisationId + "/library/adlayouts");
-              }
+              optionalUpload($scope.adLayout.id, adLayoutVersion.id);
             });
           });
         }
-        if ($scope.mode === "new") {
+        else if ($scope.mode === "new") {
+          if (!$scope.selectedFiles.length) {
+            return $log.error("Please select a template to upload first");
+          }
           $scope.adLayout.format = "F" + $scope.adLayout.format;
           Restangular.all('ad_layouts').post($scope.adLayout).then(function (adLayout) {
             $scope.adLayoutVersion.ad_layout_id = adLayout.id;
+            $scope.adLayoutVersion.filename = $scope.selectedFiles[0].name;
             Restangular.all('ad_layouts/' + adLayout.id + '/versions').post($scope.adLayoutVersion).then(function (adLayoutVersion) {
               Restangular.all('ad_layouts/' + adLayout.id + '/current_version/' + adLayoutVersion.id).customPUT({}, undefined, {organisation_id: organisationId}).then(function () {
                 $scope.$broadcast("adlayout:upload", {adLayoutId: adLayout.id, adLayoutVersionId: adLayoutVersion.id});
@@ -112,23 +108,43 @@ define(['./module'], function (module) {
             });
           });
         } else if ($scope.mode === "edit") {
+          $scope.adLayoutVersionUpdate = {name: $scope.adLayoutVersion.name};
+          if ($scope.selectedFiles.length) {
+            $scope.adLayoutVersionUpdate.template = $scope.adLayoutVersion.template;
+          }
           Restangular.all('ad_layouts/' + $scope.adLayout.id + '/versions/' + $scope.adLayout.current_version_id)
-            .customPUT($scope.adLayoutVersion, undefined, {organisation_id: organisationId}).then(function (adLayoutVersion) {
-              if ($scope.file) {
-                $scope.$broadcast("adlayout:upload", {adLayoutId: adLayout.id, adLayoutVersionId: adLayoutVersion.id});
-              } else {
-                $location.path('/' + organisationId + "/library/adlayouts");
-              }
+            .customPUT($scope.adLayoutVersionUpdate, undefined, {organisation_id: organisationId}).then(function (adLayoutVersion) {
+              optionalUpload($scope.adLayout.id, adLayoutVersion.id);
             });
         }
       };
+
+      $scope.$watch("adLayout.renderer_id", function(rendererId) {
+        if (rendererId && $scope.mode === "new") {
+          Restangular.all("plugins/" + rendererId + "/versions").getList().then(function (versions) {
+            $scope.adRendererVersions = [];
+            for (var i = 0; i < versions.length; ++i) {
+              $scope.adRendererVersions.push(versions[i].id);
+            }
+            if ($scope.mode === "new") {
+              $scope.adLayout.renderer_version_id = versions[0].id;
+            }
+          });
+        }
+      });
+
+      $scope.$watch("selectedFiles", function (files) {
+        if (files.length) {
+          $scope.adLayoutVersion.filename = files[0].name;
+        }
+      });
 
       $scope.$on("plupload:uploaded", function () {
         $location.path('/' + organisationId + "/library/adlayouts");
       });
 
-      $scope.removeSelectedFile = function () {
-        $scope.file = "";
+      $scope.removeSelectedFiles = function () {
+        $scope.selectedFiles = [];
       };
 
       $scope.cancel = function () {

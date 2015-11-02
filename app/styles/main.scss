@@ -1960,6 +1960,18 @@ input.ng-invalid {
 
 .mics-sub-table {
   padding: 0 0 0 160px;
+  div > table > thead {
+    color: white;
+    background-color: $mcs-grey !important;
+  }
+
+  .mics-sub-table-actions {
+    width: 175px;
+    a {
+      padding: 0 8px;
+      font-size: 12px;
+    }
+  }
 }
 
 .table-hover > tbody > tr.disable-highlight:hover > td,
@@ -1967,13 +1979,6 @@ input.ng-invalid {
   background-color: transparent;
 }
 
-.mics-sub-table-actions {
-  width: 70px;
-  a {
-    padding: 0 8px;
-    font-size: 12px;
-  }
-}
 
 .clickableRow {
   cursor: pointer;
