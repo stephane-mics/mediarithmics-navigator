@@ -134,7 +134,7 @@ define(['./module'], function (module) {
 
                 $scope.results = [];
 
-                if (angular.element(document.getElementById('results')).attr('class').includes("active") && $scope.statistics.total != 0 && $scope.queryContainer.selectedValues.length != 0){
+                if (angular.element(document.getElementById('results')).attr('class').includes("active") && $scope.statistics.total !== 0 && $scope.queryContainer.selectedValues.length !== 0){
                     Restangular.one('datamarts', datamartId).customPOST(jsonQuery,'query_executions/result_preview').then(function(results){
                         $scope.results = results;
                     });
