@@ -5,8 +5,9 @@ define(['./module'], function (module) {
     module.controller('core/datamart/queries/QueryBuilder', [
         '$scope', '$stateParams', 'Restangular', '$q', 'lodash', 'core/common/auth/Session',
         'core/datamart/queries/common/Common', '$modal', "async", 'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment', '$rootScope',
+        '$location',
 
-        function ($scope, $stateParams, Restangular, $q, lodash, Session, Common, $modal, async, promiseUtils, $log, QueryContainer, moment, $rootScope) {
+        function ($scope, $stateParams, Restangular, $q, lodash, Session, Common, $modal, async, promiseUtils, $log, QueryContainer, moment, $rootScope, $location) {
 
             //dataTransfer hack : The jQuery event object does not have a dataTransfer property... true, but one can try:
             angular.element.event.props.push('dataTransfer');
@@ -40,6 +41,10 @@ define(['./module'], function (module) {
             });*/
 
             $scope.queryContainer = pQueryContainer;
+
+            $scope.goToTimeline = function(userPointId){
+                $location.path("/" + $stateParams.organisation_id + "/datamart/users/upid/" + userPointId);
+            };
 
             $scope.addGroup = function (queryContainer) {
                 queryContainer.addGroupContainer();
@@ -95,6 +100,22 @@ define(['./module'], function (module) {
                 });
             };
 
+            $scope.addSelectedValue = function (dragEl, dropEl, queryContainer) {
+
+                var drag = angular.element(document.getElementById(dragEl));
+                var dragPropertySelectorId = drag.children('span').attr('id');
+                var propertySelector = getDragSelector(dragPropertySelectorId);
+
+                $scope.$apply(function () {
+                    queryContainer.createSelectedValue(propertySelector);
+                });
+            };
+
+            $scope.removeSelectedValue = function (queryContainer,selectedValue) {
+                queryContainer.removeSelectedValue(selectedValue);
+                $scope.results = [];
+            };
+
             $scope.refreshQuery = function (queryContainer) {
                 var jsonQuery = queryContainer.prepareJsonQuery(datamartId);
                 Restangular.one('datamarts', datamartId).customPOST(jsonQuery,'query_executions').then(function(result){
@@ -110,7 +131,17 @@ define(['./module'], function (module) {
                     $scope.statistics.executionTimeInMs = 0;
                     $scope.statsError = "There was an error executing query";
                 });
+
+                $scope.results = [];
+
+                if (angular.element(document.getElementById('results')).attr('class').includes("active") && $scope.statistics.total != 0 && $scope.queryContainer.selectedValues.length != 0){
+                    Restangular.one('datamarts', datamartId).customPOST(jsonQuery,'query_executions/result_preview').then(function(results){
+                        $scope.results = results;
+                    });
+                }
             };
+
+            $scope.refreshQuery($scope.queryContainer);
 
             $scope.toHumanReadableDuration = function(duration) {
                 return moment.duration(duration,'ms').format("d [days] h [hours] m [minutes] s [seconds] S [ms]");

@@ -1,12 +1,12 @@
 <div class="mcs-default-container " ng-controller="core/datamart/queries/QueryBuilder">
     <div class="mcs-default-content">
         <div class="mcs-default-heading">
-            <h2>Audience Segment Query</h2>
-                <!--<div class="col-md-4">
-                    <div class="pull-right">
-                        <button class="mics-btn mics-btn-finish" ng-click="save(queryContainer)">Save</button>
-                    </div>
-                </div>-->
+            <h2>
+                <div class="pull-right">
+                    <a class="mics-btn mics-btn-action" ng-click="refreshQuery(queryContainer)">Refresh</a>
+                </div>
+                <span>Audience Segment Query</span>
+            </h2>
         </div>
         <div class="row">
             <div class="col-md-3">
@@ -62,30 +62,31 @@
                                     <div class="col-sm-4">
                                         <div class="query-stats"><span class="glyphicon glyphicon-envelope btn-lg"></span>{{statistics.hasEmail}}</div>
                                     </div>
+                                    <div class="col-sm-4">
+                                        <div class="query-stats"><span class="glyphicon glyphicon-globe btn-lg"></span>{{statistics.hasCookie}}</div>
+                                    </div>
                                     <!--<div class="col-sm-3">
-                                        <span class="glyphicon glyphicon-globe"></span> {{statistics.hasCookie}}
-                                    </div>-->
-                                    <div class="col-sm-3">
                                         <div class="refresh-stats pull-right">
                                         <button type="button" class="mics-btn mics-btn-action btn-xs"
                                                 ng-click="refreshQuery(queryContainer)">
                                             <span class="glyphicon glyphicon-refresh"></span>Refresh
                                         </button>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div>
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a href="#">Query conditions</a></li>
-                                <li><a href="#">Selected values</a></li>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a data-target="#conditions" aria-controls="conditions" role="tab" data-toggle="tab">Query conditions</a></li>
+                                <li role="presentation"><a data-target="#selected" aria-controls="selected" role="tab" data-toggle="tab">Selected values</a></li>
+                                <li role="presentation"><a data-target="#results" aria-controls="results" role="tab" data-toggle="tab">Results</a></li>
                             </ul>
                         </div>
                         <div class="tab-content">
-                            <div class="tab-pane active" style="margin-top: 15px">
+                            <div role="tabpanel" class="query-tab tab-pane fade in active" id="conditions">
                                 <div ng-repeat="(i,groupContainer) in queryContainer.groupContainers">
                                     <div ng-class="{'panel panel-success':!groupContainer.value.excluded, 'panel panel-danger':groupContainer.value.excluded}">
                                         <div class="panel-heading">
@@ -138,6 +139,49 @@
                                     </div>
                                 </div>
                                 <button class="btn btn-default" ng-click="addGroup(queryContainer)">Add a group of conditions</button>
+                            </div>
+                            <div role="tabpanel" class="query-tab tab-pane fade" id="selected">
+
+                                <div class="panel panel-default">
+                                    <div class="panel-body" ng-class="{'ongoing-drag-decorate':onGoingDrag}" >
+                                        <div x-lvl-drop-target='true' x-on-drop='addSelectedValue(dragEl, dropEl , queryContainer)'>
+                                            <div ng-repeat="selectedValue in queryContainer.selectedValues">
+                                                <div class="col-md-12">
+                                                    {{selectedValue.selector_family === 'EVENTS' ? selectedValue.family_parameters : selectedValue.selector_family}} : {{selectedValue.selector_name === 'CUSTOM_PROPERTY' || selectedValue.selector_name === 'CUSTOM_EVENT' ? selectedValue.selector_parameters : selectedValue.selector_name}}
+                                                    <div class="pull-right">
+                                                        <button type="button" class="btn btn-default btn-xs" aria-label="remove"
+                                                                ng-click="removeSelectedValue(queryContainer,selectedValue)">
+                                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 droppable-zone"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div role="tabpanel" class="query-tab tab-pane fade" id="results">
+                                <div ng-show="queryContainer.selectedValues.length == 0">Add Selected values first !</div>
+                                <div ng-show="statistics.total == 0">No Results</div>
+                                <div ng-show="queryContainer.selectedValues.length != 0 && results.length == 0">Click refresh to view results</div>
+                                <table class="mics-table results-tab" ng-show="results && results.metadata">
+                                    <thead>
+                                    <tr>
+                                        <th ng-repeat="header in results.metadata">{{header.selector_name}}</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="row in results.rows">
+                                        <td ng-repeat="column in results.metadata">{{row['cells'][column.json_path]}}</td>
+                                        <td>
+                                            <a class="mics-btn mics-btn-action btn-xs" ng-click="goToTimeline(row['user_point_id'])">Timeline</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
