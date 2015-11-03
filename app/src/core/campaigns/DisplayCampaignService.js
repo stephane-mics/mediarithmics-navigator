@@ -160,18 +160,18 @@ define(['./module'], function (module) {
       };
 
       /**
-       * User group methods
+       * Audience Segment methods
        */
-      service.getUserGroups = function (adGroupId) {
-        return this.campaignCtn.getAdGroup(adGroupId).userGroups;
+      service.getAudienceSegments = function (adGroupId) {
+        return this.campaignCtn.getAdGroup(adGroupId).audienceSegments;
       };
 
-      service.addUserGroup = function (adGroupId, usergroup) {
-        return this.campaignCtn.getAdGroup(adGroupId).addUserGroup(usergroup);
+      service.addAudienceSegment = function (adGroupId, segment) {
+        return this.campaignCtn.getAdGroup(adGroupId).addAudienceSegment(segment);
       };
 
-      service.removeUserGroup = function (adGroupId, userGroup) {
-        this.campaignCtn.getAdGroup(adGroupId).removeUserGroup(userGroup);
+      service.removeAudienceSegment = function (adGroupId, segment) {
+        this.campaignCtn.getAdGroup(adGroupId).removeAudienceSegment(segment);
       };
 
 

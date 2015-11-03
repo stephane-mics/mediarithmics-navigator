@@ -39,17 +39,17 @@
         ) - {{adGroup.bid_optimization_objective_type}} {{adGroup.bid_optimization_objective_value}} &euro;
       </h5>
     </div>
-    <div class="ad-group-component" ng-show="getUserGroups(adGroup.id).length">
-      <h5>user groups <span class="badge">{{getUserGroups(adGroup.id).length}}</span></h5>
+    <div class="ad-group-component" ng-show="getAudienceSegments(adGroup.id).length">
+      <h5>Audience Segments <span class="badge">{{getAudienceSegments(adGroup.id).length}}</span></h5>
 
       <div>
-        <span ng-repeat="userGroup in getUserGroups(adGroup.id)">
+        <span ng-repeat="segment in getAudienceSegments(adGroup.id)">
           <!-- {{userGroup.name}}, exclude = {{userGroup.exclude}} -->
         </span>
       </div>
     </div>
     <div class="ad-group-component" ng-show="getKeywordLists(adGroup.id).length">
-      <h5>keywords lists <span class="badge">{{getKeywordLists(adGroup.id).length}}</span></h5>
+      <h5>Keywords lists <span class="badge">{{getKeywordLists(adGroup.id).length}}</span></h5>
 
       <div>
         <span ng-repeat="keywordList in getKeywordLists(adGroup.id)">

@@ -7,7 +7,7 @@ define(['./module'], function (module) {
     function ($log, $q, _) {
 
       var campaignTemplates = [{
-        name: "Multi Targeting",
+        name: "Desktop & Mobile",
         editor_version_id: "11",
         group_id: "com.mediarithmics.campaign.display",
         artifact_id: "default-template",
@@ -17,7 +17,7 @@ define(['./module'], function (module) {
           edit_path: "/{organisation_id}/campaigns/display/expert/edit/{id}"
         }
       }, {
-        name: "Keywords Targeting",
+        name: "Simplified Keywords Targeting",
         editor_version_id: "12",
         group_id: "com.mediarithmics.campaign.display",
         artifact_id: "keywords-targeting-template",
@@ -26,7 +26,8 @@ define(['./module'], function (module) {
           create_path: "/{organisation_id}/campaigns/display/keywords",
           edit_path: "/{organisation_id}/campaigns/display/keywords/{id}"
         }
-      }, {
+      }
+        /* {
         name: "Email campaign",
         editor_version_id: "17",
         group_id: "com.mediarithmics.campaign.email",
@@ -36,7 +37,8 @@ define(['./module'], function (module) {
           create_path: "/{organisation_id}/campaigns/email/expert",
           edit_path: "/{organisation_id}/campaigns/email/expert/{id}"
         }
-      }];
+        */
+      ];
 
       function CampaignPluginService() {
       }
@@ -46,7 +48,7 @@ define(['./module'], function (module) {
          * Get all the campaign templates, asynchronously.
          * @return {$q.promise} the promise with the templates.
          */
-        getAllCampaignEditors: function () {
+        getAllDisplayCampaignEditors: function () {
           var deferred = $q.defer();
 
           setTimeout(function () {
@@ -54,6 +56,11 @@ define(['./module'], function (module) {
           }, 0);
 
           return deferred.promise;
+        },
+
+        getAllCampaignEditors : function () {
+
+          return this.getAllDisplayCampaignEditors();
         },
 
         /**
