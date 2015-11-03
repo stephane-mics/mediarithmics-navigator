@@ -177,7 +177,7 @@
                                     <tr ng-repeat="row in results.rows">
                                         <td ng-repeat="column in results.metadata">{{row['cells'][column.json_path]}}</td>
                                         <td>
-                                            <a class="mics-btn mics-btn-action btn-xs" ng-click="goToTimeline(row['user_point_id'])">Timeline</a>
+                                            <a class="mics-btn mics-btn-action btn-xs"  ng-href="{{goToTimeline(row['user_point_id'])}}">Timeline</a>
                                         </td>
                                     </tr>
                                     </tbody>

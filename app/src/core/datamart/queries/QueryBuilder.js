@@ -43,7 +43,7 @@ define(['./module'], function (module) {
             $scope.queryContainer = pQueryContainer;
 
             $scope.goToTimeline = function(userPointId){
-                $location.path("/" + $stateParams.organisation_id + "/datamart/users/upid/" + userPointId);
+                return "/#/" + $stateParams.organisation_id + "/datamart/users/upid/" + userPointId;
             };
 
             $scope.addGroup = function (queryContainer) {
