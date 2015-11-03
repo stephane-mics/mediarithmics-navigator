@@ -57,13 +57,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <div class="query-stats"><span class="glyphicon glyphicon-user btn-lg"></span>{{statistics.total}}</div>
+                                        <div class="query-stats"><span class="glyphicon glyphicon-user btn-lg"></span>{{statistics.total | number}}</div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <div class="query-stats"><span class="glyphicon glyphicon-envelope btn-lg"></span>{{statistics.hasEmail}}</div>
+                                        <div class="query-stats"><span class="glyphicon glyphicon-envelope btn-lg"></span>{{statistics.hasEmail | number}}</div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <div class="query-stats"><span class="glyphicon glyphicon-globe btn-lg"></span>{{statistics.hasCookie}}</div>
+                                        <div class="query-stats"><span class="glyphicon glyphicon-globe btn-lg"></span>{{statistics.hasCookie | number}}</div>
                                     </div>
                                     <!--<div class="col-sm-3">
                                         <div class="refresh-stats pull-right">
