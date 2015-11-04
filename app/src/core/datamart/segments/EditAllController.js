@@ -32,7 +32,7 @@ define(['./module'], function (module) {
         var newScope = $scope.$new(true);
         newScope.segment = segment;
         $modal.open({
-          templateUrl: 'src/core/datarmart/segments/delete.html',
+          templateUrl: 'src/core/datamart/segments/delete.html',
           scope : newScope,
           backdrop : 'static',
           controller: 'core/datamart/segments/DeleteController'

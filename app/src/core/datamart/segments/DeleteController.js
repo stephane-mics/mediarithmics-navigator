@@ -6,7 +6,7 @@ define(['./module'], function (module) {
     function($scope, $modalInstance, $location, $state, $stateParams, errorService) {
 
       $scope.done = function() {
-        $scope.userGroup.remove().then(function (){
+        $scope.segment.remove().then(function (){
           $modalInstance.close();
           $location.path("/datamart/segments");
 

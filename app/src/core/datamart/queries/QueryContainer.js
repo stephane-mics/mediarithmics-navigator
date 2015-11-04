@@ -6,22 +6,27 @@ define(['./module'], function (module) {
 
         function (Restangular, $q, lodash, Session, async, promiseUtils, $log) {
 
-            var ElementContainer = function ElementContainer(value) {
+            var ElementContainer = function ElementContainer(groupContainer, value) {
                 if (value) {
                     this.value = value;
                     this.id = value.id;
                 }
 
+                this.groupContainer = groupContainer;
+
                 this.conditions = [];
                 this.removedConditions = [];
-
             };
 
             ElementContainer.prototype.getName = function () {
-                if (this.conditions[0].property_selector_family === 'EVENTS'){
-                    return this.conditions[0].property_selector_family_parameter;
-                }else{
-                    return this.conditions[0].property_selector_family;
+                if (this.conditions[0]){
+                    if (this.conditions[0].property_selector_family === 'EVENTS'){
+                        return this.conditions[0].property_selector_family_parameter;
+                    }else{
+                        return this.conditions[0].property_selector_family;
+                    }
+                }else {
+                    return "";
                 }
             };
 
@@ -51,13 +56,82 @@ define(['./module'], function (module) {
                 return {conditions:Restangular.stripRestangular(this.conditions)};
             };
 
-            /*ElementContainer.prototype.loadConditions = function () {
+            ElementContainer.prototype.loadConditions = function () {
                 var self = this;
                 return this.value.all('conditions').getList().then(function (conditions) {
                     self.conditions = conditions;
                     return self.conditions;
                 });
-            };*/
+            };
+
+            ElementContainer.prototype.saveTasks = function () {
+                var addConditions = lodash.filter(this.conditions, function (condition) {
+                    return !condition.id;
+                });
+
+                var updateConditions = lodash.filter(this.conditions, function (condition) {
+                    return condition.id;
+                });
+
+                var self = this;
+                var pAddConditionTasks = lodash.map(addConditions, function (condition) {
+                    return ElementContainer.addConditionTask(self, condition);
+                });
+
+                var pUpdateConditionTasks = lodash.map(updateConditions, function (condition) {
+                    return ElementContainer.updateConditionTask(condition);
+                });
+
+                var pDeleteConditionTasks = lodash.map(this.removedConditions, function (condition) {
+                    return ElementContainer.deleteConditionTask(condition);
+                });
+
+                var pList = [];
+                pList = pList.concat(pDeleteConditionTasks);
+                pList = pList.concat(pUpdateConditionTasks);
+                pList = pList.concat(pAddConditionTasks);
+
+                return pList;
+            };
+
+            ElementContainer.updateConditionTask = function (condition) {
+                return function (callback) {
+                    $log.info("update condition : ", condition.id);
+                    var promise = condition.put();
+                    promiseUtils.bindPromiseCallback(promise, callback);
+                };
+            };
+
+            ElementContainer.addConditionTask = function (elementContainer, condition) {
+                return function (callback) {
+                    $log.info("saving condition on elementId : " + elementContainer.id + ', ', condition);
+                    var conditionsEndpoint;
+                    if (elementContainer.conditions.length === 0) {
+                        var datamartId = elementContainer.groupContainer.queryContainer.datamartId;
+                        var queryId = elementContainer.groupContainer.queryContainer.id;
+                        var groupId = elementContainer.groupContainer.id;
+                        var elementId = elementContainer.id;
+                        conditionsEndpoint = Restangular
+                            .one('datamarts', datamartId)
+                            .one('queries', queryId)
+                            .one('groups', groupId)
+                            .one('elements', elementId)
+                            .all('conditions');
+                    } else {
+                        conditionsEndpoint = elementContainer.conditions;
+                    }
+                    var promise = conditionsEndpoint.post(condition);
+                    promiseUtils.bindPromiseCallback(promise, callback);
+                };
+            };
+
+            ElementContainer.deleteConditionTask = function (condition) {
+                return function (callback) {
+                    $log.info("delete condition : ", condition.id);
+                    var promise = condition.remove();
+                    promiseUtils.bindPromiseCallback(promise, callback);
+                };
+            };
 
             var GroupContainer = function GroupContainer(queryContainer, value) {
                 if (value) {
@@ -77,11 +151,11 @@ define(['./module'], function (module) {
                 this.value.excluded = !this.value.excluded;
             };
 
-           /* GroupContainer.prototype.loadElements = function () {
+            GroupContainer.prototype.loadElements = function () {
                 var self = this;
                 return this.value.all('elements').getList().then(function (elements) {
                     return lodash.map(elements, function(element){
-                        var elementContainer = new ElementContainer(element)
+                        var elementContainer = new ElementContainer(self,element);
                         var conditionsP = elementContainer.loadConditions();
                         self.elementContainers.push(elementContainer);
 
@@ -91,7 +165,7 @@ define(['./module'], function (module) {
                     });
 
                 });
-            };*/
+            };
 
             GroupContainer.prototype.removeElementContainer = function (element) {
                 if (element.id) {
@@ -112,81 +186,82 @@ define(['./module'], function (module) {
                     property_selector_value_type: propertySelector.value_type
                 };
 
-                var elementContainer = new ElementContainer();
+                var elementContainer = new ElementContainer(this);
                 elementContainer.conditions.push(condition);
 
                 this.elementContainers.push(elementContainer);
             };
 
-            /*var conditionIsAbsent = function (conditions, condition) {
-                var found = lodash.find(conditions, function (cond) {
-                    return cond.property_selector_id === condition.property_selector_id;
-                });
-                return !found;
-            };*/
-
-            /*GroupContainer.prototype.saveTasks = function () {
-                var addConditions = lodash.filter(this.conditions, function (condition) {
-                    return !condition.id;
+            GroupContainer.prototype.saveTasks = function () {
+                var addElementContainers = lodash.filter(this.elementContainers, function (elementContainer) {
+                    return !elementContainer.id;
                 });
 
-                var updateConditions = lodash.filter(this.conditions, function (condition) {
-                    return condition.id;
+                var updateElementContainers = lodash.filter(this.elementContainers, function (elementContainer) {
+                    return elementContainer.id;
                 });
 
-                var self = this;
-                var pAddConditionTasks = lodash.map(addConditions, function (condition) {
-                    return GroupContainer.addConditionTask(self, condition);
+                var pAddElementTasks = lodash.map(addElementContainers, function (elementContainer) {
+                    return GroupContainer.addElementWithConditionsTask(elementContainer, elementContainer.conditions);
                 });
 
-                var pUpdateConditionTasks = lodash.map(updateConditions, function (condition) {
-                    return GroupContainer.updateConditionTask(condition);
+                var pDeleteElementTasks = lodash.map(this.removedElementContainers, function (elementContainer) {
+                    return GroupContainer.deleteElementTask(elementContainer);
                 });
 
-                var pDeleteConditionTasks = lodash.map(this.removedConditions, function (condition) {
-                    return GroupContainer.deleteConditionTask(condition);
-                });
+                var pElementTasks = lodash.flatten(lodash.map(updateElementContainers, function (elementContainer) {
+                    return elementContainer.saveTasks();
+                }));
 
                 var pList = [];
-                pList = pList.concat(pDeleteConditionTasks);
-                pList = pList.concat(pUpdateConditionTasks);
-                pList = pList.concat(pAddConditionTasks);
+                pList = pList.concat(pAddElementTasks);
+                pList = pList.concat(pDeleteElementTasks);
+                pList = pList.concat(pElementTasks);
 
                 return pList;
-            };*/
+            };
 
-           /* GroupContainer.updateConditionTask = function (condition) {
+            GroupContainer.addElementWithConditionsTask = function (elementContainer, conditions) {
                 return function (callback) {
-                    $log.info("update condition : ", condition.id);
-                    var promise = condition.put();
+                    $log.info("saving a new element");
+
+                    var deferred = $q.defer();
+                    var promise = deferred.promise;
+
+                    var datamartId = elementContainer.groupContainer.queryContainer.datamartId;
+                    var queryId = elementContainer.groupContainer.queryContainer.id;
+                    var groupId = elementContainer.groupContainer.id;
+
+                    var queryEndpoint = Restangular.one('datamarts', datamartId).one('queries', queryId);
+                    var pElement = queryEndpoint.one('groups',groupId).all('elements').post();
+
+                    pElement.then(function success (savedElement) {
+                        var pConditions = lodash.map(conditions, function (condition) {
+                            return ElementContainer.addConditionTask(new ElementContainer(elementContainer.groupContainer, savedElement), condition);
+                        });
+                        async.series(pConditions, function (err, res) {
+                            if (err) {
+                                deferred.reject(err);
+                            } else {
+                                deferred.resolve(savedElement);
+                            }
+                        });
+
+                    }, function error(reason) {
+                        deferred.reject(reason);
+                    });
+
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
 
-            GroupContainer.addConditionTask = function (conditionGroupContainer, condition) {
+            GroupContainer.deleteElementTask = function (elementContainer) {
                 return function (callback) {
-                    $log.info("saving condition on groupId : " + conditionGroupContainer.id + ', ', condition);
-                    var conditionsEndpoint;
-                    if (conditionGroupContainer.conditions.length === 0) {
-                        var datamartId = conditionGroupContainer.queryContainer.datamartId;
-                        var queryId = conditionGroupContainer.queryContainer.id;
-                        var groupId = conditionGroupContainer.id;
-                        conditionsEndpoint = Restangular.one('datamarts', datamartId).one('queries', queryId).one('condition_groups', groupId).all('conditions');
-                    } else {
-                        conditionsEndpoint = conditionGroupContainer.conditions;
-                    }
-                    var promise = conditionsEndpoint.post(condition);
+                    $log.info("delete element : ", elementContainer.id);
+                    var promise = elementContainer.value.remove();
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
-
-            GroupContainer.deleteConditionTask = function (condition) {
-                return function (callback) {
-                    $log.info("delete condition : ", condition.id);
-                    var promise = condition.remove();
-                    promiseUtils.bindPromiseCallback(promise, callback);
-                };
-            };*/
 
             GroupContainer.prototype.buildInfoResource = function () {
                 var _elements = lodash.map(this.elementContainers, function(elementContainer){
@@ -199,45 +274,49 @@ define(['./module'], function (module) {
             };
 
 
-            var QueryContainer = function QueryContainer(value) {
-                if (value){
-                    this.value = value;
-                    this.datamartId = value.datamart_id;
-                    this.id = value.id;
-                }
+            var QueryContainer = function QueryContainer(datamartId) {
+
+                this.datamartId = datamartId;
 
                 this.selectedValues = [];
+                this.removedSelectedValues = [];
+
                 this.groupContainers = [];
                 this.removedGroupContainers = [];
             };
 
-            /*QueryContainer.load = function (datamartId, queryId) {
+            QueryContainer.prototype.load = function (queryId) {
 
-                var queryEndpoint = Restangular.one('datamarts', datamartId).one('queries', queryId);
+                var queryEndpoint = Restangular.one('datamarts', this.datamartId).one('queries', queryId);
 
                 var pQuery = queryEndpoint.get();
                 var pGroups = queryEndpoint.all('groups').getList();
+                var pSelectedValues = queryEndpoint.all('property_selectors').getList();
+                var self = this;
 
-                return $q.all([pQuery, pGroups]).then(function (result) {
-                    //query
-                    var queryContainer = new QueryContainer(result[0]);
-                    //conditionGroups
-                    queryContainer.groupContainers = lodash.sortBy(result[1], function (group) {
+                return $q.all([pQuery, pGroups, pSelectedValues]).then(function (result) {
+
+                    self.id = queryId;
+                    self.value = result[0];
+
+                    self.groupContainers = lodash.sortBy(result[1], function (group) {
                         return group.id;
                     }).map(function (group) {
-                        return new GroupContainer(queryContainer, group);
+                        return new GroupContainer(self, group);
                     });
 
-                    var elementsP = lodash.map(queryContainer.groupContainers, function (groupContainer) {
+                    var elementsP = lodash.map(self.groupContainers, function (groupContainer) {
                         return groupContainer.loadElements();
                     });
 
+                    self.selectedValues = result[2];
+
                     return $q.all(elementsP).then(function () {
-                        return queryContainer;
+                        return self;
                     });
 
                 });
-            };*/
+            };
 
             QueryContainer.prototype.addGroupContainer = function () {
                 this.groupContainers.push(new GroupContainer(this));
@@ -252,15 +331,47 @@ define(['./module'], function (module) {
             };
 
             QueryContainer.prototype.createSelectedValue = function (propertySelector) {
-                this.selectedValues.push(propertySelector);
+
+                var selectedValue = {
+                    selector_family: propertySelector.selector_family,
+                    selector_name: propertySelector.selector_name,
+                    family_parameters: propertySelector.family_parameters,
+                    selector_parameters: propertySelector.selector_parameters,
+                    value_type: propertySelector.value_type,
+                    property_selector_id: propertySelector.id
+                };
+
+                var alreadySelected = lodash.find(this.selectedValues, function (selector) {
+                    return selector.property_selector_id === propertySelector.id;
+                });
+                if (!alreadySelected){
+                    this.selectedValues.push(selectedValue);
+                }
             };
 
             QueryContainer.prototype.removeSelectedValue = function (selectedValue) {
+                this.removedSelectedValues.push(selectedValue);
+
                 var i = this.selectedValues.indexOf(selectedValue);
                 this.selectedValues.splice(i, 1);
             };
 
-           /* QueryContainer.prototype.save = function () {
+            QueryContainer.prototype.save = function () {
+                var self = this;
+                if (!self.id){
+                    return Restangular.one('datamarts', self.datamartId).all('queries').post().then(function(query) {
+                        self.id = query.id;
+                        return self.update();
+                    });
+                } else {
+                    return self.update();
+                }
+
+
+            };
+
+            QueryContainer.prototype.update = function() {
+                var self = this;
                 var addGroupContainers = lodash.filter(this.groupContainers, function (groupContainer) {
                     return !groupContainer.id;
                 });
@@ -269,49 +380,75 @@ define(['./module'], function (module) {
                     return groupContainer.id;
                 });
 
-                var pAddConditionGroupTasks = lodash.map(addGroupContainers, function (groupContainer) {
-                    return QueryContainer.addConditionGroupTask(groupContainer);
+                var pAddGroupTasks = lodash.map(addGroupContainers, function (groupContainer) {
+                    return QueryContainer.addGroupTask(groupContainer);
                 });
 
-                var pUpdateConditionGroupTasks = lodash.map(updateGroupContainers, function (groupContainer) {
-                    return QueryContainer.updateConditionGroupTask(groupContainer);
+                var pUpdateGroupTasks = lodash.map(updateGroupContainers, function (groupContainer) {
+                    return QueryContainer.updateGroupTask(groupContainer);
                 });
 
-                var pDeleteConditionGroupTasks = lodash.map(this.removedGroupContainers, function (groupContainer) {
-                    return QueryContainer.deleteConditionGroupTask(groupContainer);
+                var pDeleteGroupTasks = lodash.map(this.removedGroupContainers, function (groupContainer) {
+                    return QueryContainer.deleteGroupTask(groupContainer);
                 });
 
-                var pConditionTasks = lodash.flatten(lodash.map(updateGroupContainers, function (groupContainer) {
+                var pGroupTasks = lodash.flatten(lodash.map(updateGroupContainers, function (groupContainer) {
                     return groupContainer.saveTasks();
                 }));
 
-                var pList = [];
-                pList = pList.concat(pAddConditionGroupTasks);
-                pList = pList.concat(pDeleteConditionGroupTasks);
-                pList = pList.concat(pUpdateConditionGroupTasks);
-                pList = pList.concat(pConditionTasks);
+                var addPropertySelectors = lodash.filter(this.selectedValues, function (selectedValue) {
+                    return !selectedValue.id;
+                });
 
-                return async.series(pList);
+                var pAddPropertySelectorTasks = lodash.map(addPropertySelectors, function (selectedValue) {
+                    return QueryContainer.addPropertySelectorTask(self, selectedValue);
+                });
+
+                var pDeletePropertySelectorTasks = lodash.map(this.removedSelectedValues, function (selectedValue) {
+                    return QueryContainer.removePropertySelectorTask(selectedValue);
+                });
+
+                var deferred = $q.defer();
+                var promise = deferred.promise;
+
+                var pList = [];
+                pList = pList.concat(pAddGroupTasks);
+                pList = pList.concat(pDeleteGroupTasks);
+                pList = pList.concat(pUpdateGroupTasks);
+                pList = pList.concat(pGroupTasks);
+                pList = pList.concat(pAddPropertySelectorTasks);
+                pList = pList.concat(pDeletePropertySelectorTasks);
+
+                async.series(pList, function (err, res) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(self);
+                    }
+                });
+
+                return promise;
             };
 
-            QueryContainer.addConditionGroupTask = function (conditionGroupContainer) {
+            QueryContainer.addGroupTask = function (groupContainer) {
                 return function (callback) {
-                    $log.info("saving condition group : ", conditionGroupContainer.value);
+                    $log.info("saving group : ", groupContainer.value);
 
                     var deferred = $q.defer();
                     var promise = deferred.promise;
 
-                    var datamartId = conditionGroupContainer.queryContainer.datamartId;
-                    var queryId = conditionGroupContainer.queryContainer.id;
+                    var datamartId = groupContainer.queryContainer.datamartId;
+                    var queryId = groupContainer.queryContainer.id;
 
                     var queryEndpoint = Restangular.one('datamarts', datamartId).one('queries', queryId);
-                    var pConditionGroup = queryEndpoint.all('condition_groups').post(conditionGroupContainer.value);
+                    var pGroup = queryEndpoint.all('groups').post(groupContainer.value);
 
-                    pConditionGroup.then(function (savedGroup) {
-                        var pConditions = lodash.map(conditionGroupContainer.conditions, function (condition) {
-                            return GroupContainer.addConditionTask(new GroupContainer(conditionGroupContainer.queryContainer, savedGroup), condition);
+                    pGroup.then(function success (savedGroup) {
+                        var pElements = lodash.map(groupContainer.elementContainers, function (elementContainer) {
+                            var saveGroupContainer = new GroupContainer(groupContainer.queryContainer, savedGroup);
+                            return GroupContainer.addElementWithConditionsTask(new ElementContainer(saveGroupContainer), elementContainer.conditions);
                         });
-                        async.series(pConditions, function (err, res) {
+                        async.series(pElements, function (err, res) {
                             if (err) {
                                 deferred.reject(err);
                             } else {
@@ -319,35 +456,60 @@ define(['./module'], function (module) {
                             }
                         });
 
+                    }, function error(reason) {
+                        deferred.reject(reason);
                     });
 
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
 
-            QueryContainer.updateConditionGroupTask = function (conditionGroupContainer) {
+            QueryContainer.addPropertySelectorTask = function (queryContainer, propertySelector) {
                 return function (callback) {
-                    $log.info("update condition group : ", conditionGroupContainer.id);
-                    var promise = conditionGroupContainer.value.put();
+                    $log.info("saving property selector on queryId : " + queryContainer.id + ', ', propertySelector);
+                    var datamartId = queryContainer.datamartId;
+                    var queryId = queryContainer.id;
+                    var propertySelectorsEndpoint = Restangular
+                        .one('datamarts', datamartId)
+                        .one('queries', queryId)
+                        .all('property_selectors');
+
+                    var promise = propertySelectorsEndpoint.post(propertySelector);
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
 
-            QueryContainer.deleteConditionGroupTask = function (conditionGroupContainer) {
+            QueryContainer.removePropertySelectorTask = function (propertySelector) {
                 return function (callback) {
-                    $log.info("delete condition group : ", conditionGroupContainer.id);
-                    var promise = conditionGroupContainer.value.remove();
+                    $log.info("delete property selector : ", propertySelector.id);
+                    var promise = propertySelector.remove();
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
-            };*/
+            };
 
-            QueryContainer.prototype.prepareJsonQuery = function (datamartId) {
+            QueryContainer.updateGroupTask = function (groupContainer) {
+                return function (callback) {
+                    $log.info("update group : ", groupContainer.id);
+                    var promise = groupContainer.value.put();
+                    promiseUtils.bindPromiseCallback(promise, callback);
+                };
+            };
+
+            QueryContainer.deleteGroupTask = function (groupContainer) {
+                return function (callback) {
+                    $log.info("delete group : ", groupContainer.id);
+                    var promise = groupContainer.value.remove();
+                    promiseUtils.bindPromiseCallback(promise, callback);
+                };
+            };
+
+            QueryContainer.prototype.prepareJsonQuery = function () {
                 var _groups = lodash.map(this.groupContainers, function(groupContainer){
                     return groupContainer.buildInfoResource();
                 });
                 return {
                   /*id:this.id,*/
-                  datamart_id:datamartId,
+                  datamart_id:this.datamartId,
                   groups:_groups,
                   property_selectors:this.selectedValues
                 };

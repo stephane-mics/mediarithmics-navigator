@@ -125,17 +125,7 @@ define(['./module'], function (module) {
         })
         .state('datamart/queries', {
           url: '/:organisation_id/datamart/queries',
-          templateUrl: 'src/core/datamart/queries/builder.html',
-          data: {
-            sidebar: {
-              templateUrl : 'src/core/datamart/datamart-sidebar.html',
-              selected: 'query'
-            }
-          }
-        })
-        .state('datamart/queries/:queryId', {
-          url: '/:organisation_id/datamart/queries/:queryId',
-          templateUrl: 'src/core/datamart/queries/builder.html',
+          templateUrl: 'src/core/datamart/queries/index.html',
           data: {
             sidebar: {
               templateUrl : 'src/core/datamart/datamart-sidebar.html',

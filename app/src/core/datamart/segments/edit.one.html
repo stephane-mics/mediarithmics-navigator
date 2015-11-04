@@ -11,13 +11,32 @@
       <h1 ng-if="!isCreationMode">Edit Audience Segment</h1>
     </div>
 
+    <div class="row" ng-show='error'>
+      <div class="col-md-12">
+        <div class="alert alert-danger" role="alert">{{error}}</div>
+      </div>
+    </div>
+
     <!-- Name -->
     <div mcs-form-group="" label-for="audience_segment_name" label-text="Name">
       <input required class="input-lg" ng-model="segment.name" type="text" id="audience_segment_name">
     </div>
 
 
+
+    <h1>
+      <div class="pull-right">
+        <a class="mics-btn mics-btn-action" ng-click="refreshQuery()">Refresh</a>
+      </div>
+      <span>Query</span>
+    </h1>
+
     <br>
+
+    <div ng-if="segment.type == 'USER_QUERY'">
+    <mcs-query-tool datamart-id="datamartId" autoload="true" query-id="segment.query_id"></mcs-query-tool>
+    <br>
+    </div>
 
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
@@ -39,7 +58,6 @@
         </div>
       </div>
     </div>
-
 
     <div class="mcs-actions-group">
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
