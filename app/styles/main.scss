@@ -1855,20 +1855,32 @@ a.category-item {
     color: #FFFFFF;
   }
 
-  .failed {
+  .failed, .AUDIT_FAILED, .AUDIT_FAILURE {
     background-color: #FE5858;
   }
 
-  .success {
+  .success, .AUDIT_PASSED, .AUDIT_SUCCESS {
     background-color: #00AD68;
   }
 
-  .partially-passed {
+  .partially-passed, .AUDIT_PARTIALLY_PASSED {
     background-color: #092f56;
   }
 
-  .pending {
+  .pending, .AUDIT_PENDING {
     background-color: #FE8F10;
+  }
+
+  .show-details-button {
+    display: inline-block;
+    cursor: help;
+  }
+
+  .detail-popover {
+    min-width: 400px;
+    .status {
+      font-size: $font-size-base;
+    }
   }
 }
 
