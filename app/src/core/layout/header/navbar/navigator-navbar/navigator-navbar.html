@@ -29,7 +29,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
+        <li class="dropdown" dropdown>
           <a ng-hide="workspaces.length > 1" href="#" class="mcs-workspace-label">{{currentOrganisation}}</a>
           <a ng-show="workspaces.length > 1" href="#" class="mcs-workspace-label" dropdown-toggle>{{currentOrganisation}}
             <b class="caret"></b></a>
@@ -39,7 +39,7 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown">
+        <li class="dropdown" dropdown>
           <img dropdown-toggle src="./images/user.svg">
           <ul class="dropdown-menu">
             <li><p>{{user.email}}</p></li>
