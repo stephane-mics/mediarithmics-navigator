@@ -23,7 +23,7 @@
     </div>
 
 
-
+    <div ng-if="segment.type == 'USER_QUERY'">
     <h1>
       <div class="pull-right">
         <a class="mics-btn mics-btn-action" ng-click="refreshQuery()">Refresh</a>
@@ -33,7 +33,7 @@
 
     <br>
 
-    <div ng-if="segment.type == 'USER_QUERY'">
+
     <mcs-query-tool datamart-id="datamartId" autoload="true" query-id="segment.query_id"></mcs-query-tool>
     <br>
     </div>
