@@ -65,16 +65,16 @@
       </table>
     </div>
 
-    <!------------------------ Select Visitor Groups ------------------------>
+    <!------------------------ Select Audience Segments ------------------------>
     <div class="mcs-form-group">
       <div class="mics-block-heading">
-        <div ng-include="'src/core/usergroups/choose-user-groups.html'"></div>
-        <span>Select visitor groups</span>
+        <div ng-include="'src/core/datamart/segments/select-audience-segments.html'"></div>
+        <span>Select audience segments</span>
       </div>
-      <table class="fragment-list-user-groups" ng-show="getUserGroups(adGroup.id).length">
+      <table class="fragment-list-user-groups" ng-show="getAudienceSegments(adGroup.id).length">
         <thead>
         <tr>
-          <th>Group name</th>
+          <th>Segment name</th>
           <!-- <th>Total Users</th> -->
           <!-- <th>Duration (days)</th> -->
           <th>Target or Exclude</th>
@@ -82,15 +82,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="userGroup in getUserGroups(adGroup.id)">
-          <td>{{userGroup.name}}</td>
-          <!-- <td>{{userGroup.totalUsers}}</td> -->
-          <!-- <td>{{userGroup.duration}}</td> -->
+        <tr ng-repeat="segment in getAudienceSegments(adGroup.id)">
+          <td>{{segment.name}}</td>
           <td>
-            <div mics-exclude-toggle="userGroup.exclude"></div>
+            <div mics-exclude-toggle="segment.exclude"></div>
           </td>
           <td class="actions">
-            <button class="mics-btn mics-btn-delete" ng-click="deleteUserGroup(userGroup)">Remove</button>
+            <button class="mics-btn mics-btn-delete" ng-click="deleteAudienceSegment(segment)">Remove</button>
           </td>
         </tr>
         </tbody>

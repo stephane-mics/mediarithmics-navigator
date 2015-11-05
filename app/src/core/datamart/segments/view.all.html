@@ -1,0 +1,48 @@
+<div ng-controller="core/datamart/segments/EditAllController" class="mcs-default-container">
+  <div class="mcs-default-content">
+    <div class="mcs-default-heading">
+      <h1>All Audience Segments</h1>
+    </div>
+    <div class="mics-table-toolbar">
+      <div class ="col-md-6">
+        <div class="dropdown">
+          <button class="mics-btn mics-btn-add" type="button" dropdown-toggle>
+            New Audience Segment
+            <!-- <span class="caret"></span> -->
+          </button>
+
+          <ul class="dropdown-menu" role="menu" aria-labelledby="New Audience Segment">
+            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="createAudienceSegment('USER_LIST')">
+              User List
+            </a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="createAudienceSegment('USER_QUERY')">
+              User Query
+            </a></li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    <table class="mics-table js-auto-hide-actions" ng-show="segments.length">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Technical Id</th>
+          <th>Type</th>
+          <th class="actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="segment in segments">
+        <td>{{segment.name}}</td>
+        <td>{{segment.technical_name}}</td>
+        <td>{{segment.type}}</td>
+        <td class="actions">
+          <a class="mics-btn mics-btn-action" ng-click="editAudienceSegment(segment, $event)">Edit</a>
+          <a class="mics-btn mics-btn-delete" ng-click="deleteAudienceSegment(segment, $event)">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

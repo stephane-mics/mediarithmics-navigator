@@ -9,7 +9,8 @@ Prerequisites
 
 ### Overview
 System:
-* node.js, npm
+* node.js (version >= 0.12)
+* npm
 * ruby
 
 Node packages:

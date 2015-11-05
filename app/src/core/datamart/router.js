@@ -53,6 +53,26 @@ define(['./module'], function (module) {
             }
           }
         })
+        .state('datamart/segments', {
+          url: '/:organisation_id/datamart/segments',
+          templateUrl: 'src/core/datamart/segments/view.all.html',
+          data: {
+            sidebar: {
+              templateUrl : 'src/core/datamart/datamart-sidebar.html',
+              selected: 'segments'
+            }
+          }
+        })
+        .state('datamart/segments/edit', {
+          url:'/{organisation_id}/datamart/segments/:type/:segment_id',
+          templateUrl: 'src/core/datamart/segments/edit.one.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
+        })
+        .state('datamart/segments/create', {
+          url:'/{organisation_id}/datamart/segments/:type',
+          templateUrl: 'src/core/datamart/segments/edit.one.html',
+          data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
+        })     
         .state('datamart/users', {
           url: '/:organisation_id/datamart/users',
           templateUrl: 'src/core/datamart/users/view.all.html',
@@ -105,17 +125,7 @@ define(['./module'], function (module) {
         })
         .state('datamart/queries', {
           url: '/:organisation_id/datamart/queries',
-          templateUrl: 'src/core/datamart/queries/builder.html',
-          data: {
-            sidebar: {
-              templateUrl : 'src/core/datamart/datamart-sidebar.html',
-              selected: 'query'
-            }
-          }
-        })
-        .state('datamart/queries/:queryId', {
-          url: '/:organisation_id/datamart/queries/:queryId',
-          templateUrl: 'src/core/datamart/queries/builder.html',
+          templateUrl: 'src/core/datamart/queries/index.html',
           data: {
             sidebar: {
               templateUrl : 'src/core/datamart/datamart-sidebar.html',
