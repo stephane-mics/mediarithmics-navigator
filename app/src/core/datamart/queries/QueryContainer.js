@@ -511,7 +511,7 @@ define(['./module'], function (module) {
                   /*id:this.id,*/
                   datamart_id:this.datamartId,
                   groups:_groups,
-                  property_selectors:this.selectedValues
+                  property_selector_selections:this.selectedValues
                 };
             };
 
