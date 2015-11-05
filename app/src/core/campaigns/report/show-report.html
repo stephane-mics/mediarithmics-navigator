@@ -31,8 +31,8 @@
             <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L"
                    ranges="reportDefaultDateRanges" opens="'left'">
           </form>
-          <div class="dropdown pull-right">
-            <button class="btn btn-default" dropdown-toggle type="button">Export <span class="caret"></span></button>
+          <div class="dropdown pull-right" dropdown>
+            <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">Export <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="Choose Export Format">
               <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">Excel (.xlsx)</a></li>
               <!--<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('csv')">CSV</a></li>-->
