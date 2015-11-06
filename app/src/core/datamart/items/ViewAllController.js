@@ -25,6 +25,8 @@ define(['./module'], function (module) {
          $scope.catalogs = catalogs;
          if($stateParams.catalogId) {
           $scope.catalog = _.find(catalogs, {"$catalog_id": $stateParams.catalogId});
+         } else if (catalogs.length >0) {
+          $scope.catalog = catalogs[0];
          }
 
 //         $scope.refreshCategories(0, $scope.categoriesPerPage);
