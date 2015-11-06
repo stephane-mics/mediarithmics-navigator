@@ -75,6 +75,9 @@ define(['./module'], function (module) {
          $scope.catalogs = catalogs;
          if($stateParams.catalogId) {
           $scope.catalog = lodash.find(catalogs, {"$catalog_id": $stateParams.catalogId});
+         } else if (catalogs.length > 0) {
+          $scope.catalog = catalogs[0];
+          $location.path('/' + $stateParams.organisation_id + '/datamart/categories/'+$scope.catalog.$catalog_id);
          }
 
 //         $scope.refreshCategories(0, $scope.categoriesPerPage);
