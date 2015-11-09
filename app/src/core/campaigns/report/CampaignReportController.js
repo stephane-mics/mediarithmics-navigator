@@ -65,6 +65,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.chartArea = "chart-area";
       $scope.charts = ['clicks', 'impressions'];
       $scope.getChartName = ChartsService.getChartName;
+
       // Tabs Set
       var tableHeadersKeys = Object.keys(CampaignAnalyticsReportService.getTableHeaders());
       $scope.reverseSort = false;
