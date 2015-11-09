@@ -56,8 +56,8 @@
     <!-- Location -->
     <div mcs-form-group="select" label-for="location" label-text="Location">
       <select class="form-control" id="location" ng-model="campaignScopeHelper.locationSelector">
-        <option value="" ng-show="!locations.length">Worldwide</option>
-        <option value="custom" ng-selected="locations.length ? 'selected' : ''">Custom</option>
+        <option value="" ng-show="!locations.length">No targeting</option>
+        <option value="custom" ng-selected="locations.length ? 'selected' : ''">Custom targeting</option>
       </select>
     </div>
     <div>

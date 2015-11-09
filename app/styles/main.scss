@@ -169,6 +169,10 @@ input[type=daterange] {
   cursor: pointer; /* the plugin will display a custom component */
 }
 
+h1 {
+  font-size: 28px;
+}
+
 label {
   font-weight: normal;
 }
@@ -320,6 +324,10 @@ label {
   }
 }
 
+/*
+ * Buttons
+ */
+
 .mics-btn {
   @extend .btn;
   border-radius: $border-radius-force-round !important;
@@ -327,7 +335,7 @@ label {
     border-radius: $border-radius-force-round !important;
   }
 
-  @include button-size($padding-xs-vertical, $padding-base-horizontal, ceil(($font-size-base * 1.4)), $line-height-base, $border-radius-base);
+  @include button-size($padding-xs-vertical, $padding-base-horizontal, ceil(($font-size-base * 1.2)), $line-height-base, $border-radius-base);
 
   &:hover,
   &:focus,
@@ -340,6 +348,8 @@ label {
     margin-left: 5px;
   }
 }
+
+
 
 /* mics-btn override sizes and btn-xs is not enough to override the override. */
 .mics-btn.btn-xs {
@@ -1851,7 +1861,7 @@ a.category-item {
   .status {
     border-radius: 100px !important;
     padding: 0 1rem 0 1rem;
-    font-size: 17px;
+    font-size: 14px;
     display: inline-block;
     color: #FFFFFF;
   }
