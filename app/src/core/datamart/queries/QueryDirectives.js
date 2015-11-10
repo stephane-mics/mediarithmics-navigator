@@ -5,12 +5,9 @@ define(['./module'], function (module) {
     module.directive('mcsQueryTool', [
         'Restangular', '$q', 'lodash', 'core/common/auth/Session',
         'core/datamart/queries/common/Common', '$uibModal', "async",
-        'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment', '$rootScope',
-        'core/datamart/queries/common/Common', '$modal', "async",
         'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'core/datamart/queries/CriteriaContainer', 'moment', '$rootScope',
-
-        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, moment, $rootScope) {
-        function (Restangular, $q, lodash, Session, Common, $modal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope) {
+        
+        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope) {
 
             return {
                 restrict: 'E',
