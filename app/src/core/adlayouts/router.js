@@ -5,7 +5,7 @@ define(['./module'], function (module) {
     "$stateProvider",
     function ($stateProvider) {
       $stateProvider
-        // List ad layouts
+      // List ad layouts
         .state('adlayouts/list', {
           url: '/{organisation_id}/library/adlayouts',
           templateUrl: 'src/core/adlayouts/view.all.html',
@@ -17,13 +17,23 @@ define(['./module'], function (module) {
             }
           }
         })
-        .state('library/adlayouts/new', {
+        .state('adlayouts/newAdLayout', {
           url: '/{organisation_id}/library/adlayouts/new',
+          templateUrl: 'src/core/adlayouts/create.one.html',
+          data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
+        })
+        .state('adlayouts/newVersion', {
+          url: '/{organisation_id}/library/adlayouts/:ad_layout_id/new-version',
           templateUrl: 'src/core/adlayouts/edit.one.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         })
-        .state('library/adlayouts/edit', {
-          url: '/{organisation_id}/library/adlayouts/:ad_layout_id/versions/:version_id?mode',
+        .state('adlayouts/duplicateVersion', {
+          url: '/{organisation_id}/library/adlayouts/:ad_layout_id/new-version/:version_id',
+          templateUrl: 'src/core/adlayouts/edit.one.html',
+          data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
+        })
+        .state('adlayouts/editVersion', {
+          url: '/{organisation_id}/library/adlayouts/:ad_layout_id/version/:version_id',
           templateUrl: 'src/core/adlayouts/edit.one.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         });

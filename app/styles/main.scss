@@ -1959,7 +1959,8 @@ input.ng-invalid {
 // ------------ Ad layouts table
 
 .mics-sub-table {
-  padding: 0 0 0 160px;
+  padding: 0 0 0 80px;
+
   div > table > thead {
     color: white;
     background-color: $mcs-grey !important;
@@ -1967,6 +1968,8 @@ input.ng-invalid {
 
   .mics-sub-table-actions {
     width: 175px;
+    text-align: center;
+
     a {
       padding: 0 8px;
       font-size: 12px;
