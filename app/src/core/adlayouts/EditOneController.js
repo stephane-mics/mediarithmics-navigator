@@ -85,8 +85,10 @@ define(['./module'], function (module) {
         if ($scope.editMode) {
           // Edit a version
           $scope.adLayoutVersionUpdate = {filename: $scope.adLayoutVersion.filename};
-          if ($scope.selectedFiles.length) {
+          if ($scope.adLayoutVersion.filename) {
             $scope.adLayoutVersionUpdate.template = $scope.adLayoutVersion.template;
+          } else {
+            $scope.adLayoutVersionUpdate.template = null;
           }
           Restangular.all('ad_layouts/' + $scope.adLayout.id + '/versions/' + $scope.adLayoutVersion.id)
             .customPUT($scope.adLayoutVersionUpdate, undefined, {organisation_id: organisationId}).then(function (adLayoutVersion) {
@@ -124,6 +126,7 @@ define(['./module'], function (module) {
 
       $scope.removeSelectedFiles = function () {
         $scope.selectedFiles = [];
+        $scope.adLayoutVersion.filename = "";
       };
 
       $scope.cancel = function () {
