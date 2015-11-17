@@ -1,4 +1,4 @@
-define(['./module'], function (module) {
+define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/ViewAllController', [
@@ -18,10 +18,31 @@ define(['./module'], function (module) {
         }
       });
 
+      function matchAdLayoutVersions(versions) {
+        if (versions[0]) {
+          $.grep($scope.adLayouts, function (e) {
+            if (e.id === versions[0].ad_layout_id) {
+              e.versions = versions;
+            }
+          });
+        }
+      }
+
+      function setUpAdLayoutVersions(versions) {
+        versions.sort(function (a, b) {
+          return a.creation_date < b.creation_date;
+        });
+        for (var j = 0; j < versions.length; ++j) {
+          var d = new Date(versions[j].creation_date);
+          versions[j].creation_date = d.toLocaleString();
+        }
+        matchAdLayoutVersions(versions);
+      }
+
       function getAdLayouts() {
         $scope.adLayouts = [];
         Restangular.all("ad_layouts").getList({organisation_id: organisationId}).then(function (adLayouts) {
-          for (i = $scope.page; i < adLayouts.length && i < $scope.maxElements; ++i) {
+          for (var i = $scope.page; i < adLayouts.length && i < $scope.maxElements; ++i) {
             var adLayout = adLayouts[i];
             $scope.adLayouts.push({
               id: adLayout.id,
@@ -35,21 +56,7 @@ define(['./module'], function (module) {
             Restangular.one("ad_layouts", adLayout.id).one("versions").get({
               organisation_id: organisationId,
               statuses: "DRAFT,PUBLISHED"
-            }).then(function (versions) {
-              versions.sort(function (a, b) {
-                return a.creation_date < b.creation_date;
-              });
-              for (var j = 0; j < versions.length; ++j) {
-                var d = new Date(versions[j].creation_date);
-                versions[j].creation_date = d.toLocaleString();
-              }
-              console.log("versions", versions);
-              if (versions[0]) {
-                $.grep($scope.adLayouts, function (e) {
-                  if (e.id === versions[0].ad_layout_id) e.versions = versions;
-                });
-              }
-            });
+            }).then(setUpAdLayoutVersions);
           }
         });
       }
@@ -102,7 +109,9 @@ define(['./module'], function (module) {
       $scope.getAdLayoutVersionId = function (adLayout) {
         if (adLayout.versions) {
           var matchingVersions = $.grep(adLayout.versions, function (e) {
-            if (e.id === adLayout.current_version_id) return e;
+            if (e.id === adLayout.current_version_id) {
+              return e;
+            }
           });
           if (matchingVersions.length) {
             return matchingVersions[0].version_id;

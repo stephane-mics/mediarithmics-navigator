@@ -1,4 +1,4 @@
-define(['./module'], function (module) {
+define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/CreateOneController', [

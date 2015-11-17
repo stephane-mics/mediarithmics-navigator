@@ -9,15 +9,19 @@ define(['./module', "plupload"], function (module) {
           uploadedFiles: '=',
           multiSelection: '=',
           micsPlUpload: '=',
-          automaticUpload: '=',
-          files: '=',
-          fileName: '='
+          automaticUpload: '=?',
+          files: '=?',
+          fileName: '=?'
         },
         link: function (scope, element, attributes) {
           scope.uploadError = null;
           var rootId = attributes.id;
-          if (scope.automaticUpload.length === 0) {
+          if (typeof(scope.automaticUpload) === 'undefined') {
             scope.automaticUpload = true;
+          }
+          if (scope.automaticUpload === false && (angular.isUndefined(scope.files) || angular.isUndefined(scope.fileName))) {
+            $log.warn("Plupload: Please specify the files and file name attributes");
+            return;
           }
 
           /**
@@ -40,7 +44,7 @@ define(['./module', "plupload"], function (module) {
                 $log.info("Plupload: Please specify the files names");
               } else {
                 $log.info("Plupload: Uploading selected files");
-                uploader.settings.multipart_params["names"] = scope.fileName;
+                uploader.settings.multipart_params.names = scope.fileName;
                 uploader.start();
               }
             });
@@ -49,7 +53,7 @@ define(['./module', "plupload"], function (module) {
           // Manual upload
           scope.$on("adlayout:upload", function(event, args) {
             $log.info("Plupload: Manual adlayout upload, args: ", args);
-            uploader.settings.multipart_params["names"] = args.adLayoutId + "." + args.adLayoutVersionId + ".template";
+            uploader.settings.multipart_params.names = args.adLayoutId + "." + args.adLayoutVersionId + ".template";
             uploader.start();
           });
 
@@ -74,8 +78,6 @@ define(['./module', "plupload"], function (module) {
 
           // Merge options and default options
           var options = angular.extend({}, defaultOptions, scope.micsPlUpload);
-          console.log("Plupload options: ", options);
-
 
           /**
            * Private Methods
@@ -126,14 +128,11 @@ define(['./module', "plupload"], function (module) {
 
           function handleFileUploaded(uploader, file, response) {
             var responseObj = $.parseJSON(response.response);
-            console.log("Uploaded? ", responseObj);
             if (responseObj.status === "ok") {
               scope.$apply(function () {
                 if (scope.uploadedFiles && responseObj.data) {
                   scope.uploadedFiles.push(responseObj.data);
                 }
-                console.log("FILE: ", file);
-                console.log("Response: ", response);
                 scope.$emit('plupload:uploaded');
               });
             }

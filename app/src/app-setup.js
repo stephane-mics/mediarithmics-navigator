@@ -37,6 +37,7 @@ define([
   'core/datamart/index',
   'core/layout/index',
   'core/settings/index',
+  'core/stylesheets/index',
   'optional-plugin',
   'navigator',
   'plugins'

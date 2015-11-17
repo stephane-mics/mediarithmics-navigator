@@ -31,7 +31,8 @@ define(['angular'], function () {
       'core/login',
       'core/password',
       'core/common',
-      'core/settings'
+      'core/settings',
+      'core/stylesheets'
     ]);
 
     return navigator;

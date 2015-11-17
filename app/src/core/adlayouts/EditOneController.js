@@ -1,4 +1,4 @@
-define(['./module'], function (module) {
+define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/EditOneController', [
@@ -58,7 +58,7 @@ define(['./module'], function (module) {
       // Setup ad layout and ad layout version
       setUpAdLayout($stateParams.ad_layout_id, function () {
         if ($stateParams.version_id) {
-          setupAdLayoutVersion($stateParams.ad_layout_id, $stateParams.version_id)
+          setupAdLayoutVersion($stateParams.ad_layout_id, $stateParams.version_id);
         } else {
           $.extend($scope.adLayoutVersion, {
             version_id: 0,
