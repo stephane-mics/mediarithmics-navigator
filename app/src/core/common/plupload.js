@@ -19,8 +19,8 @@ define(['./module', "plupload"], function (module) {
           if (typeof(scope.automaticUpload) === 'undefined') {
             scope.automaticUpload = true;
           }
-          if (scope.automaticUpload === false && (angular.isUndefined(scope.files) || angular.isUndefined(scope.fileName))) {
-            $log.warn("Plupload: Please specify the files and file name attributes");
+          if (scope.automaticUpload === false && angular.isUndefined(scope.files)) {
+            $log.warn("Plupload: Please specify the files attributes");
             return;
           }
 

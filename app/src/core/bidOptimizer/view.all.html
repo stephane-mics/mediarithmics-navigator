@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <table class="mics-table js-auto-hide-actions" ng-show="adLayouts.length">
+    <table class="mics-table js-auto-hide-actions" ng-show="bidOptimizers.length">
       <thead>
         <tr>
           <th>Name</th>
@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="bidOptimizer in adLayouts"
+      <tr ng-repeat="bidOptimizer in bidOptimizers"
           fetch-plugin-from-version="bidOptimizer.engine_version_id as engine"
           fetch-plugin-properties="engine.id as engineProperties"
       >
