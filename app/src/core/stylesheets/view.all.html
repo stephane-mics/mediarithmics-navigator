@@ -1,0 +1,75 @@
+<div ng-controller="core/stylesheets/ViewAllController" class="mcs-default-container">
+  <div class="mcs-default-content">
+    <div class="mcs-default-heading">
+      <h1>Style Sheets</h1>
+    </div>
+    <div class="mics-table-toolbar">
+      <div class="col-md-6">
+        <div class="dropdown">
+          <a href="#/{{organisationId}}/library/stylesheets/new" class="mics-btn mics-btn-add">
+            New Style Sheet
+          </a>
+        </div>
+      </div>
+    </div>
+    <table class="mics-table table-hover js-auto-hide-actions" ng-show="stylesheets.length">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Current Version</th>
+        <th>Owner Id</th>
+        <th class="actions">Actions</th>
+      </tr>
+      </thead>
+      <tbody data-ng-repeat="stylesheet in stylesheets">
+      <tr data-target="#demo{{$index}}" data-toggle="collapse" class="accordion-toggle clickableRow" title="Click to collapse/expand this ad layout versions">
+        <td>{{stylesheet.name}}</td>
+        <td>{{getstylesheetVersionId(stylesheet)}}</td>
+        <td>{{stylesheet.organisation_id}}</td>
+        <td class="actions">
+          <a ng-click="createNewVersion(stylesheet, $event)" class="mics-btn mics-btn-add">New Version</a>
+        </td>
+      </tr>
+      <tr ng-show="stylesheet.versions.length" class="disable-highlight">
+        <td colspan="6" class="hiddenRow ">
+          <div class="accordian-body collapse mics-sub-table" id="demo{{$index}}">
+            <h4><strong>{{stylesheet.name}}</strong> versions</h4>
+            <div class="span12">
+              <table class="table table-condensed table-striped">
+                <thead>
+                <tr>
+                  <th>Version Id</th>
+                  <th>Creation Date</th>
+                  <th>Status</th>
+                  <th>Selected Version</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="version in stylesheet.versions">
+                  <td>{{version.version_id}}</td>
+                  <td>{{version.creation_date}}</td>
+                  <td>{{version.status}}</td>
+                  <td class="mics-sub-table-actions">
+                    <a ng-click="setCurrentVersion(stylesheet, version)" class="mics-btn mics-btn-finish">
+                      <span ng-show="version.id === stylesheet.current_version_id"><strong>X</strong></span>
+                      <span ng-show="version.id !== stylesheet.current_version_id">&nbsp;</span>
+                    </a>
+                  </td>
+                  <td class="mics-sub-table-actions ">
+                    <a ng-show="version.status === 'DRAFT'" ng-click="publish(version, $event)" class="mics-btn mics-btn-finish">Publish</a>
+                    <a ng-show="version.status === 'DRAFT'" href="#/{{organisationId}}/library/stylesheets/{{version.style_sheet_id}}/version/{{version.id}}" class="mics-btn mics-btn-action">Edit</a>
+                    <a ng-show="version.status !== 'DRAFT'" ng-click="duplicate(stylesheet, version, $event)" class="mics-btn mics-btn-add">Duplicate</a>
+                    <a ng-show="version.status !== 'ARCHIVED'" ng-click="archive(stylesheet, version, $event)" class="mics-btn mics-btn-delete">Archive</a>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

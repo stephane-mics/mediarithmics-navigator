@@ -5,7 +5,7 @@ define(['./module'], function (module) {
     "$stateProvider",
     function ($stateProvider) {
       $stateProvider
-        // list creatives
+        // List bid optimizers
         .state('bid-optimizers/list', {
           url:'/{organisation_id}/library/bidOptimizers',
           templateUrl: 'src/core/bidOptimizer/view.all.html',
@@ -17,7 +17,7 @@ define(['./module'], function (module) {
             }
           }
         })
-        // create a new creative
+        // Create a bid optimizer
         .state('bid-optimizer/edit', {
           url:'/{organisation_id}/library/bidOptimizers/:id',
           templateUrl: 'src/core/bidOptimizer/edit.one.html',
