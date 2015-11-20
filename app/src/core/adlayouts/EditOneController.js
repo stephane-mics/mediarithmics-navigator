@@ -70,12 +70,9 @@ define(['./module', 'jquery'], function (module, $) {
         }
       });
 
-      function optionalUpload(adLayoutId, adLayoutVersionId) {
+      function optionalUpload() {
         if ($scope.selectedFiles.length) {
-          $scope.$broadcast("adlayout:upload", {
-            adLayoutId: adLayoutId,
-            adLayoutVersionId: adLayoutVersionId
-          });
+          $scope.$broadcast("plupload:upload");
         } else {
           $location.path('/' + organisationId + "/library/adlayouts");
         }
@@ -92,7 +89,8 @@ define(['./module', 'jquery'], function (module, $) {
           }
           Restangular.all('ad_layouts/' + $scope.adLayout.id + '/versions/' + $scope.adLayoutVersion.id)
             .customPUT($scope.adLayoutVersionUpdate, undefined, {organisation_id: organisationId}).then(function (adLayoutVersion) {
-            optionalUpload($scope.adLayout.id, adLayoutVersion.id);
+              $scope.pluploadOptions.url = configuration.WS_URL + "/ad_layouts/" + $scope.adLayout.id + "/versions/" + adLayoutVersion.id + "/ad_templates?organisation_id=" + organisationId;
+              optionalUpload();
           });
         } else {
           // Create a new version
@@ -108,7 +106,8 @@ define(['./module', 'jquery'], function (module, $) {
               $scope.adLayoutVersion.version_id = 1;
             }
             Restangular.all('ad_layouts/' + $scope.adLayoutVersion.ad_layout_id + '/versions').post($scope.adLayoutVersion).then(function (adLayoutVersion) {
-              optionalUpload(adLayoutVersion.ad_layout_id, adLayoutVersion.id);
+              $scope.pluploadOptions.url = configuration.WS_URL + "/ad_layouts/" + $scope.adLayout.id + "/versions/" + adLayoutVersion.id + "/ad_templates?organisation_id=" + organisationId;
+              optionalUpload();
             });
           });
         }

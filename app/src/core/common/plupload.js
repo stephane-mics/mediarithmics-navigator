@@ -51,9 +51,8 @@ define(['./module', "plupload"], function (module) {
           }
 
           // Manual upload
-          scope.$on("adlayout:upload", function(event, args) {
-            $log.info("Plupload: Manual adlayout upload, args: ", args);
-            uploader.settings.multipart_params.names = args.adLayoutId + "." + args.adLayoutVersionId + ".template";
+          scope.$on("plupload:upload", function (event, args) {
+            $log.info("Plupload: Manual upload, args: ", args);
             uploader.start();
           });
 
@@ -152,6 +151,9 @@ define(['./module', "plupload"], function (module) {
           uploader.init();
           uploader.bind('FilesAdded', handleFilesAdded);
           uploader.bind('FileUploaded', handleFileUploaded);
+          uploader.bind('BeforeUpload', function (uploader) {
+            uploader.settings.url = scope.micsPlUpload.url;
+          });
 
           // XXX fixme
           // the layout around the upload button can change : added rows in a table, a loaded image push the content, etc.
