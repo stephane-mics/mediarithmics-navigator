@@ -2,10 +2,11 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/plugins/display-ad/default-editor/EditController', [
-    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService', '$controller', "core/common/ErrorService", '$state', 'core/common/IabService', 'lodash',
-    function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state, IabService, _) {
-
+    '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService',
+    '$controller', "core/common/ErrorService", '$state', 'core/common/IabService', 'lodash', 'Restangular',
+    function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state, IabService, _, Restangular) {
       $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
+      $scope.organisationId = $stateParams.organisation_id;
 
       $scope.$on("display-ad:loaded", function () {
         // The parent controller has loaded the creative, you can use it now (check DisplayAdService)
@@ -14,7 +15,6 @@ define(['./module'], function (module) {
           return size.format;
         });
       });
-
 
       // Save button
       $scope.save = function (disabledEdition) {

@@ -10,8 +10,7 @@ define(['./module', 'jquery'], function (module, $) {
         return size.format;
       });
       $scope.adLayout = {
-        organisation_id: organisationId,
-        current_version_id: 0
+        organisation_id: organisationId
       };
 
       // Get list of ad renderers

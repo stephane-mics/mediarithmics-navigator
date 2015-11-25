@@ -3,7 +3,11 @@ define(['./module', 'jquery'], function (module, $) {
 
   module.controller('core/adlayouts/ViewAllController', [
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log',
+<<<<<<< HEAD
     function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log) {
+=======
+    function ($scope, Restangular, Session, $location, $state, $stateParams, $modal, $log) {
+>>>>>>> New Ad Layout Property
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.adLayouts = [];
@@ -50,7 +54,6 @@ define(['./module', 'jquery'], function (module, $) {
               format: adLayout.format,
               renderer_id: adLayout.renderer_id,
               renderer_version_id: adLayout.renderer_version_id,
-              current_version_id: adLayout.current_version_id,
               organisation_id: adLayout.organisation_id
             });
             Restangular.one("ad_layouts", adLayout.id).one("versions").get({
@@ -105,26 +108,6 @@ define(['./module', 'jquery'], function (module, $) {
           callback(false);
         }
       }
-
-      $scope.getAdLayoutVersionId = function (adLayout) {
-        if (adLayout.versions) {
-          var matchingVersions = $.grep(adLayout.versions, function (e) {
-            if (e.id === adLayout.current_version_id) {
-              return e;
-            }
-          });
-          if (matchingVersions.length) {
-            return matchingVersions[0].version_id;
-          }
-        }
-        return "No chosen version";
-      };
-
-      $scope.setCurrentVersion = function (adLayout, version) {
-        Restangular.all('ad_layouts/' + adLayout.id + '/current_version/' + version.id).customPUT({}, undefined, {organisation_id: organisationId}).then(function () {
-          adLayout.current_version_id = version.id;
-        });
-      };
 
       /**
        * Check if a draft already exists, if not use the given version as a base for new version

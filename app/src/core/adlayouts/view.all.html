@@ -17,7 +17,6 @@
       <tr>
         <th>Name</th>
         <th>Format</th>
-        <th>Current Version</th>
         <th>Renderer</th>
         <th>Renderer Version</th>
         <th>Owner Id</th>
@@ -28,7 +27,6 @@
       <tr data-target="#demo{{$index}}" data-toggle="collapse" class="accordion-toggle clickableRow" title="Click to collapse/expand this ad layout versions">
         <td>{{adLayout.name}}</td>
         <td>{{adLayout.format}}</td>
-        <td>{{getAdLayoutVersionId(adLayout)}}</td>
         <td>{{adRenderers[adLayout.renderer_id]}}</td>
         <td>{{adLayout.renderer_version_id}}</td>
         <td>{{adLayout.organisation_id}}</td>
@@ -48,7 +46,6 @@
                   <th>Creation Date</th>
                   <th>Filename</th>
                   <th>Status</th>
-                  <th>Selected Version</th>
                   <th></th>
                 </tr>
                 </thead>
@@ -58,12 +55,6 @@
                   <td>{{version.creation_date}}</td>
                   <td>{{version.filename}}</td>
                   <td>{{version.status}}</td>
-                  <td class="mics-sub-table-actions">
-                    <a ng-click="setCurrentVersion(adLayout, version)" class="mics-btn mics-btn-finish">
-                      <span ng-show="version.id === adLayout.current_version_id"><strong>X</strong></span>
-                      <span ng-show="version.id !== adLayout.current_version_id">&nbsp;</span>
-                    </a>
-                  </td>
                   <td class="mics-sub-table-actions ">
                     <a ng-show="version.status === 'DRAFT'" ng-click="publish(version, $event)" class="mics-btn mics-btn-finish">Publish</a>
                     <a ng-show="version.status === 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{version.ad_layout_id}}/version/{{version.id}}" class="mics-btn mics-btn-action">Edit</a>
