@@ -1,7 +1,7 @@
 define(['./module'], function (module) {
   "use strict";
 
-  module.factory('core/common/IabService', [ '$log',
+  module.factory('core/common/IabService', ['$log',
     function ($log) {
       var service = {};
       service.getAdSizes = function (creativeSubtype) {
@@ -24,25 +24,25 @@ define(['./module'], function (module) {
             return [{
               name: "Linear",
               format: "600x315"
-            },{
+            }, {
               name: "Overlay 1",
               format: "300x50"
-            },{
+            }, {
               name: "Overlay 2",
               format: "450x50"
-            },{
+            }, {
               name: "Companion Ad 1",
               format: "300x250"
-            },{
+            }, {
               name: "Companion Ad 2",
               format: "300x100"
-            },{
+            }, {
               name: "Companion Ad 3",
               format: "468x60"
-            },{
+            }, {
               name: "Companion Ad 4",
               format: "728x90"
-            },{
+            }, {
               name: "Companion Ad 5",
               format: "300x60"
             }];
@@ -59,6 +59,9 @@ define(['./module'], function (module) {
             }, {
               name: "Universal Ad Package, Leaderboard",
               format: "728x90"
+            }, {
+              name: "Billboard",
+              format: "970x250"
             }, {
               name: "Display Rising Stars, Filmstrip",
               format: "300x600"
