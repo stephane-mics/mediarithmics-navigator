@@ -1,56 +1,56 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/common/properties/AdLayoutSelectController', ['$scope', '$uibModalInstance', 'propAdLayout', 'Restangular',
-    function ($scope, $modalInstance, propAdLayout, Restangular) {
+  module.controller('core/common/properties/AdLayoutSelectController', ['$scope', '$uibModalInstance', 'propAdLayout', 'displayAdRenderers', 'Restangular',
+    function ($scope, $modalInstance, propAdLayout, displayAdRenderers, Restangular) {
+      $scope.selectedAdLayout = {id: propAdLayout.id};
+      $scope.selectedVersion = {id: propAdLayout.version};
 
-      $scope.selected = {};
-console.log("Prop adlayout: ", propAdLayout);
+      console.log("Selected layout: ", $scope.selectedAdLayout, ", version: ", $scope.selectedVersion);
+
+      function setupAdLayoutVersions(adLayoutId) {
+        Restangular.one("ad_layouts/" + adLayoutId + "/versions").getList("", {"statuses": "DRAFT,PUBLISHED", "organisation_id": $scope.organisationId}).then(function (versions) {
+          if (versions.length) {
+            $scope.versions = versions;
+            if (!$scope.selectedVersion.id) {
+              $scope.selectedVersion = versions[0];
+            }
+          } else {
+            $scope.versions = null;
+            $scope.selectedVersion = {id: null};
+          }
+        });
+      }
+
       // Setup and select Ad Layout
       Restangular.one("ad_layouts").getList("", {"organisation_id": $scope.organisationId}).then(function (adLayouts) {
         if (adLayouts.length) {
           $scope.adLayouts = adLayouts;
-          if (typeof propAdLayout.id !== 'undefined') {
-            for (var i = 0; i < adLayouts.length; ++i) {
-              if (adLayouts[i].id === propAdLayout.id) {
-                $scope.selected.adLayout = adLayouts[i];
-              }
-            }
-          } else {
-            $scope.selected.adLayout = adLayouts[0];
+          if (!$scope.selectedAdLayout.id) {
+            $scope.selectedAdLayout = adLayouts[0];
           }
+          setupAdLayoutVersions($scope.selectedAdLayout.id);
         }
       });
 
       // Setup Ad Layout version once the selected Ad Layout is set
-      $scope.$watch('selected.adLayout', function (adLayout) {
+      $scope.selectAdLayout = function (adLayout) {
+        $scope.selectedAdLayout = adLayout;
+        $scope.selectedVersion = {id: null};
         console.log("adLayout:", adLayout);
         if (adLayout && adLayout.id) {
           $scope.property.value.id = adLayout.id;
-          Restangular.one("ad_layouts/" + adLayout.id + "/versions").getList("", {"organisation_id": $scope.organisationId}).then(function (versions) {
-            console.log("versions:", versions);
-            if (versions.length) {
-              $scope.versions = versions;
-              if (typeof propAdLayout.version !== 'undefined') {
-                for (var i = 0; i < versions.length; ++i) {
-                  if (versions[i].id === $scope.property.value.id) {
-                    $scope.selected.version = versions[i];
-                  }
-                }
-              } else {
-                $scope.selected.version = versions[0];
-              }
-            } else {
-              $scope.versions = 'undefined';
-              $scope.selected.version = 'undefined';
-            }
-          });
+          setupAdLayoutVersions(adLayout.id);
         }
-      });
+      };
+
+      $scope.selectVersion = function(version) {
+        $scope.selectedVersion = version;
+      };
 
       $scope.done = function () {
-        console.log("Ok adlayouid: " +$scope.selected.adLayout.id + "  version: " + $scope.selected.version.id);
-        $modalInstance.close({id: $scope.selected.adLayout.id, version: $scope.selected.version.id});
+        console.log("Selected Ad Layout: " + $scope.selectedAdLayout.id + ",  Version: " + $scope.selectedVersion.id);
+        $modalInstance.close({adLayout: $scope.selectedAdLayout, version: $scope.selectedVersion});
       };
 
       $scope.cancel = function () {

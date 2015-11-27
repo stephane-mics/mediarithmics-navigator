@@ -1,4 +1,4 @@
-<div class="draft-warning">
+<div class="choose-existing-ad-layouts-list">
   <div class="modal-header">
     <h3>Select Ad Layout</h3>
   </div>
@@ -6,24 +6,52 @@
   <div class="modal-body">
     <div class="row">
       <div class="col-xs-6">
-        <div mcs-form-group="full" label-for="adRendererVersion" label-text="Ad Layout">
-          <select ng-show="adLayouts.length" ng-model="selected.adLayout" ng-options="adLayout as adLayout.name for adLayout in adLayouts" id="adLayout"></select>
-          <div ng-show="!adLayouts.length" style="color: indianred"> Please create an Ad Layout</div>
-        </div>
+        <table class="mics-table table-fixed table-hover">
+          <thead>
+          <tr>
+            <th class="col-xs-2">Ad Layouts</th>
+            <th class="col-xs-3">Renderer</th>
+            <th class="col-xs-1">Renderer V.</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-click="selectAdLayout(adLayout)" class="clickableRow" ng-class="{selected: adLayout.id === selectedAdLayout.id}" ng-repeat="adLayout in adLayouts">
+            <td class="col-xs-2">{{adLayout.name}}</td>
+            <td class="col-xs-3">{{displayAdRenderers[adLayout.renderer_id]}}</td>
+            <td class="col-xs-1">{{adLayout.renderer_version_id}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <div ng-show="!adLayouts.length" style="color: indianred"> Please create an Ad Layout in the library first</div>
       </div>
 
-      <div ng-show="adLayouts" class="col-xs-6">
-        <div mcs-form-group="full" label-for="adRendererVersion" label-text="Version">
-          <select ng-show="versions.length" ng-model="selected.version" ng-options="version.id for version in versions" id="adLayoutVersion"></select>
-          <div ng-show="!versions.length" style="color: indianred"> Please create a version for this Ad Layout</div>
-        </div>
+      <div class="col-xs-6">
+        <div ng-show="!selectedAdLayout" style="color: indianred"> Please Select an Ad Layout</div>
+        <div ng-show="selectedAdLayout && !versions.length" style="color: indianred"> Please create a version for {{selectedAdLayout.name}}</div>
+        <table ng-show="selectedAdLayout && versions.length" class="mics-table table-fixed table-hover">
+          <thead>
+          <tr>
+            <th class="col-xs-1">Version</th>
+            <th class="col-xs-2">Filename</th>
+            <th class="col-xs-2">Status</th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <tr ng-click="selectVersion(version)" class="clickableRow" ng-class="{selected: version.id === selectedVersion.id}" ng-repeat="version in versions">
+            <td class="col-xs-2">{{version.id}}</td>
+            <td class="col-xs-3">{{version.filename}}</td>
+            <td class="col-xs-2">{{version.status}}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+
   </div>
 
   <div class="modal-footer">
     <a ng-click="cancel()" class="mics-btn mics-btn-cancel">Cancel</a>
-    <a ng-disabled="!selected.adLayout && !selected.version" ng-click="done()" class="mics-btn mics-btn-finish">Ok</a>
+    <a ng-disabled="!selectedAdLayout.id || !selectedVersion.id" ng-click="done()" class="mics-btn mics-btn-finish">Ok</a>
   </div>
 </div>
-

@@ -58,10 +58,6 @@ define(['./module'], function (module) {
         },
         templateUrl: '/src/core/common/properties/text-property.html',
         link: function (scope, element, attrs) {
-
-          scope.$watch("property", function () {
-//            console.log(scope.property);
-          });
         }
       };
     }
@@ -81,6 +77,24 @@ define(['./module'], function (module) {
         },
         templateUrl: '/src/core/common/properties/ad-layout-property.html',
         link: function (scope, element, attrs) {
+          Restangular.all("plugins").getList({plugin_type: "DISPLAY_AD_RENDERER"}).then(function (renderers) {
+            scope.displayAdRenderers = [];
+            for (var i = 0; i < renderers.length; ++i) {
+              scope.displayAdRenderers[renderers[i].id] = renderers[i].artifact_id;
+            }
+          });
+
+          scope.selectedAdLayout = {};
+
+          if (scope.property.value.id) {
+            Restangular.one("ad_layouts/" + scope.property.value.id).get({organisation_id: scope.organisationId}).then(function (adLayout) {
+              Restangular.one("ad_layouts/" + scope.property.value.id + "/versions/" + scope.property.value.version)
+                .get({organisation_id: scope.organisationId}).then(function (version) {
+                  scope.selectedAdLayout = {adLayout: adLayout, version: version};
+                });
+            });
+          }
+
           if (typeof scope.organisationId === 'undefined') {
             return console.warn("mcsAdLayoutProperty: Missing organisation id");
           }
@@ -95,16 +109,21 @@ define(['./module'], function (module) {
               scope: scope,
               backdrop: 'static',
               controller: 'core/common/properties/AdLayoutSelectController',
+              size: 'lg',
               resolve: {
                 propAdLayout: function () {
                   return scope.property.value
+                },
+                displayAdRenderers: function () {
+                  return scope.displayAdRenderers
                 }
               }
             });
             modal.result.then(function (selectedAdLayout) {
               if (selectedAdLayout) {
-                scope.property.value.id = selectedAdLayout.id;
-                scope.property.value.version = selectedAdLayout.version;
+                scope.selectedAdLayout = selectedAdLayout;
+                scope.property.value.id = selectedAdLayout.adLayout.id;
+                scope.property.value.version = selectedAdLayout.version.id;
               }
             });
           };
@@ -126,10 +145,6 @@ define(['./module'], function (module) {
         },
         templateUrl: '/src/core/common/properties/number-property.html',
         link: function (scope, element, attrs) {
-
-          scope.$watch("property", function () {
-//            console.log(scope.property);
-          });
         }
       };
     }

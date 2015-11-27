@@ -1980,7 +1980,38 @@ input.ng-invalid {
   margin: 10px 16px;
 }
 
-// ------------ Ad layouts table
+.query-tab {
+  margin-top: 15px;
+}
+
+.results-tab {
+  .family-title {
+    text-align: center;
+  }
+}
+
+.query-toolbox {
+  .query-tab {
+    margin-top: 15px;
+  }
+
+  .results-tab {
+    .family-title {
+      text-align: center;
+    }
+  }
+
+  .loading {
+    height: 20px;
+  }
+
+  .ajax-loader {
+    position: absolute;
+    left: 50%;
+  }
+}
+
+// -------------------- Ad Layouts --------------------------
 
 .mics-sub-table {
   padding: 0 0 0 80px;
@@ -2006,7 +2037,6 @@ input.ng-invalid {
   background-color: transparent;
 }
 
-
 .clickableRow {
   cursor: pointer;
 }
@@ -2014,24 +2044,16 @@ input.ng-invalid {
 .hiddenRow {
   padding: 0 !important;
 }
+.query-tab {
+  margin-top: 15px;
+}
 
-.query-toolbox {
-  .query-tab {
-    margin-top: 15px;
-  }
-
-  .results-tab {
-    .family-title {
-      text-align: center;
-    }
-  }
-
-  .loading {
-    height: 20px;
-  }
-
-  .ajax-loader {
-    position: absolute;
-    left: 50%;
+.choose-existing-ad-layouts-list {
+  .modal-body {
+    @include make-md-column(12);
+    max-height: 300px; /* TODO : arbitrary value */
+    overflow: auto;
   }
 }
+
+

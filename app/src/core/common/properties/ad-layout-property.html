@@ -1,5 +1,29 @@
+<div>{{property.technical_name}}</div>
 <div class="row">
-  <div class="col-xs-3">
-    <button ng-click="selectAdLayout()" class="mics-btn mics-btn-create">Select Ad Layout</button>
+  <div class="col-xs-10">
+    <table ng-show="selectedAdLayout" class="mics-table table-fixed">
+      <thead>
+      <tr>
+        <th class="col-xs-2">Ad Layout</th>
+        <th class="col-xs-1">Version</th>
+        <th class="col-xs-2">Renderer</th>
+        <th class="col-xs-1">Renderer Version</th>
+        <th class="col-xs-2">Filename</th>
+        <th class="col-xs-1">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="col-xs-2">{{selectedAdLayout.adLayout.name}}</td>
+        <td class="col-xs-1">{{selectedAdLayout.version.id}}</td>
+        <td class="col-xs-2">{{displayAdRenderers[selectedAdLayout.adLayout.renderer_id]}}</td>
+        <td class="col-xs-1">{{selectedAdLayout.adLayout.renderer_version_id}}</td>
+        <td class="col-xs-2">{{selectedAdLayout.version.filename}}</td>
+        <td class="col-xs-1">{{selectedAdLayout.version.status}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <button ng-show="!selectedAdLayout" ng-click="selectAdLayout()" class="mics-btn mics-btn-create">Select Ad Layout</button>
+    <button ng-show="selectedAdLayout" ng-click="selectAdLayout()" class="mics-btn mics-btn-edit">Change Selected Ad Layout</button>
   </div>
 </div>
