@@ -64,8 +64,8 @@ define(['./module'], function (module) {
   ]);
 
   // Ad Layout property
-  module.directive('mcsAdLayoutProperty', ['Restangular', '$uibModal',
-    function (Restangular, $uibModal) {
+  module.directive('mcsAdLayoutProperty', ['Restangular', '$uibModal', '$log',
+    function (Restangular, $uibModal, $log) {
       return {
         restrict: 'E',
         scope: {
@@ -96,11 +96,11 @@ define(['./module'], function (module) {
           }
 
           if (typeof scope.organisationId === 'undefined') {
-            return console.warn("mcsAdLayoutProperty: Missing organisation id");
+            return $log.warn("mcsAdLayoutProperty: Missing organisation id");
           }
 
           if (typeof scope.property === 'undefined') {
-            return console.warn("mcsAdLayoutProperty: Property is undefined");
+            return $log.warn("mcsAdLayoutProperty: Property is undefined");
           }
 
           scope.selectAdLayout = function () {
@@ -112,10 +112,10 @@ define(['./module'], function (module) {
               size: 'lg',
               resolve: {
                 propAdLayout: function () {
-                  return scope.property.value
+                  return scope.property.value;
                 },
                 displayAdRenderers: function () {
-                  return scope.displayAdRenderers
+                  return scope.displayAdRenderers;
                 }
               }
             });
@@ -128,7 +128,66 @@ define(['./module'], function (module) {
             });
           };
         }
-      }
+      };
+    }
+  ]);
+
+  // Style Sheet Property
+  module.directive('mcsStyleSheetProperty', ['Restangular', '$uibModal', '$log',
+    function (Restangular, $uibModal, $log) {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: "@",
+          labelFor: '@',
+          property: '=',
+          organisationId: '=',
+          ngDisabled: '='
+        },
+        templateUrl: '/src/core/common/properties/style-sheet-property.html',
+        link: function (scope, element, attrs) {
+          scope.selectedStyleSheet = {};
+
+          if (scope.property.value.id) {
+            Restangular.one("style_sheets/" + scope.property.value.id).get({organisation_id: scope.organisationId}).then(function (styleSheet) {
+              Restangular.one("style_sheets/" + scope.property.value.id + "/versions/" + scope.property.value.version)
+                .get({organisation_id: scope.organisationId}).then(function (version) {
+                  scope.selectedStyleSheet = {styleSheet: styleSheet, version: version};
+                });
+            });
+          }
+
+          if (typeof scope.organisationId === 'undefined') {
+            return $log.warn("mcsStyleSheetProperty: Missing organisation id");
+          }
+
+          if (typeof scope.property === 'undefined') {
+            return $log.warn("mcsStyleSheetProperty: Property is undefined");
+          }
+
+          scope.selectStyleSheet = function () {
+            var modal = $uibModal.open({
+              templateUrl: 'src/core/common/properties/style-sheet-select.html',
+              scope: scope,
+              backdrop: 'static',
+              controller: 'core/common/properties/StyleSheetSelectController',
+              size: 'lg',
+              resolve: {
+                propStyleSheet: function () {
+                  return scope.property.value;
+                }
+              }
+            });
+            modal.result.then(function (selectedStyleSheet) {
+              if (selectedStyleSheet) {
+                scope.selectedStyleSheet = selectedStyleSheet;
+                scope.property.value.id = selectedStyleSheet.styleSheet.id;
+                scope.property.value.version = selectedStyleSheet.version.id;
+              }
+            });
+          };
+        }
+      };
     }
   ]);
 

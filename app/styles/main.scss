@@ -2056,4 +2056,13 @@ input.ng-invalid {
   }
 }
 
+// -------------------- Style Sheets --------------------------
+
+.choose-existing-style-sheets-list {
+  .modal-body {
+    @include make-md-column(12);
+    max-height: 300px; /* TODO : arbitrary value */
+    overflow: auto;
+  }
+}
 

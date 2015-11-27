@@ -59,6 +59,7 @@
           <mcs-asset-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
           <mcs-text-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'STRING'"></mcs-text-property>
           <mcs-ad-layout-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" organisation-id="organisationId" ng-if="property.value.property_type == 'AD_LAYOUT'"></mcs-ad-layout-property>
+          <mcs-style-sheet-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" organisation-id="organisationId" ng-if="property.value.property_type == 'STYLE_SHEET'"></mcs-style-sheet-property>
         </div>
       </div>
     </div>

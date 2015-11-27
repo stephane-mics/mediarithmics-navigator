@@ -46,7 +46,6 @@ define(['./module', 'jquery'], function (module, $) {
               format: stylesheet.format,
               renderer_id: stylesheet.renderer_id,
               renderer_version_id: stylesheet.renderer_version_id,
-              current_version_id: stylesheet.current_version_id,
               organisation_id: stylesheet.organisation_id
             });
             Restangular.one("style_sheets", stylesheet.id).one("versions").get({
@@ -64,7 +63,7 @@ define(['./module', 'jquery'], function (module, $) {
           event.preventDefault();
           event.stopPropagation();
         }
-      }
+    }
 
       function publish(stylesheetVersion) {
         Restangular.one("style_sheets", stylesheetVersion.style_sheet_id).one("versions", stylesheetVersion.id).customPUT({status: "PUBLISHED"}, undefined, {organisation_id: organisationId}).then(function () {
@@ -101,26 +100,6 @@ define(['./module', 'jquery'], function (module, $) {
           callback(false);
         }
       }
-
-      $scope.getstylesheetVersionId = function (stylesheet) {
-        if (stylesheet.versions) {
-          var matchingVersions = $.grep(stylesheet.versions, function (e) {
-            if (e.id === stylesheet.current_version_id) {
-              return e;
-            }
-          });
-          if (matchingVersions.length) {
-            return matchingVersions[0].version_id;
-          }
-        }
-        return "No chosen version";
-      };
-
-      $scope.setCurrentVersion = function (stylesheet, version) {
-        Restangular.all('style_sheets/' + stylesheet.id + '/current_version/' + version.id).customPUT({}, undefined, {organisation_id: organisationId}).then(function () {
-          stylesheet.current_version_id = version.id;
-        });
-      };
 
       /**
        * Check if a draft already exists, if not use the given version as a base for new version

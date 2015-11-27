@@ -7,8 +7,7 @@ define(['./module', 'jquery'], function (module, $) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.stylesheet = {
-        organisation_id: organisationId,
-        current_version_id: 0
+        organisation_id: organisationId
       };
 
       $scope.saveAndCreateNewVersion = function () {

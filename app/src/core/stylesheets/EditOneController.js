@@ -21,8 +21,7 @@ define(['./module', 'jquery'], function (module, $) {
             $scope.styleSheet = {
               id: styleSheetId,
               name: styleSheet.name,
-              organisation_id: organisationId,
-              current_version_id: styleSheet.current_version_id
+              organisation_id: organisationId
             };
           })
           .then(callback);

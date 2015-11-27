@@ -3,21 +3,25 @@ define(['./module'], function (module) {
 
   module.controller('core/common/properties/AdLayoutSelectController', ['$scope', '$uibModalInstance', 'propAdLayout', 'displayAdRenderers', 'Restangular',
     function ($scope, $modalInstance, propAdLayout, displayAdRenderers, Restangular) {
-      $scope.selectedAdLayout = {id: propAdLayout.id};
-      $scope.selectedVersion = {id: propAdLayout.version};
+      function findItem(list, id) {
+        for (var i = 0; i < list.length; ++i) {
+          if (list[i].id === id) {
+            return list[i];
+          }
+        }
+      }
 
-      console.log("Selected layout: ", $scope.selectedAdLayout, ", version: ", $scope.selectedVersion);
-
-      function setupAdLayoutVersions(adLayoutId) {
-        Restangular.one("ad_layouts/" + adLayoutId + "/versions").getList("", {"statuses": "DRAFT,PUBLISHED", "organisation_id": $scope.organisationId}).then(function (versions) {
+      function setupAdLayoutVersions(adLayoutId, versionId) {
+        Restangular.one("ad_layouts/" + adLayoutId + "/versions").getList("", {
+          "statuses": "DRAFT,PUBLISHED",
+          "organisation_id": $scope.organisationId
+        }).then(function (versions) {
           if (versions.length) {
             $scope.versions = versions;
-            if (!$scope.selectedVersion.id) {
-              $scope.selectedVersion = versions[0];
-            }
+            $scope.selectedVersion = !versionId ? versions[0] : findItem(versions, versionId);
           } else {
             $scope.versions = null;
-            $scope.selectedVersion = {id: null};
+            $scope.selectedVersion = null;
           }
         });
       }
@@ -26,20 +30,15 @@ define(['./module'], function (module) {
       Restangular.one("ad_layouts").getList("", {"organisation_id": $scope.organisationId}).then(function (adLayouts) {
         if (adLayouts.length) {
           $scope.adLayouts = adLayouts;
-          if (!$scope.selectedAdLayout.id) {
-            $scope.selectedAdLayout = adLayouts[0];
-          }
-          setupAdLayoutVersions($scope.selectedAdLayout.id);
+          $scope.selectedAdLayout = !propAdLayout.id ? adLayouts[0] : findItem(adLayouts, propAdLayout.id);
+          setupAdLayoutVersions($scope.selectedAdLayout.id, propAdLayout.version);
         }
       });
 
       // Setup Ad Layout version once the selected Ad Layout is set
       $scope.selectAdLayout = function (adLayout) {
         $scope.selectedAdLayout = adLayout;
-        $scope.selectedVersion = {id: null};
-        console.log("adLayout:", adLayout);
         if (adLayout && adLayout.id) {
-          $scope.property.value.id = adLayout.id;
           setupAdLayoutVersions(adLayout.id);
         }
       };
@@ -49,7 +48,6 @@ define(['./module'], function (module) {
       };
 
       $scope.done = function () {
-        console.log("Selected Ad Layout: " + $scope.selectedAdLayout.id + ",  Version: " + $scope.selectedVersion.id);
         $modalInstance.close({adLayout: $scope.selectedAdLayout, version: $scope.selectedVersion});
       };
 

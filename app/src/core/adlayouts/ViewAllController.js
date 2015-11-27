@@ -3,11 +3,7 @@ define(['./module', 'jquery'], function (module, $) {
 
   module.controller('core/adlayouts/ViewAllController', [
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log',
-<<<<<<< HEAD
     function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log) {
-=======
-    function ($scope, Restangular, Session, $location, $state, $stateParams, $modal, $log) {
->>>>>>> New Ad Layout Property
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.adLayouts = [];
