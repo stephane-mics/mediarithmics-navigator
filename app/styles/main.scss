@@ -1151,6 +1151,15 @@ table.fragment-list-placement-list {
   }
 }
 
+table.fragment-list-attribution-model {
+  @extend .mics-table;
+}
+
+table.fragment-list-attribution-model-processor {
+  @extend .mics-table;
+}
+
+
 table.fragment-list-bid-optimizer {
   @extend .mics-table;
 }

@@ -27,6 +27,7 @@ define(['angular'], function () {
       'core/scenarios',
       'core/queries',
       'core/goals',
+      'core/attributionmodels',
       'core/datamart',
       'core/login',
       'core/password',

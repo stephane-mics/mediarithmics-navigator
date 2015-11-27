@@ -1,0 +1,53 @@
+define(['./module'], function (module) {
+
+  'use strict';
+
+  module.controller('core/attributionmodels/CreateController', [
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$modalInstance',
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, $modalInstance) {
+      $scope.availableAttributionModels = Restangular.all("attribution_models").getList({
+        organisation_id : Session.getCurrentWorkspace().organisation_id
+      }).$object;
+
+      $scope.selectedAttributionModelProcessor = null;
+      $scope.attributionModel = {
+        name : "",
+        attributionModelProcessor : null
+      };
+
+      $scope.attributionModelIsOk = function () {
+        return !!($scope.attributionModel.name && $scope.attributionModel.attributionModelProcessor);
+      };
+
+      $scope.availableAttributionModelProcessors = Restangular.all("plugins").getList({
+        plugin_type : "ATTRIBUTION_PROCESSOR",
+        organisation_id : Session.getCurrentWorkspace().organisation_id
+      }).$object;
+
+
+      $scope.cancel = function() {
+        $modalInstance.close();
+      };
+
+      $scope.done = function() {
+
+        var promise = Restangular.all('attribution_models').post({
+          name : $scope.attributionModel.name,
+          group_id : $scope.attributionModel.attributionModelProcessor.split('/')[0],
+          artifact_id : $scope.attributionModel.attributionModelProcessor.split('/')[1]
+        }, {
+          organisation_id: Session.getCurrentWorkspace().organisation_id
+        });
+
+        promise.then(function success(createdAttributionModel){
+          $scope.$emit("mics-attribution-model:selected", {
+            attributionModel : createdAttributionModel
+          });
+          $modalInstance.close();
+        }, function failure(){
+          $log.info("failure");
+        });
+      };
+    }
+  ]);
+});

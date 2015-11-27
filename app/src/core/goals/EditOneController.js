@@ -41,8 +41,8 @@ define(['./module'], function (module) {
       };
 
 
-      $scope.$on("mics-attribution-model:selected", function (event, attributionModel) {
-          $scope.attributionModels.post({"attribution_model_id":attributionModel.id, "attribution_type": 'WITH_PROCESSOR'}).then(function (r) {
+      $scope.$on("mics-attribution-model:selected", function (event, data) {
+          $scope.attributionModels.post({"attribution_model_id":data.attributionModel.id, "attribution_type": 'WITH_PROCESSOR'}).then(function (r) {
            $state.transitionTo($state.current, $stateParams, {
             reload: true, inherit: true, notify: true
           });
@@ -51,10 +51,10 @@ define(['./module'], function (module) {
 
       $scope.addAttributionModel = function (type) {
         $modal.open({
-            templateUrl: 'src/core/goals/ChooseAttributionModel.html',
+            templateUrl: 'src/core/attributionmodels/ChooseExistingAttributionModel.html',
             scope: $scope,
             backdrop: 'static',
-            controller: 'core/goals/ChooseAttributionModelController',
+            controller: 'core/attributionmodels/ChooseExistingAttributionModelController',
             size: "lg"
           });
 
