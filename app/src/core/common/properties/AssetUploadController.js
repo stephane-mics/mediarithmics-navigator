@@ -9,8 +9,8 @@ define(['./module'], function (module) {
    */
 
   module.controller('core/common/properties/AssetUploadController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session', 'core/configuration',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session, configuration) {
+    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session', 'core/configuration',
+    function($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session, configuration) {
 
       $log.debug('Init AssetUploadController');
 
@@ -51,14 +51,14 @@ define(['./module'], function (module) {
         assetValue.asset_id = file.id;
         assetValue.original_file_name = file.original_filename;
 
-        $modalInstance.close(assetValue);
+        $uibModalInstance.close(assetValue);
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
-      $modalInstance.opened.then(function(){
+      $uibModalInstance.opened.then(function(){
 
 
       });

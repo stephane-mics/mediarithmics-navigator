@@ -2,8 +2,8 @@ define(['./module', "plupload"], function (module) {
   'use strict';
 
   module.directive('micsPlUpload', [
-    '$log', 'core/configuration', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', "jquery", "plupload",
-    function ($log, configuration, Session, AuthenticationService, $, plupload) {
+    '$log', 'core/configuration', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', "jquery", "plupload", 'core/common/ErrorService',
+    function ($log, configuration, Session, AuthenticationService, $, plupload, ErrorService) {
       return {
         scope: {
           uploadedFiles: '=',
@@ -84,7 +84,12 @@ define(['./module', "plupload"], function (module) {
 
           function handleError(uploader, err) {
             scope.uploadError = err.message;
-            scope.$apply();
+            scope.$apply(function() {
+              ErrorService.showErrorModal({
+                error: err,
+                messageType: "simple"
+              });
+            });
             $log.warn('Error :', err);
           }
 

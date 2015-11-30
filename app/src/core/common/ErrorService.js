@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   "use strict";
 
   module.factory('core/common/ErrorService', [
-    "$modal", "$rootScope", "$log",
-    function ($modal, $rootScope, $log) {
+    "$uibModal", "$rootScope", "$log",
+    function ($uibModal, $rootScope, $log) {
       var service = {};
 
       var errorModal = null;
@@ -19,8 +19,11 @@ define(['./module'], function (module) {
           $log.error(options.error);
         } else if (options.error && options.error.data) {
           scope.errorId = options.error.data.error_id;
+        } else if (options.error.message) {
+          scope.message = options.error.message;
         }
-        errorModal = $modal.open({
+
+        errorModal = $uibModal.open({
           scope: scope,
           templateUrl: 'src/core/common/error.html',
           controller: 'core/common/ErrorController',
