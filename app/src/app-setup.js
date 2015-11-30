@@ -23,6 +23,7 @@ define([
   'core/adblock/index',
   'core/adlayouts/index',
   'core/bidOptimizer/index',
+  'core/attributionmodels/index',
   'core/queries/index',
   'core/goals/index',
   'core/scenarios/index',
