@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller("core/adgroups/ChooseAdsController", [
-    "$scope", "$modal", "$log", "$q", "core/common/ads/AdService",
-    function($scope, $modal, $log, $q, AdService) {
+    "$scope", "$uibModal", "$log", "$q", "core/common/ads/AdService",
+    function($scope, $uibModal, $log, $q, AdService) {
 
       $scope.setAdTypeToDisplayAd = function() {
         AdService.setAdTypeToDisplayAd();
@@ -16,7 +16,7 @@ define(['./module'], function (module) {
       // Upload new Ad
       $scope.uploadNewAd = function(adGroup) {
         // Display pop-up
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/adgroups/upload-ad.html',
           scope: $scope,
           backdrop: 'static',
@@ -31,7 +31,7 @@ define(['./module'], function (module) {
       // Select existing Ads
       $scope.selectExistingAd = function(adGroup) {
         // Display pop-up
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/adgroups/ChooseExistingAds.html',
           scope: $scope,
           backdrop: 'static',

@@ -53,9 +53,9 @@ define(['./module', 'lodash'], function (module, _) {
    * Campaign list controller
    */
   module.controller('core/campaigns/report/CampaignReportController', [
-    '$scope', '$location', '$modal', '$log', '$stateParams', 'Restangular', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService',
+    '$scope', '$location', '$uibModal', '$log', '$stateParams', 'Restangular', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService',
     'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session', 'core/common/files/ExportService', 'core/campaigns/goals/GoalsService',
-    function ($scope, $location, $modal, $log, $stateParams, Restangular, ChartsService, DisplayCampaignService,
+    function ($scope, $location, $uibModal, $log, $stateParams, Restangular, ChartsService, DisplayCampaignService,
               CampaignAnalyticsReportService, CampaignPluginService, Session, ExportService, GoalsService) {
       // Chart
       $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
@@ -451,7 +451,7 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
       $scope.chooseCharts = function () {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
           templateUrl: 'src/core/campaigns/report/ChooseCharts.html',
           scope: $scope,
           backdrop: 'static',
@@ -493,7 +493,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.deleteCampaign = function (campaign) {
         var newScope = $scope.$new(true);
         newScope.campaign = campaign;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/campaigns/delete.html',
           scope: newScope,
           backdrop: 'static',

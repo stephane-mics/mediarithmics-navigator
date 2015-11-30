@@ -3,11 +3,11 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller("core/attributionmodels/ChooseAttributionModelController", [
-    "$scope", "$modal", "$log",
-    function($scope, $modal, $log) {
+    "$scope", "$uibModal", "$log",
+    function($scope, $uibModal, $log) {
 
       $scope.attributionModelChooseFromLibrary = function (adGroup) {
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/attributionmodels/ChooseExistingAttributionModel.html',
           scope : $scope,
           backdrop : 'static',
@@ -16,7 +16,7 @@ define(['./module'], function (module) {
         });
       };
       $scope.attributionModelCreateNew = function (adGroup) {
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/attributionmodels/create.html',
           scope : $scope,
           backdrop : 'static',

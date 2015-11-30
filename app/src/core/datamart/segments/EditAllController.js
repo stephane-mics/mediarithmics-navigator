@@ -3,8 +3,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/datamart/segments/EditAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal',
-    function($scope, Restangular, Session, $location, $modal) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
+    function($scope, Restangular, Session, $location, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('audience_segments').getList({organisation_id: organisationId}).then(function (segments) {
         $scope.segments = segments;
@@ -31,7 +31,7 @@ define(['./module'], function (module) {
 
         var newScope = $scope.$new(true);
         newScope.segment = segment;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/datamart/segments/delete.html',
           scope : newScope,
           backdrop : 'static',

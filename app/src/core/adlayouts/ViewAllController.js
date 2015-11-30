@@ -2,8 +2,8 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/ViewAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$modal', '$log',
-    function ($scope, Restangular, Session, $location, $state, $stateParams, $modal, $log) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log',
+    function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.adLayouts = [];
@@ -92,7 +92,7 @@ define(['./module', 'jquery'], function (module, $) {
 
       function draftCheck(adLayout, callback) {
         if (adLayout.versions && adLayout.versions.length && adLayout.versions[0].status === 'DRAFT') {
-          var modal = $modal.open({
+          var modal = $uibModal.open({
             templateUrl: 'src/core/adlayouts/warning.draft.html',
             scope: $scope,
             backdrop: 'static',
@@ -156,7 +156,7 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.publish = function (version, event) {
         preventEvent(event);
         if (version.template === null) {
-          $modal.open({
+          $uibModal.open({
             templateUrl: 'src/core/adlayouts/warning.publish.html',
             scope: $scope,
             backdrop: 'static',

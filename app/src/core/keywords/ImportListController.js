@@ -4,8 +4,8 @@ define(['./module'], function (module) {
 
 
   module.controller('core/keywords/ImportListController', [
-    '$scope', '$modalInstance', '$document', '$log', "Restangular",
-    function($scope, $modalInstance, $document, $log, Restangular) {
+    '$scope', '$uibModalInstance', '$document', '$log', "Restangular",
+    function($scope, $uibModalInstance, $document, $log, Restangular) {
 
       $scope.done = function(deleteExisting, keywords) {
         $scope.$emit("mics-keywords-list:import", {
@@ -13,11 +13,11 @@ define(['./module'], function (module) {
           deleteExisting : deleteExisting,
           type : $scope.type
         });
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
     }

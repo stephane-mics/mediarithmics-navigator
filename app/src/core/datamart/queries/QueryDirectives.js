@@ -4,10 +4,10 @@ define(['./module'], function (module) {
 
     module.directive('mcsQueryTool', [
         'Restangular', '$q', 'lodash', 'core/common/auth/Session',
-        'core/datamart/queries/common/Common', '$modal', "async",
+        'core/datamart/queries/common/Common', '$uibModal', "async",
         'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment', '$rootScope',
 
-        function (Restangular, $q, lodash, Session, Common, $modal, async, promiseUtils, $log, QueryContainer, moment, $rootScope) {
+        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, moment, $rootScope) {
             return {
                 restrict: 'E',
                 scope: {
@@ -200,7 +200,7 @@ define(['./module'], function (module) {
                             selector_family: family,
                             selector_name: 'CUSTOM_PROPERTY'
                         };
-                        $modal.open({
+                        $uibModal.open({
                             templateUrl: 'src/core/datamart/queries/create-property-selector.html',
                             scope: newScope,
                             backdrop: 'static',

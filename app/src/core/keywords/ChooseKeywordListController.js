@@ -3,12 +3,12 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller("core/keywords/ChooseKeywordListController", [
-    "$scope", "$modal", "$log",
-    function($scope, $modal, $log) {
+    "$scope", "$uibModal", "$log",
+    function($scope, $uibModal, $log) {
 
       $scope.selectExistingKeywordList = function() {
         // display pop-up
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/keywords/ChooseExistingKeywordList.html',
           scope : $scope,
           backdrop : 'static',

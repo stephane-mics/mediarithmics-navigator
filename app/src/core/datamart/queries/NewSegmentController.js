@@ -3,12 +3,12 @@ define(['./module'], function (module) {
     'use strict';
 
     module.controller('core/datamart/queries/NewSegmentController', [
-        '$scope', '$modalInstance', 'Restangular', '$location', 'core/common/auth/Session',
+        '$scope', '$uibModalInstance', 'Restangular', '$location', 'core/common/auth/Session',
 
-        function ($scope, $modalInstance, Restangular, $location, Session) {
+        function ($scope, $uibModalInstance, Restangular, $location, Session) {
 
             $scope.cancel = function() {
-                $modalInstance.close();
+                $uibModalInstance.close();
             };
 
             $scope.$on("mics-new-segment-popup:query-save-complete", function (event, params) {
@@ -20,7 +20,7 @@ define(['./module'], function (module) {
                 };
 
                 Restangular.all('audience_segments').post(segment, {organisation_id: Session.getCurrentWorkspace().organisation_id}).then(function success(){
-                    $modalInstance.close();
+                    $uibModalInstance.close();
                     $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments");
                 }, function failure(){
                     $scope.error = "There was an error saving new segment";

@@ -66,8 +66,8 @@ define(['./module', 'lodash'], function (module, _) {
    * Campaign list controller
    */
   module.controller('core/goals/report/GoalReportController', [
-    '$scope', '$location', '$modal', '$log', '$stateParams', 'Restangular', 'core/goals/report/ChartsService',    'GoalAnalyticsReportService',  'core/common/auth/Session', 'core/common/files/ExportService',
-    function ($scope, $location, $modal, $log, $stateParams, Restangular, ChartsService,         GoalAnalyticsReportService,  Session, ExportService ) {
+    '$scope', '$location', '$uibModal', '$log', '$stateParams', 'Restangular', 'core/goals/report/ChartsService',    'GoalAnalyticsReportService',  'core/common/auth/Session', 'core/common/files/ExportService',
+    function ($scope, $location, $uibModal, $log, $stateParams, Restangular, ChartsService,         GoalAnalyticsReportService,  Session, ExportService ) {
       var goalId = $stateParams.goal_id;
       // Chart
       $scope.reportDateRange = GoalAnalyticsReportService.getDateRange();
@@ -207,7 +207,7 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
       $scope.chooseCharts = function () {
-        var modalInstance = $modal.open({
+        var modalInstance = $uibModal.open({
           templateUrl: 'src/core/goals/report/ChooseCharts.html',
           scope: $scope,
           backdrop: 'static',

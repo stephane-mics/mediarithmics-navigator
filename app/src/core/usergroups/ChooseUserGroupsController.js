@@ -3,12 +3,12 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller("core/usergroups/ChooseUserGroupsController", [
-    "$scope", "$modal", "$log",
-    function($scope, $modal, $log) {
+    "$scope", "$uibModal", "$log",
+    function($scope, $uibModal, $log) {
 
       $scope.selectExistingUserGroups = function() {
         // display pop-up
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/usergroups/ChooseExistingUserGroups.html',
           scope : $scope,
           backdrop : 'static',

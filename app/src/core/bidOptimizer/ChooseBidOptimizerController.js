@@ -3,11 +3,11 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller("core/bidOptimizer/ChooseBidOptimizerController", [
-    "$scope", "$modal", "$log",
-    function($scope, $modal, $log) {
+    "$scope", "$uibModal", "$log",
+    function($scope, $uibModal, $log) {
 
       $scope.bidOptimizerChooseFromLibrary = function (adGroup) {
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/bidOptimizer/ChooseExistingBidOptimizer.html',
           scope : $scope,
           backdrop : 'static',
@@ -16,7 +16,7 @@ define(['./module'], function (module) {
         });
       };
       $scope.bidOptimizerCreateNew = function (adGroup) {
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/bidOptimizer/create.html',
           scope : $scope,
           backdrop : 'static',

@@ -3,8 +3,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/attributionmodels/ViewAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal', '$state', '$stateParams',
-    function($scope, Restangular, Session, $location, $modal, $state, $stateParams) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal', '$state', '$stateParams',
+    function($scope, Restangular, Session, $location, $uibModal, $state, $stateParams) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.attributionModels = Restangular.all("attribution_models").getList({
         organisation_id : organisationId
@@ -12,7 +12,7 @@ define(['./module'], function (module) {
       $scope.organisationId = organisationId;
       
       $scope.createAttributionModel = function () {
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/attributionmodels/create.html',
           scope : $scope,
           backdrop : 'static',

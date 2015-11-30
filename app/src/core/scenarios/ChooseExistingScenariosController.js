@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/scenarios/ChooseExistingScenariosController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
+    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
+    function($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
 
       $scope.availableScenarios = Restangular.all("scenarios").getList({
         organisation_id : Session.getCurrentWorkspace().organisation_id
@@ -20,11 +20,11 @@ define(['./module'], function (module) {
             exclude : scenario.exclude // TODO use a wrapper ?
           });
         }
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
     }

@@ -3,12 +3,12 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller("core/scenarios/ChooseScenariosController", [
-    "$scope", "$modal", "$log",
-    function($scope, $modal, $log) {
+    "$scope", "$uibModal", "$log",
+    function($scope, $uibModal, $log) {
 
       $scope.selectExistingScenarios = function() {
         // display pop-up
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/scenarios/ChooseExistingScenarios.html',
           scope : $scope,
           backdrop : 'static',

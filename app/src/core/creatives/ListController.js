@@ -6,8 +6,8 @@ define(['./module'], function (module) {
    */
 
   module.controller('core/creatives/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'core/common/auth/Session', '$modal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter',
-    function ($scope, $location, $log, Restangular, Session, $modal, $state, $stateParams, creativePluginService, _, $filter) {
+    '$scope', '$location', '$log', 'Restangular', 'core/common/auth/Session', '$uibModal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter',
+    function ($scope, $location, $log, Restangular, Session, $uibModal, $state, $stateParams, creativePluginService, _, $filter) {
 
       $scope.currentPageCreative = 1;
       $scope.itemsPerPage = 10;
@@ -64,7 +64,7 @@ define(['./module'], function (module) {
       $scope.deleteCreative = function (creative) {
         var newScope = $scope.$new(true);
         newScope.creative = creative;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/creatives/delete.html',
           scope: newScope,
           backdrop: 'static',
@@ -75,7 +75,7 @@ define(['./module'], function (module) {
       $scope.archiveCreative = function (creative) {
         var newScope = $scope.$new(true);
         newScope.creative = creative;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/creatives/archive.html',
           scope: newScope,
           backdrop: 'static',

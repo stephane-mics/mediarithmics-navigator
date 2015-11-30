@@ -3,8 +3,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/placementlists/EditAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal',
-    function($scope, Restangular, Session, $location, $modal) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
+    function($scope, Restangular, Session, $location, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('placement_lists').getList({organisation_id: organisationId}).then(function (placementLists) {
         $scope.placementLists = placementLists;
@@ -20,7 +20,7 @@ define(['./module'], function (module) {
 
         var newScope = $scope.$new(true);
         newScope.placementList = placementList;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/placementlists/delete.html',
           scope : newScope,
           backdrop : 'static',

@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/attributionmodels/ChooseExistingAttributionModelController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
+    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
+    function($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
 
       $scope.availableAttributionModels = Restangular.all("attribution_models").getList({
         organisation_id : Session.getCurrentWorkspace().organisation_id
@@ -23,11 +23,11 @@ define(['./module'], function (module) {
             });
           }
         }
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
     }

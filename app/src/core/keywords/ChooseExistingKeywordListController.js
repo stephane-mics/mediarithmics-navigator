@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/keywords/ChooseExistingKeywordListController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
+    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
+    function($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
 
       $scope.availableKeywordLists = Restangular.all("keyword_lists").getList({
         organisation_id : Session.getCurrentWorkspace().organisation_id
@@ -19,11 +19,11 @@ define(['./module'], function (module) {
             keywordList : keywordList
           });
         }
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
     }

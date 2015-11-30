@@ -3,8 +3,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/attributionmodels/CreateController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$modalInstance',
-    function($scope, $log, Restangular, Session, _, $stateParams, $location, $modalInstance) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$uibModalInstance',
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, $uibModalInstance) {
       $scope.availableAttributionModels = Restangular.all("attribution_models").getList({
         organisation_id : Session.getCurrentWorkspace().organisation_id
       }).$object;
@@ -26,7 +26,7 @@ define(['./module'], function (module) {
 
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.done = function() {
@@ -43,7 +43,7 @@ define(['./module'], function (module) {
           $scope.$emit("mics-attribution-model:selected", {
             attributionModel : createdAttributionModel
           });
-          $modalInstance.close();
+          $uibModalInstance.close();
         }, function failure(){
           $log.info("failure");
         });

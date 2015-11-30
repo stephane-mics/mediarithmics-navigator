@@ -7,9 +7,9 @@ define(['./module', 'moment'], function (module, moment) {
    */
 
   module.controller('core/campaigns/expert/EditCampaignController', [
-    'jquery', '$scope', '$modal', '$log', '$location', '$stateParams', 'lodash', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
+    'jquery', '$scope', '$uibModal', '$log', '$location', '$stateParams', 'lodash', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
     'core/common/WaitingService', 'core/common/ErrorService', 'core/campaigns/goals/GoalsService',
-    function (jQuery, $scope, $modal, $log, $location, $stateParams, _, DisplayCampaignService, CampaignPluginService, WaitingService, ErrorService, GoalsService) {
+    function (jQuery, $scope, $uibModal, $log, $location, $stateParams, _, DisplayCampaignService, CampaignPluginService, WaitingService, ErrorService, GoalsService) {
       var campaignId = $stateParams.campaign_id;
       $scope.goalTypes = GoalsService.getGoalTypesList();
       $scope.isConversionType = GoalsService.isConversionType;
@@ -86,7 +86,7 @@ define(['./module', 'moment'], function (module, moment) {
         };
 
         $scope.chooseDisplayNetworks = function () {
-          $modal.open({
+          $uibModal.open({
             templateUrl: 'src/core/campaigns/ChooseExistingDisplayNetwork.html',
             scope: $scope,
             backdrop: 'static',
@@ -107,7 +107,7 @@ define(['./module', 'moment'], function (module, moment) {
             // If checkbox has just been checked
 
             if (GoalsService.isConversionType(type)) {
-              var modalInstance = $modal.open({
+              var modalInstance = $uibModal.open({
                 templateUrl: 'src/core/goals/ChooseExistingGoal.html',
                 scope: $scope,
                 backdrop: 'static',

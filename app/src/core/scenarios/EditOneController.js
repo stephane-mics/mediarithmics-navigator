@@ -4,8 +4,8 @@ define(['./module'], function (module) {
 
 
   module.controller('core/scenarios/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state', 'core/campaigns/DisplayCampaignService', '$modal',
-    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state, DisplayCampaignService, $modal) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state', 'core/campaigns/DisplayCampaignService', '$uibModal',
+    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state, DisplayCampaignService, $uibModal) {
 
       function retrieveCampaignForNode($scope, node) {
         Restangular.one("campaigns", node.campaign_id).get().then(function (campaign) {
@@ -94,7 +94,7 @@ define(['./module'], function (module) {
 
       $scope.addCampaign = function (type) {
         if (type === 'DISPLAY') {
-          $modal.open({
+          $uibModal.open({
             templateUrl: 'src/core/scenarios/QuickCreateCampaign.html',
             scope: $scope,
             backdrop: 'static',
@@ -103,7 +103,7 @@ define(['./module'], function (module) {
           });
         }
         if (type === 'EMAIL') {
-          $modal.open({
+          $uibModal.open({
             templateUrl: 'src/core/scenarios/QuickCreateCampaign.html',
             scope: $scope,
             backdrop: 'static',
@@ -112,7 +112,7 @@ define(['./module'], function (module) {
           });
         }
         if (type === 'LIBRARY') {
-          $modal.open({
+          $uibModal.open({
             templateUrl: 'src/core/campaigns/ChooseExistingCampaign.html',
             scope: $scope,
             backdrop: 'static',

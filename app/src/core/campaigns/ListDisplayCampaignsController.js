@@ -14,9 +14,9 @@ define(['./module'], function (module) {
    * Campaign list controller
    */
   module.controller('core/campaigns/ListDisplayCampaignsController', [
-    '$scope', '$location', '$modal', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session',
+    '$scope', '$location', '$uibModal', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session',
     'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/files/ExportService',
-    function ($scope, $location, $modal, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
+    function ($scope, $location, $uibModal, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
       var currentWorkspace = Session.getCurrentWorkspace();
 
       $scope.currentPageDisplayCampaign = 1;
@@ -147,7 +147,7 @@ define(['./module'], function (module) {
         }
         var newScope = $scope.$new(true);
         newScope.campaign = campaign;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/campaigns/delete.html',
           scope: newScope,
           backdrop: 'static',

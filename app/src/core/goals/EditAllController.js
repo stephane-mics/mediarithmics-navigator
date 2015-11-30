@@ -5,8 +5,8 @@ define(['./module'], function (module) {
   
 
   module.controller('core/goals/EditAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal',
-    function($scope, Restangular, Session, $location, $modal) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
+    function($scope, Restangular, Session, $location, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('goals').getList({organisation_id: organisationId}).then(function (goals) {
         $scope.goals = goals;
@@ -33,7 +33,7 @@ define(['./module'], function (module) {
 
         var newScope = $scope.$new(true);
         newScope.goal = goal;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/goals/delete.html',
           scope : newScope,
           backdrop : 'static',

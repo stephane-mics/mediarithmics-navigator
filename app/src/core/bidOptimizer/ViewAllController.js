@@ -3,8 +3,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/bidOptimizer/ViewAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal', '$state', '$stateParams',
-    function($scope, Restangular, Session, $location, $modal, $state, $stateParams) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal', '$state', '$stateParams',
+    function($scope, Restangular, Session, $location, $uibModal, $state, $stateParams) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.bidOptimizers = Restangular.all("bid_optimizers").getList({
         organisation_id : organisationId
@@ -12,7 +12,7 @@ define(['./module'], function (module) {
       $scope.organisationId = organisationId;
 
       $scope.createBidOptimizer = function () {
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/bidOptimizer/create.html',
           scope : $scope,
           backdrop : 'static',
