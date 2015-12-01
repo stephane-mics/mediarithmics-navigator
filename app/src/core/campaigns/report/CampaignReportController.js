@@ -39,7 +39,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.adPerformance = data;
     });
 
-    CampaignAnalyticsReportService.mediaPerformance(campaignId, $scope.hasCpa, 30).then(function (data) {
+    CampaignAnalyticsReportService.mediaPerformance(campaignId, $scope.hasCpa, "-click_count", 30).then(function (data) {
       $scope.mediaPerformance = data;
     });
 
@@ -164,7 +164,7 @@ define(['./module', 'lodash'], function (module, _) {
 
       $scope.export = function (extension) {
         // Get all the media data on export
-        CampaignAnalyticsReportService.mediaPerformance($stateParams.campaign_id, $scope.hasCpa, null).then(function (mediaPerformance) {
+        CampaignAnalyticsReportService.mediaPerformance($stateParams.campaign_id, $scope.hasCpa, "-click_count", null).then(function (mediaPerformance) {
           var sites = sort(buildSites(mediaPerformance));
           var dataExport = buildCampaignMetricsExportData($scope.ads, $scope.adGroups, sites);
           ExportService.exportData(dataExport, $scope.campaign.name + '-Metrics', extension);
@@ -221,9 +221,9 @@ define(['./module', 'lodash'], function (module, _) {
         var rightHeight = rightValues[1];
         if (leftWidth === rightWidth) {
           if (leftHeight > rightHeight) {
-           leftWidth += rightWidth;
+            leftWidth += rightWidth;
           } else {
-             rightWidth += leftWidth;
+            rightWidth += leftWidth;
           }
         }
         return (!$scope.reverseSort && leftWidth > rightWidth) || ($scope.reverseSort && leftWidth < rightWidth);
@@ -273,7 +273,7 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
       $scope.sortSitesBy = function (key) {
-        CampaignAnalyticsReportService.mediaPerformance($stateParams.campaign_id, $scope.hasCpa, 30).then(function (mediaPerformance) {
+        CampaignAnalyticsReportService.mediaPerformance($stateParams.campaign_id, $scope.hasCpa, "-click_count", 30).then(function (mediaPerformance) {
           $scope.mediaPerformance = mediaPerformance;
           $scope.reverseSort = (key !== $scope.orderBy) ? false : !$scope.reverseSort;
           $scope.orderBy = key;
@@ -281,7 +281,7 @@ define(['./module', 'lodash'], function (module, _) {
         });
       };
 
-      var buildSites = function(mediaPerformance) {
+      var buildSites = function (mediaPerformance) {
         var sites = [];
 
         // Get media performance info indexes to identify the media information
@@ -427,7 +427,7 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Stats
        */
-      $scope.$watchGroup(['reportDateRange', 'hasCpa'], function(values) {
+      $scope.$watchGroup(['reportDateRange', 'hasCpa'], function (values) {
         if (angular.isDefined(values[0]) && angular.isDefined(values[1])) {
           $scope.timeFilter = $scope.timeFilters[0];
           updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);

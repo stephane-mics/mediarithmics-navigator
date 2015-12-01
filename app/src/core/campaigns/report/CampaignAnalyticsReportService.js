@@ -113,7 +113,7 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
           return tableHeaders;
         };
 
-        ReportService.getPerformance = function (resource, metrics, filters, limit) {
+        ReportService.getPerformance = function (resource, metrics, filters, sort, limit) {
           return resource.get({
             organisation_id: Session.getCurrentWorkspace().organisation_id,
             start_date: startDate().format('YYYY-MM-D'),
@@ -121,12 +121,13 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
             dimension: "",
             metrics: metrics,
             filters: filters,
+            sort: sort,
             limit: limit || null
           });
         };
 
-        ReportService.buildPerformanceReport = function (resource, metrics, filters, limit) {
-          return this.getPerformance(resource, metrics, filters, limit)
+        ReportService.buildPerformanceReport = function (resource, metrics, filters, sort, limit) {
+          return this.getPerformance(resource, metrics, filters, sort, limit)
             .$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view, tableHeaders);
             });
@@ -159,12 +160,13 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
           );
         };
 
-        ReportService.mediaPerformance = function (campaignId, hasCpa, limit) {
+        ReportService.mediaPerformance = function (campaignId, hasCpa, sort, limit) {
           var cpa = hasCpa ? ",cpa" : "";
           return this.buildPerformanceReport(
             mediaResource,
             "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
             "campaign_id==" + campaignId,
+            sort,
             limit
           );
         };
