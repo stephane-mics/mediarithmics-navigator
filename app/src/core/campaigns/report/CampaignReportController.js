@@ -43,10 +43,9 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.mediaPerformance = data;
     });
 
-    CampaignAnalyticsReportService.kpi(campaignId)
-      .then(function (data) {
-        $scope.kpis = data;
-      });
+    CampaignAnalyticsReportService.kpi(campaignId, $scope.hasCpa).then(function (data) {
+      $scope.kpis = data;
+    });
   };
 
   /**
@@ -221,9 +220,9 @@ define(['./module', 'lodash'], function (module, _) {
         var rightHeight = rightValues[1];
         if (leftWidth === rightWidth) {
           if (leftHeight > rightHeight) {
-           leftWidth += rightWidth;
+            leftWidth += rightWidth;
           } else {
-             rightWidth += leftWidth;
+            rightWidth += leftWidth;
           }
         }
         return (!$scope.reverseSort && leftWidth > rightWidth) || ($scope.reverseSort && leftWidth < rightWidth);
@@ -281,7 +280,7 @@ define(['./module', 'lodash'], function (module, _) {
         });
       };
 
-      var buildSites = function(mediaPerformance) {
+      var buildSites = function (mediaPerformance) {
         var sites = [];
 
         // Get media performance info indexes to identify the media information
@@ -427,7 +426,7 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Stats
        */
-      $scope.$watchGroup(['reportDateRange', 'hasCpa'], function(values) {
+      $scope.$watchGroup(['reportDateRange', 'hasCpa'], function (values) {
         if (angular.isDefined(values[0]) && angular.isDefined(values[1])) {
           $scope.timeFilter = $scope.timeFilters[0];
           updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
