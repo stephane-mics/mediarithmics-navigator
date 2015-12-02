@@ -43,10 +43,9 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.mediaPerformance = data;
     });
 
-    CampaignAnalyticsReportService.kpi(campaignId)
-      .then(function (data) {
-        $scope.kpis = data;
-      });
+    CampaignAnalyticsReportService.kpi(campaignId, $scope.hasCpa).then(function (data) {
+      $scope.kpis = data;
+    });
   };
 
   /**
