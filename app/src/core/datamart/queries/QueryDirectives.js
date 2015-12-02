@@ -241,6 +241,20 @@ define(['./module'], function (module) {
                         return moment.duration(duration, 'ms').format("d [days] h [hours] m [minutes] s [seconds] S [ms]");
                     };
 
+                    $scope.displayValue = function (value, dataType) {
+                        if (dataType === 'DATE'){
+                            if (value.constructor === Array){
+                                return value.map(function (v){
+                                   return moment(v).format('DD/MM/YYYY');
+                                });
+                            } else {
+                                return moment(value).format('DD/MM/YYYY');
+                            }
+                        }  else {
+                            return value;
+                        }
+                    };
+
                 },
                 templateUrl: function (elem, attr) {
                     return 'src/core/datamart/queries/query-ui.html';

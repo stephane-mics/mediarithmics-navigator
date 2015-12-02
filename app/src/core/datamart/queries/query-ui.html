@@ -206,7 +206,7 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="row in results.rows">
-                                        <td ng-repeat="column in selectedColumns">{{row['cells'][column.json_path]}}</td>
+                                        <td ng-repeat="column in selectedColumns">{{displayValue(row['cells'][column.json_path],column.value_type)}}</td>
                                         <td>
                                             <a class="mics-btn mics-btn-action btn-xs" target="_blank"
                                                ng-href="{{goToTimeline(row['user_point_id'])}}">Timeline</a>
