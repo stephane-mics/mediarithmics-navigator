@@ -2,12 +2,12 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/usergroups/DeleteController', [
-    '$scope', '$modalInstance', '$location', '$state', '$stateParams', "core/common/ErrorService",
-    function($scope, $modalInstance, $location, $state, $stateParams, errorService) {
+    '$scope', '$uibModalInstance', '$location', '$state', '$stateParams', "core/common/ErrorService",
+    function($scope, $uibModalInstance, $location, $state, $stateParams, errorService) {
 
       $scope.done = function() {
         $scope.userGroup.remove().then(function (){
-          $modalInstance.close();
+          $uibModalInstance.close();
           $location.path("/library/usergroups");
 
           // $state.reload();
@@ -16,7 +16,7 @@ define(['./module'], function (module) {
             reload: true, inherit: true, notify: true
           });
         }, function failure(response) {
-          $modalInstance.close();
+          $uibModalInstance.close();
           errorService.showErrorModal({
             error: response,
             messageType:"simple"
@@ -25,12 +25,8 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
-
     }
   ]);
 });
-
-
-

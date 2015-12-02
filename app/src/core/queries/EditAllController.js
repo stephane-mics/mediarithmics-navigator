@@ -3,8 +3,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/queries/EditAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal',
-    function($scope, Restangular, Session, $location, $modal) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
+    function($scope, Restangular, Session, $location, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('queries').getList({organisation_id: organisationId}).then(function (queries) {
         $scope.queries = queries;
@@ -31,7 +31,7 @@ define(['./module'], function (module) {
 
         var newScope = $scope.$new(true);
         newScope.scenario = scenario;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/queries/delete.html',
           scope : newScope,
           backdrop : 'static',

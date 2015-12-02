@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/location/AddPostalCodeListController', [
-            '$scope', '$modalInstance', '$document', '$log',  "Restangular", 'core/common/auth/Session', 'core/common/IdGenerator',
-    function($scope, $modalInstance, $document, $log,  Restangular, Session, IdGenerator) {
+            '$scope', '$uibModalInstance', '$document', '$log',  "Restangular", 'core/common/auth/Session', 'core/common/IdGenerator',
+    function($scope, $uibModalInstance, $document, $log,  Restangular, Session, IdGenerator) {
 
       $scope.input = {};
       $scope.addedPostalCodes = [];
@@ -31,11 +31,11 @@ define(['./module'], function (module) {
             postal_code : postalCodeAdded
           });
         }
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.cancel = function() {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
     }

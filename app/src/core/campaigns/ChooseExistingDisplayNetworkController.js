@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/campaigns/ChooseExistingDisplayNetworkController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
-    function ($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
+    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
+    function ($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
       $scope.availableInventorySources = DisplayCampaignService.getDisplayNetworkAccess();
       $scope.selectedInventorySources = [];
 
@@ -13,11 +13,11 @@ define(['./module'], function (module) {
           inventorySource = $scope.selectedInventorySources[i];
           $scope.$emit("mics-inventory-source:selected", inventorySource);
         }
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.cancel = function () {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
     }
   ]);

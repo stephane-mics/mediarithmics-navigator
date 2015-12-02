@@ -7,8 +7,8 @@ define(['./module'], function (module) {
    */
 
   module.controller('core/campaigns/expert/EditAdGroupController', [
-    '$scope', '$location', '$stateParams', '$modal', '$log', 'core/campaigns/DisplayCampaignService', 'core/common/ConstantsService', 'lodash',
-    function($scope, $location, $stateParams, $modal, $log, DisplayCampaignService, ConstantsService, _) {
+    '$scope', '$location', '$stateParams', '$uibModal', '$log', 'core/campaigns/DisplayCampaignService', 'core/common/ConstantsService', 'lodash',
+    function($scope, $location, $stateParams, $uibModal, $log, DisplayCampaignService, ConstantsService, _) {
 
       var adGroupId = $stateParams.ad_group_id;
       var organisationId = $stateParams.organisation_id;

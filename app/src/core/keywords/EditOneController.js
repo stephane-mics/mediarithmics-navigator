@@ -4,8 +4,8 @@ define(['./module'], function (module) {
 
 
   module.controller('core/keywords/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal', '$stateParams', 'core/keywords/KeywordListContainer', '$location',
-    function($scope, $log, Restangular, Session, _, $modal, $stateParams, KeywordListContainer, $location) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$uibModal', '$stateParams', 'core/keywords/KeywordListContainer', '$location',
+    function($scope, $log, Restangular, Session, _, $uibModal, $stateParams, KeywordListContainer, $location) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
 
       var keywordslistId = $stateParams.keywordslist_id;

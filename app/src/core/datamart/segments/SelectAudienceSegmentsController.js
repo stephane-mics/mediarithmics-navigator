@@ -3,12 +3,12 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller("core/datamart/segments/SelectAudienceSegmentsController", [
-    "$scope", "$modal", "$log",
-    function($scope, $modal, $log) {
+    "$scope", "$uibModal", "$log",
+    function($scope, $uibModal, $log) {
 
       $scope.selectExistingAudienceSegments = function() {
         // display pop-up
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/datamart/segments/ChooseExistingAudienceSegmentsPopin.html',
           scope : $scope,
           backdrop : 'static',

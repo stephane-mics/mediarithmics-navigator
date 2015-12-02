@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/adgroups/UploadAdController', [
-    '$scope', '$modalInstance',
-    function ($scope, $modalInstance) {
+    '$scope', '$uibModalInstance',
+    function ($scope, $uibModalInstance) {
       $scope.canSave = false;
 
       $scope.done = function () {
@@ -11,7 +11,7 @@ define(['./module'], function (module) {
       };
 
       $scope.$on("display-ad/basic-editor:saved", function () {
-        $modalInstance.close();
+        $uibModalInstance.close();
       });
 
       $scope.$on("display-ad/basic-editor:asset-added", function () {
@@ -19,7 +19,7 @@ define(['./module'], function (module) {
       });
 
       $scope.cancel = function () {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
     }
   ]);

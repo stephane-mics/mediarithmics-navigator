@@ -2,14 +2,14 @@ define(['./module'], function (module) {
   "use strict";
 
   module.factory('core/common/WaitingService', [
-    "$modal",
-    function ($modal) {
+    "$uibModal",
+    function ($uibModal) {
       var service = {};
 
       var waitingModal = null;
 
       service.showWaitingModal = function() {
-        waitingModal = $modal.open({
+        waitingModal = $uibModal.open({
           templateUrl: 'src/core/common/waiting.html',
           backdrop : 'static',
           keyboard : false

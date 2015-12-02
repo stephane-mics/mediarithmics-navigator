@@ -2,8 +2,8 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal', '$state', '$stateParams', '$location', 'core/common/IabService', 'core/configuration',
-    function ($scope, $log, Restangular, Session, _, $modal, $state, $stateParams, $location, IabService, configuration) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$uibModal', '$state', '$stateParams', '$location', 'core/common/IabService', 'core/configuration',
+    function ($scope, $log, Restangular, Session, _, $uibModal, $state, $stateParams, $location, IabService, configuration) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.editMode = $state.current.name === "adlayouts/editVersion";

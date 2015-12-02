@@ -4,8 +4,8 @@ define(['./module'], function (module) {
 
   // TODO
   module.controller('core/keywords/ViewAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$modal',
-    function($scope, Restangular, Session, $location, $modal) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
+    function($scope, Restangular, Session, $location, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('keyword_lists').getList({organisation_id: organisationId}).then(function (keywordsLists) {
         $scope.keywordsLists = keywordsLists;
@@ -31,7 +31,7 @@ define(['./module'], function (module) {
 
         var newScope = $scope.$new(true);
         newScope.keywordsList = keywordsList;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/keywords/delete.html',
           scope : newScope,
           backdrop : 'static',

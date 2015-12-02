@@ -2,15 +2,15 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/campaigns/DeleteController', [
-    '$scope', '$modalInstance', '$location', "core/common/ErrorService",
-    function ($scope, $modalInstance, $location, errorService) {
+    '$scope', '$uibModalInstance', '$location', "core/common/ErrorService",
+    function ($scope, $uibModalInstance, $location, errorService) {
 
       $scope.done = function () {
         $scope.campaign.remove().then(function () {
-          $modalInstance.close();
+          $uibModalInstance.close();
           $location.path("/");
         }, function failure(response) {
-          $modalInstance.close();
+          $uibModalInstance.close();
           errorService.showErrorModal({
             error: response,
             messageType: "simple"
@@ -19,7 +19,7 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function () {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
     }
   ]);

@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/adgroups/ChooseExistingAdsController', [
-    '$scope', '$modalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', 'Restangular', 'core/common/auth/Session', 'core/common/ads/AdService',
-    function($scope, $modalInstance, $document, $log, DisplayCampaignService, Restangular, Session, AdService) {
+    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', 'Restangular', 'core/common/auth/Session', 'core/common/ads/AdService',
+    function($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session, AdService) {
       $scope.currentPageCreative = 1;
       $scope.itemsPerPage = 10;
       var creativeType = "ALL";
@@ -31,11 +31,11 @@ define(['./module'], function (module) {
             creative: creative
           });
         }
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
       $scope.cancel = function () {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
     }

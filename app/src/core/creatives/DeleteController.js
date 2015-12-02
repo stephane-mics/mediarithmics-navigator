@@ -2,15 +2,15 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/DeleteController', [
-    '$scope', '$modalInstance', '$location', 'core/common/auth/Session', '$state', '$stateParams', "core/common/ErrorService",
-    function ($scope, $modalInstance, $location, Session, $state, $stateParams, errorService) {
+    '$scope', '$uibModalInstance', '$location', 'core/common/auth/Session', '$state', '$stateParams', "core/common/ErrorService",
+    function ($scope, $uibModalInstance, $location, Session, $state, $stateParams, errorService) {
 
       $scope.done = function () {
         $scope.creative.remove().then(function () {
-          $modalInstance.close();
+          $uibModalInstance.close();
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/creatives");
         }, function failure(response) {
-          $modalInstance.close();
+          $uibModalInstance.close();
           errorService.showErrorModal({
             error: response,
             messageType: "simple"
@@ -19,7 +19,7 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function () {
-        $modalInstance.close();
+        $uibModalInstance.close();
       };
 
     }

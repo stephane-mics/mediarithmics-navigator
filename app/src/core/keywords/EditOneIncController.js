@@ -4,8 +4,8 @@ define(['./module'], function (module) {
 
 
   module.controller('core/keywords/EditOneIncController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$modal',
-    function($scope, $log, Restangular, Session, _, $modal) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$uibModal',
+    function($scope, $log, Restangular, Session, _, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
 
       // $scope.keywordsList is a KeywordListContainer
@@ -60,7 +60,7 @@ define(['./module'], function (module) {
       $scope.importKeywordExpressions = function (kw, typeStr) {
         var childScope = $scope.$new(true);
         childScope.type = typeStr;
-        $modal.open({
+        $uibModal.open({
           templateUrl: 'src/core/keywords/ImportList.html',
           scope : childScope,
           backdrop : 'static',

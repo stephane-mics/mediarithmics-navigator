@@ -7,9 +7,9 @@ define(['./module'], function (module) {
    */
 
   module.controller('core/common/properties/AssetPropertyController', [
-    '$scope', '$modal', '$log','core/configuration',
+    '$scope', '$uibModal', '$log','core/configuration',
 
-    function($scope, $modal, $log, configuration) {
+    function($scope, $uibModal, $log, configuration) {
       if( $scope.property.value.file_path){
         $scope.image =  configuration.ASSETS_URL + $scope.property.value.file_path;
       }
@@ -20,7 +20,7 @@ define(['./module'], function (module) {
         $log.debug("open upload asset modal window ");
 
         // display pop-up
-        var uploadModal = $modal.open({
+        var uploadModal = $uibModal.open({
           templateUrl: 'src/core/common/properties/asset-upload.html',
           scope : $scope,
           backdrop : 'static',

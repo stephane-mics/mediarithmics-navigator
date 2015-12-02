@@ -5,8 +5,8 @@ define(['./module'], function (module) {
 
 
   module.controller('core/goals/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state','$modal',
-    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state,$modal) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state','$uibModal',
+    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state,$uibModal) {
       var goalId = $stateParams.goal_id;
 
       if (!goalId) {
@@ -50,7 +50,7 @@ define(['./module'], function (module) {
       });
 
       $scope.addAttributionModel = function (type) {
-        $modal.open({
+        $uibModal.open({
             templateUrl: 'src/core/attributionmodels/ChooseExistingAttributionModel.html',
             scope: $scope,
             backdrop: 'static',
