@@ -4,7 +4,8 @@
   </div>
 
   <div class="modal-body">
-    <p>Something went wrong... Please try again later.</p>
+    <p ng-show="message">{{message}}</p>
+    <p ng-show="!message">Something went wrong... Please try again later.</p>
     <p ng-show="errorId">The id of the error is <code>{{errorId}}</code>, the support team will need it to help you !</p>
 
   </div>
