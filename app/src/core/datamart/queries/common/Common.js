@@ -4,6 +4,12 @@ define(['./module'], function (module) {
 
   module.factory('core/datamart/queries/common/Common', function() {
 
+      /* Note about operators :
+          Operators are applied on condition's value
+          Operators depend on the selector's type (STRING, INTEGER, ....)
+          Selector's type do NOT reflect the condition's value type
+          From the GUI point of view, condition's value type is ALWAYS a string
+      */
       var propertySelectorOperators = {
         "STRING": [
           {operator:"EQUAL", label:"is"},

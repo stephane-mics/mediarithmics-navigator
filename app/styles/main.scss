@@ -2014,21 +2014,24 @@ input.ng-invalid {
 .hiddenRow {
   padding: 0 !important;
 }
-.query-tab {
-  margin-top: 15px;
-}
 
-.results-tab {
-  .family-title {
-    text-align: center;
+.query-toolbox {
+  .query-tab {
+    margin-top: 15px;
   }
-}
 
-.loading {
-  height: 20px;
-}
+  .results-tab {
+    .family-title {
+      text-align: center;
+    }
+  }
 
-.ajax-loader {
-  position: absolute;
-  left: 50%;
+  .loading {
+    height: 20px;
+  }
+
+  .ajax-loader {
+    position: absolute;
+    left: 50%;
+  }
 }
