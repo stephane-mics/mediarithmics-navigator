@@ -1946,11 +1946,22 @@ input.ng-invalid {
 // -------------------- Draggable element : used for query ui ----------------------------
 
 .ongoing-drag-decorate {
+
   .droppable-zone {
     height: 25px;
     background: #f5f5f5;
     border: 2px dashed #ddd;
   }
+
+  .drop-allowed.lvl-over {
+      background: #dff0d8;
+  }
+
+  .drop-forbidden.lvl-over {
+      background: #f2dede;
+  }
+
+
 }
 
 [draggable] {
@@ -1959,6 +1970,10 @@ input.ng-invalid {
 
 .query-stats {
   font-size: 20px;
+
+  .total-user {
+    color: grey;
+  }
 }
 
 .refresh-stats {
@@ -1999,12 +2014,24 @@ input.ng-invalid {
 .hiddenRow {
   padding: 0 !important;
 }
-.query-tab {
-  margin-top: 15px;
-}
 
-.results-tab {
-  .family-title {
-    text-align: center;
+.query-toolbox {
+  .query-tab {
+    margin-top: 15px;
+  }
+
+  .results-tab {
+    .family-title {
+      text-align: center;
+    }
+  }
+
+  .loading {
+    height: 20px;
+  }
+
+  .ajax-loader {
+    position: absolute;
+    left: 50%;
   }
 }

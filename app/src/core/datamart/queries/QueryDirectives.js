@@ -5,9 +5,10 @@ define(['./module'], function (module) {
     module.directive('mcsQueryTool', [
         'Restangular', '$q', 'lodash', 'core/common/auth/Session',
         'core/datamart/queries/common/Common', '$uibModal', "async",
-        'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'moment', '$rootScope',
+        'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'core/datamart/queries/CriteriaContainer', 'moment', '$rootScope',
+        
+        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope) {
 
-        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, moment, $rootScope) {
             return {
                 restrict: 'E',
                 scope: {
@@ -16,7 +17,7 @@ define(['./module'], function (module) {
                     autoload: '=',
                     datamartId: '='
                 },
-                controller: function ($scope) {
+                link: function ($scope, element, attr) {
                     //dataTransfer hack : The jQuery event object does not have a dataTransfer property... true, but one can try:
                     angular.element.event.props.push('dataTransfer');
 
@@ -26,14 +27,7 @@ define(['./module'], function (module) {
 
                     var fetchPropertySelectors = function () {
                         Restangular.one('datamarts', $scope.datamartId).all('property_selectors').getList().then(function (result) {
-                            $scope.propertySelectors = result;
-                            $scope.selectorFamilies = lodash.groupBy(result, function (selector) {
-                                if (selector.selector_family === 'EVENTS') {
-                                    return selector.family_parameters;
-                                } else {
-                                    return selector.selector_family;
-                                }
-                            });
+                            $scope.criteriaContainer = CriteriaContainer.loadPropertySelectors(result);
                         });
                     };
 
@@ -53,6 +47,8 @@ define(['./module'], function (module) {
                             }, function error(reason){
                                 $scope.error = "Cannot load query";
                             });
+                        } else {
+                            queryContainer.addGroupContainer();
                         }
                     });
 
@@ -78,8 +74,11 @@ define(['./module'], function (module) {
                         conditionGroupContainer.toggleExclude();
                     };
 
-                    $scope.removeCond = function (elementContainer, condition) {
+                    $scope.removeCond = function (groupContainer, elementContainer, condition) {
                         elementContainer.removeCondition(condition);
+                        if (elementContainer.conditions.length === 0){
+                            groupContainer.removeElementContainer(elementContainer);
+                        }
                     };
 
                     $scope.removeElem = function (conditionGroupContainer, elementContainer) {
@@ -88,39 +87,39 @@ define(['./module'], function (module) {
 
                     $scope.addElement = function (dragEl, dropEl, conditionGroupContainer) {
 
-                        var drag = angular.element(document.getElementById(dragEl));
+                        var drag = element.find('#' + dragEl);
                         var dragPropertySelectorId = drag.children('span').attr('id');
-                        var propertySelector = getDragSelector(dragPropertySelectorId);
+                        var propertySelector = $scope.criteriaContainer.findPropertySelector(dragPropertySelectorId);
 
                         $scope.$apply(function () {
-                            conditionGroupContainer.createElementWithCondition(propertySelector);
+                            conditionGroupContainer.createElementWithCondition(propertySelector.value);
                         });
                     };
 
                     $scope.addCondition = function (dragEl, dropEl, elementContainer) {
 
-                        var drag = angular.element(document.getElementById(dragEl));
+                        var drag = element.find('#' + dragEl);
                         var dragPropertySelectorId = drag.children('span').attr('id');
-                        var propertySelector = getDragSelector(dragPropertySelectorId);
+                        var propertySelector = $scope.criteriaContainer.findPropertySelector(dragPropertySelectorId);
 
                         $scope.$apply(function () {
-                            elementContainer.createCondition(propertySelector);
+                            elementContainer.createCondition(propertySelector.value);
                         });
                     };
 
                     $scope.addSelectedValue = function (dragEl, dropEl, queryContainer) {
 
-                        var drag = angular.element(document.getElementById(dragEl));
+                        var drag = element.find('#' + dragEl);
                         var dragPropertySelectorId = drag.children('span').attr('id');
-                        var propertySelector = getDragSelector(dragPropertySelectorId);
+                        var propertySelector = $scope.criteriaContainer.findPropertySelector(dragPropertySelectorId);
 
                         $scope.$apply(function () {
-                            queryContainer.createSelectedValue(propertySelector);
+                            queryContainer.createSelectedValue(propertySelector.value);
                         });
                     };
 
                     $scope.removeSelectedValue = function (queryContainer, selectedValue) {
-                        queryContainer.removeSelectedValue(selectedValue);
+                        queryContainer.removeSelectedValue(selectedValue.value);
                         $scope.results = [];
                     };
 
@@ -136,26 +135,45 @@ define(['./module'], function (module) {
                     };
 
                     var reload = function () {
+                        $scope.statsLoading = true;
                         var jsonQuery = queryContainer.prepareJsonQuery();
                         Restangular.one('datamarts', $scope.datamartId).customPOST(jsonQuery, 'query_executions').then(function (result) {
                             $scope.statistics.total = result.total;
                             $scope.statistics.hasEmail = result.total_with_email;
+                            $scope.statistics.hasUserAccountId = result.total_with_user_account_id;
                             $scope.statistics.hasCookie = result.total_with_cookie;
                             $scope.statistics.executionTimeInMs = result.execution_time_in_ms;
                             $scope.statsError = null;
+                            $scope.statsLoading = false;
                         }, function () {
                             $scope.statistics.total = 0;
                             $scope.statistics.hasEmail = 0;
+                            $scope.statistics.hasUserAccountId = 0;
                             $scope.statistics.hasCookie = 0;
                             $scope.statistics.executionTimeInMs = 0;
                             $scope.statsError = "There was an error executing query";
+                            $scope.statsLoading = false;
                         });
 
                         $scope.results = [];
+                        $scope.resultsError = null;
 
                         if (resultsTabSelected && $scope.statistics.total !== 0 && $scope.queryContainer.selectedValues.length !== 0) {
+                            $scope.resultsLoading = true;
                             Restangular.one('datamarts', $scope.datamartId).customPOST(jsonQuery, 'query_executions/result_preview').then(function (results) {
                                 $scope.results = results;
+                                $scope.resultsLoading = false;
+                                $scope.resultsError = null;
+
+                                $scope.families = Object.keys(results.metadata).sort();
+
+                                $scope.selectedColumns = lodash.flatten(lodash.map($scope.families, function(family) {
+                                    return results.metadata[family];
+                                }));
+
+                            }, function () {
+                                $scope.resultsLoading = false;
+                                $scope.resultsError = "There was an error retrieving results";
                             });
                         }
                     };
@@ -193,6 +211,17 @@ define(['./module'], function (module) {
                         });
                     });
 
+                    element.bind("dragstart", function (ev) {
+                        $scope.$apply(function () {
+                            $scope.currentlyDraggedFamily = ev.target.getAttribute("data-family");
+                        });
+                    });
+
+
+                    $scope.familyMatchesForDrop = function(family) {
+                        return family === $scope.currentlyDraggedFamily;
+                    };
+
                     $scope.addPropertySelector = function (family) {
                         var newScope = $scope.$new(true);
                         newScope.propertySelector = {
@@ -212,15 +241,18 @@ define(['./module'], function (module) {
                         return moment.duration(duration, 'ms').format("d [days] h [hours] m [minutes] s [seconds] S [ms]");
                     };
 
-                    //function that find the selectorInstance being drag&drop
-                    var getDragSelector = function (id) {
-                        var propertySelector = {};
-                        angular.forEach($scope.propertySelectors, function (selector) {
-                            if (selector.id === id) {
-                                propertySelector = selector;
+                    $scope.displayValue = function (value, dataType) {
+                        if (dataType === 'DATE'){
+                            if (value.constructor === Array){
+                                return value.map(function (v){
+                                   return moment(v).format('DD/MM/YYYY');
+                                });
+                            } else {
+                                return moment(value).format('DD/MM/YYYY');
                             }
-                        });
-                        return propertySelector;
+                        }  else {
+                            return value;
+                        }
                     };
 
                 },
@@ -230,7 +262,7 @@ define(['./module'], function (module) {
             };
         }]);
 
-    module.directive('mcsQueryCondition', [ 'core/datamart/queries/common/Common', function (Common) {
+    module.directive('mcsQueryCondition', [ 'core/datamart/queries/common/Common', 'core/datamart/query/QueryService', function (Common, QueryService) {
         return {
             restrict: 'E',
             scope: {
@@ -238,13 +270,13 @@ define(['./module'], function (module) {
                 condition: '='
             },
             controller: function ($scope) {
-                $scope.operators = Common.propertySelectorOperators[$scope.condition.property_selector_value_type];
+                $scope.operators = Common.propertySelectorOperators[$scope.condition.getSelectorValueType()];
 
                 $scope.initConditionValue = function (condition){
-                  if (condition.operator === "BETWEEN" && condition.property_selector_value_type === "DATE"){
-                      condition.value = {from:"", to:""};
+                  if (condition.value.operator === "BETWEEN" && condition.value.property_selector_value_type === "DATE"){
+                      condition.value.value = {from:"", to:""};
                   } else {
-                      condition.value = "";
+                      condition.value.value = "";
                   }
 
                 };
@@ -300,10 +332,10 @@ define(['./module'], function (module) {
                 var fromDateInputField = elem.find('input[name="fromDateInputField"]');
                 var toDateInputField = elem.find('input[name="toDateInputField"]');
 
-                if (scope.condition.value.from && scope.condition.value.to){
+                if (scope.condition.value.value.from && scope.condition.value.value.to){
                     scope.datefield = {
-                        from:moment(scope.condition.value.from).format("L"),
-                        to:moment(scope.condition.value.to).format("L")
+                        from:moment(scope.condition.value.value.from).format("L"),
+                        to:moment(scope.condition.value.value.to).format("L")
                     };
                 }else{
                     scope.datefield = {from:"",to:""};
@@ -317,7 +349,7 @@ define(['./module'], function (module) {
                     minDate: moment("1970-01-01"),
                     maxDate: moment().add(10,'y')
                 },function (start, end, label) {
-                    scope.condition.value.from = start.format();
+                    scope.condition.value.value.from = start.format();
                 });
 
                 toDateInputField.daterangepicker({
@@ -327,7 +359,7 @@ define(['./module'], function (module) {
                     minDate: moment("1970-01-01"),
                     maxDate: moment().add(10,'y')
                 },function (start, end, label) {
-                    scope.condition.value.to = start.format();
+                    scope.condition.value.value.to = start.format();
                 });
             }
         };
@@ -345,8 +377,8 @@ define(['./module'], function (module) {
 
                 var datefieldInput = elem.find('input[name="simpleDateInputField"]');
 
-                if (scope.condition.value){
-                    scope.datefield = {date:moment(scope.condition.value).format("L")};
+                if (scope.condition.value.value){
+                    scope.datefield = {date:moment(scope.condition.value.value).format("L")};
                 }else{
                     scope.datefield = {date:""};
                 }
@@ -358,7 +390,7 @@ define(['./module'], function (module) {
                     minDate: moment("1970-01-01"),
                     maxDate: moment().add(10,'y')
                 },function (start, end, label) {
-                    scope.condition.value = start.format();
+                    scope.condition.value.value = start.format();
                 });
             }
         };
@@ -368,7 +400,7 @@ define(['./module'], function (module) {
 
         function updateCondition(scope){
             var isoPeriod = "P" + scope.relativeDateNumber + scope.relativeDateMagnitude;
-            scope.condition.value = isoPeriod;
+            scope.condition.value.value = isoPeriod;
         }
 
         return {
@@ -386,9 +418,9 @@ define(['./module'], function (module) {
                     {label:"years", letter:"Y"}
                 ];
 
-                if (scope.condition.value){
-                    scope.relativeDateNumber = scope.condition.value.charAt(1);
-                    scope.relativeDateMagnitude = scope.condition.value.charAt(2);
+                if (scope.condition.value.value){
+                    scope.relativeDateNumber = scope.condition.value.value.charAt(1);
+                    scope.relativeDateMagnitude = scope.condition.value.value.charAt(2);
                 } else {
                     scope.relativeDateNumber = "";
                     scope.relativeDateMagnitude = "";
