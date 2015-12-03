@@ -1,3 +1,4 @@
+
 define(['angular'], function () {
     'use strict';
 
@@ -13,7 +14,7 @@ define(['angular'], function () {
       'ui.unique',
       'ui.router',
       'ct.ui.router.extras',
-
+      'nvd3',
       'core/configuration',
       'core/adblock',
       'core/adlayouts',

@@ -13,6 +13,7 @@ require.config({
     "lodash": "../bower_components/lodash/lodash.min",
     "d3": "../bower_components/d3/d3",
     "nv.d3": "../bower_components/nvd3/build/nv.d3",
+    "angular-nvd3": "../bower_components/angular-nvd3/dist/angular-nvd3",
     "doubleLineChart": "nvd3-templates/doubleLineChart",
 
     "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap",
@@ -51,6 +52,7 @@ require.config({
   shim: {
     'angular': {deps: ['jquery'], exports: 'angular'},
     'nvd3': {exports: 'nv'},
+    'angular-nvd3': ['angular','d3', 'nv.d3'],
     'angularAMD': ['angular'],
     'ngCookies': ['angular'],
     'ngAnimate': ['angular'],
