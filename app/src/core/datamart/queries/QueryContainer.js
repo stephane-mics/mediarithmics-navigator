@@ -2,9 +2,31 @@ define(['./module'], function (module) {
     'use strict';
 
     module.factory("core/datamart/queries/QueryContainer", [
-        'Restangular', '$q', 'lodash', 'core/common/auth/Session', "async", 'core/common/promiseUtils', '$log',
+        'Restangular', '$q', 'lodash', 'core/common/auth/Session', "async", 'core/common/promiseUtils', '$log', 'core/datamart/queries/common/Common',
+        'core/datamart/query/QueryService',
+        function (Restangular, $q, lodash, Session, async, promiseUtils, $log, Common, QueryService) {
 
-        function (Restangular, $q, lodash, Session, async, promiseUtils, $log) {
+            var ConditionContainer = function ConditionContainer(value) {
+                if (value) {
+                    this.value = value;
+                    this.id = value.id;
+                }
+            };
+
+            ConditionContainer.prototype.getSelectorLabel = function () {
+                var condition = this.value;
+                return QueryService.getPropertySelectorDisplayName(condition.property_selector_name, condition.property_selector_parameters, condition.property_selector_expression, condition.property_selector_label);
+            };
+
+            ConditionContainer.prototype.getSelectorValueType = function () {
+                var condition = this.value;
+                return QueryService.getPropertySelectorValueType(condition.property_selector_value_type, condition.property_selector_expression);
+            };
+
+            ConditionContainer.prototype.getFamilyName = function () {
+                var condition = this.value;
+                return QueryService.getSelectorFamilyName(condition.property_selector_family, condition.property_selector_family_parameter);
+            };
 
             var ElementContainer = function ElementContainer(groupContainer, value) {
                 if (value) {
@@ -12,36 +34,45 @@ define(['./module'], function (module) {
                     this.id = value.id;
                 }
 
+                this.family = "";
+
                 this.groupContainer = groupContainer;
 
                 this.conditions = [];
                 this.removedConditions = [];
             };
 
-            ElementContainer.prototype.getName = function () {
-                if (this.conditions[0]){
-                    if (this.conditions[0].property_selector_family === 'EVENTS'){
-                        return this.conditions[0].property_selector_family_parameter;
-                    }else{
-                        return this.conditions[0].property_selector_family;
-                    }
+            ElementContainer.prototype.getLabel = function () {
+                if (Common.elementLabels[this.family]){
+                    return Common.elementLabels[this.family];
                 }else {
-                    return "";
+                    return this.family;
                 }
+            };
+
+            ElementContainer.prototype.allowedSelector = function(propertySelector){
+                return this.family === QueryService.getSelectorFamilyName(propertySelector.selector_family, propertySelector.family_parameters);
             };
 
             ElementContainer.prototype.createCondition = function (propertySelector) {
 
-                var condition = {
-                    property_selector_family: propertySelector.selector_family,
-                    property_selector_id: propertySelector.id,
-                    property_selector_name: propertySelector.selector_name,
-                    property_selector_family_parameter: propertySelector.family_parameters,
-                    property_selector_parameters: propertySelector.selector_parameters,
-                    property_selector_value_type: propertySelector.value_type
-                };
+                if (this.allowedSelector(propertySelector)){
+                    var condition = {
+                        property_selector_family: propertySelector.selector_family,
+                        property_selector_id: propertySelector.id,
+                        property_selector_name: propertySelector.selector_name,
+                        property_selector_family_parameter: propertySelector.family_parameters,
+                        property_selector_parameters: propertySelector.selector_parameters,
+                        property_selector_value_type: propertySelector.value_type,
+                        property_selector_expression: propertySelector.expression,
+                        property_selector_label: propertySelector.label
+                    };
 
-                this.conditions.push(condition);
+                    this.conditions.push(new ConditionContainer(condition));
+                } else {
+                    $log.warn("selector family is not allowed here");
+                }
+
             };
 
             ElementContainer.prototype.removeCondition = function (condition) {
@@ -53,13 +84,22 @@ define(['./module'], function (module) {
             };
 
             ElementContainer.prototype.buildInfoResource = function () {
-                return {conditions:Restangular.stripRestangular(this.conditions)};
+                return {conditions:Restangular.stripRestangular(this.conditions.map(function(condition){
+                    return condition.value;
+                }))};
             };
 
             ElementContainer.prototype.loadConditions = function () {
                 var self = this;
                 return this.value.all('conditions').getList().then(function (conditions) {
-                    self.conditions = conditions;
+                    self.conditions = conditions.map(function(condition){
+                        return new ConditionContainer(condition);
+                    });
+
+                    if (conditions.length > 0){
+                        self.family = conditions[0].getFamilyName();
+                    }
+
                     return self.conditions;
                 });
             };
@@ -97,30 +137,26 @@ define(['./module'], function (module) {
             ElementContainer.updateConditionTask = function (condition) {
                 return function (callback) {
                     $log.info("update condition : ", condition.id);
-                    var promise = condition.put();
+                    var promise = condition.value.put();
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
 
             ElementContainer.addConditionTask = function (elementContainer, condition) {
                 return function (callback) {
-                    $log.info("saving condition on elementId : " + elementContainer.id + ', ', condition);
-                    var conditionsEndpoint;
-                    if (elementContainer.conditions.length === 0) {
-                        var datamartId = elementContainer.groupContainer.queryContainer.datamartId;
-                        var queryId = elementContainer.groupContainer.queryContainer.id;
-                        var groupId = elementContainer.groupContainer.id;
-                        var elementId = elementContainer.id;
-                        conditionsEndpoint = Restangular
-                            .one('datamarts', datamartId)
-                            .one('queries', queryId)
-                            .one('groups', groupId)
-                            .one('elements', elementId)
-                            .all('conditions');
-                    } else {
-                        conditionsEndpoint = elementContainer.conditions;
-                    }
-                    var promise = conditionsEndpoint.post(condition);
+                    $log.info("saving condition on elementId : " + elementContainer.id + ', ', condition.value);
+                    var datamartId = elementContainer.groupContainer.queryContainer.datamartId;
+                    var queryId = elementContainer.groupContainer.queryContainer.id;
+                    var groupId = elementContainer.groupContainer.id;
+                    var elementId = elementContainer.id;
+                    var conditionsEndpoint = Restangular
+                        .one('datamarts', datamartId)
+                        .one('queries', queryId)
+                        .one('groups', groupId)
+                        .one('elements', elementId)
+                        .all('conditions');
+
+                    var promise = conditionsEndpoint.post(condition.value);
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
@@ -128,7 +164,7 @@ define(['./module'], function (module) {
             ElementContainer.deleteConditionTask = function (condition) {
                 return function (callback) {
                     $log.info("delete condition : ", condition.id);
-                    var promise = condition.remove();
+                    var promise = condition.value.remove();
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
@@ -183,11 +219,14 @@ define(['./module'], function (module) {
                     property_selector_name: propertySelector.selector_name,
                     property_selector_family_parameter: propertySelector.family_parameters,
                     property_selector_parameters: propertySelector.selector_parameters,
-                    property_selector_value_type: propertySelector.value_type
+                    property_selector_value_type: propertySelector.value_type,
+                    property_selector_expression: propertySelector.expression,
+                    property_selector_label: propertySelector.label
                 };
 
                 var elementContainer = new ElementContainer(this);
-                elementContainer.conditions.push(condition);
+                elementContainer.family = QueryService.getSelectorFamilyName(propertySelector.selector_family, propertySelector.family_parameters);
+                elementContainer.conditions.push(new ConditionContainer(condition));
 
                 this.elementContainers.push(elementContainer);
             };
@@ -273,6 +312,23 @@ define(['./module'], function (module) {
                 };
             };
 
+            var SelectedValueContainer = function SelectedValueContainer(value) {
+                if (value) {
+                    this.value = value;
+                    this.id = value.id;
+                }
+            };
+
+            SelectedValueContainer.prototype.getSelectorLabel = function () {
+                var selectorSelection = this.value;
+                return QueryService.getPropertySelectorDisplayName(selectorSelection.selector_name, selectorSelection.selector_parameters, selectorSelection.expression, selectorSelection.label);
+            };
+
+            SelectedValueContainer.prototype.getFamilyName = function () {
+                var selectorSelection = this.value;
+                return QueryService.getSelectorFamilyName(selectorSelection.selector_family, selectorSelection.family_parameters);
+            };
+
 
             var QueryContainer = function QueryContainer(datamartId) {
 
@@ -309,7 +365,9 @@ define(['./module'], function (module) {
                         return groupContainer.loadElements();
                     });
 
-                    self.selectedValues = result[2];
+                    self.selectedValues = result[2].map(function (selectedValue){
+                        return new SelectedValueContainer(selectedValue);
+                    });
 
                     return $q.all(elementsP).then(function () {
                         return self;
@@ -338,14 +396,16 @@ define(['./module'], function (module) {
                     family_parameters: propertySelector.family_parameters,
                     selector_parameters: propertySelector.selector_parameters,
                     value_type: propertySelector.value_type,
-                    property_selector_id: propertySelector.id
+                    property_selector_id: propertySelector.id,
+                    expression: propertySelector.expression,
+                    label: propertySelector.label
                 };
 
                 var alreadySelected = lodash.find(this.selectedValues, function (selector) {
                     return selector.property_selector_id === propertySelector.id;
                 });
                 if (!alreadySelected){
-                    this.selectedValues.push(selectedValue);
+                    this.selectedValues.push(new SelectedValueContainer(selectedValue));
                 }
             };
 
@@ -466,7 +526,7 @@ define(['./module'], function (module) {
 
             QueryContainer.addPropertySelectorTask = function (queryContainer, propertySelector) {
                 return function (callback) {
-                    $log.info("saving property selector on queryId : " + queryContainer.id + ', ', propertySelector);
+                    $log.info("saving property selector on queryId : " + queryContainer.id + ', ', propertySelector.value);
                     var datamartId = queryContainer.datamartId;
                     var queryId = queryContainer.id;
                     var propertySelectorsEndpoint = Restangular
@@ -474,7 +534,7 @@ define(['./module'], function (module) {
                         .one('queries', queryId)
                         .all('property_selectors');
 
-                    var promise = propertySelectorsEndpoint.post(propertySelector);
+                    var promise = propertySelectorsEndpoint.post(propertySelector.value);
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
@@ -482,7 +542,7 @@ define(['./module'], function (module) {
             QueryContainer.removePropertySelectorTask = function (propertySelector) {
                 return function (callback) {
                     $log.info("delete property selector : ", propertySelector.id);
-                    var promise = propertySelector.remove();
+                    var promise = propertySelector.value.remove();
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
@@ -511,7 +571,9 @@ define(['./module'], function (module) {
                   /*id:this.id,*/
                   datamart_id:this.datamartId,
                   groups:_groups,
-                  property_selector_selections:this.selectedValues
+                  property_selector_selections:this.selectedValues.map(function (container){
+                      return container.value;
+                  })
                 };
             };
 

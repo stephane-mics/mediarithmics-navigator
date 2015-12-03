@@ -1,44 +1,47 @@
 <div class="row">
 <div class="col-md-4">
-    {{condition.property_selector_name === 'CUSTOM_PROPERTY' || condition.property_selector_name === 'CUSTOM_EVENT' ? condition.property_selector_parameters : condition.property_selector_name}}
+    {{condition.getSelectorLabel()}}
 </div>
 <div class="col-md-4">
-    <select class="form-control input-sm" ng-model="condition.operator" ng-change="initConditionValue(condition)">
+    <select class="form-control input-sm" ng-model="condition.value.operator" ng-change="initConditionValue(condition)">
         <option ng-repeat="propertyOperator in operators" ng-selected="{{condition.operator == propertyOperator.operator}}" value="{{propertyOperator.operator}}">{{propertyOperator.label}}</option>
     </select>
 </div>
 <div class="col-md-4">
-    <mcs-query-condition-datefield condition="condition" operator=""></mcs-query-condition-datefield>
     <div class="row">
-        <div ng-switch="condition.property_selector_value_type">
+        <div ng-switch="condition.getSelectorValueType()">
             <div ng-switch-when="STRING">
-                <div ng-show="condition.operator == 'CONTAINS' || condition.operator == 'NOT_CONTAINS'">
+                <div ng-show="condition.value.operator != 'IS_EMPTY' && condition.value.operator != 'IS_NOT_EMPTY'">
                     <div class="col-md-12">
-                        <!--<mcs-query-condition-value-tokenfield condition="condition"></mcs-query-condition-value-tokenfield>-->
-                        <input type="search" class="form-control" ng-model="condition.value">
-                    </div>
-                </div>
-                <div ng-show="condition.operator != 'CONTAINS' && condition.operator != 'NOT_CONTAINS'">
-                    <div class="col-md-12">
-                        <input type="search" class="form-control" ng-model="condition.value">
+                        <input type="search" class="form-control" ng-model="condition.value.value">
                     </div>
                 </div>
             </div>
-            <div ng-switch-when="NUMBER">
+            <div ng-switch-when="INTEGER">
                 <div class="col-md-12">
-                    <input type="search" class="form-control" ng-model="condition.value">
+                    <input type="search" class="form-control" ng-model="condition.value.value">
+                </div>
+            </div>
+            <div ng-switch-when="DOUBLE">
+                <div class="col-md-12">
+                    <input type="search" class="form-control" ng-model="condition.value.value">
+                </div>
+            </div>
+            <div ng-switch-when="LONG">
+                <div class="col-md-12">
+                    <input type="search" class="form-control" ng-model="condition.value.value">
                 </div>
             </div>
             <div ng-switch-when="BOOLEAN">
                 <div class="col-md-12">
-                    <select class="form-control input-sm" ng-model="condition.value">
+                    <select class="form-control input-sm" ng-model="condition.value.value">
                         <option value="true">TRUE</option>
                         <option value="false">FALSE</option>
                     </select>
                 </div>
             </div>
             <div ng-switch-when="DATE">
-                <div ng-switch="condition.operator">
+                <div ng-switch="condition.value.operator">
                     <div ng-switch-when="RELATIVE_GT">
                         <mcs-query-condition-value-relative-date condition="condition"></mcs-query-condition-value-relative-date>
                     </div>
