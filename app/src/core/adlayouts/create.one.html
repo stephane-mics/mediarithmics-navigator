@@ -24,13 +24,6 @@
           <select ng-model="adLayout.format" ng-options="adSize for adSize in adSizes" id="format"></select>
         </div>
       </div>
-
-      <!-- Organisation id -->
-      <div class="col-md-2">
-        <div mcs-form-group="full" label-for="organisationId" label-text="Owner id">
-          <input class="input-mini" type="text" ng-disabled="true" ng-model="organisationId">
-        </div>
-      </div>
     </div>
 
     <div class="row">
@@ -43,8 +36,8 @@
 
       <!-- Ad Renderer Version -->
       <div class="col-md-2">
-        <div mcs-form-group="full" label-for="adRendererVersion" label-text="Ad Renderer Version Id">
-          <select ng-model="adLayout.renderer_version_id" ng-options="adRendererVersion for adRendererVersion in adRendererVersions" id="adRendererVersion"></select>
+        <div mcs-form-group="full" label-for="adRendererVersion" label-text="Ad Renderer Version">
+          <select ng-model="adLayout.renderer_version_id" ng-options="key for (key, value) in adRendererVersions" id="adRendererVersion"></select>
         </div>
       </div>
     </div>

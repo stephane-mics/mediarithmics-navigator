@@ -19,7 +19,6 @@
         <th>Format</th>
         <th>Renderer</th>
         <th>Renderer Version</th>
-        <th>Owner Id</th>
         <th class="actions">Actions</th>
       </tr>
       </thead>
@@ -28,8 +27,7 @@
         <td>{{adLayout.name}}</td>
         <td>{{adLayout.format}}</td>
         <td>{{adRenderers[adLayout.renderer_id]}}</td>
-        <td>{{adLayout.renderer_version_id}}</td>
-        <td>{{adLayout.organisation_id}}</td>
+        <td>{{adLayoutRendererVersions[adLayout.id]}}</td>
         <td class="actions">
           <a ng-click="createNewVersion(adLayout, $event)" class="mics-btn mics-btn-add">New Version</a>
         </td>

@@ -103,6 +103,14 @@ define(['./module'], function (module) {
             return $log.warn("mcsAdLayoutProperty: Property is undefined");
           }
 
+          scope.$watch('selectedAdLayout', function(selected) {
+            if (selected) {
+              Restangular.one("plugins/" + selected.adLayout.renderer_id + "/versions/" + selected.adLayout.renderer_version_id).get().then(function (version) {
+                return scope.rendererVersion = version;
+              });
+            }
+          });
+
           scope.selectAdLayout = function () {
             var modal = $uibModal.open({
               templateUrl: 'src/core/common/properties/ad-layout-select.html',

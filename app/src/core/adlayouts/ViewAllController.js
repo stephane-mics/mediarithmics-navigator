@@ -8,6 +8,7 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.organisationId = organisationId;
       $scope.adLayouts = [];
       $scope.adRenderers = [];
+      $scope.adLayoutRendererVersions = [];
       $scope.maxElements = 10;
       $scope.page = 0;
 
@@ -39,6 +40,12 @@ define(['./module', 'jquery'], function (module, $) {
         matchAdLayoutVersions(versions);
       }
 
+      function addAdLayoutRendererVersion(adLayoutId, rendererId, rendererVersionId) {
+        Restangular.one("plugins/" + rendererId + "/versions/" + rendererVersionId).get().then(function (version) {
+          $scope.adLayoutRendererVersions[adLayoutId] = version.version_id;
+        });
+      }
+
       function getAdLayouts() {
         $scope.adLayouts = [];
         Restangular.all("ad_layouts").getList({organisation_id: organisationId}).then(function (adLayouts) {
@@ -52,6 +59,7 @@ define(['./module', 'jquery'], function (module, $) {
               renderer_version_id: adLayout.renderer_version_id,
               organisation_id: adLayout.organisation_id
             });
+            addAdLayoutRendererVersion(adLayout.id, adLayout.renderer_id, adLayout.renderer_version_id);
             Restangular.one("ad_layouts", adLayout.id).one("versions").get({
               organisation_id: organisationId,
               statuses: "DRAFT,PUBLISHED"

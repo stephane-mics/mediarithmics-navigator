@@ -2,8 +2,8 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/CreateOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$uibModal', '$stateParams', '$location', 'core/common/IabService', 'core/configuration',
-    function ($scope, $log, Restangular, Session, _, $uibModal, $stateParams, $location, IabService, configuration) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$uibModal', '$stateParams', '$location', 'core/common/IabService',
+    function ($scope, $log, Restangular, Session, _, $uibModal, $stateParams, $location, IabService) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.adSizes = _.map(IabService.getAdSizes("DISPLAY_AD"), function (size) {
@@ -32,7 +32,7 @@ define(['./module', 'jquery'], function (module, $) {
           Restangular.all("plugins/" + rendererId + "/versions").getList().then(function (versions) {
             $scope.adRendererVersions = [];
             for (var i = 0; i < versions.length; ++i) {
-              $scope.adRendererVersions.push(versions[i].id);
+              $scope.adRendererVersions[versions[i].version_id] = versions[i].id;
             }
             $scope.adLayout.renderer_version_id = versions[0].id;
           });

@@ -9,16 +9,18 @@
         <table class="mics-table table-fixed table-hover">
           <thead>
           <tr>
+            <th class="col-xs-1">&nbsp;</th>
             <th class="col-xs-2">Ad Layouts</th>
             <th class="col-xs-3">Renderer</th>
-            <th class="col-xs-1">Renderer V.</th>
           </tr>
           </thead>
           <tbody>
-          <tr ng-click="selectAdLayout(adLayout)" class="clickableRow" ng-class="{selected: adLayout.id === selectedAdLayout.id}" ng-repeat="adLayout in adLayouts">
+          <tr ng-click="selectAdLayout(adLayout)" class="clickableRow" ng-repeat="adLayout in adLayouts">
+            <td class="col-xs-1">
+              <input type="checkbox" id="adLayout.id" ng-checked="adLayout.id == selectedAdLayout.id">
+            </td>
             <td class="col-xs-2">{{adLayout.name}}</td>
             <td class="col-xs-3">{{displayAdRenderers[adLayout.renderer_id]}}</td>
-            <td class="col-xs-1">{{adLayout.renderer_version_id}}</td>
           </tr>
           </tbody>
         </table>
@@ -27,21 +29,22 @@
 
       <div class="col-xs-6">
         <div ng-show="!selectedAdLayout" style="color: indianred"> Please Select an Ad Layout</div>
-        <div ng-show="selectedAdLayout && versions && !versions.length" style="color: indianred"> Please create a version for {{selectedAdLayout.name}}</div>
+        <div ng-show="selectedAdLayout && adLayouts.length && !versions.length" style="color: indianred"> Please create a version for {{selectedAdLayout.name}}</div>
         <table ng-show="selectedAdLayout && versions.length" class="mics-table table-fixed table-hover">
           <thead>
           <tr>
+            <th class="col-xs-1">&nbsp;</th>
             <th class="col-xs-1">Version</th>
             <th class="col-xs-2">Filename</th>
-            <th class="col-xs-2">Status</th>
+            <th class="col-xs-1">Status</th>
           </tr>
           </thead>
           <tbody>
-
-          <tr ng-click="selectVersion(version)" class="clickableRow" ng-class="{selected: version.id === selectedVersion.id}" ng-repeat="version in versions">
+          <tr ng-click="selectVersion(version)" class="clickableRow" ng-repeat="version in versions">
+            <td class="col-xs-1"><input type="checkbox" id="version.id" ng-checked="version.id === selectedVersion.id"></td>
             <td class="col-xs-2">{{version.id}}</td>
-            <td class="col-xs-3">{{version.filename}}</td>
-            <td class="col-xs-2">{{version.status}}</td>
+            <td class="col-xs-2">{{version.filename}}</td>
+            <td class="col-xs-1">{{version.status}}</td>
           </tr>
           </tbody>
         </table>
