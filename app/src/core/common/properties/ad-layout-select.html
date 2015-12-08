@@ -16,9 +16,7 @@
           </thead>
           <tbody>
           <tr ng-click="selectAdLayout(adLayout)" class="clickableRow" ng-repeat="adLayout in adLayouts">
-            <td class="col-xs-1">
-              <input type="checkbox" id="adLayout.id" ng-checked="adLayout.id == selectedAdLayout.id">
-            </td>
+            <td class="col-xs-1"><input type="checkbox" id="adLayout.id" ng-checked="adLayout.id == selectedAdLayout.id"></td>
             <td class="col-xs-2">{{adLayout.name}}</td>
             <td class="col-xs-3">{{displayAdRenderers[adLayout.renderer_id]}}</td>
           </tr>

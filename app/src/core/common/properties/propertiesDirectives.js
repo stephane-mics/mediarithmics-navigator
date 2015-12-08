@@ -103,8 +103,8 @@ define(['./module'], function (module) {
             return $log.warn("mcsAdLayoutProperty: Property is undefined");
           }
 
-          scope.$watch('selectedAdLayout', function(selected) {
-            if (selected) {
+          scope.$watch('selectedAdLayout', function (selected) {
+            if (selected && selected.adLayout) {
               Restangular.one("plugins/" + selected.adLayout.renderer_id + "/versions/" + selected.adLayout.renderer_version_id).get().then(function (version) {
                 return scope.rendererVersion = version;
               });
