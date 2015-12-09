@@ -67,7 +67,7 @@ define(['./module', 'lodash'], function (module, _) {
 
       // Tabs Set
       var tableHeadersKeys = Object.keys(CampaignAnalyticsReportService.getTableHeaders());
-      $scope.reverseSort = false;
+      $scope.reverseSort = true;
       $scope.orderBy = "clicks";
 
       Restangular.one('campaigns/' + $stateParams.campaign_id + '/goal_selections').get().then(function (goals) {
@@ -174,79 +174,59 @@ define(['./module', 'lodash'], function (module, _) {
        * Data Table
        */
 
-      var statusCompare = function (left, right) {
-        if ($scope.orderBy !== "status") {
-          return false;
-        }
-        var leftActive = left[0].status === "ACTIVE";
-        var rightActive = right[0].status === "ACTIVE";
-        return (!$scope.reverseSort && leftActive) || ($scope.reverseSort && rightActive);
-      };
-
-      var getInfoValue = function (ad) {
-        for (var i = 0; i < ad.info.length; ++i) {
-          if (ad.info[i].key === $scope.orderBy) {
-            return ad.info[i].value;
-          }
-        }
-      };
-
-      var infoCompare = function (left, right) {
-        if (tableHeadersKeys.indexOf($scope.orderBy) === -1) {
-          return false;
-        }
-        var leftValue = getInfoValue(left[0]);
-        var rightValue = getInfoValue(right[0]);
-        return (!$scope.reverseSort && leftValue > rightValue) || ($scope.reverseSort && leftValue < rightValue);
-      };
-
-      var nameCompare = function (left, right) {
-        if ($scope.orderBy !== "name") {
-          return false;
-        }
-        return (!$scope.reverseSort && left[0].name > right[0].name) ||
-          ($scope.reverseSort && left[0].name < right[0].name);
-      };
-
-      var formatCompare = function (left, right) {
-        if ($scope.orderBy !== "format") {
-          return false;
-        }
-        var leftValues = left[0].format.split("x");
-        var rightValues = right[0].format.split("x");
-        var leftWidth = leftValues[0];
-        var leftHeight = leftValues[1];
-        var rightWidth = rightValues[0];
-        var rightHeight = rightValues[1];
-        if (leftWidth === rightWidth) {
-          if (leftHeight > rightHeight) {
-            leftWidth += rightWidth;
-          } else {
-            rightWidth += leftWidth;
-          }
-        }
-        return (!$scope.reverseSort && leftWidth > rightWidth) || ($scope.reverseSort && leftWidth < rightWidth);
-      };
-
       var sort = function (array) {
-        var len = array.length;
-        if (len < 2) {
-          return array;
-        }
-        var pivot = Math.ceil(len / 2);
-        return merge(sort(array.slice(0, pivot)), sort(array.slice(pivot)));
-      };
 
-      var merge = function (left, right) {
-        var result = [];
-        while (left.length > 0 && right.length > 0) {
-          if (infoCompare(left, right) || nameCompare(left, right) || formatCompare(left, right) || statusCompare(left, right)) {
-            result.push(left.shift());
+        var reverseFactor = 1;
+        if ($scope.reverseSort) {
+          reverseFactor = -1;
+        }
+
+        function stringCompare(a, b) {
+          var aVal = (a || "").toString();
+          var bVal = (b || "").toString();
+          return rawCompare(aVal, bVal); // lexicographic order
+        }
+        function rawCompare(a, b) {
+          if (a === b) {
+            return 0;
+          } else if (a < b) {
+            return -1;
           } else {
-            result.push(right.shift());
+            return 1;
           }
         }
-        return result.concat(left, right);
+        var getInfoValue = function (ad, orderBy) {
+          if (!ad.info) {
+            return undefined;
+          }
+          for (var i = 0; i < ad.info.length; ++i) {
+            if (ad.info[i].key === orderBy) {
+              return ad.info[i].value;
+            }
+          }
+        };
+
+        if (tableHeadersKeys.indexOf($scope.orderBy) !== -1) {
+          return array.sort(function (a, b) {
+            var aValue = getInfoValue(a, $scope.orderBy);
+            var bValue = getInfoValue(b, $scope.orderBy);
+            return rawCompare(aValue, bValue) * reverseFactor;
+          });
+        } else if ($scope.orderBy === "format") {
+          return array.sort(function (a, b) {
+            var aValue = _.sum((a.format || "0x0").split("x"));
+            var bValue = _.sum((b.format || "0x0").split("x"));
+            return (aValue - bValue) * reverseFactor;
+          });
+        } else {
+          // let's try values on the object
+          return array.sort(function (a, b) {
+            var aValue = a[$scope.orderBy];
+            var bValue = b[$scope.orderBy];
+            return stringCompare(aValue, bValue) * reverseFactor;
+          });
+        }
+
       };
 
       $scope.findAdGroup = function (adId) {
