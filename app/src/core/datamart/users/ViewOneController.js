@@ -48,7 +48,7 @@ define(['./module','moment-duration-format'], function (module) {
 //        });
 
             if ($stateParams.upid) {
-                $scope.userEndpoint.one('user_timelines', $stateParams.upid).customGETLIST('',{live: $stateParams.live === "true"}).then(function (timelines){
+                $scope.userEndpoint.one('user_timelines', $stateParams.upid).customGETLIST('user_activities',{live: $stateParams.live === "true"}).then(function (timelines){
                     $scope.timelines = timelines;
                     //$scope.handleVisits(timeline);
                     $scope.showMore = true;
@@ -57,7 +57,7 @@ define(['./module','moment-duration-format'], function (module) {
                 });
 
             } else {
-                var url = 'user_timelines/user_account_id='+ $stateParams.userId + "?live="+ ($stateParams.live === "true");
+                var url = 'user_timelines/user_account_id='+ $stateParams.userId + "/user_activities?live="+ ($stateParams.live === "true");
                 $scope.userEndpoint.customGETLIST(url).then(function (timelines){
                     $scope.timelines = timelines;
                     $scope.showMore = true;
