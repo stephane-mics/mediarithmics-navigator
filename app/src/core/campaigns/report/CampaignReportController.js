@@ -80,6 +80,23 @@ define(['./module', 'lodash'], function (module, _) {
         $scope.hasCpa = false;
       });
 
+
+      $scope.ads = [];
+      $scope.adGroups = [];
+      DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
+        $scope.campaign = campaign;
+
+        // display the adgroups/ads a first time with the stats (they can take some times)
+        $scope.adGroups = sort(campaign.ad_groups);
+        var ads = _.flatten(
+          campaign.ad_groups.map(function (adGroup) {
+            return adGroup.ads;
+          })
+        );
+        $scope.ads = sort(ads);
+      });
+
+
       /**
        * Data Table Export
        */
@@ -315,91 +332,95 @@ define(['./module', 'lodash'], function (module, _) {
         }
       });
 
-      $scope.$watchGroup(['adPerformance', 'adGroupPerformance'], function (values) {
-        if (angular.isDefined(values[0]) && angular.isDefined(values[1])) {
-          var adPerformance = values[0];
-          var adGroupPerformance = values[1];
+      $scope.$watchGroup(['campaign', 'adPerformance', 'adGroupPerformance'], function (values) {
+        var campaign = values[0];
+        var adPerformance = values[1];
+        var adGroupPerformance = values[2];
 
-          DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
-            $scope.campaign = campaign;
-            $scope.adgroups = campaign.ad_groups;
-            $scope.ads = [];
-            $scope.adGroups = [];
+        if (!campaign) {
+          return;
+        }
 
-            // Get ad performance info indexes to identify the ad information
-            var adClicksIdx = adPerformance.getHeaderIndex("clicks");
-            var adSpentIdx = adPerformance.getHeaderIndex("impressions_cost");
-            var adImpIdx = adPerformance.getHeaderIndex("impressions");
-            var adCpmIdx = adPerformance.getHeaderIndex("cpm");
-            var adCtrIdx = adPerformance.getHeaderIndex("ctr");
-            var adCpcIdx = adPerformance.getHeaderIndex("cpc");
-            var adCpaIdx = adPerformance.getHeaderIndex("cpa");
+        if (angular.isDefined(adPerformance) && angular.isDefined(adGroupPerformance)) {
 
-            // Get ad group performance info indexes to identify the ad group information
-            var adGroupClicksIdx = adGroupPerformance.getHeaderIndex("clicks");
-            var adGroupSpentIdx = adGroupPerformance.getHeaderIndex("impressions_cost");
-            var adGroupImpIdx = adGroupPerformance.getHeaderIndex("impressions");
-            var adGroupCpmIdx = adGroupPerformance.getHeaderIndex("cpm");
-            var adGroupCtrIdx = adGroupPerformance.getHeaderIndex("ctr");
-            var adGroupCpcIdx = adGroupPerformance.getHeaderIndex("cpc");
-            var adGroupCpaIdx = adGroupPerformance.getHeaderIndex("cpa");
+          // Get ad performance info indexes to identify the ad information
+          var adClicksIdx = adPerformance.getHeaderIndex("clicks");
+          var adSpentIdx = adPerformance.getHeaderIndex("impressions_cost");
+          var adImpIdx = adPerformance.getHeaderIndex("impressions");
+          var adCpmIdx = adPerformance.getHeaderIndex("cpm");
+          var adCtrIdx = adPerformance.getHeaderIndex("ctr");
+          var adCpcIdx = adPerformance.getHeaderIndex("cpc");
+          var adCpaIdx = adPerformance.getHeaderIndex("cpa");
 
-            var addAdInfo = function (ad, info) {
-              // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
-              ad.info = [];
-              ad.info[0] = {key: "impressions", type: info[adImpIdx].type, value: info[adImpIdx].value || 0};
-              ad.info[1] = {key: "cpm", type: info[adCpmIdx].type, value: info[adCpmIdx].value || 0};
-              ad.info[2] = {key: "impressions_cost", type: info[adSpentIdx].type, value: info[adSpentIdx].value || 0};
-              ad.info[3] = {key: "clicks", type: info[adClicksIdx].type, value: info[adClicksIdx].value || 0};
-              ad.info[4] = {key: "ctr", type: info[adCtrIdx].type, value: info[adCtrIdx].value || 0};
-              ad.info[5] = {key: "cpc", type: info[adCpcIdx].type, value: info[adCpcIdx].value || 0};
-              if ($scope.hasCpa) {
-                ad.info[6] = {key: "cpa", type: info[adCpaIdx].type, value: info[adCpaIdx].value || 0};
-              }
-              return ad;
+          // Get ad group performance info indexes to identify the ad group information
+          var adGroupClicksIdx = adGroupPerformance.getHeaderIndex("clicks");
+          var adGroupSpentIdx = adGroupPerformance.getHeaderIndex("impressions_cost");
+          var adGroupImpIdx = adGroupPerformance.getHeaderIndex("impressions");
+          var adGroupCpmIdx = adGroupPerformance.getHeaderIndex("cpm");
+          var adGroupCtrIdx = adGroupPerformance.getHeaderIndex("ctr");
+          var adGroupCpcIdx = adGroupPerformance.getHeaderIndex("cpc");
+          var adGroupCpaIdx = adGroupPerformance.getHeaderIndex("cpa");
+
+          var addAdInfo = function (ad, info) {
+            // Build ad info object using ad performance values. Ad info is used to display and sort the data values.
+            ad.info = [];
+            ad.info[0] = {key: "impressions", type: info[adImpIdx].type, value: info[adImpIdx].value || 0};
+            ad.info[1] = {key: "cpm", type: info[adCpmIdx].type, value: info[adCpmIdx].value || 0};
+            ad.info[2] = {key: "impressions_cost", type: info[adSpentIdx].type, value: info[adSpentIdx].value || 0};
+            ad.info[3] = {key: "clicks", type: info[adClicksIdx].type, value: info[adClicksIdx].value || 0};
+            ad.info[4] = {key: "ctr", type: info[adCtrIdx].type, value: info[adCtrIdx].value || 0};
+            ad.info[5] = {key: "cpc", type: info[adCpcIdx].type, value: info[adCpcIdx].value || 0};
+            if ($scope.hasCpa) {
+              ad.info[6] = {key: "cpa", type: info[adCpaIdx].type, value: info[adCpaIdx].value || 0};
+            }
+            return ad;
+          };
+
+          var addAdGroupInfo = function (adGroup, info) {
+            // Build ad group info object using ad group performance values.
+            adGroup.info = [];
+            adGroup.info[0] = {
+              key: "impressions",
+              type: info[adGroupImpIdx].type,
+              value: info[adGroupImpIdx].value || 0
             };
-
-            var addAdGroupInfo = function (adGroup, info) {
-              // Build ad group info object using ad group performance values.
-              adGroup.info = [];
-              adGroup.info[0] = {
-                key: "impressions",
-                type: info[adGroupImpIdx].type,
-                value: info[adGroupImpIdx].value || 0
-              };
-              adGroup.info[1] = {key: "cpm", type: info[adGroupCpmIdx].type, value: info[adGroupCpmIdx].value || 0};
-              adGroup.info[2] = {
-                key: "impressions_cost",
-                type: info[adGroupSpentIdx].type,
-                value: info[adGroupSpentIdx].value || 0
-              };
-              adGroup.info[3] = {
-                key: "clicks",
-                type: info[adGroupClicksIdx].type,
-                value: info[adGroupClicksIdx].value || 0
-              };
-              adGroup.info[4] = {key: "ctr", type: info[adGroupCtrIdx].type, value: info[adGroupCtrIdx].value || 0};
-              adGroup.info[5] = {key: "cpc", type: info[adGroupCpcIdx].type, value: info[adGroupCpcIdx].value || 0};
-              if ($scope.hasCpa) {
-                adGroup.info[6] = {key: "cpa", type: info[adGroupCpaIdx].type, value: info[adGroupCpaIdx].value || 0};
-              }
-              return adGroup;
+            adGroup.info[1] = {key: "cpm", type: info[adGroupCpmIdx].type, value: info[adGroupCpmIdx].value || 0};
+            adGroup.info[2] = {
+              key: "impressions_cost",
+              type: info[adGroupSpentIdx].type,
+              value: info[adGroupSpentIdx].value || 0
             };
+            adGroup.info[3] = {
+              key: "clicks",
+              type: info[adGroupClicksIdx].type,
+              value: info[adGroupClicksIdx].value || 0
+            };
+            adGroup.info[4] = {key: "ctr", type: info[adGroupCtrIdx].type, value: info[adGroupCtrIdx].value || 0};
+            adGroup.info[5] = {key: "cpc", type: info[adGroupCpcIdx].type, value: info[adGroupCpcIdx].value || 0};
+            if ($scope.hasCpa) {
+              adGroup.info[6] = {key: "cpa", type: info[adGroupCpaIdx].type, value: info[adGroupCpaIdx].value || 0};
+            }
+            return adGroup;
+          };
 
-            _.forEach(campaign.ad_groups, function (ad_group) {
-              var adGroupInfo = [ad_group.id].concat(adGroupPerformance.getRow(ad_group.id));
-              $scope.adGroups.push(ad_group);
-              ad_group = addAdGroupInfo(ad_group, adGroupInfo);
-              _.forEach(ad_group.ads, function (ad) {
-                var adInfo = [ad.id].concat(adPerformance.getRow(ad.id));
-                ad = addAdInfo(ad, adInfo);
-                $scope.ads.push(ad);
-              });
-            });
-
-            $scope.ads = sort($scope.ads);
-            $scope.adGroups = sort($scope.adGroups);
+          $scope.adGroups = campaign.ad_groups.map(function(ad_group) {
+            var adGroupInfo = [ad_group.id].concat(adGroupPerformance.getRow(ad_group.id));
+            return addAdGroupInfo(ad_group, adGroupInfo);
           });
+
+          var ads = _.flatten(
+            campaign.ad_groups.map(function (adGroup) {
+              return adGroup.ads;
+            })
+          );
+
+          $scope.ads = ads.map(function (ad) {
+            var adInfo = [ad.id].concat(adPerformance.getRow(ad.id));
+            return addAdInfo(ad, adInfo);
+          });
+
+          $scope.ads = sort($scope.ads);
+          $scope.adGroups = sort($scope.adGroups);
         }
       });
 
