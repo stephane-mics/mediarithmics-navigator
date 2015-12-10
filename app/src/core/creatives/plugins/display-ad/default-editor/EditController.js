@@ -8,6 +8,23 @@ define(['./module'], function (module) {
       $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
       $scope.organisationId = $stateParams.organisation_id;
 
+      function cleanProperties(properties) {
+        var props = properties.slice();
+        for (var i = props.length - 1; i >= 0; --i) {
+          if (props[i].value.value === null ||
+            (props[i].value.property_type === "INT" && props[i].value.value.value === null) ||
+            (props[i].value.property_type === "DOUBLE" && props[i].value.value.value === null) ||
+            (props[i].value.property_type === "STYLE_SHEET" && props[i].value.value.id === null) ||
+            (props[i].value.property_type === "AD_LAYOUT" && props[i].value.value.id === null) ||
+            (props[i].value.property_type === "STRING" && props[i].value.value.value === null) ||
+            (props[i].value.property_type === "ASSET" && props[i].value.value.file_path === null) ||
+            (props[i].value.property_type === "URL" && props[i].value.value.url === null)) {
+            properties.splice(i, 1);
+          }
+        }
+        return properties || [];
+      }
+
       $scope.$on("display-ad:loaded", function () {
         // The parent controller has loaded the creative, you can use it now (check DisplayAdService)
         $log.info("display-ad:loaded");
@@ -18,6 +35,7 @@ define(['./module'], function (module) {
 
       // Save button
       $scope.save = function (disabledEdition) {
+        this.properties = cleanProperties(this.properties);
         if (disabledEdition) {
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
         } else {
@@ -33,6 +51,7 @@ define(['./module'], function (module) {
 
       // Save button
       $scope.saveAndRefresh = function () {
+        this.properties = cleanProperties(this.properties);
         DisplayAdService.save().then(function (displayAdContainer) {
           // $state.reload();
           // see https://github.com/angular-ui/ui-router/issues/582
