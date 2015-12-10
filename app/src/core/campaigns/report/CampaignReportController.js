@@ -39,9 +39,13 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.adPerformance = data;
     });
 
-    CampaignAnalyticsReportService.mediaPerformance(campaignId, $scope.hasCpa, "-click_count", 30).then(function (data) {
-      $scope.mediaPerformance = data;
-    });
+    // For unspeakable reasons (and hopefully soon-to-be-fixed ones) this triggers a huuuuge boost.
+    // I'll work on these, please continue my combat if I fall.
+    setTimeout(function () {
+      CampaignAnalyticsReportService.mediaPerformance(campaignId, $scope.hasCpa, "-click_count", 30).then(function (data) {
+        $scope.mediaPerformance = data;
+      });
+    }, 500);
 
     CampaignAnalyticsReportService.kpi(campaignId, $scope.hasCpa).then(function (data) {
       $scope.kpis = data;
