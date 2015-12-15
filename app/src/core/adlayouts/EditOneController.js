@@ -31,7 +31,6 @@ define(['./module', 'jquery'], function (module, $) {
               id: adLayoutId,
               name: adLayout.name,
               organisation_id: organisationId,
-              current_version_id: adLayout.current_version_id,
               format: adLayout.format.substring(1),
               renderer_id: adLayout.renderer_id,
               renderer_version_id: adLayout.renderer_version_id

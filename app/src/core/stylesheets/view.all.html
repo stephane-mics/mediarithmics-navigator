@@ -15,17 +15,13 @@
     <table class="mics-table table-hover js-auto-hide-actions" ng-show="stylesheets.length">
       <thead>
       <tr>
-        <th>Name</th>
-        <th>Current Version</th>
-        <th>Owner Id</th>
+        <th>Style Sheet</th>
         <th class="actions">Actions</th>
       </tr>
       </thead>
       <tbody data-ng-repeat="stylesheet in stylesheets">
       <tr data-target="#demo{{$index}}" data-toggle="collapse" class="accordion-toggle clickableRow" title="Click to collapse/expand this ad layout versions">
         <td>{{stylesheet.name}}</td>
-        <td>{{getstylesheetVersionId(stylesheet)}}</td>
-        <td>{{stylesheet.organisation_id}}</td>
         <td class="actions">
           <a ng-click="createNewVersion(stylesheet, $event)" class="mics-btn mics-btn-add">New Version</a>
         </td>
@@ -41,7 +37,6 @@
                   <th>Version Id</th>
                   <th>Creation Date</th>
                   <th>Status</th>
-                  <th>Selected Version</th>
                   <th></th>
                 </tr>
                 </thead>
@@ -50,12 +45,6 @@
                   <td>{{version.version_id}}</td>
                   <td>{{version.creation_date}}</td>
                   <td>{{version.status}}</td>
-                  <td class="mics-sub-table-actions">
-                    <a ng-click="setCurrentVersion(stylesheet, version)" class="mics-btn mics-btn-finish">
-                      <span ng-show="version.id === stylesheet.current_version_id"><strong>X</strong></span>
-                      <span ng-show="version.id !== stylesheet.current_version_id">&nbsp;</span>
-                    </a>
-                  </td>
                   <td class="mics-sub-table-actions ">
                     <a ng-show="version.status === 'DRAFT'" ng-click="publish(version, $event)" class="mics-btn mics-btn-finish">Publish</a>
                     <a ng-show="version.status === 'DRAFT'" href="#/{{organisationId}}/library/stylesheets/{{version.style_sheet_id}}/version/{{version.id}}" class="mics-btn mics-btn-action">Edit</a>

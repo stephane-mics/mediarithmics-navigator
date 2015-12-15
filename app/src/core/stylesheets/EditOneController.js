@@ -2,8 +2,8 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/stylesheets/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$state', '$stateParams', '$location',
-    function ($scope, $log, Restangular, Session, _, $state, $stateParams, $location) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$state', '$stateParams', '$location', 'core/common/ErrorService',
+    function ($scope, $log, Restangular, Session, _, $state, $stateParams, $location, errorService) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.editMode = $state.current.name === "stylesheets/editVersion";
@@ -21,8 +21,7 @@ define(['./module', 'jquery'], function (module, $) {
             $scope.styleSheet = {
               id: styleSheetId,
               name: styleSheet.name,
-              organisation_id: organisationId,
-              current_version_id: styleSheet.current_version_id
+              organisation_id: organisationId
             };
           })
           .then(callback);
@@ -65,10 +64,30 @@ define(['./module', 'jquery'], function (module, $) {
         }
       });
 
+      function cleanProperties(properties) {
+        var props = properties.slice();
+        for (var i = props.length - 1; i >= 0; --i) {
+          if (props[i].value === null ||
+            (props[i].property_type === "INT" && props[i].value.value === null) ||
+            (props[i].property_type === "DOUBLE" && props[i].value.value === null) ||
+            (props[i].property_type === "STRING" && props[i].value.value === null) ||
+            (props[i].property_type === "ASSET" && props[i].value.file_path === null) ||
+            (props[i].property_type === "URL" && props[i].value.url === null)) {
+            properties.splice(i, 1);
+          }
+        }
+        return properties || [];
+      }
+
       function updateProperties(styleSheetId, styleSheetVersionId, properties) {
+        properties = cleanProperties(properties);
         Restangular.all('style_sheets/' + styleSheetId + '/versions/' + styleSheetVersionId + '/properties')
           .customPUT(properties, undefined, {organisation_id: organisationId}).then(function () {
             $location.path('/' + organisationId + "/library/stylesheets");
+          }, function(response) {
+            errorService.showErrorModal({
+              error: response
+            });
           });
       }
 
