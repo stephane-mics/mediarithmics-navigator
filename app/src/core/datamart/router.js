@@ -114,7 +114,7 @@ define(['./module'], function (module) {
           }
         })
         .state('datamart/users/upid/:upid/live', {
-          url: '/:organisation_id/datamart/users/upid/:upid/live/:live',
+          url: '/:organisation_id/datamart/users/upid/:upid/live/:live?debug',
           templateUrl: 'src/core/datamart/users/view.one.html',
           data: {
             sidebar: {

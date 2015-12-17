@@ -9,9 +9,7 @@
                 <span>{{ timelineEvent.$ts | date : 'mediumDate' }}</span>
                 <span>{{ timelineEvent.$ts | date : 'shortTime' }}</span>
             </time>
-            <!--User account : {{timelineEvent.$user_account_id  }}-->
-            <!--User agent : {{timelineEvent.$user_agent_id  }}-->
-            <!-- icon -->
+                       <!-- icon -->
             <div class="datamart-timeline-icon">
                 <!--<img src="images/datamart/device_phone.svg" width="24" height="24" ng-show="activity.agent.device_type == 'smartphone'" />-->
                 <!--<img src="images/datamart/device_tablet.svg" width="24" height="24" ng-show="activity.agent.device_type == 'tablet'" />-->
@@ -24,6 +22,10 @@
                     <h2>{{ timelineEvent.$type }}<span ng-if="timelineEvent.$session_status == 'SESSION_SNAPSHOT'" class="live-event-header">Live</span>
                     </h2>
                     <div ng-if="timelineEvent.$type == 'SITE_VISIT'" >Duration: {{ toHumanReadableDuration(timelineEvent.$session_duration) }}</div>
+                     <div ng-if='debug == "true"'>
+                         User account : {{timelineEvent.$user_account_id  }}<br />
+            User agent : {{timelineEvent.$user_agent_id  }}
+                     </div>
 
                 </div>
 

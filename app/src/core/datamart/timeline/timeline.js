@@ -12,7 +12,8 @@ define(['./module'], function (module) {
                     timelines: '=',
                     loadMoreActions : '=',
                     showMore: '=',
-                    organisationId: '='
+                    organisationId: '=',
+                    debug: '='
 
         },
                 link: function link(scope, element, attrs){

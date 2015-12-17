@@ -19,7 +19,7 @@ define(['./module'], function (module) {
         // Redirect to the pending path
         var path = AuthenticationService.popPendingPath();
         $log.debug("Redirecting to :", path);
-        $location.path(path);
+        $location.path(path.split(/\?/)[0]);
 
       }, function () {
 
