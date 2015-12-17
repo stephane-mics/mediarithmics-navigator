@@ -1,0 +1,57 @@
+<div class="features-contribution">
+    <table class="ng-scope">
+        <tbody>
+        <tr ng-repeat=" featureContribution in featuresContribution">
+
+            <td class="feature-name">
+                <span>{{featureContribution.$feature_name}}</span>
+
+            </td>
+            <td class="feature-contribution">
+                <svg tooltip-class="detail-tooltip"
+                     uib-tooltip-template="'feature-contribution'"
+                     tooltip-placement="top"
+                     ng-attr-height="{{maxSize * 2}}"
+                     ng-attr-width="{{maxSize * 2}}">
+                    <circle ng-attr-cx="{{maxSize}}" ng-attr-cy="{{maxSize}}"
+                            ng-attr-r="{{getRadius(featureContribution.$contribution)}}"
+                            ng-attr-fill="{{getColor(featureContribution.$contribution)}}"
+                            class="contribution"></circle>
+                </svg>
+                <script type="text/ng-template" id="feature-contribution">
+                    <div>
+                        <span> {{featureContribution.$feature_name}}</span>
+                        <br/>
+                        <span> contribution: {{featureContribution.$contribution }}</span>
+                        <br/>
+                        <span> standard deviation: {{featureContribution.$standard_deviation }}</span>
+                    </div>
+
+                </script>
+            </td>
+            <td>
+                <svg ng-repeat="categoriesContribution in featureContribution.$categories_contributions"
+                     tooltip-class="detail-tooltip"
+                     uib-tooltip-template="'category-contribution'"
+                     tooltip-placement="top"
+                     ng-attr-height="{{maxSize * 2}}"
+                     ng-attr-width="{{getRadius(categoriesContribution.$weight) *2 + 10}} ">
+                    <circle ng-attr-cx="{{getRadius(categoriesContribution.$weight)}} " ng-attr-cy="{{maxSize}}"
+                            ng-attr-r="{{getRadius(categoriesContribution.$weight)}}"
+                            ng-attr-fill="{{getColor(categoriesContribution.$weight)}}"
+                            class="contribution"></circle>
+                </svg>
+                <script type="text/ng-template" id="category-contribution">
+                    <span> {{categoriesContribution.$categories}}</span>
+                    <br/>
+                    <div>
+                        <span> contribution: {{categoriesContribution.$weight }}</span>
+                    </div>
+
+                </script>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>

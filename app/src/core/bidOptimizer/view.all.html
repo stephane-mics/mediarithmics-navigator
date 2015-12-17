@@ -24,12 +24,12 @@
       <tbody>
       <tr ng-repeat="bidOptimizer in bidOptimizers"
           fetch-plugin-from-version="bidOptimizer.engine_version_id as engine"
-          fetch-plugin-properties="engine.id as engineProperties"
-      >
+          fetch-plugin-properties="engine.id as engineProperties">
         <td>{{bidOptimizer.name}}</td>
         <td>{{engineProperties['name'].value}}</td>
         <td>{{engineProperties['provider'].value}}</td>
         <td class="actions">
+          <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/bidOptimizers/{{bidOptimizer.id}}/models/{{bidOptimizersUsedModel[bidOptimizer.id].value}}/report">Details</a>
           <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/bidOptimizers/{{bidOptimizer.id}}">Edit</a>
         </td>
       </tr>

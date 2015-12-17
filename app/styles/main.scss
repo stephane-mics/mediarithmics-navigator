@@ -791,6 +791,74 @@ form.mcs-full-page-form {
   }
 }
 
+@mixin default-chart-area() {
+
+  @include make-row();
+  .kpi-area {
+    @include make-md-column(2);
+
+    dl {
+      margin-bottom: 0;
+    }
+
+    dt {
+      @extend .text-left;
+      color: $mcs-light-blue;
+      font-weight: normal;
+      margin-top: 7px;
+      padding-top: 7px;
+      @include use-bold-font();
+      font-size: 12px;
+    }
+    dd {
+      @extend .text-right;
+      font-size: 32px;
+      @include use-bold-font();
+    }
+    dd + dt {
+      border-top: 1px solid $mcs-light-grey;
+    }
+  }
+
+  .kpi-details {
+    @extend .kpi-area;
+    &.ng-hide {
+      opacity: 0;
+    }
+
+    &.ng-hide-remove.ng-hide-remove-active {
+      -webkit-transition: all linear 0.2s;
+      transition: all linear 0.2s;
+    }
+  }
+
+  .medium-chart {
+    margin-top: 16px;
+    @include make-md-column(10);
+    .chart {
+      height: 300px;
+      position: static;
+
+      .nvtooltip {
+        background: white;
+      }
+    }
+
+    .chart-legend {
+      margin-top: 40px;
+      padding: 0 60px 0 60px;
+    }
+  }
+
+  .big-chart {
+    @include make-md-column(12);
+    .chart {
+      height: 250px;
+      position: static;
+    }
+  }
+}
+
 .report {
   .report-top-tab {
     .organisation-name {
@@ -878,54 +946,32 @@ form.mcs-full-page-form {
 
     .chart-area {
       @include make-row();
-      .kpi-area {
-        @include make-md-column(2);
-
-        dl {
-          margin-bottom: 0;
-        }
-
-        dt {
-          @extend .text-left;
-          color: $mcs-light-blue;
-          font-weight: normal;
-          margin-top: 7px;
-          padding-top: 7px;
-          @include use-bold-font();
-          font-size: 12px;
-        }
-        dd {
+      .date-export-toolbar {
+        @include make-md-column(12);
+        .report-date-controller {
+          min-width: 270px;
+          padding: 0;
+          input.range {
+            width: 240px;
+            background-color: $mcs-light-blue;
+            color: $mcs-light-blue-not;
+            @include use-bold-font();
+            font-size: ceil(($font-size-base * 1.5));
+          }
           @extend .text-right;
-          font-size: 32px;
-          @include use-bold-font();
-        }
-        dd + dt {
-          border-top: 1px solid $mcs-light-grey;
+
+          > * {
+            margin-left: 10px;
+          }
         }
       }
+    }
 
-      .kpi-details {
-        @extend .kpi-area;
-        &.ng-hide {
-          opacity: 0;
-        }
-
-        &.ng-hide-remove.ng-hide-remove-active {
-          -webkit-transition: all linear 0.2s;
-          transition: all linear 0.2s;
-        }
-      }
+    .chart-area {
+      @include default-chart-area();
 
       .medium-chart {
-        margin-top: 16px;
-        @include make-md-column(10);
         .chart {
-          height: 300px;
-          position: static;
-
-          .nvtooltip {
-            background: white;
-          }
 
           svg {
             .nv-x {
@@ -949,8 +995,6 @@ form.mcs-full-page-form {
         }
 
         .chart-legend {
-          margin-top: 40px;
-          padding: 0 60px 0 60px;
 
           .y1-legend:before {
             color: #00AC67;
@@ -976,15 +1020,6 @@ form.mcs-full-page-form {
           .selection-button {
             padding: 0 9px;
           }
-        ;
-        }
-      }
-
-      .big-chart {
-        @include make-md-column(12);
-        .chart {
-          height: 250px;
-          position: static;
         }
       }
     }
@@ -1153,6 +1188,188 @@ table.fragment-list-bid-optimizer {
 
 table.fragment-list-bid-optimizer-engine {
   @extend .mics-table;
+}
+
+.features-contribution table {
+  @extend .table;
+  @extend .table-striped;
+
+  margin-top: 30px;
+
+  tbody {
+
+    .feature-name {
+      border-right: 1px solid #000000;
+      font-size: $font-size-large;
+
+    }
+    .feature-contribution {
+      border-right: 1px solid #000000;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      padding: 1px;
+
+    }
+    tr {
+      td {
+        vertical-align: middle;
+        svg {
+          &:hover {
+            opacity: 0.5;
+          }
+
+        }
+      }
+      td.actions {
+        @extend .text-right;
+        .mics-btn {
+          @extend .btn-xs;
+          vertical-align: middle;
+        }
+      }
+      /* &:not(:hover) td.actions .mics-btn { */
+      /* @include mics-button-variant($mcs-grey); */
+      /* } */
+    }
+  }
+
+  tbody td {
+
+    > * {
+      line-height: 30px;
+    }
+  }
+  .contribution {
+    display: inline-block;
+
+  }
+
+  .detail-tooltip .tooltip-inner {
+    @include use-bold-font();
+    padding: 7px;
+    color: $dark-blue;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+    max-width: none;
+    border-radius: 6px;
+    bottom: 0em;
+    min-width: 320px;
+    background-color: rgba(255, 255, 255, 1.0);
+    border: 1px solid rgba(0, 0, 0, .2);
+    z-index: 10000;
+    opacity: 1;
+
+    text-align: left;
+    pointer-events: none;
+
+  }
+  .detail-tooltip .tooltip-arrow {
+    display: none;
+  }
+
+}
+
+.bid-optimizer-report {
+  @extend .report;
+  .breakdown-area {
+    margin-left: 0px !important;
+  }
+  .modelId {
+    border-bottom: 1px solid #EEEEEE;
+    h3 > span {
+      margin-right: 10px;
+    }
+
+  }
+  .report > div > ul.nav {
+    padding: 8px 0;
+    border-top: 1px solid $dark-blue;
+    border-bottom: 1px solid $dark-blue;
+
+    margin-bottom: 15px;
+
+    li {
+      @include use-bold-font();
+      font-size: ceil(($font-size-base * 1.5));
+      a {
+        padding: 4px 15px;
+        color: $dark-blue;
+      }
+    }
+    li.active a {
+      border: none;
+      color: $dark-blue-not;
+      background-color: $dark-blue;
+    }
+  }
+
+  .breakdown > ul.nav {
+
+    padding-top: 8px;
+    li {
+      @include use-bold-font();
+      font-size: ceil(($font-size-base * 1.5));
+      a {
+        padding: 4px 15px;
+        color: $dark-blue;
+      }
+    }
+    li.active a {
+      color: $dark-blue-not;
+    }
+
+  }
+}
+
+.bid-optimizer-model-selection {
+  z-index: 10000;
+  a {
+    color: $dark-blue;
+    font-size: $font-size-large
+  }
+
+}
+
+.roc-report-template {
+  @include default-chart-area();
+
+  margin-right: 15px;
+  margin-left: 15px;
+
+  .content {
+    margin-top: 15px;
+    .kpi-roc-area {
+      @include make-md-column(2);
+
+      padding-left: 0px;
+
+      dl {
+        margin-bottom: 0;
+      }
+
+      dt {
+        @extend .text-left;
+        color: $mcs-light-blue;
+        font-weight: normal;
+        margin-top: 7px;
+        padding-top: 7px;
+        @include use-bold-font();
+        font-size: 12px;
+      }
+      dd {
+        @extend .text-right;
+        font-size: 32px;
+        @include use-bold-font();
+      }
+      dd + dt {
+        border-top: 1px solid $mcs-light-grey;
+      }
+    }
+
+  }
+
 }
 
 /*
