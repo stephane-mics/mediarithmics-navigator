@@ -19,7 +19,7 @@
                 </uib-tab-heading>
                 <div class="modelId">
                     <h3>
-                        Model  id : <span>{{showModelId}}</span>
+                        Model id : <span>{{showModelId}}</span>
                         Date : <span>{{modelDate | date:'MM/dd/yyyy'}}</span>
                         <span ng-show="showModelId == usedModel"> (Current Model)</span>
                         <a class="mics-btn mics-btn-action" ng-click="selectModel()">Select Model</a>
@@ -29,14 +29,21 @@
                     <div class="panel-body">
                         <uib-tabset class="breakdown">
                             <uib-tab heading="Roc">
-                                <div class="active chart-area " >
-                                    <mcs-bid-optimizer-roc-report report="report"></mcs-bid-optimizer-roc-report>
+                                <div class="active chart-area ">
+                                    <mcs-bid-optimizer-roc-report
+                                            report="report"></mcs-bid-optimizer-roc-report>
                                 </div>
                             </uib-tab>
                             <uib-tab heading="Features contribution">
-                                <div class="chart-area" >
+                                <div class="chart-area">
                                     <mcs-bid-optimizer-features-contribution-report
                                             report="report"></mcs-bid-optimizer-features-contribution-report>
+                                </div>
+                            </uib-tab>
+                            <uib-tab heading="Data Set">
+                                <div class="chart-area">
+                                    <mcs-bid-optimizer-data-set
+                                            report="report"></mcs-bid-optimizer-data-set>
                                 </div>
                             </uib-tab>
 
