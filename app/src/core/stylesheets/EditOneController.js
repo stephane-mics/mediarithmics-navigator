@@ -12,7 +12,7 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.selectedFiles = [];
       $scope.properties = [];
       $scope.styleSheetVersion = {};
-      var pluginGroupId = "com.mediarithmics.datafile.style_sheet";
+      var pluginGroupId = "com.mediarithmics.creative.style_sheet";
       var pluginArtifactId = "style-sheet";
 
       function setUpStyleSheet(styleSheetId, callback) {
