@@ -1190,89 +1190,95 @@ table.fragment-list-bid-optimizer-engine {
   @extend .mics-table;
 }
 
-.features-contribution table {
-  @extend .table;
-  @extend .table-striped;
+.features-contribution {
 
-  margin-top: 30px;
+  margin-left: 30px;
 
-  tbody {
+  table {
+    @extend .table;
+    @extend .table-striped;
 
-    .feature-name {
-      border-right: 1px solid #000000;
-      font-size: $font-size-large;
+    margin-top: 30px;
 
-    }
-    .feature-contribution {
-      border-right: 1px solid #000000;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      padding: 1px;
+    tbody {
 
-    }
-    tr {
-      td {
-        vertical-align: middle;
-        svg {
-          &:hover {
-            opacity: 0.5;
-          }
+      .feature-name {
+        border-right: 1px solid #DDD;
+        font-size: $font-size-large;
 
-        }
       }
-      td.actions {
-        @extend .text-right;
-        .mics-btn {
-          @extend .btn-xs;
+      .feature-contribution {
+        border-right: 1px solid #DDD;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        padding: 1px;
+
+      }
+      tr {
+        td {
           vertical-align: middle;
+          svg {
+            &:hover {
+              opacity: 0.5;
+            }
+
+          }
         }
+        td.actions {
+          @extend .text-right;
+          .mics-btn {
+            @extend .btn-xs;
+            vertical-align: middle;
+          }
+        }
+        /* &:not(:hover) td.actions .mics-btn { */
+        /* @include mics-button-variant($mcs-grey); */
+        /* } */
       }
-      /* &:not(:hover) td.actions .mics-btn { */
-      /* @include mics-button-variant($mcs-grey); */
-      /* } */
     }
-  }
 
-  tbody td {
+    tbody td {
 
-    > * {
-      line-height: 30px;
+      > * {
+        line-height: 30px;
+      }
     }
-  }
-  .contribution {
-    display: inline-block;
+    .contribution {
+      display: inline-block;
+
+    }
+
+    .detail-tooltip .tooltip-inner {
+      @include use-bold-font();
+      padding: 7px;
+      color: $dark-blue;
+      font-size: 13px;
+      font-weight: bold;
+      white-space: nowrap;
+      max-width: none;
+      border-radius: 6px;
+      bottom: 0em;
+      min-width: 320px;
+      background-color: rgba(255, 255, 255, 1.0);
+      border: 1px solid rgba(0, 0, 0, .2);
+      z-index: 10000;
+      opacity: 1;
+
+      text-align: left;
+      pointer-events: none;
+
+    }
+    .detail-tooltip .tooltip-arrow {
+      display: none;
+    }
 
   }
-
-  .detail-tooltip .tooltip-inner {
-    @include use-bold-font();
-    padding: 7px;
-    color: $dark-blue;
-    font-size: 13px;
-    font-weight: bold;
-    white-space: nowrap;
-    max-width: none;
-    border-radius: 6px;
-    bottom: 0em;
-    min-width: 320px;
-    background-color: rgba(255, 255, 255, 1.0);
-    border: 1px solid rgba(0, 0, 0, .2);
-    z-index: 10000;
-    opacity: 1;
-
-    text-align: left;
-    pointer-events: none;
-
-  }
-  .detail-tooltip .tooltip-arrow {
-    display: none;
-  }
-
 }
 
 .bid-optimizer-report {
   @extend .report;
+
   .breakdown-area {
     margin-left: 0px !important;
   }
@@ -1318,6 +1324,21 @@ table.fragment-list-bid-optimizer-engine {
     }
     li.active a {
       color: $dark-blue-not;
+    }
+
+  }
+
+  .data-set {
+    margin: 30px;
+
+    tbody {
+      td {
+        @include use-bold-font();
+      }
+    }
+    .mics-table {
+      margin-top: 20px;
+      margin-left: 15px;
     }
 
   }

@@ -35,26 +35,15 @@ define(['./module'], function (module) {
 
 
             Restangular.one('bid_optimizers', $scope.bidOptimizerId).all("properties").getList().then(function (properties) {
-                for (var i = 0; i < properties.length; i++) {
-                    // load the property container
-                    var propertyCtn = new PropertyContainer(properties[i]);
 
-                    $scope.properties.push(propertyCtn);
-                    if (propertyCtn.value.technical_name === "latest_model_id") {
-                        $scope.lastModelId = propertyCtn.value.value;
-                    }
+                var latest = properties.filter(function(prop) {
+                    return prop.technical_name === "latest_model_id" && prop.value.value;
+                })[0];
+                var overriding = properties.filter(function(prop) {
+                    return prop.technical_name === "overriding_model_id" && prop.value.value;
+                })[0];
 
-                    if (propertyCtn.value.technical_name === "overriding_model_id") {
-                        $scope.overridingModel = propertyCtn.value.value;
-                    }
-                }
-
-                if ($scope.overridingModel.value !== null) {
-                    $scope.usedModel = $scope.overridingModel.value;
-                }
-                else {
-                    $scope.usedModel = $scope.lastModelId.value;
-                }
+                $scope.usedModel = (overriding || latest).value.value;
 
             });
 
