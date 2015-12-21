@@ -73,11 +73,15 @@ define(['./module'], function (module) {
           labelFor: '@',
           property: '=',
           organisationId: '=',
-          ngDisabled: '='
+          ngDisabled: '=',
+          artifactId: '=?',
+          groupId: '=?',
+          pluginType: '=?'
         },
         templateUrl: '/src/core/common/properties/ad-layout-property.html',
         link: function (scope, element, attrs) {
-          Restangular.all("plugins").getList({plugin_type: "DISPLAY_AD_RENDERER"}).then(function (renderers) {
+
+          Restangular.all("plugins").getList({artifact_id: attrs.artifactId, group_id: attrs.groupId, plugin_type: attrs.pluginType}).then(function (renderers) {
             scope.displayAdRenderers = [];
             for (var i = 0; i < renderers.length; ++i) {
               scope.displayAdRenderers[renderers[i].id] = renderers[i].artifact_id;
