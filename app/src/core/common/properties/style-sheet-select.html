@@ -39,8 +39,8 @@
           <tr ng-click="selectVersion(version)" class="clickableRow" ng-repeat="version in versions">
             <td class="col-xs-1"><input type="checkbox" id="version.id" ng-checked="version.id === selectedVersion.id"></td>
             <td class="col-xs-1">{{version.id}}</td>
-            <td class="col-xs-2">{{version.status}}</td>
             <td class="col-xs-2">{{version.description}}</td>
+            <td class="col-xs-2">{{version.status}}</td>
           </tr>
           </tbody>
         </table>
