@@ -71,8 +71,8 @@ define(['./module'], function (module) {
                     };
 
 
-                    scope.getMapKeys = function(obj){
-                        return Object.keys(obj);
+                    scope.getMapKeys = function(obj, key){
+                        return obj  ?  Object.keys(obj) : [];
                     };
 
 
