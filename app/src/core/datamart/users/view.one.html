@@ -24,6 +24,10 @@
           <td>Account ID</td>
           <td><code>{{ user.$user_account_id }}</code></td>
         </tr>
+        <tr ng-hide="user.$creation_date == null">
+          <td>Creation date</td>
+          <td><code>{{ user.$creation_date | date:'medium' }}</code></td>
+        </tr>
           <!-- display custom properties -->
           <tr ng-repeat="(key,value) in user">
             <td> {{key}} </td> <td> {{ value }} </td>
