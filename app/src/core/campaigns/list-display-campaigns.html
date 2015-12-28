@@ -14,9 +14,9 @@
             <div class="campaign-list-actions dropdown" dropdown>
                 <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Campaign</button>
                 <ul class="dropdown-menu" role="menu" >
-                    <li role="presentation" ng-repeat="template in campaignTemplates">
-                        <a role="menuitem" tabindex="-1" ng-click="create(template)">
-                        {{template.name}}
+                    <li role="presentation" ng-repeat="editor in campaignEditors">
+                        <a role="menuitem" tabindex="-1" ng-click="create(editor)">
+                        {{editor.name}}
                         </a>
                     </li>
                 </ul>

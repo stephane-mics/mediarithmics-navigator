@@ -11,18 +11,23 @@ define(['./module', 'clipboard', 'jquery'], function (module, clipboard, $) {
       $scope.adLayoutRendererVersions = [];
       $scope.listMode = true;
 
-      $scope.uploadAssets = function () {
-        var modal = $uibModal.open({
-          templateUrl: 'src/core/assets/upload-asset.html',
-          scope: $scope,
-          backdrop: 'static',
-          controller: 'core/assets/UploadAssetController',
-          size: 'lg'
-        });
+      $scope.pluploadOptions = {
+        multi_selection: true,
+        url: configuration.ADS_UPLOAD_URL + "?organisation_id=" + Session.getCurrentWorkspace().organisation_id,
+        filters: {
+          mime_types: [
+            {title: "Image files", extensions: "jpg,jpeg,png,gif"},
+            {title: "Flash files", extensions: "swf"}
+          ],
+          max_file_size: "200kb"
+        }
+      };
 
-        modal.result.then(function () {
-          $scope.successMessage = "Your assets have been successfully uploaded.";
-        });
+      $scope.uploadOptions = {
+        files: $scope.assets,
+        automaticUpload: false,
+        filesOverride: false,
+        uploadedFiles: []
       };
 
       Restangular.all("asset_files").getList({organisation_id: $scope.organisationId}).then(function (assets) {

@@ -15,12 +15,6 @@ define(['./module'], function (module) {
               selected: 'all_creatives'
             }
           }
-        })
-        // create a new creative
-        .state('creatives/select-creative-template', {
-          url: '/{organisation_id}/creatives/select-creative-template',
-          templateUrl: 'src/core/creatives/create.html',
-          data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         });
     }
   ]);

@@ -48,8 +48,8 @@ define(['./module'], function (module) {
       };
 
       // load display campaign templates
-      CampaignPluginService.getAllDisplayCampaignEditors().then(function (templates) {
-        $scope.campaignTemplates = templates;
+      CampaignPluginService.getAllDisplayCampaignEditors().then(function (editors) {
+        $scope.campaignEditors = editors;
       });
 
       // create button

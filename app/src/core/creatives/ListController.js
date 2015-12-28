@@ -8,9 +8,12 @@ define(['./module'], function (module) {
   module.controller('core/creatives/ListController', [
     '$scope', '$location', '$log', 'Restangular', 'core/common/auth/Session', '$uibModal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter',
     function ($scope, $location, $log, Restangular, Session, $uibModal, $state, $stateParams, creativePluginService, _, $filter) {
-
       $scope.currentPageCreative = 1;
       $scope.itemsPerPage = 10;
+
+      creativePluginService.getAllCreativeTemplates().then(function (templates) {
+        $scope.creativeTemplates = templates;
+      });
 
       $scope.filteredCreatives = function () {
         var list1 = $filter('filter')($scope.creatives, $scope.creativename);
@@ -38,11 +41,6 @@ define(['./module'], function (module) {
         });
       });
 
-      $scope.newCreative = function () {
-        $log.debug("> newCreative ");
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives/select-creative-template');
-      };
-
       $scope.getEditUrlForCreative = _.memoize(function (creative) {
         var result = {url: ""};
         var editorPromise = creativePluginService.getEditor(creative.editor_group_id, creative.editor_artifact_id);
@@ -56,6 +54,16 @@ define(['./module'], function (module) {
       }, function resolver(creative) {
         return creative.id;
       });
+
+      $scope.create = function (template) {
+        if (template.editor_group_id === "com.mediarithmics.creative.display" && template.editor_artifact_id === "basic-editor") {
+
+        } else {
+          var organisationId = Session.getCurrentWorkspace().organisation_id;
+          var location = template.editor.create_path.replace(/{id}/g, "").replace(/{organisation_id}/, organisationId);
+          $location.path(location);
+        }
+      };
 
       $scope.showCreative = function (creative) {
         $location.path($scope.getEditUrlForCreative(creative));
@@ -82,6 +90,7 @@ define(['./module'], function (module) {
           controller: 'core/creatives/ArchiveController'
         });
       };
+
       $scope.unArchiveCreative = function (creative) {
         creative.archived = false;
 
