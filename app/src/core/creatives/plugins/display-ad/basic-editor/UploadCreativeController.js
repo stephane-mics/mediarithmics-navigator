@@ -2,8 +2,9 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/creatives/plugins/display-ad/basic-editor/UploadCreativeController', [
-    '$scope', '$document', '$log', "Restangular", 'core/common/auth/Session', 'core/configuration', 'lodash', '$q', "core/creatives/plugins/display-ad/DisplayAdService", "core/common/ErrorService",
-    function ($scope, $document, $log, Restangular, Session, configuration, _, $q, DisplayAdService, errorService) {
+    '$scope', '$document', '$log', "Restangular", 'core/common/auth/Session', 'core/configuration', 'lodash', '$q',
+    "core/creatives/plugins/display-ad/DisplayAdService", "core/common/ErrorService", "$uibModalInstance",
+    function ($scope, $document, $log, Restangular, Session, configuration, _, $q, DisplayAdService, errorService, $uibModalInstance) {
       // For the directive mics-pl-upload
       $scope.uploadedFiles = [];
       $scope.next = function () {
@@ -18,6 +19,11 @@ define(['./module'], function (module) {
 
       $scope.logAssetDeletion = function (elt) {
         $log.debug("deleted asset", elt);
+      };
+
+      $scope.done = function() {
+        $uibModalInstance.close();
+
       };
 
       $scope.pluploadOptions = {
@@ -35,7 +41,7 @@ define(['./module'], function (module) {
       $scope.$watchCollection("uploadedFiles", function (newFiles) {
         while (newFiles.length) {
           var file = newFiles.pop();
-          $log.info("got new uploaded file, pushing as asset", file);
+          $log.info("Got new uploaded file, pushing as asset", file);
           $scope.newCreativesWrapper.push({
             asset: file,
             creative: {
@@ -43,7 +49,7 @@ define(['./module'], function (module) {
             },
             rendererProperties: []
           });
-          $scope.$emit("display-ad/basic-editor:asset-added");
+          $scope.canSave = true;
           $scope.step = 'step1';
         }
       });
@@ -85,15 +91,21 @@ define(['./module'], function (module) {
         });
       }
 
-      $scope.$on("display-ad/basic-editor:save", function save() {
+      $scope.done = function() {
         var promises = _.map($scope.newCreativesWrapper, saveCreativeWrapper);
 
         $q.all(promises).then(function () {
           $scope.$emit("display-ad/basic-editor:saved");
+          $uibModalInstance.close($scope.newCreativesWrapper);
         }, function (error) {
           $scope.$emit("display-ad/basic-editor:error", error);
+          $uibModalInstance.close();
         });
-      });
+      };
+
+      $scope.cancel = function () {
+        $uibModalInstance.close();
+      };
     }
   ]);
 });

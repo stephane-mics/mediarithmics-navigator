@@ -6,41 +6,48 @@ define(['./module'], function (module) {
    */
 
   module.controller('core/creatives/ListController', [
-    '$scope', '$location', '$log', 'Restangular', 'core/common/auth/Session', '$uibModal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter',
-    function ($scope, $location, $log, Restangular, Session, $uibModal, $state, $stateParams, creativePluginService, _, $filter) {
+    '$scope', '$location', '$log', 'Restangular', 'core/common/auth/Session', '$uibModal', '$state', '$stateParams', 'core/creatives/CreativePluginService', 'lodash', '$filter', 'core/configuration',
+    function ($scope, $location, $log, Restangular, Session, $uibModal, $state, $stateParams, creativePluginService, _, $filter, configuration) {
+      /**
+       * Variables
+       */
+      // Pagination
       $scope.currentPageCreative = 1;
       $scope.itemsPerPage = 10;
-
-      creativePluginService.getAllCreativeTemplates().then(function (templates) {
-        $scope.creativeTemplates = templates;
-      });
-
-      $scope.filteredCreatives = function () {
-        var list1 = $filter('filter')($scope.creatives, $scope.creativename);
-        return $filter('filter')(list1, $scope.creativeformat);
+      // Archived
+      $scope.displayArchived = false;
+      var archivedParams = {
+        max_results: 200,
+        organisation_id: Session.getCurrentWorkspace().organisation_id
       };
-
+      // Identify administrator
       $scope.organisationName = function (id) {
         return Session.getOrganisationName(id);
       };
       $scope.administrator = Session.getCurrentWorkspace().administrator;
-
-      var params = {
-        max_results: 200,
-        organisation_id: Session.getCurrentWorkspace().organisation_id
-      };
-
-      $scope.displayArchived = false;
-
-      $scope.$watch('displayArchived', function (newValue, oldValue, scope) {
-        // uncomment to filter archived
-        params.archived = newValue;
-
-        Restangular.all('creatives').getList(params).then(function (creatives) {
-          $scope.creatives = creatives;
-        });
+      // Creative Templates
+      creativePluginService.getAllCreativeTemplates().then(function (templates) {
+        $scope.creativeTemplates = templates;
       });
-
+      // Quick Creative Upload Options
+      $scope.pluploadOptions = {
+        multi_selection: true,
+        url: configuration.ADS_UPLOAD_URL + "?organisation_id=" + Session.getCurrentWorkspace().organisation_id,
+        filters: {
+          mime_types: [
+            {title: "Image files", extensions: "jpg,jpeg,png,gif"},
+            {title: "Flash files", extensions: "swf"}
+          ],
+          max_file_size: "200kb"
+        }
+      };
+      $scope.uploadOptions = {
+        files: $scope.assets,
+        automaticUpload: false,
+        filesOverride: false,
+        uploadedFiles: []
+      };
+      // Creative Edit Url
       $scope.getEditUrlForCreative = _.memoize(function (creative) {
         var result = {url: ""};
         var editorPromise = creativePluginService.getEditor(creative.editor_group_id, creative.editor_artifact_id);
@@ -55,14 +62,50 @@ define(['./module'], function (module) {
         return creative.id;
       });
 
-      $scope.create = function (template) {
-        if (template.editor_group_id === "com.mediarithmics.creative.display" && template.editor_artifact_id === "basic-editor") {
+      /**
+       * Watchers
+       */
 
+      $scope.$watch('displayArchived', function (newValue, oldValue, scope) {
+        // uncomment to filter archived
+        archivedParams.archived = newValue;
+
+        Restangular.all('creatives').getList(archivedParams).then(function (creatives) {
+          $scope.creatives = creatives;
+        });
+      });
+
+      /**
+       * Methods
+       */
+
+      $scope.create = function (template) {
+
+        if (template.editor_group_id === "com.mediarithmics.creative.display" && template.editor_artifact_id === "basic-editor") {
+          var modal = $uibModal.open({
+            templateUrl: 'src/core/creatives/plugins/display-ad/basic-editor/upload-creative.html',
+            scope: $scope,
+            backdrop: 'static',
+            controller: 'core/creatives/plugins/display-ad/basic-editor/UploadCreativeController',
+            size: 'lg'
+          });
+          modal.result.then(function(savedCreatives) {
+            if (savedCreatives) {
+              $state.transitionTo($state.current, $stateParams, {
+                reload: true, inherit: true, notify: true
+              });
+            }
+          });
         } else {
           var organisationId = Session.getCurrentWorkspace().organisation_id;
           var location = template.editor.create_path.replace(/{id}/g, "").replace(/{organisation_id}/, organisationId);
           $location.path(location);
         }
+      };
+
+      $scope.filteredCreatives = function () {
+        var list1 = $filter('filter')($scope.creatives, $scope.creativename);
+        return $filter('filter')(list1, $scope.creativeformat);
       };
 
       $scope.showCreative = function (creative) {

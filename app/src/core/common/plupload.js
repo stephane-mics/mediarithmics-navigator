@@ -6,11 +6,11 @@ define(['./module', "plupload"], function (module) {
     function ($log, configuration, Session, AuthenticationService, $, plupload, ErrorService) {
       return {
         scope: {
-          uploadedFiles: '=',
           multiSelection: '=',
           micsPlUpload: '=',
           automaticUpload: '=?', // False: Upload has to be started manually with plupload:upload event or adding an 'upload-button'.
           files: '=?', // List of files that are going to be uploaded.
+          uploadedFiles: '=?', // List of files that have been uploaded.
           filesOverride: '=?' // False: Append additional files to selected files. True: Override selected files.
         },
         link: function (scope, element, attributes) {
