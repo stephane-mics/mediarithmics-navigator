@@ -17,6 +17,7 @@ define(['angular'], function () {
       'core/configuration',
       'core/adblock',
       'core/adlayouts',
+      'core/assets',
       'core/bidOptimizer',
       'core/layout',
       'core/keywords',

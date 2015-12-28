@@ -28,6 +28,7 @@ require.config({
     "jszip": "../bower_components/js-xlsx/jszip",
     "js-xlsx": "../bower_components/js-xlsx/xlsx",
     "file-saver": "../bower_components/file-saver.js/FileSaver",
+    "clipboard": "../bower_components/clipboard/dist/clipboard",
 
     // Angular JS modules
     "ngAnimate": "../bower_components/angular-animate/angular-animate",

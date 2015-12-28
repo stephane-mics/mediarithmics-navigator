@@ -15,7 +15,7 @@
             class="form-control"
             ng-model="creativeformat"
             ng-options="creative.format as creative.format for creative in creatives | unique:'format' | orderBy:'format'">
-          <option value="">all sizes</option>
+          <option value="">All Sizes</option>
         </select>
       </div>
 
@@ -24,7 +24,7 @@
             class="form-control"
             type="text"
             ng-model="creativename"
-            placeholder="search">
+            placeholder="Search">
       </div>
     </div>
     <table class="mics-table js-auto-hide-actions">

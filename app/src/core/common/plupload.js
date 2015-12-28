@@ -11,13 +11,16 @@ define(['./module', "plupload"], function (module) {
           micsPlUpload: '=',
           automaticUpload: '=?',
           files: '=?',
-          fileName: '=?'
+          filesOverride: '=?'
         },
         link: function (scope, element, attributes) {
           scope.uploadError = null;
           var rootId = attributes.id;
           if (typeof(scope.automaticUpload) === 'undefined') {
             scope.automaticUpload = true;
+          }
+          if (typeof(scope.filesOverride) === 'undefined') {
+            scope.filesOverride = true;
           }
           if (scope.automaticUpload === false && angular.isUndefined(scope.files)) {
             $log.warn("Plupload: Please specify the files attributes");
@@ -40,19 +43,13 @@ define(['./module', "plupload"], function (module) {
           var uploadButton = element.find('.upload-button');
           if (uploadButton.length === 1 && !scope.automaticUpload) {
             uploadButton.bind('click', function () {
-              if (scope.fileName.length === 0) {
-                $log.info("Plupload: Please specify the files names");
-              } else {
-                $log.info("Plupload: Uploading selected files");
-                uploader.settings.multipart_params.names = scope.fileName;
-                uploader.start();
-              }
+              uploader.start();
             });
           }
 
           // Manual upload
           scope.$on("plupload:upload", function (event, args) {
-            $log.info("Plupload: Manual upload, args: ", args);
+            $log.info("Plupload: Manual upload, args: ", args, ", files: ", scope.files);
             uploader.start();
           });
 
@@ -84,7 +81,7 @@ define(['./module', "plupload"], function (module) {
 
           function handleError(uploader, err) {
             scope.uploadError = err.message;
-            scope.$apply(function() {
+            scope.$apply(function () {
               ErrorService.showErrorModal({
                 error: err,
                 messageType: "simple"
@@ -102,6 +99,7 @@ define(['./module', "plupload"], function (module) {
               $log.log("Drag'n'drop feature ok. RootId: ", rootId);
               $('#' + rootId + ' .upload-debug').html("");
               var target = $('#' + attributes.id + ' .drop-target');
+
               target.ondragover = function (event) {
                 event.dataTransfer.dropEffect = "copy";
               };
@@ -123,7 +121,11 @@ define(['./module', "plupload"], function (module) {
           function handleFilesAdded(uploader, files) {
             scope.uploadError = null;
             scope.$apply(function () {
-              scope.files = files;
+              if (scope.filesOverride === true) {
+                scope.files = files;
+              } else {
+                scope.files = scope.files.concat(files);
+              }
             });
             if (scope.automaticUpload) {
               uploader.start();
@@ -137,9 +139,12 @@ define(['./module', "plupload"], function (module) {
                 if (scope.uploadedFiles && responseObj.data) {
                   scope.uploadedFiles.push(responseObj.data);
                 }
-                scope.$emit('plupload:uploaded');
               });
             }
+          }
+
+          function handleUploadComplete(uploader, files, response) {
+            scope.$emit('plupload:uploaded');
           }
 
           /**
@@ -156,6 +161,7 @@ define(['./module', "plupload"], function (module) {
           uploader.init();
           uploader.bind('FilesAdded', handleFilesAdded);
           uploader.bind('FileUploaded', handleFileUploaded);
+          uploader.bind('UploadComplete', handleUploadComplete);
           uploader.bind('BeforeUpload', function (uploader) {
             uploader.settings.url = scope.micsPlUpload.url;
           });

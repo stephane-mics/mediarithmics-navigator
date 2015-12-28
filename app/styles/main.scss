@@ -582,11 +582,17 @@ form.mcs-full-page-form {
   text-align: center;
   color: #999;
   font-size: 16px;
-  width: 80%;
   height: 200px;
   line-height: 200px;
   cursor: pointer;
-  margin: 5px auto;
+  margin: 20px auto;
+}
+
+.creative-drop-target {
+  width: 80%;
+}
+
+.asset-drop-target {
 }
 
 .drop-target.dragover {
@@ -1795,11 +1801,24 @@ a.category-item {
   }
 }
 
+.checkered-background {
+  background-color: #ffffff;
+  background-image: linear-gradient(45deg, $mcs-light-grey 25%, transparent 25%, transparent 75%, $mcs-light-grey 75%, $mcs-light-grey),
+  linear-gradient(45deg, $mcs-light-grey 25%, transparent 25%, transparent 75%, $mcs-light-grey 75%, $mcs-light-grey);
+  background-size: 20px 20px;
+  background-position: 0 0, 30px 30px;
+}
+
 .mics-small-thumbnail {
+  @extend .checkered-background;
   margin: 0;
   padding: 0;
   border: none;
-  background-color: transparent;
+  height: 50px;
+  vertical-align: middle;
+
+  //background-image: url('/image/checkered-background.png');
+
   @extend .text-center;
   img {
     max-width: 50px;
@@ -1810,6 +1829,35 @@ a.category-item {
     font-size: $font-size-small;
     padding: 0;
   }
+}
+
+.mics-large-thumbnail {
+  @extend .checkered-background;
+  @extend .text-center;
+  border: 1px solid $mcs-light-grey;
+  transition: all 0.6s ease 0s;
+  float: left;
+  cursor: pointer;
+  margin: 0 10px 10px 0;
+
+  &:hover {
+    border: 1px solid $mcs-light-blue;
+  }
+
+  height: 160px;
+  width: 160px;
+  vertical-align: middle;
+
+  img {
+    max-width: 140px;
+    max-height: 140px;
+  }
+}
+
+.thumbnail-helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 
 .endpoint_TopCenter, .endpoint_BottomCenter, .endpoint_LeftMiddle, .endpoint_RightMiddle {
@@ -2068,3 +2116,8 @@ input.ng-invalid {
   }
 }
 
+// --------------------- Assets ------------------------------
+#contextMenu {
+  position: absolute;
+  display:none;
+}

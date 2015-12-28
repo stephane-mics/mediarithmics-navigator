@@ -1,0 +1,25 @@
+<div class="assets-upload">
+  <div class="modal-header">
+    <h3>Assets Upload</h3>
+  </div>
+
+  <div class="modal-body">
+    <div ng-show="assets.length">
+      <div mics-list-new-assets assets="assets" show-delete="true" ></div>
+    </div>
+
+    <div mics-pl-upload="pluploadOptions" id="asset-select-1" files="assets" files-override="false" uploaded-files="uploadedFiles" automatic-upload="false">
+      <button class="mics-btn mics-btn-add browse-button">Add files</button>
+      <div ng-show="!assets.length" class="drop-target" style="position: relative; z-index: 0;">Drop your files here</div>
+      <div class="upload-debug">No runtime found, your browser doesn't support HTML5 drag &amp; drop upload.</div>
+      <div class="alert alert-danger" ng-if="uploadError">{{ uploadError }}</div>
+    </div>
+    {{assets}}
+  </div>
+
+  <div class="modal-footer">
+    <a ng-click="cancel()" class="mics-btn mics-btn-cancel">Cancel</a>
+    <a ng-click="printAssets()" class="mics-btn mics-btn-cancel">ASSETS</a>
+    <a ng-show="assets.length" ng-click="done()" class="mics-btn mics-btn-finish">Upload</a>
+  </div>
+</div>

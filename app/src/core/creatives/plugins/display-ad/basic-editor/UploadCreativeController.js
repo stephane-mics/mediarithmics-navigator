@@ -4,9 +4,6 @@ define(['./module'], function (module) {
   module.controller('core/creatives/plugins/display-ad/basic-editor/UploadCreativeController', [
     '$scope', '$document', '$log', "Restangular", 'core/common/auth/Session', 'core/configuration', 'lodash', '$q', "core/creatives/plugins/display-ad/DisplayAdService", "core/common/ErrorService",
     function ($scope, $document, $log, Restangular, Session, configuration, _, $q, DisplayAdService, errorService) {
-
-      $log.debug('Init UploadAdController');
-
       // For the directive mics-pl-upload
       $scope.uploadedFiles = [];
       $scope.next = function () {
