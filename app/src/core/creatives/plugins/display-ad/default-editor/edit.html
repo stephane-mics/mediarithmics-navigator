@@ -58,7 +58,7 @@
           <mcs-data-file-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'DATA_FILE'"></mcs-data-file-property>
           <mcs-asset-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'ASSET'"></mcs-asset-property>
           <mcs-text-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" ng-if="property.value.property_type == 'STRING'"></mcs-text-property>
-          <mcs-ad-layout-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" artifact-id="dynamic-template" group-id="com.mediarithmics.creative.display" property="property.value" organisation-id="organisationId" ng-if="property.value.property_type == 'AD_LAYOUT'"></mcs-ad-layout-property>
+          <mcs-ad-layout-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" version-id="displayAd.renderer_version_id" artifact-id="displayAd.renderer_artifact_id" version="displayAd.renderer_version_value" property="property.value" organisation-id="organisationId" ng-if="property.value.property_type == 'AD_LAYOUT'"></mcs-ad-layout-property>
           <mcs-style-sheet-property ng-disabled="disabledEdition || property.value.origin == 'PLUGIN_STATIC'" property="property.value" organisation-id="organisationId" ng-if="property.value.property_type == 'STYLE_SHEET'"></mcs-style-sheet-property>
         </div>
       </div>

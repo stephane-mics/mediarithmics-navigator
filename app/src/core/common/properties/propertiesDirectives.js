@@ -74,21 +74,23 @@ define(['./module'], function (module) {
           property: '=',
           organisationId: '=',
           ngDisabled: '=',
+          versionId: '=?',
           artifactId: '=?',
-          groupId: '=?',
-          pluginType: '=?'
+          version: '=?'
         },
         templateUrl: '/src/core/common/properties/ad-layout-property.html',
         link: function (scope, element, attrs) {
 
-          Restangular.all("plugins").getList({artifact_id: attrs.artifactId, group_id: attrs.groupId, plugin_type: attrs.pluginType}).then(function (renderers) {
-            scope.displayAdRenderers = [];
-            for (var i = 0; i < renderers.length; ++i) {
-              scope.displayAdRenderers[renderers[i].id] = renderers[i].artifact_id;
-            }
-          });
+          if (typeof scope.organisationId === 'undefined') {
+            return $log.warn("mcsAdLayoutProperty: Missing organisation id");
+          }
+
+          if (typeof scope.property === 'undefined') {
+            return $log.warn("mcsAdLayoutProperty: Property is undefined");
+          }
 
           scope.selectedAdLayout = {};
+          scope.displayAdRenderer = {versionId: scope.versionId, artifactId: scope.artifactId, version: scope.version};
 
           if (scope.property.value.id) {
             Restangular.one("ad_layouts/" + scope.property.value.id).get({organisation_id: scope.organisationId}).then(function (adLayout) {
@@ -99,13 +101,6 @@ define(['./module'], function (module) {
             });
           }
 
-          if (typeof scope.organisationId === 'undefined') {
-            return $log.warn("mcsAdLayoutProperty: Missing organisation id");
-          }
-
-          if (typeof scope.property === 'undefined') {
-            return $log.warn("mcsAdLayoutProperty: Property is undefined");
-          }
 
           scope.$watch('selectedAdLayout', function (selected) {
             if (selected && selected.adLayout) {
@@ -126,8 +121,8 @@ define(['./module'], function (module) {
                 propAdLayout: function () {
                   return scope.property.value;
                 },
-                displayAdRenderers: function () {
-                  return scope.displayAdRenderers;
+                displayAdRenderer: function () {
+                  return scope.displayAdRenderer;
                 }
               }
             });

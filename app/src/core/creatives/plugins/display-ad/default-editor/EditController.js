@@ -5,6 +5,7 @@ define(['./module'], function (module) {
     '$scope', '$log', '$location', '$stateParams', 'core/creatives/plugins/display-ad/DisplayAdService', 'core/common/auth/Session', 'core/creatives/CreativePluginService',
     '$controller', "core/common/ErrorService", '$state', 'core/common/IabService', 'lodash', 'Restangular',
     function ($scope, $log, $location, $stateParams, DisplayAdService, Session, CreativePluginService, $controller, errorService, $state, IabService, _, Restangular) {
+      $scope.displayAd = {};
       $controller('core/creatives/plugins/display-ad/common/CommonEditController', {$scope: $scope});
       $scope.organisationId = $stateParams.organisation_id;
 
