@@ -65,7 +65,6 @@ define(['./module'], function (module) {
       /**
        * Watchers
        */
-
       $scope.$watch('displayArchived', function (newValue, oldValue, scope) {
         // uncomment to filter archived
         archivedParams.archived = newValue;
@@ -80,7 +79,6 @@ define(['./module'], function (module) {
        */
 
       $scope.create = function (template) {
-
         if (template.editor_group_id === "com.mediarithmics.creative.display" && template.editor_artifact_id === "basic-editor") {
           var modal = $uibModal.open({
             templateUrl: 'src/core/creatives/plugins/display-ad/basic-editor/upload-creative.html',

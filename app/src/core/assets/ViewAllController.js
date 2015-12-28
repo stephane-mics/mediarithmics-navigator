@@ -2,8 +2,8 @@ define(['./module', 'clipboard', 'jquery'], function (module, clipboard, $) {
   'use strict';
 
   module.controller('core/assets/ViewAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log', 'core/configuration',
-    function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log, configuration) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log', 'core/configuration', '$filter',
+    function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log, configuration, $filter) {
       $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.assetsUrl = configuration.ASSETS_URL;
       $scope.assets = [];
@@ -29,6 +29,22 @@ define(['./module', 'clipboard', 'jquery'], function (module, clipboard, $) {
         filesOverride: false,
         uploadedFiles: []
       };
+
+      // Pagination
+      $scope.currentPageCreative = 1;
+      $scope.itemsPerPage = 10;
+
+      $scope.filteredAssets = function () {
+        return $filter('filter')($scope.assets, $scope.assetName);
+      };
+
+      $scope.$watch('listMode', function(value) {
+        if (value) {
+          $scope.itemsPerPage = 10;
+        } else {
+          $scope.itemsPerPage = 50;
+        }
+      });
 
       Restangular.all("asset_files").getList({organisation_id: $scope.organisationId}).then(function (assets) {
         $scope.assets = assets;
