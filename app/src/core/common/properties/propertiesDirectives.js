@@ -74,9 +74,8 @@ define(['./module'], function (module) {
           property: '=',
           organisationId: '=',
           ngDisabled: '=',
-          versionId: '=?',
-          artifactId: '=?',
-          version: '=?'
+          pluginId: '=',
+          pluginVersionId: '='
         },
         templateUrl: '/src/core/common/properties/ad-layout-property.html',
         link: function (scope, element, attrs) {
@@ -90,7 +89,10 @@ define(['./module'], function (module) {
           }
 
           scope.selectedAdLayout = {};
-          scope.displayAdRenderer = {versionId: scope.versionId, artifactId: scope.artifactId, version: scope.version};
+
+          Restangular.one("plugins/" + scope.pluginId + "/versions/" + scope.pluginVersionId).get().then(function (version) {
+            scope.displayAdRenderer = {versionId: version.id, artifactId: version.artifact_id, groupId: version.group_id, version: version.version_id};
+          });
 
           if (scope.property.value.id) {
             Restangular.one("ad_layouts/" + scope.property.value.id).get({organisation_id: scope.organisationId}).then(function (adLayout) {
