@@ -11,7 +11,7 @@ define(['./module'], function (module) {
       /**
        * Variables
        */
-      // Pagination
+        // Pagination
       $scope.currentPageCreative = 1;
       $scope.itemsPerPage = 10;
       // Archived
@@ -79,20 +79,18 @@ define(['./module'], function (module) {
        */
 
       $scope.create = function (template) {
-        if (template.editor_group_id === "com.mediarithmics.creative.display" && template.editor_artifact_id === "basic-editor") {
+        if (template.modal_mode) {
           var modal = $uibModal.open({
-            templateUrl: 'src/core/creatives/plugins/display-ad/basic-editor/upload-creative.html',
+            templateUrl: template.modal_template,
             scope: $scope,
             backdrop: 'static',
-            controller: 'core/creatives/plugins/display-ad/basic-editor/UploadCreativeController',
+            controller: template.modal_controller,
             size: 'lg'
           });
-          modal.result.then(function(savedCreatives) {
-            if (savedCreatives) {
-              $state.transitionTo($state.current, $stateParams, {
-                reload: true, inherit: true, notify: true
-              });
-            }
+          modal.result.then(function () {
+            $state.transitionTo($state.current, $stateParams, {
+              reload: true, inherit: true, notify: true
+            });
           });
         } else {
           var organisationId = Session.getCurrentWorkspace().organisation_id;

@@ -6,9 +6,6 @@
   <div class="modal-body">
     <div ng-show="newCreativesWrapper.length && step == 'step1'">
       <div mics-list-new-creatives wrappers="newCreativesWrapper" show-delete="false" on-delete="logAssetDeletion"></div>
-      <div class="mcs-actions-group">
-        <a class="mics-btn mics-btn-finish" ng-click="next()">Next</a>
-      </div>
     </div>
 
     <div ng-show="newCreativesWrapper.length && step == 'step2'">
@@ -17,13 +14,11 @@
         <span id="helpBlock" class="help-block">This is the final redirect location domain (without http or params)<br/>eg: destination.mybrand.com</span>
       </div>
       <div mcs-form-group="" label-for="destinationUrlProperty" label-text="Destination URL">
-        <input class="form-control" ng-model="$parent.$parent.url" type="url" id="destinationUrlProperty">
+        <input class="form-control" ng-model="url" type="url" id="destinationUrlProperty">
             <span id="helpBlock" class="help-block">
-                This is the URL where the user will be redirected to.
-                You may use a click tracker
+                This is the URL where the user will be redirected to. You may use a click tracker.
                 <br/> eg: http://redirect.to/mypage
             </span>
-        <br/>
         <span pretty-print-url="url"></span>
       </div>
     </div>
@@ -38,6 +33,7 @@
 
   <div class="modal-footer">
     <a ng-click="cancel()" class="mics-btn mics-btn-cancel">Cancel</a>
+    <a ng-show="step == 'step1'" class="mics-btn mics-btn-finish" ng-click="next()">Next</a>
     <a ng-show="step == 'step2'" ng-click="done()" class="mics-btn mics-btn-finish">Done</a>
   </div>
 </div>

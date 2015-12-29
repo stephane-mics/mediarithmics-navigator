@@ -21,11 +21,6 @@ define(['./module'], function (module) {
         $log.debug("deleted asset", elt);
       };
 
-      $scope.done = function() {
-        $uibModalInstance.close();
-
-      };
-
       $scope.pluploadOptions = {
         multi_selection: true,
         url: configuration.ADS_UPLOAD_URL + "?organisation_id=" + Session.getCurrentWorkspace().organisation_id,
@@ -99,12 +94,12 @@ define(['./module'], function (module) {
           $uibModalInstance.close($scope.newCreativesWrapper);
         }, function (error) {
           $scope.$emit("display-ad/basic-editor:error", error);
-          $uibModalInstance.close();
+          $uibModalInstance.dismiss();
         });
       };
 
       $scope.cancel = function () {
-        $uibModalInstance.close();
+        $uibModalInstance.dismiss();
       };
     }
   ]);
