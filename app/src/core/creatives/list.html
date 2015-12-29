@@ -3,9 +3,10 @@
     <div class="mcs-default-heading">
       <h1>All Creatives</h1>
     </div>
+
     <div class="mics-table-toolbar">
       <div class="col-md-4">
-        <div class="campaign-list-actions dropdown" dropdown>
+        <div dropdown>
           <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Creative</button>
           <ul class="dropdown-menu" role="menu">
             <li role="presentation" ng-repeat="template in creativeTemplates">
@@ -27,7 +28,6 @@
           <option value="">All Sizes</option>
         </select>
       </div>
-
       <div class="form-group col-md-3">
         <input
             class="form-control"
@@ -36,6 +36,7 @@
             placeholder="Search">
       </div>
     </div>
+
     <table class="mics-table js-auto-hide-actions">
       <thead>
       <tr>

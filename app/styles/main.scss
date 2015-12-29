@@ -209,7 +209,6 @@ label {
 }
 
 .mics-table-toolbar {
-
   @include make-row();
   margin-bottom: 20px;
 }
@@ -752,12 +751,7 @@ form.mcs-full-page-form {
       }
     }
     .campaign-list-controller {
-      @include make-row();
-      .campaign-list-actions {
-        @include make-sm-column(6);
-      }
       .campaign-list-date-controller {
-        @include make-sm-column(6);
         min-width: 270px;
         input.range {
           width: 240px;
