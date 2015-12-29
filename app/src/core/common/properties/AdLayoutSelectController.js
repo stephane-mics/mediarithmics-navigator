@@ -1,8 +1,8 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/common/properties/AdLayoutSelectController', ['$scope', '$uibModalInstance', 'propAdLayout', 'displayAdRenderers', 'Restangular',
-    function ($scope, $modalInstance, propAdLayout, displayAdRenderers, Restangular) {
+  module.controller('core/common/properties/AdLayoutSelectController', ['$scope', '$uibModalInstance', 'propAdLayout', 'displayAdRenderer', 'Restangular',
+    function ($scope, $modalInstance, propAdLayout, displayAdRenderer, Restangular) {
       function findItem(list, id) {
         for (var i = 0; i < list.length; ++i) {
           if (list[i].id === id) {
@@ -27,7 +27,10 @@ define(['./module'], function (module) {
       }
 
       // Setup and select Ad Layout
-      Restangular.one("ad_layouts").getList("", {"organisation_id": $scope.organisationId}).then(function (adLayouts) {
+      Restangular.one("ad_layouts").getList("", {
+        "renderer_version_id": displayAdRenderer.versionId,
+        "organisation_id": $scope.organisationId
+      }).then(function (adLayouts) {
         if (adLayouts.length) {
           $scope.adLayouts = adLayouts;
           $scope.selectedAdLayout = !propAdLayout.id ? adLayouts[0] : findItem(adLayouts, propAdLayout.id);

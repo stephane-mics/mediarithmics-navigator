@@ -1,6 +1,6 @@
 <div class="choose-existing-ad-layouts-list">
   <div class="modal-header">
-    <h3>Select Ad Layout</h3>
+    <h3>Select Ad Layout</h3><h4> for <strong>{{displayAdRenderer.artifactId}} v{{displayAdRenderer.version}}</strong></h4>
   </div>
 
   <div class="modal-body">
@@ -10,15 +10,13 @@
           <thead>
           <tr>
             <th class="col-xs-1">&nbsp;</th>
-            <th class="col-xs-2">Ad Layouts</th>
-            <th class="col-xs-3">Renderer</th>
+            <th class="col-xs-5">Ad Layout</th>
           </tr>
           </thead>
           <tbody>
           <tr ng-click="selectAdLayout(adLayout)" class="clickableRow" ng-repeat="adLayout in adLayouts">
             <td class="col-xs-1"><input type="checkbox" id="adLayout.id" ng-checked="adLayout.id == selectedAdLayout.id"></td>
-            <td class="col-xs-2">{{adLayout.name}}</td>
-            <td class="col-xs-3">{{displayAdRenderers[adLayout.renderer_id]}}</td>
+            <td class="col-xs-5">{{adLayout.name}}</td>
           </tr>
           </tbody>
         </table>
@@ -40,7 +38,7 @@
           <tbody>
           <tr ng-click="selectVersion(version)" class="clickableRow" ng-repeat="version in versions">
             <td class="col-xs-1"><input type="checkbox" id="version.id" ng-checked="version.id === selectedVersion.id"></td>
-            <td class="col-xs-2">{{version.id}}</td>
+            <td class="col-xs-2">{{version.version_id}}</td>
             <td class="col-xs-2">{{version.filename}}</td>
             <td class="col-xs-1">{{version.status}}</td>
           </tr>
@@ -48,7 +46,6 @@
         </table>
       </div>
     </div>
-
   </div>
 
   <div class="modal-footer">
