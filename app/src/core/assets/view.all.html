@@ -42,7 +42,7 @@
     </script>
   </div>
 
-  <table id="assetsTable" ng-show="listMode" class="mics-table table-hover js-auto-hide-actions" ng-show="assets.length">
+  <table id="assetsTable" ng-show="assets.length && listMode" class="mics-table table-hover js-auto-hide-actions">
     <thead>
     <tr>
       <th>Preview</th>
@@ -52,13 +52,14 @@
       <th class="actions">Actions</th>
     </tr>
     </thead>
-    <tbody data-ng-repeat="asset in filteredAssets() | offset: (currentPageCreative - 1) * itemsPerPage | limitTo: itemsPerPage">
-    <tr>
+    <tbody>
+    <tr ng-repeat="asset in filteredAssets() | offset: (currentPageCreative - 1) * itemsPerPage | limitTo: itemsPerPage">
       <td>
         <div class="mics-small-thumbnail">
-          <span class="thumbnail-helper"></span>
-          <img ng-src='{{assetsUrl + asset.file_path}}'>
-          <!--<img class="thumbnail-helper" src='./images/checkered-background.png'>-->
+          <a href="{{assetsUrl + asset.file_path}}">
+            <span class="thumbnail-helper"></span>
+            <img ng-src='{{assetsUrl + asset.file_path}}'>
+          </a>
         </div>
       </td>
       <td><a href="{{assetsUrl + asset.file_path}}" target="_blank">{{asset.original_filename}}</a></td>
