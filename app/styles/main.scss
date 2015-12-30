@@ -209,7 +209,6 @@ label {
 }
 
 .mics-table-toolbar {
-
   @include make-row();
   margin-bottom: 20px;
 }
@@ -348,8 +347,6 @@ label {
     margin-left: 5px;
   }
 }
-
-
 
 /* mics-btn override sizes and btn-xs is not enough to override the override. */
 .mics-btn.btn-xs {
@@ -582,11 +579,10 @@ form.mcs-full-page-form {
   text-align: center;
   color: #999;
   font-size: 16px;
-  width: 80%;
   height: 200px;
   line-height: 200px;
   cursor: pointer;
-  margin: 5px auto;
+  margin: 20px auto;
 }
 
 .drop-target.dragover {
@@ -665,10 +661,10 @@ form.mcs-full-page-form {
 }
 
 .content-with-sidebar {
-  margin-left:210px;
+  margin-left: 210px;
   /*margin-right:210px;*/
   min-width: 768px;
-  height:100%;
+  height: 100%;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -680,23 +676,21 @@ form.mcs-full-page-form {
   }
   .sidebar-background {
 
-    width:200px;
+    width: 200px;
     border-right: 1px solid $mcs-light-grey;
     position: fixed;
     height: 100%;
-    top:0;
+    top: 0;
     bottom: 0;
   }
 }
 
-
-.sidebar-content{
-  width:185px;
+.sidebar-content {
+  width: 185px;
   max-width: 185px;
   padding-left: 20px;
   padding-right: 10px;
   float: left;
-
 
   .mcs-lm-nav {
     @extend .nav;
@@ -757,12 +751,7 @@ form.mcs-full-page-form {
       }
     }
     .campaign-list-controller {
-      @include make-row();
-      .campaign-list-actions {
-        @include make-sm-column(6);
-      }
       .campaign-list-date-controller {
-        @include make-sm-column(6);
         min-width: 270px;
         input.range {
           width: 240px;
@@ -865,28 +854,27 @@ form.mcs-full-page-form {
     }
 
     .report-toolbar {
-        @include make-row();
-        .date-export-toolbar {
-            @include make-md-column(12);
-            .report-date-controller {
-                min-width: 270px;
-                padding: 0;
-                input.range {
-                    width: 240px;
-                    background-color: $mcs-light-blue;
-                    color: $mcs-light-blue-not;
-                    @include use-bold-font();
-                    font-size: ceil(($font-size-base * 1.5));
-                }
-                @extend .text-right;
+      @include make-row();
+      .date-export-toolbar {
+        @include make-md-column(12);
+        .report-date-controller {
+          min-width: 270px;
+          padding: 0;
+          input.range {
+            width: 240px;
+            background-color: $mcs-light-blue;
+            color: $mcs-light-blue-not;
+            @include use-bold-font();
+            font-size: ceil(($font-size-base * 1.5));
+          }
+          @extend .text-right;
 
-                > * {
-                    margin-left: 10px;
-                }
-            }
+          > * {
+            margin-left: 10px;
+          }
         }
+      }
     }
-
 
     .chart-area {
       @include make-row();
@@ -1027,36 +1015,36 @@ form.mcs-full-page-form {
     }
   }
 }
+
 .campaign-report {
-    @extend .report;
+  @extend .report;
 }
 
 .goal-report {
-    @extend .report;
-    .attributions {
-        .attribution-kpis {
-           
+  @extend .report;
+  .attributions {
+    .attribution-kpis {
 
-            @include make-row(); 
-            padding-bottom: 10px;
-            .attribution-kpi {
-                @include make-md-column(3);
-                .kpi-title {
-                    @extend .text-left;
-                    color: $mcs-light-blue;
-                    font-weight: normal;
-                    @include use-bold-font();
-                    font-size: 12px;
+      @include make-row();
+      padding-bottom: 10px;
+      .attribution-kpi {
+        @include make-md-column(3);
+        .kpi-title {
+          @extend .text-left;
+          color: $mcs-light-blue;
+          font-weight: normal;
+          @include use-bold-font();
+          font-size: 12px;
 
-                }
-                .kpi-value {
-                    @extend .text-left;
-                    font-size: 20px;
-                    @include use-bold-font();
-                }
-            }
         }
+        .kpi-value {
+          @extend .text-left;
+          font-size: 20px;
+          @include use-bold-font();
+        }
+      }
     }
+  }
 }
 
 .edit-campaign-expert {
@@ -1158,7 +1146,6 @@ table.fragment-list-attribution-model {
 table.fragment-list-attribution-model-processor {
   @extend .mics-table;
 }
-
 
 table.fragment-list-bid-optimizer {
   @extend .mics-table;
@@ -1266,7 +1253,7 @@ form.datamart {
   input[type="search"] {
     color: $dark-blue;
     border: 1px solid $mcs-light-blue;
-    width:300px;
+    width: 300px;
   }
 
   select {
@@ -1431,14 +1418,12 @@ a.category-item {
   border-left: 6px solid $mcs-red;
 }
 
-
-
 .datamart-timeline-content-header {
- .live-event-header {
-    @extend .label; 
-    @extend .label-success; 
+  .live-event-header {
+    @extend .label;
+    @extend .label-success;
     float: right;
- }
+  }
 }
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header {
@@ -1795,11 +1780,24 @@ a.category-item {
   }
 }
 
+.checkered-background {
+  background-color: #ffffff;
+  background-image: linear-gradient(45deg, $mcs-light-grey 25%, transparent 25%, transparent 75%, $mcs-light-grey 75%, $mcs-light-grey),
+  linear-gradient(45deg, $mcs-light-grey 25%, transparent 25%, transparent 75%, $mcs-light-grey 75%, $mcs-light-grey);
+  background-size: 20px 20px;
+  background-position: 0 0, 30px 30px;
+}
+
 .mics-small-thumbnail {
+  @extend .checkered-background;
   margin: 0;
   padding: 0;
   border: none;
-  background-color: transparent;
+  height: 50px;
+  vertical-align: middle;
+
+  //background-image: url('/image/checkered-background.png');
+
   @extend .text-center;
   img {
     max-width: 50px;
@@ -1810,6 +1808,35 @@ a.category-item {
     font-size: $font-size-small;
     padding: 0;
   }
+}
+
+.mics-large-thumbnail {
+  @extend .checkered-background;
+  @extend .text-center;
+  border: 1px solid $mcs-light-grey;
+  transition: all 0.6s ease 0s;
+  float: left;
+  cursor: pointer;
+  margin: 0 10px 10px 0;
+
+  &:hover {
+    border: 1px solid $mcs-light-blue;
+  }
+
+  height: 160px;
+  width: 160px;
+  vertical-align: middle;
+
+  img {
+    max-width: 140px;
+    max-height: 140px;
+  }
+}
+
+.thumbnail-helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 
 .endpoint_TopCenter, .endpoint_BottomCenter, .endpoint_LeftMiddle, .endpoint_RightMiddle {
@@ -1943,6 +1970,7 @@ input.ng-invalid {
   border: 1px solid #111111;
   box-sizing: content-box
 }
+
 // -------------------- Draggable element : used for query ui ----------------------------
 
 .ongoing-drag-decorate {
@@ -1954,13 +1982,12 @@ input.ng-invalid {
   }
 
   .drop-allowed.lvl-over {
-      background: #dff0d8;
+    background: #dff0d8;
   }
 
   .drop-forbidden.lvl-over {
-      background: #f2dede;
+    background: #f2dede;
   }
-
 
 }
 
@@ -2049,7 +2076,6 @@ input.ng-invalid {
   padding: 0 !important;
 }
 
-
 .choose-existing-ad-layouts-list {
   .modal-body {
     @include make-md-column(12);
@@ -2068,3 +2094,8 @@ input.ng-invalid {
   }
 }
 
+// --------------------- Assets ------------------------------
+
+.pagination-selector {
+  width: 100%;
+}

@@ -9,7 +9,7 @@ define(['./module'], function (module) {
     function ($scope, $location, $log, Session, DisplayCampaignService, CampaignPluginService) {
 
       CampaignPluginService.getAllCampaignEditors().then(function (editors) {
-        $scope.campaignTemplates = editors;
+        $scope.campaignEditors = editors;
       });
 
       // create button

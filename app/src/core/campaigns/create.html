@@ -10,10 +10,10 @@
       <h1>New Campaign </h1>
     </div>
     <div class="row">
-      <div class="col-md-3" ng-repeat="template in campaignTemplates">
-        <img style="height:150px" ng-src="{{template.image}}">
-        <h4>{{template.name}}</h4>
-        <a class="mics-btn mics-btn-add" ng-click="create(template)">New</a>
+      <div class="col-md-3" ng-repeat="editor in campaignEditors">
+        <img style="height:150px" ng-src="{{editor.image}}">
+        <h4>{{editor.name}}</h4>
+        <a class="mics-btn mics-btn-add" ng-click="create(editor)">New</a>
       </div>
     </div>
     <div class="mcs-actions-group" style="margin-top:70px">

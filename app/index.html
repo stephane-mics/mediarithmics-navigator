@@ -43,9 +43,9 @@
   <script src="bower_components/video.js/dist/video-js/video.js"></script>
   <script src="bower_components/videojs-contrib-ads/src/videojs.ads.js"></script>
   <script src="bower_components/vast-client-js/vast-client.js"></script>
-	<script src="bower_components/videojs-vast/videojs.vast.js"></script>
-	<!-- The xlsx lib checks if jszip exists before anything. AGAIN we need jszip and then xlsx after minification.-->
-	<script src="bower_components/js-xlsx/jszip.js"></script>
+  <script src="bower_components/videojs-vast/videojs.vast.js"></script>
+  <!-- The xlsx lib checks if jszip exists before anything. AGAIN we need jszip and then xlsx after minification.-->
+  <script src="bower_components/js-xlsx/jszip.js"></script>
   <!-- endbuild -->
   <script>var require = {paths: {'core/configuration': '../conf/app-configuration'}};</script>
   <script src="conf/plugins-configuration.js"></script>
@@ -59,7 +59,7 @@
     };
   </script>
 </head>
-<body class="mcs-app" ng-controller="LayoutController" >
+<body class="mcs-app" ng-controller="LayoutController">
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please
   <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -67,7 +67,7 @@
 
 <div ng-include="'src/core/layout/header/header.html'"></div>
 
-<div ng-include="'src/core/layout/sidebar/sidebar.html'"  ng-class="{'hidden': !showSidebar }"></div>
+<div ng-include="'src/core/layout/sidebar/sidebar.html'" ng-class="{'hidden': !showSidebar }"></div>
 
 <div ng-class="{'content-with-sidebar': showSidebar }">
   <div ui-view="" class="container-fluid"></div>
@@ -77,7 +77,6 @@
 <script src="bower_components/es5-shim/es5-shim.js"></script>
 <script src="bower_components/json3/lib/json3.min.js"></script>
 <![endif]-->
-
 
 <noscript>
   <h1>Mediarithmics navigator</h1>
@@ -90,7 +89,7 @@
   </p>
 
   <p>
- <!--   TODO : explain why our website is awesome and you should allow js here to manage your campaigns. -->
+    <!--   TODO : explain why our website is awesome and you should allow js here to manage your campaigns. -->
   </p>
 </noscript>
 

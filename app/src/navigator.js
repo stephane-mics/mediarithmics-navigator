@@ -1,5 +1,5 @@
-define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment'],
-  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment) {
+define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'clipboard'],
+  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment, Clipboard) {
     "use strict";
 
     navigator.factory('lodash', [
@@ -91,7 +91,8 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
             url: '/init-session/:organisationId',
             templateUrl: 'src/core/login/init-session.html',
             publicUrl: true
-          }).state('init-session/withoutOrganisation', {
+          })
+          .state('init-session/withoutOrganisation', {
             url: '/init-session',
             templateUrl: 'src/core/login/init-session.html',
             publicUrl: true
@@ -101,7 +102,7 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
         $urlRouterProvider.when('', '/home');
         $urlRouterProvider.when('/home', '/campaigns/display');
 
-        $urlRouterProvider.otherwise(function($injector, $location){
+        $urlRouterProvider.otherwise(function ($injector, $location) {
           var state = $injector.get('$state');
           state.go('404');
           return $location.path();
@@ -109,6 +110,8 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
 
         $logProvider.debugEnabled(true);
 
+        // Setup clipboard copy utility
+        new Clipboard('.mics-btn-clipboard');
       }
     ]);
 

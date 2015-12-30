@@ -19,14 +19,16 @@
       </h1>
     </div>
 
-    <div class="campaign-list-controller">
-      <div class="campaign-list-actions">
+    <div class="campaign-list-controller mics-table-toolbar">
+      <div class="col-md-6">
         <button class="mics-btn mics-btn-add" ng-click="newCampaign()">New Campaign</button>
       </div>
-      <div class="campaign-list-date-controller">
-        <form class="form-inline" role="form">
-          <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L" ranges="reportDefaultDateRanges" opens="'left'">
-        </form>
+      <div class="col-md-6">
+        <div class="campaign-list-date-controller">
+          <form class="form-inline" role="form">
+            <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L" ranges="reportDefaultDateRanges" opens="'left'">
+          </form>
+        </div>
       </div>
     </div>
 

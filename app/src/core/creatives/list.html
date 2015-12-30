@@ -3,9 +3,19 @@
     <div class="mcs-default-heading">
       <h1>All Creatives</h1>
     </div>
+
     <div class="mics-table-toolbar">
       <div class="col-md-4">
-        <button class="mics-btn mics-btn-add" ng-click="newCreative()">New Creative</button>
+        <div dropdown>
+          <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Creative</button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="presentation" ng-repeat="template in creativeTemplates">
+              <a role="menuitem" tabindex="-1" ng-click="create(template)">
+                {{template.name}}
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="col-md-2">
         <!-- <label><input type="checkbox" ng-model="displayArchived"> Display archived</label> -->
@@ -15,19 +25,19 @@
             class="form-control"
             ng-model="creativeformat"
             ng-options="creative.format as creative.format for creative in creatives | unique:'format' | orderBy:'format'">
-          <option value="">all sizes</option>
+          <option value="">All Sizes</option>
         </select>
       </div>
-
       <div class="form-group col-md-3">
         <input
             class="form-control"
             type="text"
             ng-model="creativename"
-            placeholder="search">
+            placeholder="Search">
       </div>
     </div>
-    <table class="mics-table js-auto-hide-actions">
+
+    <table class="mics-table js-auto-hide-actions table-hover">
       <thead>
       <tr>
         <th></th>
@@ -41,13 +51,21 @@
       </thead>
       <tbody>
       <tr ng-repeat="creative in filteredCreatives()|offset: (currentPageCreative - 1)*itemsPerPage | limitTo: itemsPerPage">
-        <td class="mics-small-thumbnail">
-          <a href="#{{getEditUrlForCreative(creative).url}}">
-          <img creative-thumbnail="creative.id" fetch-display-ad-renderer-properties="creative.id as properties"
-               title="{{properties.destination_url.value.url}}"/>
-          <span class="caption">{{creative.format}}</span>
+        <td>
+          <div class="mics-small-thumbnail">
+            <a href="#{{getEditUrlForCreative(creative).url}}">
+              <img creative-thumbnail="creative.id" fetch-display-ad-renderer-properties="creative.id as properties" title="{{properties.destination_url.value.url}}"/>
+              <span class="caption">{{creative.format}}</span>
             </a>
+          </div>
         </td>
+        <!--<td class="mics-small-thumbnail">-->
+        <!--<a href="#{{getEditUrlForCreative(creative).url}}">-->
+        <!--<img creative-thumbnail="creative.id" fetch-display-ad-renderer-properties="creative.id as properties"-->
+        <!--title="{{properties.destination_url.value.url}}"/>-->
+        <!--<span class="caption">{{creative.format}}</span>-->
+        <!--</a>-->
+        <!--</td>-->
         <td><a href="#{{getEditUrlForCreative(creative).url}}">{{creative.name}}</a></td>
         <td>{{creative.type}}</td>
         <td>{{creative.subtype}}</td>
