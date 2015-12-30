@@ -24,13 +24,44 @@
                     <div ng-if="timelineEvent.$type == 'SITE_VISIT'" >Duration: {{ toHumanReadableDuration(timelineEvent.$session_duration) }}</div>
                      <div ng-if='debug == "true"'>
                          User account : {{timelineEvent.$user_account_id  }}<br />
-            User agent : {{timelineEvent.$user_agent_id  }}
+                         User agent : {{timelineEvent.$user_agent_id  }}
+                     </div>
+                </div>
+                <div class="datamart-timeline-content-details" >
+
+                     <div ng-if="timelineEvent.$origin" >
+                         Origin: 
+                         <ul>
+                          <li ng-if="timelineEvent.$origin.$channel">channel: {{timelineEvent.$origin.$channel}}</li>
+                          <li ng-if="timelineEvent.$origin.$campaign_name">campaign: {{timelineEvent.$origin.$campaign_name}}</li>
+                          <li ng-if="timelineEvent.$origin.$campaign_id">campaign: {{timelineEvent.$origin.$campaign_id}}</li>
+                          <li ng-if="timelineEvent.$origin.$source">source: {{timelineEvent.$origin.$source}}</li>
+                          <li ng-if="timelineEvent.$origin.$referral_path">referrer: {{timelineEvent.$origin.$referral_path}}</li>
+                          <li ng-if="timelineEvent.$origin.$gclid">gclid: {{timelineEvent.$origin.$gclid}}</li>
+                         </ul>
+                     </div>
+                     <div ng-if="!timelineEvent.$origin">Origin: Direct</div>
+                      <div ng-if="timelineEvent.$topics" >
+                         Topics: 
+                         <ul>
+                              <li ng-repeat="key in getMapKeys(timelineEvent.$topics)">
+                                  {{key}} : 
+                                <ul>
+                                    <li ng-repeat="value in getMapKeys(timelineEvent.$topics[key],key)">
+                                        {{value}} : 
+                                        {{""+timelineEvent.$topics[key][value]}} <!-- ""+ is for casting in string in order to display null value -->
+                                    </li>
+                                </ul>
+                            </li>
+
+                         </ul>
                      </div>
 
+                     <br />
                 </div>
 
                 <!-- actions during visit -->
-                <div class="datamart-timeline-content-details" >
+                <div class="datamart-timeline-content-details" ng-if="timelineEvent.$events.length > 0">
                     <ul class="list-group">
                         <li class="list-group-item" ng-repeat="event in timelineEvent.$events">
 
