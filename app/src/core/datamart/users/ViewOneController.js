@@ -5,8 +5,8 @@ define(['./module','moment-duration-format'], function (module) {
 
   module.controller('core/datamart/users/ViewOneController', [
     '$scope', '$stateParams', 'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
-      'lodash', 'moment',
-    function($scope, $stateParams, Restangular, Common, $, Session, lodash, moment) {
+      'lodash', 'moment', '$log',
+    function($scope, $stateParams, Restangular, Common, $, Session, lodash, moment, $log) {
 
         $scope.INITIAL_VISITS = 10;
 
@@ -29,7 +29,8 @@ define(['./module','moment-duration-format'], function (module) {
             $scope.userEndpoint.one('user_profiles', $stateParams.upid).get().then(function (user) {
                 $scope.user = Restangular.stripRestangular(user);
             }, function(response) {
-                $scope.error = response.data.error;
+                $log.error("user_profiles/" + $stateParams.upid + " returned an error:", response.data.error);
+                // $scope.error = response.data.error;
             });
         } else {
             $scope.userEndpoint.customGET('user_profiles/user_account_id='+ $stateParams.userId).then(function (user) {
