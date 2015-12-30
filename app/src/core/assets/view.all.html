@@ -20,10 +20,10 @@
       </div>
 
       <div class="col-md-1">
-        <div ng-disabled="listMode" ng-click="listMode = !listMode" class="col-md-1 btn btn-default" style="width: 50%">
+        <div ng-click="listMode = !listMode" class="col-md-1 btn btn-default" ng-class="{active: listMode}" style="width: 50%">
           <i class="glyphicon glyphicon-list"></i>
         </div>
-        <div ng-disabled="!listMode" ng-click="listMode = !listMode" class="col-md-1 btn btn-default" style="width: 50%">
+        <div ng-click="listMode = !listMode" class="col-md-1 btn btn-default" ng-class="{active: !listMode}" style="width: 50%">
           <i class="glyphicon glyphicon-th-large"></i>
         </div>
       </div>

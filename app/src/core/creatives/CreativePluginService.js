@@ -10,10 +10,10 @@ define(['./module'], function (module) {
         editor_group_id: "com.mediarithmics.creative.display",
         editor_artifact_id: "basic-editor",
         image: "/images/plugins/creative-mcs-basic.png",
-        modal_mode: true,
-        modal_template: "src/core/creatives/plugins/display-ad/basic-editor/upload-creative.html",
-        modal_controller: "core/creatives/plugins/display-ad/basic-editor/UploadCreativeController",
         editor: {
+          modal_mode: true,
+          modal_template: "src/core/creatives/plugins/display-ad/basic-editor/upload-creative.html",
+          modal_controller: "core/creatives/plugins/display-ad/basic-editor/UploadCreativeController",
           edit_path: "/{organisation_id}/creatives/display-ad/basic-editor/edit/{id}"
         }
       }, {

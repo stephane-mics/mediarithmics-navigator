@@ -79,12 +79,12 @@ define(['./module'], function (module) {
        */
 
       $scope.create = function (template) {
-        if (template.modal_mode) {
+        if (template.editor.modal_mode) {
           var modal = $uibModal.open({
-            templateUrl: template.modal_template,
+            templateUrl: template.editor.modal_template,
             scope: $scope,
             backdrop: 'static',
-            controller: template.modal_controller,
+            controller: template.editor.modal_controller,
             size: 'lg'
           });
           modal.result.then(function () {
