@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.factory('core/common/auth/Session', [
-    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants',  'core/configuration', 'core/common/auth/AuthenticationService',
-    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, coreConfig, AuthenticationService) {
+    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants',  'core/configuration', 'core/common/auth/AuthenticationService', 'async',
+    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, coreConfig, AuthenticationService, async) {
       var service = {};
       service.initialized = false;
 
@@ -17,36 +17,62 @@ define(['./module'], function (module) {
         var deferred = $q.defer();
         var self = this;
 
-        Restangular.one('connected_user').get().then(function (userProfile) {
-          $log.debug("Initialize session with user profile:", userProfile);
-          self.userProfile = userProfile;
-
-          if (!expirationTimer && AuthenticationService.hasAccessToken() && !AuthenticationService.hasRefreshToken()) {
-            var expirationDate = AuthenticationService.getAccessTokenExpirationDate();
-            var waitTime = expirationDate.getTime() - new Date().getTime() + 1 * 1000;
-            expirationTimer = setTimeout(function () {
-              var isExpired = AuthenticationService.getAccessTokenExpirationDate().getTime() < new Date().getTime();
-              if (isExpired) {
-                $rootScope.$emit("global-message", {
-                  message: "Your session has expired, you should log in again."
+        async.parallel({
+            connectedUser: function (callback) {
+                Restangular.one('connected_user').get().then(function (userProfile) {
+                  callback(null, userProfile);
+                }, function (err) {
+                    callback(err);
                 });
-              }
-            }, waitTime);
-          }
+            },
+            cookies: function (callback) {
+                Restangular.withConfig(function(RestangularConfigurer) {
+                    RestangularConfigurer.setDefaultHttpFields({withCredentials: true});
+                }).one('my_cookies').get().then(function (response) {
+                    callback(null, response.cookies);
+                }, function (err) {
+                    callback(err);
+                });
+             }
+        }, function (err, results){
+            if (err){
+                deferred.reject(err);
+            } else {
 
-          if (organisationId) {
-            $log.debug("Fetching organisation : ", organisationId);
-            service.updateWorkspace(organisationId).then(function () {
-              self.initialized = true;
-              deferred.resolve();
-            });
-          } else {
-            self.currentWorkspace = userProfile.workspaces[userProfile.default_workspace];
-            $log.debug("Use default : ", self.currentWorkspace);
-            self.initialized = true;
-            deferred.resolve();
-          }
-        }, deferred.reject);
+              self.userProfile = results.connectedUser;
+              self.cookies = results.cookies;
+
+              $log.debug("Initialize session with user profile:", self.userProfile);
+              $log.debug("Loaded cookies:", self.cookies);
+
+              if (!expirationTimer && AuthenticationService.hasAccessToken() && !AuthenticationService.hasRefreshToken()) {
+                var expirationDate = AuthenticationService.getAccessTokenExpirationDate();
+                var waitTime = expirationDate.getTime() - new Date().getTime() + 1 * 1000;
+                expirationTimer = setTimeout(function () {
+                  var isExpired = AuthenticationService.getAccessTokenExpirationDate().getTime() < new Date().getTime();
+                  if (isExpired) {
+                    $rootScope.$emit("global-message", {
+                      message: "Your session has expired, you should log in again."
+                    });
+                  }
+                }, waitTime);
+              }
+
+              if (organisationId) {
+                $log.debug("Fetching organisation : ", organisationId);
+                service.updateWorkspace(organisationId).then(function () {
+                  self.initialized = true;
+                  deferred.resolve();
+                });
+              } else {
+                self.currentWorkspace = self.userProfile.workspaces[self.userProfile.default_workspace];
+                $log.debug("Use default : ", self.currentWorkspace);
+                self.initialized = true;
+                deferred.resolve();
+              }
+            }
+        });
+
         return deferred.promise;
       };
 

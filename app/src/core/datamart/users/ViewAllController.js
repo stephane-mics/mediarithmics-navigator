@@ -11,7 +11,9 @@ define(['./module'], function (module) {
 
       $scope.datamartId = Session.getCurrentDatamartId();
 
-      $scope.myTimelineHref = "#/"+$stateParams.organisation_id +"/datamart/users/upid/my_user_point_id/live/true";
+      if (Session.cookies && Session.cookies.mics_vid){
+        $scope.myTimelineHref = "#/"+$stateParams.organisation_id +"/datamart/users/user_agent_id=vec:" + Session.cookies.mics_vid + "?live=true";
+      }
 
       $scope.searchTerms = {term:""};
 
