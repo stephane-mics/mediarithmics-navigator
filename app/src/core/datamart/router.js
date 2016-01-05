@@ -83,8 +83,8 @@ define(['./module'], function (module) {
             }
           }
         })
-        .state('datamart/users/:userId', {
-          url: '/:organisation_id/datamart/users/:userId',
+        .state('datamart/users/:userPointId', {
+          url: '/:organisation_id/datamart/users/:userPointId?live&debug',
           templateUrl: 'src/core/datamart/users/view.one.html',
           data: {
             sidebar: {
@@ -93,8 +93,8 @@ define(['./module'], function (module) {
             }
           }
         })
-        .state('datamart/users/upid/:upid', {
-          url: '/:organisation_id/datamart/users/upid/:upid',
+        .state('datamart/users/:property/:value', {
+          url: '/:organisation_id/datamart/users/:property/:value?live&debug',
           templateUrl: 'src/core/datamart/users/view.one.html',
           data: {
             sidebar: {
@@ -103,8 +103,8 @@ define(['./module'], function (module) {
             }
           }
         })
-        .state('datamart/users/:userId/live', {
-          url: '/:organisation_id/datamart/users/:userId/live/:live',
+        /*state('datamart/users/my_timeline', {
+          url: '/:organisation_id/datamart/users/:userId?live&debug',
           templateUrl: 'src/core/datamart/users/view.one.html',
           data: {
             sidebar: {
@@ -112,9 +112,9 @@ define(['./module'], function (module) {
               selected: 'search'
             }
           }
-        })
-        .state('datamart/users/upid/:upid/live', {
-          url: '/:organisation_id/datamart/users/upid/:upid/live/:live?debug',
+        })*/
+        /*.state('datamart/users/upid/:upid/live', {
+          url: '/:organisation_id/datamart/users/upid/:upid?live&debug',
           templateUrl: 'src/core/datamart/users/view.one.html',
           data: {
             sidebar: {
@@ -122,7 +122,7 @@ define(['./module'], function (module) {
               selected: 'search'
             }
           }
-        })
+        })*/
         .state('datamart/queries', {
           url: '/:organisation_id/datamart/queries',
           templateUrl: 'src/core/datamart/queries/index.html',

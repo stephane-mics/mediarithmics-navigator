@@ -55,7 +55,7 @@ define(['./module'], function (module) {
                     $scope.queryContainer = queryContainer;
 
                     $scope.goToTimeline = function (userPointId) {
-                        return "/#/" + organisationId + "/datamart/users/upid/" + userPointId;
+                        return "/#/" + organisationId + "/datamart/users/" + userPointId;
                     };
 
                     $scope.addGroup = function (queryContainer, $event) {
