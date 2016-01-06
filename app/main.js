@@ -21,21 +21,17 @@ require.config({
         "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap",
         "jqDaterangepicker": "../bower_components/bootstrap-daterangepicker/daterangepicker",
 
-    "jszipGlobal": "./core/common/globals/jszipGlobal",
-    "jszip": "../bower_components/js-xlsx/jszip",
-    "js-xlsx": "../bower_components/js-xlsx/xlsx",
-    "file-saver": "../bower_components/file-saver.js/FileSaver",
-    "clipboard": "../bower_components/clipboard/dist/clipboard",
+        "jszipGlobal": "./core/common/globals/jszipGlobal",
+        "jszip": "../bower_components/js-xlsx/jszip",
+        "js-xlsx": "../bower_components/js-xlsx/xlsx",
+        "file-saver": "../bower_components/file-saver.js/FileSaver",
+        "clipboard": "../bower_components/clipboard/dist/clipboard",
         "autofill-event": "../bower_components/autofill-event/src/autofill-event",
 
         "async": "../bower_components/async/lib/async",
         "moxie": "../bower_components/plupload/js/moxie",
         "plupload": "../bower_components/plupload/js/plupload.dev",
 
-        "jszipGlobal": "./core/common/globals/jszipGlobal",
-        "jszip": "../bower_components/js-xlsx/jszip",
-        "js-xlsx": "../bower_components/js-xlsx/xlsx",
-        "file-saver": "../bower_components/file-saver.js/FileSaver",
 
         // Angular JS modules
         "ngAnimate": "../bower_components/angular-animate/angular-animate",
@@ -58,8 +54,8 @@ require.config({
     shim: {
         'angular': {deps: ['jquery'], exports: 'angular'},
         'nvd3': {exports: 'nv'},
-        'nv.d3':{deps: ['d3']},
-        'angular-nvd3': {deps :['angular', 'nv.d3']},
+        'nv.d3': {deps: ['d3']},
+        'angular-nvd3': {deps: ['angular', 'nv.d3']},
         'angularAMD': ['angular'],
         'ngCookies': ['angular'],
         'ngAnimate': ['angular'],
