@@ -2,8 +2,8 @@ define(['./module'], function (module) {
     'use strict';
 
     module.directive('mcsBidOptimizerDataSet', [
-        'Restangular', 'moment','$stateParams',
-        function (Restangular, moment,$stateParams) {
+        'Restangular', 'moment','$stateParams','lodash',
+        function (Restangular, moment,$stateParams,_) {
             return {
                 restrict: 'E',
                 scope: {
@@ -28,9 +28,9 @@ define(['./module'], function (module) {
                             scope.learningDataSetSize = 0;
                             scope.validationDataSetSize = 0;
 
-                            scope.learningDataSetSize = _.reduce(scope.learningDataSet, function(sum, elem) { return sum + elem.$instance_count }, 0);
+                            scope.learningDataSetSize = _.reduce(scope.learningDataSet, function(sum, elem) { return sum + elem.$instance_count; }, 0);
 
-                            scope.validationDataSetSize = _.reduce(scope.validationDataSet, function(sum, elem) { return sum + elem.$instance_count }, 0);
+                            scope.validationDataSetSize = _.reduce(scope.validationDataSet, function(sum, elem) { return sum + elem.$instance_count; }, 0);
 
                         }
                     }, true);
