@@ -16,10 +16,15 @@ define(['./module'], function (module) {
                         var randomModel = [];
                         var model = [];
 
+                        //at point 0, we need to have 0 in all curves
+                        model.push({x: 0, y: 0});
+                        randomModel.push({x: 0, y: 0});
+
                         for (var i = 0; i < rocPoints.length; i++) {
                             model.push({x: rocPoints[i].$fp_ratio, y: rocPoints[i].$tp_ratio});
                             randomModel.push({x: rocPoints[i].$fp_ratio, y: rocPoints[i].$fp_ratio});
                         }
+
                         //at point 1, we need to have 1 in all curves
                         model.push({x: 1, y: 1});
                         randomModel.push({x: 1, y: 1});
