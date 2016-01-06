@@ -28,13 +28,9 @@ define(['./module'], function (module) {
                             scope.learningDataSetSize = 0;
                             scope.validationDataSetSize = 0;
 
-                            for (var i = 0; i < scope.learningDataSet.length; i++){
-                                scope.learningDataSetSize = scope.learningDataSetSize + scope.learningDataSet[i].$instance_count;
-                            }
+                            scope.learningDataSetSize = _.reduce(scope.learningDataSet, function(sum, elem) { return sum + elem.$instance_count }, 0);
 
-                            for (i = 0; i < scope.validationDataSet.length; i++){
-                                scope.validationDataSetSize  = scope.validationDataSetSize  + scope.validationDataSet[i].$instance_count;
-                            }
+                            scope.validationDataSetSize = _.reduce(scope.validationDataSet, function(sum, elem) { return sum + elem.$instance_count }, 0);
 
                         }
                     }, true);

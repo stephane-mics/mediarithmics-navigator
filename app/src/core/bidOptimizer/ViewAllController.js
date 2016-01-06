@@ -5,31 +5,21 @@ define(['./module'], function (module) {
     module.controller('core/bidOptimizer/ViewAllController', [
         '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal', '$state', '$stateParams', "core/bidOptimizer/PropertyContainer",
         function ($scope, Restangular, Session, $location, $uibModal, $state, $stateParams, PropertyContainer) {
-            var organisationId = Session.getCurrentWorkspace().organisation_id;
+            $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
 
 
             function updateUsedModelId(bidOptimizerId, bidOptimizersUsedModel) {
 
                 Restangular.one('bid_optimizers', bidOptimizerId).all("properties").getList().then(function (properties) {
 
-                    for (var i = 0; i < properties.length; i++) {
-                        // load the property container
-                        var propertyCtn = new PropertyContainer(properties[i]);
+                    var latest = properties.filter(function(prop) {
+                        return prop.technical_name === "latest_model_id" && prop.value.value;
+                    })[0];
+                    var overriding = properties.filter(function(prop) {
+                        return prop.technical_name === "overriding_model_id" && prop.value.value;
+                    })[0];
 
-                        if (propertyCtn.value.technical_name === "latest_model_id") {
-                            if (propertyCtn.value.value !== null) {
-                                bidOptimizersUsedModel[bidOptimizerId] = propertyCtn.value.value;
-                               }
-                        }
-
-                        if (propertyCtn.value.technical_name === "overriding_model_id") {
-                            if (propertyCtn.value.value.value !== null) {
-                                bidOptimizersUsedModel[bidOptimizerId] = propertyCtn.value.value;
-                                // if the overriding_model_id is defined , we break the loop to do not set it by the latest_model_id
-                                break;
-                            }
-                        }
-                    }
+                    bidOptimizersUsedModel[bidOptimizerId] = (overriding || latest).value.value;
 
                 });
 
@@ -39,7 +29,7 @@ define(['./module'], function (module) {
             $scope.bidOptimizersUsedModel = {};
 
             Restangular.all("bid_optimizers").getList({
-                organisation_id: organisationId
+                organisation_id: $scope.organisationId
             }).then(function (bidOptimizers) {
                 $scope.bidOptimizers = bidOptimizers;
 
@@ -48,7 +38,6 @@ define(['./module'], function (module) {
 
                 }
             });
-            $scope.organisationId = organisationId;
 
             $scope.createBidOptimizer = function () {
                 var uploadModal = $uibModal.open({

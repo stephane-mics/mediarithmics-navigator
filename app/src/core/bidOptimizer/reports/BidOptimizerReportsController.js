@@ -7,8 +7,7 @@ define(['./module'], function (module) {
         'core/bidOptimizer/PropertyContainer', '$uibModal', '$resource', 'core/configuration', 'core/common/auth/AuthenticationService',
         function ($scope, Restangular, Session, $stateParams, PropertyContainer, $uibModal, $resource, configuration, AuthenticationService) {
 
-            var organisationId = Session.getCurrentWorkspace().organisation_id;
-            $scope.organisationId = organisationId;
+            $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
 
             $scope.bidOptimizerId = $stateParams.bidOptimizerId;
 

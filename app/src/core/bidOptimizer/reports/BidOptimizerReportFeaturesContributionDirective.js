@@ -17,14 +17,12 @@ define(['./module'], function (module) {
                             scope.minSize = 8;
                             scope.maxSize = 30;
                             scope.featuresContribution = scope.report.$features_contribution;
-                            var minContribution = 9999;
                             var maxContribution = -1;
 
                             for (var idxFeatureContribution in scope.featuresContribution) {
                                 var featureContribution = scope.featuresContribution[idxFeatureContribution];
                                 for (var idxCategoriesContribution in featureContribution.$categories_contributions) {
                                     var categoriesContribution = featureContribution.$categories_contributions[idxCategoriesContribution];
-                                    minContribution = Math.min(minContribution, Math.abs(categoriesContribution.$weight));
                                     maxContribution = Math.max(maxContribution, Math.abs(categoriesContribution.$weight));
                                 }
                             }
