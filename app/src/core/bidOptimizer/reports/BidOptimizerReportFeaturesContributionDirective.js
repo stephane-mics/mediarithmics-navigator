@@ -16,7 +16,11 @@ define(['./module'], function (module) {
 
                             scope.minSize = 8;
                             scope.maxSize = 30;
-                            scope.featuresContribution = scope.report.$features_contribution;
+
+                            scope.featuresContribution = scope.report.$features_contribution.sort(function(feat1,feat2){
+                                return feat2.$contribution - feat1.$contribution
+                            });
+
                             var maxContribution = -1;
 
                             for (var idxFeatureContribution in scope.featuresContribution) {
