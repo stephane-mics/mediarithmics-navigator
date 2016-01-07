@@ -55,7 +55,7 @@
         <select class="form-control input-sm col-xs-2" id="event_name" ng-model="condition.selector"
                placeholder="Selector" ng-options="value.name as (value.name | mcsEnumLabel) for value in family"></select>
       </div>
-      <div class="col-xs-2" ng-show="condition.selector == 'PROPERTY'">
+      <div class="col-xs-2" ng-show="condition.selector == 'PROPERTY' || condition.selector == 'CUSTOM_PROPERTY' || condition.selector == 'TOPICS' ">
         <input class="form-control input-sm col-xs-2" id="property_name" ng-model="condition.property_name"
                placeholder="Property Name"/>
       </div>
