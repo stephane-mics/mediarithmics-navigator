@@ -1192,11 +1192,11 @@ table.fragment-list-bid-optimizer-engine {
 
 .features-contribution {
 
-  margin-left: 30px;
+  @extend .col-md-12;
 
   table {
-    @extend .table;
-    @extend .table-striped;
+    @extend .mics-table ;
+    @extend .table-hover;
 
     margin-top: 30px;
 
@@ -1205,6 +1205,10 @@ table.fragment-list-bid-optimizer-engine {
       .feature-name {
         border-right: 1px solid #DDD;
         font-size: $font-size-large;
+
+      }
+      div[uib-tooltip-template] {
+        display: inline-block;
 
       }
       .feature-contribution {
@@ -1216,6 +1220,10 @@ table.fragment-list-bid-optimizer-engine {
 
       }
       tr {
+        td.categories-contribution {
+          display: flex;
+          align-items: center;
+        }
         td {
           vertical-align: middle;
           svg {
@@ -1225,25 +1233,9 @@ table.fragment-list-bid-optimizer-engine {
 
           }
         }
-        td.actions {
-          @extend .text-right;
-          .mics-btn {
-            @extend .btn-xs;
-            vertical-align: middle;
-          }
-        }
-        /* &:not(:hover) td.actions .mics-btn { */
-        /* @include mics-button-variant($mcs-grey); */
-        /* } */
       }
     }
 
-    tbody td {
-
-      > * {
-        line-height: 30px;
-      }
-    }
     .contribution {
       display: inline-block;
 
@@ -1255,12 +1247,10 @@ table.fragment-list-bid-optimizer-engine {
       color: $dark-blue;
       font-size: 13px;
       font-weight: bold;
-      white-space: nowrap;
       max-width: none;
       border-radius: 6px;
       bottom: 0em;
-      min-width: 320px;
-      background-color: rgba(255, 255, 255, 1.0);
+      background-color: white;
       border: 1px solid rgba(0, 0, 0, .2);
       z-index: 10000;
       opacity: 1;

@@ -18,7 +18,7 @@ define(['./module'], function (module) {
                             scope.maxSize = 30;
 
                             scope.featuresContribution = scope.report.$features_contribution.sort(function(feat1,feat2){
-                                return feat2.$contribution - feat1.$contribution
+                                return feat2.$contribution - feat1.$contribution;
                             });
 
                             var maxContribution = -1;
