@@ -1,7 +1,7 @@
 <div>
   <ul ng-repeat="condition in conditions">
-  	<li ng-show="condition.selector != 'PROPERTY' &&  condition.selector != 'CUSTOM_PROPERTY' ">{{condition.selector_family | mcsEnumLabel}} [ {{condition.selector | mcsEnumLabel }} {{condition.operator | mcsConditionOperator}} {{condition.condition_value}} ]</li>
-  	<li ng-show="condition.selector == 'PROPERTY' || condition.selector == 'CUSTOM_PROPERTY'">{{condition.selector_family | mcsEnumLabel}} [ {{condition.property_name }} {{condition.operator | mcsConditionOperator}} {{condition.condition_value}} ]</li>
+  	<li ng-show="condition.selector != 'PROPERTY' &&  condition.selector != 'CUSTOM_PROPERTY' && condition.selector != 'TOPICS' ">{{condition.selector_family | mcsEnumLabel}} [ {{condition.selector | mcsEnumLabel }} {{condition.operator | mcsConditionOperator}} {{condition.condition_value}} ]</li>
+  	<li ng-show="condition.selector == 'PROPERTY' || condition.selector == 'CUSTOM_PROPERTY' || condition.selector == 'TOPICS' ">{{condition.selector_family | mcsEnumLabel}} [ {{condition.property_name }} {{condition.operator | mcsConditionOperator}} {{condition.condition_value}} ]</li>
 
   </ul>
 </div>

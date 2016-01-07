@@ -27,7 +27,7 @@
           <tbody>
           <tr ng-repeat="condition in conditions">
               <td>{{condition.selector_family | mcsEnumLabel}}</td>
-              <td>{{condition.selector | mcsEnumLabel}}<em ng-show="condition.selector == 'PROPERTY' || condition.selector == 'CUSTOM_PROPERTY'">&nbsp;-&nbsp;{{condition.property_name}}</em>
+              <td>{{condition.selector | mcsEnumLabel}}<em ng-show="condition.selector == 'PROPERTY' ||  condition.selector == 'TOPICS' || condition.selector == 'CUSTOM_PROPERTY'  ">&nbsp;-&nbsp;{{condition.property_name}}</em>
               </td>
               <td>{{condition.operator}}</td>
               <td>{{condition.condition_value}}</td>
@@ -54,7 +54,7 @@
                       placeholder="Selector"
                       ng-options="value.name as (value.name | mcsEnumLabel) for value in family"></select>
           </div>
-          <div class="col-xs-2" ng-show="condition.selector == 'CUSTOM_PROPERTY' || condition.selector == 'PROPERTY'">
+          <div class="col-xs-2" ng-show="condition.selector == 'CUSTOM_PROPERTY' || condition.selector == 'PROPERTY' || condition.selector == 'TOPICS' ">
               <input class="form-control input-sm col-xs-2" id="property_name" ng-model="condition.property_name"
                      placeholder="Property Name"/>
           </div>
