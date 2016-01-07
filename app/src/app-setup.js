@@ -1,3 +1,4 @@
+
 define([
   'angularAMD',
   'ngload',
@@ -19,6 +20,7 @@ define([
   'lodash',
   'js-xlsx',
   'clipboard',
+  'angular-nvd3',
   'bootstrap-tokenfield',
   'core/configuration',
   'core/adblock/index',
