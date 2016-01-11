@@ -13,6 +13,18 @@ define(['./module'], function (module) {
       $scope.changePasswordRequest = function () {
         $location.path('/update-password');
       };
+
+
+      if (localStorage.plugins) {
+        $scope.plugins = JSON.parse(localStorage.plugins);
+
+        $scope.plugins_updated = false;
+        $scope.savePlugins = function() {
+          $log.info("save plugins", $scope.plugins);
+          $scope.plugins_updated = true;
+          localStorage.plugins = JSON.stringify($scope.plugins);
+        };
+      }
     }
   ]);
 

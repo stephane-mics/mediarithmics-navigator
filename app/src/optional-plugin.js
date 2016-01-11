@@ -13,6 +13,7 @@ define([], {
       var failedId = err.requireModules && err.requireModules[0];
       window.console.warn("Plugin '" + window.PLUGINS_TO_REQUIRE[failedId] + "' couldn't be loaded:", err);
       window.PLUGINS_CONFIGURATION[window.PLUGINS_TO_REQUIRE[failedId]].isLoaded = false;
+      window.PLUGINS_CONFIGURATION[window.PLUGINS_TO_REQUIRE[failedId]].loadFailed = true;
 
       // Undefine the module to cleanup internal stuff in requireJS
       requirejs.undef(failedId);

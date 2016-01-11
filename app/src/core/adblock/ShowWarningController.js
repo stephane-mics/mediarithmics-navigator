@@ -42,7 +42,7 @@ define(['./module'], function (module) {
         var plugins = JSON.parse(localStorage.plugins);
         for (var i = 0; i < plugins.length; ++i) {
           var plugin = plugins[i];
-          if (!window.PLUGINS_CONFIGURATION[plugin.name] || !window.PLUGINS_CONFIGURATION[plugin.name].isLoaded) {
+          if (!window.PLUGINS_CONFIGURATION[plugin.name] || window.PLUGINS_CONFIGURATION[plugin.name].loadFailed) {
             $scope.messages.push("The plugin \'" + plugin.name + "\' couldn't be loaded. Please check your configuration.");
           }
         }
