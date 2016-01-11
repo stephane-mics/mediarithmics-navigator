@@ -205,6 +205,15 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.dateRangeIsToday = function () {
         return GoalAnalyticsReportService.dateRangeIsToday();
       };
+      $scope.goToCampaign = function (campaign) {
+        switch (campaign.type) {
+          case "DISPLAY":
+            return '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaign.id + "/basic";
+          default:
+            return '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display";
+        }
+      };
+
 
       $scope.chooseCharts = function () {
         var modalInstance = $uibModal.open({

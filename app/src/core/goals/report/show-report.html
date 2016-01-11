@@ -184,11 +184,12 @@
               </thead>
               <tbody>
               <tr ng-repeat="campaign in attributionModel.stats.campaigns.getObjectRows()">
-                  <td>{{campaign.campaign_name}}</td>
+                  <td ng-show='{{campaign.campaign_id == null}}'>{{campaign.campaign_name}}</td>
+                  <td ng-show='{{campaign.campaign_id != null}}'><span fetch-campaign="campaign.campaign_id as campaignResource"><a ng-href="{{goToCampaign(campaignResource)}}">{{campaignResource.name}}</a></span></td>
                   <td>{{campaign["weighted_conversions.TOTAL"] |number }}</td>
                   <td>{{campaign["weighted_value.TOTAL"] | number:2 | currencyWithSymbol:goal.goal_value_currency  }}</td>
-                  <td>{{campaign["weighted_conversions.POST_CLICK"] |number}}</td>
-                  <td>{{campaign["weighted_conversions.POST_VIEW"] |number }}</td>
+                  <td>{{campaign["weighted_conversions.POST_VIEW"] |number}}</td>
+                  <td>{{campaign["weighted_conversions.POST_CLICK"] |number }}</td>
               </tr>
               </tbody>
             </table>
@@ -226,8 +227,8 @@
                 <td>{{creative.campaign_name}}</td>
                 <td>{{creative["weighted_conversions.TOTAL"] |number }}</td>
                 <td>{{creative["weighted_value.TOTAL"] | number:2 | currencyWithSymbol:goal.goal_value_currency   }}</td>
-                <td>{{creative["weighted_conversions.POST_CLICK"] |number}}</td>
-                <td>{{creative["weighted_conversions.POST_VIEW"] |number }}</td>
+                <td>{{creative["weighted_conversions.POST_VIEW"] |number}}</td>
+                <td>{{creative["weighted_conversions.POST_CLICK"] |number }}</td>
               </tr>
               </tbody>
             </table>
