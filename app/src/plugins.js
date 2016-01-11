@@ -12,10 +12,15 @@ var pluginsDeps = ['navigator', 'optional-plugin'];
 if (localStorage.plugins) {
   var definePlugin = function (pluginInfo) {
     if (window.PLUGINS_CONFIGURATION[pluginInfo.name]) {
+      window.PLUGINS_CONFIGURATION[pluginInfo.name].loadFailed = false;
+      if (!pluginInfo.enabled) {
+        window.PLUGINS_CONFIGURATION[pluginInfo.name].isLoaded = false;
+        return;
+      }
       window.PLUGINS_CONFIGURATION[pluginInfo.name].isLoaded = true;
       var setupFileUrl = window.PLUGINS_CONFIGURATION[pluginInfo.name].url + '/' + pluginInfo.setupFile;
       window.PLUGINS_TO_REQUIRE[setupFileUrl] = pluginInfo.name;
-      pluginsDeps.push("optional-plugin!" + window.PLUGINS_CONFIGURATION[pluginInfo.name].url + '/' + pluginInfo.setupFile);
+      pluginsDeps.push("optional-plugin!" + setupFileUrl);
       define(pluginInfo.moduleName, ['navigator'], function () {
         var data = {};
         var pluginService = {};

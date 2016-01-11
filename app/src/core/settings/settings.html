@@ -47,6 +47,29 @@
         </tbody>
       </table>
     </div>
+
+    <div ng-show="plugins">
+      <h3>Plugins</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>name</th>
+            <th>url</th>
+            <th>enabled<th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="plugin in plugins">
+            <td>{{plugin.name}}</td>
+            <td><a href="#{{plugin.urn}}/home" target="_blank">{{plugin.urn}}/home</a></td>
+            <td> <input type="checkbox" ng-model="plugin.enabled" ng-change="savePlugins()"/></td>
+          </tr>
+        </tbody>
+      </table>
+      <div ng-show="plugins_updated" class="alert alert-info" role="alert">
+        Remember to reload the page to apply new plugin configuration !
+      </div>
+    </div>
   </div>
 
 </div>
