@@ -3,6 +3,7 @@
   "dependencies": [
     "restangular",
     "ngResource",
+    "core/campaigns",
     "ui.bootstrap"
   ]
 }
