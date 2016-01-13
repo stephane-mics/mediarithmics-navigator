@@ -2,7 +2,7 @@ define(['./module', 'lodash', 'core/common/ReportWrapper'], function (module, _,
   'use strict';
 
 
-var tableHeaders = {
+  var tableHeaders = {
     "audience_segment_id": {name: "Id"},
     "day": {name: "Date"},
     "user_points": {name: "# of users", type: "number"},
@@ -21,7 +21,7 @@ var tableHeaders = {
    */
   module.factory('core/datamart/segments/report/AudienceSegmentAnalyticsReportService',
                  ['$resource', 'Restangular', 'core/common/auth/Session', 'core/common/auth/AuthenticationService', 'core/configuration',
-                   'moment', 'core/datamart/segments/report/ChartsService', 
+                   'moment', 'core/datamart/segments/report/ChartsService',
                    function ($resource, Restangular, Session, AuthenticationService, configuration, moment, ChartsService) {
                      var WS_URL = configuration.WS_URL;
 
@@ -81,7 +81,7 @@ var tableHeaders = {
                          "user_points,user_accounts,emails,desktop_devices,user_point_additions,user_point_deletions",
                          ""
                        );
-                     }; 
+                     };
                      ReportService.audienceSegments = function (audienceSegmentId) {
                        return this.buildReport(
                          audienceSegmentsResource,
@@ -178,10 +178,65 @@ var tableHeaders = {
                          end_date: endDate().format('YYYY-MM-D'),
                          dimension: "day",
                          metrics: leftMetric + "," + rightMetric,
-                         filters: "audience_segment_id==" + goalId 
+                         filters: "audience_segment_id==" + goalId
                        }).$promise.then(dailyStatsMapping);
                      };
 
+
+                     ReportService.dailyPerformanceMetrics = function (goalId, metrics) {
+                       /**
+                        * This function iterates on report rows to map
+                        * x,y points in the Nvd3 format
+                        * WARNING : dateIter.valueOf returns the timestamp in the navigator timezone
+                        */
+                       var dailyStatsMapping = function (response) {
+                         var report = new ReportWrapper(response.data.report_view, tableHeaders);
+
+                         var metricsIndex = [];
+                         var rows = [];
+                         for (var i = 0; i < metrics.length; i++) {
+                           metricsIndex[metrics[i]] = report.getMetricIndex(metrics[i]);
+                           rows[i] = [];
+                         }
+
+                         var dateIter = startDate();
+
+                         while (dateIter.isBefore(endDate())) {
+                           // iterates on a key in string format
+                           var key = dateIter.format("YYYY-MM-DD");
+                           var row = report.getRowWithHeader("day", key);
+
+                           for (i = 0; i < metrics.length; i++) {
+                             if (row[metricsIndex[metrics[i]]] === 0) {
+                               rows[metricsIndex[metrics[i]]].push({x: dateIter.valueOf(), y: 0});
+                             } else {
+                               rows[metricsIndex[metrics[i]]].push({x: dateIter.valueOf(), y: row[metricsIndex[metrics[i]]].value});
+                             }
+                           }
+
+                           dateIter = dateIter.add(1, 'day');
+                         }
+
+                         var r = [];
+                         for (i = 0; i < metrics.length; i++) {
+                           r.push({
+                             values: rows[metricsIndex[metrics[i]]],
+                             key: metrics[i]
+                           });
+                         }
+                         return r;
+
+                       };
+
+                       return audienceSegmentsResource.get({
+                         organisation_id: Session.getCurrentWorkspace().organisation_id,
+                         start_date: startDate().format('YYYY-MM-D'),
+                         end_date: endDate().format('YYYY-MM-D'),
+                         dimension: "day",
+                         metrics: metrics.join(','),
+                         filters: "audience_segment_id==" + goalId
+                       }).$promise.then(dailyStatsMapping);
+                     };
 
                      return ReportService;
                    }]);

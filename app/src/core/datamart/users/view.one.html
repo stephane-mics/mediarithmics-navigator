@@ -1,51 +1,205 @@
 <div ng-controller="core/datamart/users/ViewOneController" class="mcs-default-container">
-    <div class="mcs-default-content">
+<div class="mcs-default-content user-overview">
 
-  <div class="vertically-spaced clearfix">
-      <div class="col-md-8 col-xs-8" ng-show='error'>
-          <div class="alert alert-danger"  role="alert">{{error}}</div>
-      </div>
+<div class="vertically-spaced clearfix">
+    <div class="col-md-8 col-xs-8" ng-show='error'>
+        <div class="alert alert-danger" role="alert">{{error}}</div>
+    </div>
     <!-- Account details -->
-    <div class="col-md-6 col-xs-6">
-        <table class="datamart table table-hover timeline-aligned">
-        <tr ng-hide="user.$first_name == null">
-          <td>First name</td>
-          <td><strong>{{ user.$first_name }}</strong></td>
-        </tr>
-        <tr ng-hide="user.$last_name == null">
-          <td>Last name</td>
-          <td><strong>{{ user.$last_name }}</strong></td>
-        </tr>
-        <tr ng-hide="user.$email == null">
-          <td>Email</td>
-          <td>{{ user.$email }}</td>
-        </tr>
-        <tr ng-hide="user.$user_account_id == null">
-          <td>Account ID</td>
-          <td><code>{{ user.$user_account_id }}</code></td>
-        </tr>
-        <tr ng-hide="user.$creation_date == null">
-          <td>Creation date</td>
-          <td><code>{{ user.$creation_date | date:'medium' }}</code></td>
-        </tr>
-          <!-- display custom properties -->
-          <tr ng-repeat="(key,value) in user">
-            <td> {{key}} </td> <td> {{ value }} </td>
-            <!--<td><strong>{{ user.$first_name }}</strong></td>-->
-          </tr>
-        <!--<tr ng-hide="user.gender == null">-->
-          <!--<td>Gender</td>-->
-          <!--<td>{{ user.gender }}</td>-->
-        <!--</tr>-->
-        <!--<tr ng-hide="user.account_creation_date == null">-->
-          <!--<td>Account created on</td>-->
-          <!--<td>{{ user.account_creation_date | date }}</td>-->
-        <!--</tr>-->
-      </table>
+
+    <div>
+        <h2>
+            User Overview
+        </h2>
+
     </div>
 
-  </div>
+    <uib-tabset class="breakdown">
+        <uib-tab heading="Timeline">
+            <mcs-timeline timelines="timelines" load-more-actions="loadMoreActions" show-more="showMore"
+                          organisation-id="organisationId" debug="debug"></mcs-timeline>
+        </uib-tab>
+        <uib-tab heading="Profile">
 
-    <mcs-timeline timelines="timelines" load-more-actions ="loadMoreActions" show-more="showMore" organisation-id="organisationId" debug="debug"></mcs-timeline>
+            <div class="col-md-6 col-xs-6">
+                <table class="datamart table table-hover user-profile">
+                    <tr ng-hide="user.$first_name == null">
+                        <td>First name</td>
+                        <td><strong>{{ user.$first_name }}</strong></td>
+                    </tr>
+                    <tr ng-hide="user.$last_name == null">
+                        <td>Last name</td>
+                        <td><strong>{{ user.$last_name }}</strong></td>
+                    </tr>
+                    <tr ng-hide="user.$email == null">
+                        <td>Email</td>
+                        <td>{{ user.$email }}</td>
+                    </tr>
+                    <tr ng-hide="user.$user_account_id == null">
+                        <td>Account ID</td>
+                        <td><code>{{ user.$user_account_id }}</code></td>
+                    </tr>
+                    <tr ng-hide="user.$creation_date == null">
+                        <td>Creation date</td>
+                        <td><code>{{ user.$creation_date | date:'medium' }}</code></td>
+                    </tr>
+                    <!-- display custom properties -->
+                    <tr ng-repeat="(key,value) in user">
+                        <td> {{key}}</td>
+                        <td> {{ value }}</td>
+                        <!--<td><strong>{{ user.$first_name }}</strong></td>-->
+                    </tr>
+                    <!--<tr ng-hide="user.gender == null">-->
+                    <!--<td>Gender</td>-->
+                    <!--<td>{{ user.gender }}</td>-->
+                    <!--</tr>-->
+                    <!--<tr ng-hide="user.account_creation_date == null">-->
+                    <!--<td>Account created on</td>-->
+                    <!--<td>{{ user.account_creation_date | date }}</td>-->
+                    <!--</tr>-->
+                </table>
+            </div>
 
+
+        </uib-tab>
+        <uib-tab heading="Identifiers">
+            <div class="identifiers">
+                <div>
+                    <div>
+                        <h3>User Account Id : </h3>
+                        <span> email: {{userAccountId.email}}</span>
+                    </div>
+                    <br/>
+
+                    <div>
+                        <h3><span>Email Adresses  </span></h3>
+                        <br/>
+
+                        <div>
+                            <div ng-repeat="email in emails" class="email-element">
+                                <div class="envelope">
+                                    <span class="glyphicon glyphicon-envelope btn-lg"></span>
+
+                                </div>
+                                <div>
+                                    <ul>
+                                        <li>
+                                            email : <span>{{email.email}}</span>
+                                        </li>
+                                        <li>
+                                            hash : <span>{{email.hash}}</span>
+                                        </li>
+                                        <li>
+                                            creation date :
+                                            <span>{{email.creationDate | date:'MM/dd/yyyy'}}</span>
+                                        </li>
+                                        <li>
+                                            last activity : <span>{{email.last_activity}}</span>
+                                        </li>
+
+                                        <li>
+                                            <div>
+
+                                                <h4>providers :</h4>
+                                                <ul>
+                                                    <li ng-repeat="provider in email.providers">
+                                                        first party expiration date: {{provider.expirationDate |
+                                                        date:'MM/dd/yyyy'}}
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div>
+                    <h3><span>Devices  </span></h3>
+
+                    <div ng-repeat="device in devices">
+                        <div class="device-icon">
+                                    <span ng-switch on="device.device">
+
+                                    <img ng-switch-when="PC" src="images/datamart/device_pc.svg" height="24" width="24">
+                                    <img ng-switch-when="SMARTPHONE" src="images/datamart/device_phone.svg" height="24"
+                                         width="24">
+                                    <img ng-switch-when="TABLET" src="images/datamart/device_tablet.svg" height="24"
+                                         width="24">
+                                    </span>
+
+                        </div>
+                        <div class="device-content">
+
+                            <ul>
+                                <li>
+                                    <h4>
+                                        <span> {{device.device}}-{{device.systemName}}</span>
+                                    </h4>
+                                </li>
+                                <li>
+                                    <span>{{device.navigator}}</span>
+                                </li>
+                                <li>
+                                    <span>Last Seen : </span>
+                                    <span>{{device.lastSeen}}</span>
+                                </li>
+                                <li>
+                                    Mappings :
+                                </li>
+                                <li>
+                                    <ul>
+                                        <li ng-repeat="mapping in device.mappings">
+                                            <span>{{mapping.name}} :</span>
+                                            <span>{{mapping.value}} :</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </uib-tab>
+        <uib-tab heading="Audience Segments">
+            <div>
+                <div ng-repeat="audienceSegment in audienceSegments" class="col-xs-12 segment">
+                    <h3><span>Name : {{audienceSegment.name}}</span></h3>
+                    <br/>
+
+                    <div class="col-xs-4">
+                        <dl>
+                            <dd>
+                                <span>Type : {{audienceSegment.type}}</span>
+                            </dd>
+                            <dd>
+                                <span>Creation date : {{audienceSegment.creationDate}}</span>
+                            </dd>
+                            <dd>
+                                <span>Expiration date : {{audienceSegment.default_expiration_time}}</span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="col-xs-4">
+                        <h5>Data bag:</h5>
+                        <pre class="col-xs-10">{{audienceSegment.dataBag}}</pre>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+
+</div>
+
+
+</div>
 </div>

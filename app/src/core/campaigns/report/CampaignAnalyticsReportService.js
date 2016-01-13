@@ -88,6 +88,16 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
           }
         );
 
+        var liveResource = $resource(WS_URL + "/reports/display_campaign_live_report",
+          {},
+          {
+            get: {
+              method: 'GET',
+              headers: {'Authorization': AuthenticationService.getAccessToken()}
+            }
+          }
+        );
+
         /**
          * Default Date Range Used For Daily Stats
          */
@@ -126,6 +136,18 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
           });
         };
 
+        ReportService.getLivePerformance = function (resource, period, metrics, filters, sort, limit) {
+          return resource.get({
+            organisation_id: Session.getCurrentWorkspace().organisation_id,
+            period: period,
+            dimension: "",
+            metrics: metrics,
+            filters: filters,
+            sort: sort,
+            limit: limit || null
+          });
+        };
+
         ReportService.buildPerformanceReport = function (resource, metrics, filters, sort, limit) {
           return this.getPerformance(resource, "", metrics, filters, sort, limit)
             .$promise.then(function (response) {
@@ -135,6 +157,13 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
 
 	ReportService.buildPerformanceDimensionReport = function (resource, dimensions, metrics, filters, sort, limit) {
           return this.getPerformance(resource, dimensions, metrics, filters, sort, limit)
+            .$promise.then(function (response) {
+              return new ReportWrapper(response.data.report_view, tableHeaders);
+            });
+        };
+
+        ReportService.buildLivePerformanceReport = function (resource, period, metrics, filters, sort, limit) {
+          return this.getLivePerformance(resource, period, metrics, filters, sort, limit)
             .$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view, tableHeaders);
             });
@@ -188,6 +217,19 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
             limit
           );
         };
+
+        ReportService.livePerformance = function (campaignId, period, sort, limit) {
+
+          return this.buildLivePerformanceReport(
+            liveResource,
+            period,
+            "impressions,clicks,cpm,ctr,cpc",
+              "campaign_id==" + campaignId,
+            sort,
+            limit
+          );
+        };
+
 
         ReportService.kpi = function (campaignId, hasCpa) {
           var cpa = hasCpa ? ",cpa" : "";

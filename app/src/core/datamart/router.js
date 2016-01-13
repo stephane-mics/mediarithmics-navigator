@@ -64,15 +64,25 @@ define(['./module'], function (module) {
           }
         })
         .state('datamart/segments/edit', {
-          url:'/{organisation_id}/datamart/segments/:type/:segment_id',
+          url: '/{organisation_id}/datamart/segments/:type/:segment_id',
           templateUrl: 'src/core/datamart/segments/edit.one.html',
           data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
         })
+        .state('datamart/segments/report', {
+          url: '/{organisation_id}/datamart/segments/:type/:segment_id/report',
+          templateUrl: 'src/core/datamart/segments/view.one.html',
+          data: {
+            sidebar: {
+              templateUrl: 'src/core/datamart/datamart-sidebar.html',
+              selected: 'segments'
+            }
+          }
+        })
         .state('datamart/segments/create', {
-          url:'/{organisation_id}/datamart/segments/:type',
+          url: '/{organisation_id}/datamart/segments/:type',
           templateUrl: 'src/core/datamart/segments/edit.one.html',
           data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
-        })      
+        })
         .state('datamart/users', {
           url: '/:organisation_id/datamart/users',
           templateUrl: 'src/core/datamart/users/view.all.html',

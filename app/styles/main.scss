@@ -1057,6 +1057,29 @@ form.mcs-full-page-form {
 
 .campaign-report {
   @extend .report;
+
+  .report > div > ul.nav {
+    padding: 8px 0;
+    border-top: 1px solid $dark-blue;
+    border-bottom: 1px solid $dark-blue;
+
+    margin-bottom: 15px;
+
+    li {
+      @include use-bold-font();
+      font-size: ceil(($font-size-base * 1.5));
+      a {
+        padding: 4px 15px;
+        color: $dark-blue;
+      }
+    }
+    li.active a {
+      border: none;
+      color: $dark-blue-not;
+      background-color: $dark-blue;
+    }
+  }
+
 }
 .segment-list-date-controller {
     min-width: 270px;
@@ -1284,13 +1307,13 @@ table.fragment-list-bid-optimizer-engine {
   }
 }
 
-.bid-optimizer-report {
+.mics-report {
   @extend .report;
 
   .breakdown-area {
     margin-left: 0px !important;
   }
-  .modelId {
+  .report-header {
     border-bottom: 1px solid #EEEEEE;
     h3 > span {
       margin-right: 10px;
@@ -1336,20 +1359,21 @@ table.fragment-list-bid-optimizer-engine {
 
   }
 
-  .data-set {
-    margin: 30px;
+}
 
-    tbody {
-      td {
-        @include use-bold-font();
-      }
-    }
-    .mics-table {
-      margin-top: 20px;
-      margin-left: 15px;
-    }
+.data-set {
+  margin: 30px;
 
+  tbody {
+    td {
+      @include use-bold-font();
+    }
   }
+  .mics-table {
+    margin-top: 20px;
+    margin-left: 15px;
+  }
+
 }
 
 .bid-optimizer-model-selection {
@@ -1488,6 +1512,10 @@ table.datamart.table {
   }
 }
 
+table.datamart.user-profile{
+  margin-top: 20px;
+}
+
 table.datamart.timeline-aligned {
   margin-left: 25%;
 }
@@ -1609,17 +1637,19 @@ a.category-item {
 /* User activity timeline */
 
 .datamart-timeline {
-  margin: 30px 0;
+  margin-top: 30px;
   padding: 0;
   list-style: none;
   position: relative;
+  margin-right: 10%;
+
 }
 
 .datamart-timeline:before {
   content: '';
   position: absolute;
   top: 0;
-  left: 20.5%;
+  left: 13.5%;
   bottom: 0;
   width: 2px;
   background: $mcs-light-grey;
@@ -1632,8 +1662,8 @@ a.category-item {
 
 .datamart-timeline > li .datamart-timeline-datetime {
   display: block;
-  width: 25%;
-  padding-right: 100px;
+  width: 7%;
+//  padding-right: 100px;
   position: absolute;
   font-size: 1em;
   color: $dark-blue;
@@ -1646,13 +1676,13 @@ a.category-item {
 }
 
 .datamart-timeline > li .datamart-timeline-content {
-  margin: 0 0 15px 25%;
+  margin: 0 0 15px 15%;
   background: $mcs-light-grey;
   color: $dark-blue;
   padding: 1.2em;
   position: relative;
   border-left: 6px solid #cccccc;
-  left: 0;
+  left: 35px;
   transition: left 0.2s;
 }
 
@@ -1725,9 +1755,9 @@ a.category-item {
   line-height: 40px;
   border-radius: 50%;
   text-align: center;
-  left: 20%;
+  left: 12%;
   top: 0;
-  margin: 0 0 0 -25px;
+  margin: 0 0 0 -15px;
 }
 
 .datamart-timeline > li.with_action .datamart-timeline-icon {
@@ -1754,6 +1784,58 @@ a.category-item {
       border-right-color: $mcs-light-grey;
     }
   }
+
+}
+
+
+.user-overview{
+
+  ul {
+    list-style-type: none;
+  }
+
+  .identifiers{
+    margin-top: 30px;
+    h3{
+      display: inline;
+    }
+
+    .email-element{
+     margin-top: 10px;
+    }
+    .envelope{
+      float: left;
+
+      span{
+        padding: 0px;
+        font-size: 20px;
+
+      }
+    }
+    .device-icon{
+      float: left;
+    }
+    .device-content{
+      margin-top: 2px;
+    }
+  }
+
+  .segment{
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 15px;
+  }
+
+  pre{
+    max-height: 200px;
+    min-height: 200px;
+    padding: 10px;
+    background: #eee;
+    border: 1px solid #ccc;
+//    word-wrap: normal;
+//    overflow: auto;
+  }
+
+
 
 }
 
@@ -1844,6 +1926,34 @@ a.category-item {
 
     a:hover {
       background: none;
+    }
+  }
+}
+
+.segment-statistics {
+
+  .charts {
+    margin-top: 30px;
+  }
+
+  .segment-statistics-header {
+
+    border-bottom: 1px solid #EEEEEE;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    .loading {
+      height: 20px;
+    }
+
+    .ajax-loader {
+      position: absolute;
+      left: 50%;
+    }
+
+    .ratio-query-stats {
+      padding-left: 15px;
+      font-size: $font-size-base;
+
     }
   }
 }
