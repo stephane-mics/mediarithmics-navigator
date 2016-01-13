@@ -119,7 +119,7 @@ define(['./module'], function (module) {
                     };
 
                     $scope.removeSelectedValue = function (queryContainer, selectedValue) {
-                        queryContainer.removeSelectedValue(selectedValue.value);
+                        queryContainer.removeSelectedValue(selectedValue);
                         $scope.results = [];
                     };
 
