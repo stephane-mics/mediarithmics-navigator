@@ -2,8 +2,8 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/CreateOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$uibModal', '$stateParams', '$location', 'core/common/IabService',
-    function ($scope, $log, Restangular, Session, _, $uibModal, $stateParams, $location, IabService) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', 'core/common/IabService',
+    function ($scope, $log, Restangular, Session, _, $stateParams, $location, IabService) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.adSizes = _.map(IabService.getAdSizes("DISPLAY_AD"), function (size) {

@@ -1,0 +1,153 @@
+<div class="mcs-default-container" ng-controller="core/settings/sites/EditOneController">
+
+  <div class="mcs-default-content">
+    <div class="mcs-default-heading">
+      <h1 ng-show="!editMode">New Site</h1>
+      <h1 ng-show="editMode">Edit Site</h1>
+    </div>
+
+    <form class="mcs-full-page-form">
+      <div class="row">
+        <div class="col-xs-3">
+          <div mcs-form-group="full">
+            <label for="name">Domain Name
+              <span class="badge creative-audit-notification-warning" uib-popover="mediarithmics.com" popover-trigger="mouseenter" popover-placement="right">?</span>
+            </label>
+            <input class="form-control input-md" ng-model="site.name" type="text" id="name">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-3">
+          <div mcs-form-group="full">
+            <label for="token">Token
+              <span class="badge creative-audit-notification-warning" popover="MYTOKEN" popover-trigger="mouseenter" popover-placement="right">?</span>
+            </label>
+            <input class="form-control input-md" ng-model="site.token" type="text" id="token">
+          </div>
+        </div>
+      </div>
+
+      <h3>Aliases</h3>
+
+      <div class="row">
+        <div ng-show="aliases.length" class="form-group col-md-2">
+          <input class="form-control" type="text" ng-model="filteredAlias" placeholder="Search">
+        </div>
+        <div class="form-group col-md-2">
+          <button class="mics-btn mics-btn-add" ng-click="newAlias()">New Alias</button>
+        </div>
+      </div>
+      <table ng-show="aliases.length" class="mics-table js-auto-hide-actions table-hover">
+        <thead>
+        <tr>
+          <th>Domain Name</th>
+          <th class="actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="alias in filteredAliases() | offset : (aliasesCurrentPage - 1) * aliasesPerPage | limitTo: aliasesPerPage">
+          <td>{{alias.name}}</td>
+          <td class="actions">
+            <a class="mics-btn mics-btn-delete" ng-click="removeAlias(alias)">Remove</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <br>
+      <h3>Event Rules</h3>
+
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="row">
+            <div ng-show="rules.length" class="form-group col-md-4">
+              <input class="form-control" type="text" ng-model="filteredRule" placeholder="Search">
+            </div>
+            <div class="col-md-6">
+              <div class="dropdown" dropdown>
+                <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Rule</button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a role="menuItem" tabindex="-1" ng-click="newUserAccountIdRule()">User Account Setup</a></li>
+                  <li><a role="menuItem" tabindex="-1" ng-click="newCatalogAutoMatchRule()">Catalog Auto Match</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <table ng-show="rules.length" class="mics-table mics-clickable-table js-auto-hide-actions table-hover">
+            <thead>
+            <tr>
+              <th>Event Rule Type</th>
+              <th>Summary</th>
+              <th class="actions">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="rule in filteredEventRules() | offset : (rulesCurrentPage - 1) * rulesPerPage | limitTo: rulesPerPage" ng-click="showDetails(rule)">
+              <td>{{ruleTypes[rule.type]}}</td>
+              <td>{{getSummary(rule)}}</td>
+              <td class="actions">
+                <a class="mics-btn mics-btn-delete" ng-click="removeRule(rule)">Remove</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div ng-show="selectedRule.type" class="col-xs-6">
+          <h2>{{ruleTypes[selectedRule.type]}}</h2>
+          <hr>
+          <div ng-show="selectedRule.type == 'CATALOG_AUTO_MATCH'">
+            <table class="mics-table">
+              <tbody>
+              <tr>
+                <td>Auto Match Type</td>
+                <td>{{autoMatchTypes[selectedRule.auto_match_type]}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div ng-show="selectedRule.type == 'USER_ACCOUNT_ID_CREATION'">
+            <table class="mics-table">
+              <tbody>
+              <tr>
+                <td>Property Source</td>
+                <td>{{selectedRule.property_source}}</td>
+              </tr>
+              <tr>
+                <td>Hash Function</td>
+                <td>{{selectedRule.hash_function}}</td>
+              </tr>
+              <tr>
+                <td>Remove Source</td>
+                <td>{{selectedRule.remove_source}}</td>
+              </tr>
+              <tr>
+                <td>To Lower Case</td>
+                <td>{{selectedRule.to_lower_case}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+      <div ng-show="tag" dropdown>
+        <h3>Tag</h3>
+        <button class="mics-btn" dropdown-toggle type="button">▼</button>
+        <ul class="dropdown-menu" role="menu">
+          <li>
+            <a class="mics-btn-clipboard" data-clipboard-text="{{tag}}" role="menuitem" tabindex="-1" ng-click="(template)">Copy to clipboard</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="mcs-actions-group">
+        <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
+        <button ng-disabled="!site.name.length" class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
+      </div>
+    </form>
+  </div>
+</div>

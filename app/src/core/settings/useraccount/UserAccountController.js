@@ -1,7 +1,7 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/settings/SettingsController', [
+  module.controller('core/settings/UserAccountController', [
     '$scope', '$log', '$location', 'Restangular', 'core/common/auth/Session',
     function ($scope, $log, $location, Restangular, Session) {
       var userProfile = Session.getUserProfile();

@@ -1,0 +1,35 @@
+<div class="create-rule">
+  <div class="modal-header">
+    <h3>User Account Setup</h3>
+  </div>
+
+  <form ng-submit="rule.property_source && done()">
+    <div class="modal-body">
+      <div mcs-form-group="full">
+        <label for="userAccountIdProperty">Property
+          <span class="badge creative-audit-notification-warning" uib-popover="$email" popover-trigger="mouseenter" popover-placement="right">?</span>
+        </label>
+        <input class="form-control input-md" ng-model="rule.property_source" type="text" id="userAccountIdProperty">
+      </div>
+
+      <div mcs-form-group="full">
+        <label label-for="hash">Transformation Function
+          <span class="badge creative-audit-notification-warning" uib-popover="A transformation function" popover-trigger="mouseenter" popover-placement="right">?</span>
+        </label>
+        <select class="form-control" ng-model="rule.hash_function" ng-options="hash for hash in hashFunctions" id="hash"></select>
+      </div>
+
+      <div mcs-form-group="full">
+        <label><input type="checkbox" ng-model="rule.remove_source"> Remove property after transformation</label>
+        <br>
+        <label><input type="checkbox" ng-model="rule.to_lower_case"> Lower case before transform</label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button ng-click="cancel()" class="mics-btn mics-btn-cancel">Cancel</button>
+      <button type="submit" id="submit" ng-disabled="!rule.property_source" class="mics-btn mics-btn-finish">Done</button>
+    </div>
+  </form>
+
+</div>
