@@ -32,6 +32,8 @@ define(['./module'], function (module) {
 
                 var selectorContainers = selectors.map(function(selector){
                     return new PropertySelectorContainer(selector);
+                }).sort(function(s1,s2){
+                    return s1.label.localeCompare(s2.label);
                 });
 
                 var byFamilySelectorContainers = lodash.groupBy(selectorContainers, function(selectorContainer){
