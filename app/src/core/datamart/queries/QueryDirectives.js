@@ -348,8 +348,10 @@ define(['./module'], function (module) {
                     startDate: scope.datefield.from ? scope.datefield.from : moment(),
                     minDate: moment("1970-01-01"),
                     maxDate: moment().add(10,'y')
-                },function (start, end, label) {
-                    scope.condition.value.value.from = start.format();
+                });
+
+                fromDateInputField.on('apply.daterangepicker', function(ev, picker) {
+                    scope.condition.value.value.from = picker.startDate.startOf("day").format();
                 });
 
                 toDateInputField.daterangepicker({
@@ -358,8 +360,10 @@ define(['./module'], function (module) {
                     startDate: scope.datefield.to ? scope.datefield.to : moment(),
                     minDate: moment("1970-01-01"),
                     maxDate: moment().add(10,'y')
-                },function (start, end, label) {
-                    scope.condition.value.value.to = start.endOf("day").format();
+                });
+
+                toDateInputField.on('apply.daterangepicker', function(ev, picker) {
+                    scope.condition.value.value.to = picker.startDate.endOf("day").format();
                 });
             }
         };
@@ -389,8 +393,10 @@ define(['./module'], function (module) {
                     startDate: scope.datefield.date ? scope.datefield.date : moment(),
                     minDate: moment("1970-01-01"),
                     maxDate: moment().add(10,'y')
-                },function (start, end, label) {
-                    scope.condition.value.value = start.format();
+                });
+
+                datefieldInput.on('apply.daterangepicker', function(ev, picker) {
+                    scope.condition.value.value = picker.startDate.startOf("day").format();
                 });
             }
         };
