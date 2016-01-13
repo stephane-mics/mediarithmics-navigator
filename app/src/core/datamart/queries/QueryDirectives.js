@@ -359,7 +359,7 @@ define(['./module'], function (module) {
                     minDate: moment("1970-01-01"),
                     maxDate: moment().add(10,'y')
                 },function (start, end, label) {
-                    scope.condition.value.value.to = start.format();
+                    scope.condition.value.value.to = start.endOf("day").format();
                 });
             }
         };
