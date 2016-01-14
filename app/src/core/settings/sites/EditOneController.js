@@ -2,8 +2,9 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/settings/sites/EditOneController', [
-    '$scope', '$log', '$location', '$state', '$stateParams', '$uibModal', '$filter', 'Restangular', 'core/common/auth/Session', 'core/common/ErrorService',
-    function ($scope, $log, $location, $state, $stateParams, $uibModal, $filter, Restangular, Session, ErrorService) {
+    '$scope', '$log', '$location', '$state', '$stateParams', '$uibModal', '$filter', 'Restangular', 'core/common/auth/Session', 'lodash',
+    'core/common/ErrorService', 'core/common/WarningService',
+    function ($scope, $log, $location, $state, $stateParams, $uibModal, $filter, Restangular, Session, _, ErrorService, WarningService) {
       var datamartId = Session.getCurrentDatamartId();
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.rulesPerPage = 20;
@@ -16,6 +17,8 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.rules = [];
       $scope.originalAliasesIds = [];
       $scope.originalRulesIds = [];
+      $scope.ruleEditMode = false;
+      $scope.ruleCreationMode = false;
       $scope.ruleTypes = {
         CATALOG_AUTO_MATCH: "Catalog Auto Match",
         USER_ACCOUNT_ID_CREATION: "User Account Id Creation"
@@ -25,18 +28,16 @@ define(['./module', 'jquery'], function (module, $) {
         PRODUCT: "Product",
         PRODUCT_AND_CATEGORY: "Product And Category"
       };
+      $scope.hashFunctions = ["SHA_256", "MD5"];
 
-      $scope.filteredAliases = function () {
-        return $filter('filter')($scope.aliases, $scope.filteredAlias);
-      };
 
-      $scope.filteredEventRules = function () {
-        return $filter('filter')($scope.rules, $scope.filteredRule);
-      };
+      /**
+       * Watchers
+       */
 
       $scope.$watch('filteredRule', function (rule) {
         if (rule) {
-          $scope.selectedRule = undefined
+          $scope.selectedRule = undefined;
         }
       });
 
@@ -45,7 +46,9 @@ define(['./module', 'jquery'], function (module, $) {
           $scope.editMode = true;
           Restangular.one("datamarts/" + datamartId + "/sites/" + $stateParams.siteId).get({organisation_id: organisationId}).then(function (site) {
             $scope.site = site;
-            $scope.siteToken = site.token;
+            if (site.token !== null) {
+              $scope.siteToken = site.token;
+            }
           });
           Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").getList({organisation_id: organisationId}).then(function (rules) {
             $scope.originalRulesIds = _.pluck(rules, 'id');
@@ -59,75 +62,10 @@ define(['./module', 'jquery'], function (module, $) {
         }
       });
 
-      $scope.showDetails = function (rule) {
-        $scope.selectedRule = rule;
-      };
 
-      $scope.newCatalogAutoMatchRule = function () {
-        $uibModal.open({
-          templateUrl: 'src/core/settings/sites/create.rule.auto-match.html',
-          scope: $scope,
-          backdrop: 'static',
-          controller: 'core/settings/sites/CreateRuleAutoMatchController',
-          size: 'md'
-        }).result.then(function (rule) {
-            $scope.rules.push(rule)
-          });
-      };
-
-      $scope.newUserAccountIdRule = function () {
-        $uibModal.open({
-          templateUrl: 'src/core/settings/sites/create.rule.user-account-id.html',
-          scope: $scope,
-          backdrop: 'static',
-          controller: 'core/settings/sites/CreateRuleUserAccountController',
-          size: 'md'
-        }).result.then(function (rule) {
-            $scope.rules.push(rule)
-          });
-      };
-
-      $scope.newAlias = function () {
-        $uibModal.open({
-          templateUrl: 'src/core/settings/sites/create.alias.html',
-          scope: $scope,
-          backdrop: 'static',
-          controller: 'core/settings/sites/CreateAliasController',
-          size: 'md'
-        }).result.then(function (alias) {
-            $scope.aliases.push(alias)
-          });
-      };
-
-      $scope.removeAlias = function (alias) {
-        var idx = $scope.aliases.indexOf(alias);
-        if (idx != -1) {
-          $scope.aliases.splice(idx, 1);
-        }
-      };
-
-      $scope.removeRule = function (rule) {
-        var idx = $scope.rules.indexOf(rule);
-        if (idx != -1) {
-          $scope.rules.splice(idx, 1);
-        }
-        $scope.selectedRule = undefined;
-      };
-
-      $scope.getSummary = function (rule) {
-        switch (rule.type) {
-          case "CATALOG_AUTO_MATCH":
-            return $scope.autoMatchTypes[rule.auto_match_type];
-            break;
-          case "USER_ACCOUNT_ID_CREATION":
-            return "Property " + rule.property_source + " is hashed to " + rule.hash_function;
-            break;
-        }
-      };
-
-      $scope.cancel = function () {
-        $location.path("/" + organisationId + "/settings/sites");
-      };
+      /**
+       * Helpers
+       */
 
       function removeAliases() {
         var finalIds = _.pluck($scope.aliases, 'id');
@@ -135,7 +73,7 @@ define(['./module', 'jquery'], function (module, $) {
           if (finalIds.indexOf(id) === -1) {
             Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/aliases/" + id).remove({organisation_id: organisationId});
           }
-        })
+        });
       }
 
       function addAliases() {
@@ -154,7 +92,7 @@ define(['./module', 'jquery'], function (module, $) {
           if (finalIds.indexOf(id) === -1) {
             Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules/" + id).remove({organisation_id: organisationId});
           }
-        })
+        });
       }
 
       function addRules() {
@@ -168,22 +106,161 @@ define(['./module', 'jquery'], function (module, $) {
       }
 
       function handleSiteError(e) {
-        if ($scope.siteToken == undefined) { // siteToken be null or undefined
+        if ($scope.siteToken === undefined) {
           ErrorService.showErrorModal({error: {message: "This site token is already taken."}});
         } else {
           ErrorService.showErrorModal(e);
         }
       }
 
+      function sendSiteEdit() {
+        removeAliases();
+        addAliases();
+        removeRules();
+        addRules();
+        Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId).customPUT($scope.site, undefined, {organisation_id: organisationId}).then(function () {
+          $location.path("/" + organisationId + "/settings/sites");
+        }, handleSiteError);
+      }
+
+      /**
+       * Filters
+       */
+
+      $scope.filteredAliases = function () {
+        return $filter('filter')($scope.aliases, $scope.filteredAlias);
+      };
+
+      $scope.filteredEventRules = function () {
+        return $filter('filter')($scope.rules, $scope.filteredRule);
+      };
+
+      /**
+       * Methods
+       */
+
+        // -------------- RULES ------------------
+
+      $scope.showDetails = function (rule) {
+        $scope.selectedRule = rule;
+        $scope.tmpRule = $.extend({}, rule);
+      };
+
+      $scope.newRule = function (type) {
+        $scope.ruleCreationMode = true;
+        $scope.ruleEditMode = true;
+        if (type === "CATALOG_AUTO_MATCH") {
+          $scope.tmpRule = {type: "CATALOG_AUTO_MATCH", auto_match_type: "CATEGORY"};
+        } else if (type === "USER_ACCOUNT_ID_CREATION") {
+          $scope.tmpRule = {
+            type: "USER_ACCOUNT_ID_CREATION",
+            hash_function: $scope.hashFunctions[0],
+            remove_source: 'false',
+            to_lower_case: 'false'
+          };
+        }
+        $scope.selectedRule = $scope.tmpRule;
+      };
+
+      $scope.editRule = function() {
+        $scope.ruleEditMode = true;
+        $scope.tmpRule = $.extend({}, $scope.selectedRule);
+      };
+
+      $scope.removeRule = function (rule) {
+        var idx = $scope.rules.indexOf(rule);
+        if (idx !== -1) {
+          $scope.rules.splice(idx, 1);
+        }
+        $scope.selectedRule = undefined;
+      };
+
+      $scope.shortenString = function(str, length) {
+        if (str === undefined) {
+          return "";
+        }
+        if (str.length > length) {
+          return str.substring(0, length) + "...";
+        }
+        return str;
+      };
+
+      $scope.getSummary = function (rule) {
+        if (rule === undefined) {
+          return "";
+        }
+        switch (rule.type) {
+          case "CATALOG_AUTO_MATCH":
+            if (rule.auto_match_type === undefined) {
+              return "";
+            }
+            return $scope.autoMatchTypes[rule.auto_match_type];
+          case "USER_ACCOUNT_ID_CREATION":
+            var str = $scope.shortenString(rule.property_source, 25);
+            return "Property " + str + " is hashed to " + rule.hash_function;
+        }
+      };
+
+
+      $scope.cancelRuleEdit = function () {
+        if ($scope.ruleCreationMode) {
+          $scope.tmpRule = undefined;
+          $scope.selectedRule = undefined;
+        } else {
+          $scope.tmpRule = $.extend({}, $scope.selectedRule);
+        }
+        $scope.ruleCreationMode = false;
+        $scope.ruleEditMode = false;
+      };
+
+      $scope.confirmRuleEdit = function () {
+        if ($scope.ruleCreationMode) {
+          $scope.ruleCreationMode = false;
+          $scope.rules.push($scope.tmpRule);
+        }
+        $scope.ruleEditMode = false;
+        $scope.selectedRule = $.extend($scope.selectedRule, $scope.tmpRule);
+      };
+
+
+      // -------------- ALIASES ------------------
+
+      $scope.newAlias = function () {
+        $uibModal.open({
+          templateUrl: 'src/core/settings/sites/create.alias.html',
+          scope: $scope,
+          backdrop: 'static',
+          controller: 'core/settings/sites/CreateAliasController',
+          size: 'md'
+        }).result.then(function (alias) {
+            console.log("ALIAS: ", alias);
+            $scope.aliases.push(alias);
+          });
+      };
+
+      $scope.removeAlias = function (alias) {
+        var idx = $scope.aliases.indexOf(alias);
+        if (idx !== -1) {
+          $scope.aliases.splice(idx, 1);
+        }
+      };
+
+
+      // ---------------- SITE ----------------
+
+      $scope.cancel = function () {
+        $location.path("/" + organisationId + "/settings/sites");
+      };
+
       $scope.done = function () {
         if ($scope.editMode) {
-          removeAliases();
-          addAliases();
-          removeRules();
-          addRules();
-          Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId).customPUT($scope.site, undefined, {organisation_id: organisationId}).then(function () {
-            $location.path("/" + organisationId + "/settings/sites");
-          }, handleSiteError);
+          if ($scope.siteToken !== $scope.site.token) {
+            WarningService.showWarningModal("A site token is already set. Are you sure that you want to override it?").then(sendSiteEdit, function() {
+              $scope.site.token = $scope.siteToken;
+            });
+          } else {
+            sendSiteEdit();
+          }
         } else {
           Restangular.all("datamarts/" + datamartId + "/sites").post($scope.site).then(function (site) {
             $scope.rules.forEach(function (ruleInfo) {
@@ -201,7 +278,7 @@ define(['./module', 'jquery'], function (module, $) {
             $location.path("/" + organisationId + "/settings/sites");
           }, handleSiteError);
         }
-      }
+      };
     }
   ]);
 });

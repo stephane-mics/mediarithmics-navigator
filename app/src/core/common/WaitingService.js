@@ -5,7 +5,6 @@ define(['./module'], function (module) {
     "$uibModal",
     function ($uibModal) {
       var service = {};
-
       var waitingModal = null;
 
       service.showWaitingModal = function() {
@@ -16,6 +15,7 @@ define(['./module'], function (module) {
         });
         return waitingModal.result;
       };
+
       service.hideWaitingModal = function() {
         if(waitingModal) {
           waitingModal.close();

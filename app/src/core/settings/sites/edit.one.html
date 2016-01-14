@@ -11,7 +11,7 @@
         <div class="col-xs-3">
           <div mcs-form-group="full">
             <label for="name">Domain Name
-              <span class="badge creative-audit-notification-warning" uib-popover="mediarithmics.com" popover-trigger="mouseenter" popover-placement="right">?</span>
+              <span class="badge site" uib-popover="mediarithmics.com" popover-trigger="mouseenter" popover-placement="right">?</span>
             </label>
             <input class="form-control input-md" ng-model="site.name" type="text" id="name">
           </div>
@@ -22,7 +22,7 @@
         <div class="col-xs-3">
           <div mcs-form-group="full">
             <label for="token">Token
-              <span class="badge creative-audit-notification-warning" popover="MYTOKEN" popover-trigger="mouseenter" popover-placement="right">?</span>
+              <span class="badge site" popover="MYTOKEN" popover-trigger="mouseenter" popover-placement="right">?</span>
             </label>
             <input class="form-control input-md" ng-model="site.token" type="text" id="token">
           </div>
@@ -39,109 +39,125 @@
           <button class="mics-btn mics-btn-add" ng-click="newAlias()">New Alias</button>
         </div>
       </div>
-      <table ng-show="aliases.length" class="mics-table js-auto-hide-actions table-hover">
-        <thead>
-        <tr>
-          <th>Domain Name</th>
-          <th class="actions">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="alias in filteredAliases() | offset : (aliasesCurrentPage - 1) * aliasesPerPage | limitTo: aliasesPerPage">
-          <td>{{alias.name}}</td>
-          <td class="actions">
-            <a class="mics-btn mics-btn-delete" ng-click="removeAlias(alias)">Remove</a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-      <br>
-      <h3>Event Rules</h3>
-
       <div class="row">
-        <div class="col-xs-6">
-          <div class="row">
-            <div ng-show="rules.length" class="form-group col-md-4">
-              <input class="form-control" type="text" ng-model="filteredRule" placeholder="Search">
-            </div>
-            <div class="col-md-6">
-              <div class="dropdown" dropdown>
-                <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Rule</button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a role="menuItem" tabindex="-1" ng-click="newUserAccountIdRule()">User Account Setup</a></li>
-                  <li><a role="menuItem" tabindex="-1" ng-click="newCatalogAutoMatchRule()">Catalog Auto Match</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <table ng-show="rules.length" class="mics-table mics-clickable-table js-auto-hide-actions table-hover">
+        <div class="col-xs-3">
+          <table ng-show="aliases.length" class="mics-table js-auto-hide-actions table-hover">
             <thead>
             <tr>
-              <th>Event Rule Type</th>
-              <th>Summary</th>
+              <th>Domain Name</th>
               <th class="actions">Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="rule in filteredEventRules() | offset : (rulesCurrentPage - 1) * rulesPerPage | limitTo: rulesPerPage" ng-click="showDetails(rule)">
-              <td>{{ruleTypes[rule.type]}}</td>
-              <td>{{getSummary(rule)}}</td>
+            <tr ng-repeat="alias in filteredAliases() | offset : (aliasesCurrentPage - 1) * aliasesPerPage | limitTo: aliasesPerPage">
+              <td>{{alias.name}}</td>
               <td class="actions">
-                <a class="mics-btn mics-btn-delete" ng-click="removeRule(rule)">Remove</a>
+                <a class="mics-btn mics-btn-delete" ng-click="removeAlias(alias)">Remove</a>
               </td>
             </tr>
             </tbody>
           </table>
         </div>
-
-        <div ng-show="selectedRule.type" class="col-xs-6">
-          <h2>{{ruleTypes[selectedRule.type]}}</h2>
-          <hr>
-          <div ng-show="selectedRule.type == 'CATALOG_AUTO_MATCH'">
-            <table class="mics-table">
-              <tbody>
-              <tr>
-                <td>Auto Match Type</td>
-                <td>{{autoMatchTypes[selectedRule.auto_match_type]}}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div ng-show="selectedRule.type == 'USER_ACCOUNT_ID_CREATION'">
-            <table class="mics-table">
-              <tbody>
-              <tr>
-                <td>Property Source</td>
-                <td>{{selectedRule.property_source}}</td>
-              </tr>
-              <tr>
-                <td>Hash Function</td>
-                <td>{{selectedRule.hash_function}}</td>
-              </tr>
-              <tr>
-                <td>Remove Source</td>
-                <td>{{selectedRule.remove_source}}</td>
-              </tr>
-              <tr>
-                <td>To Lower Case</td>
-                <td>{{selectedRule.to_lower_case}}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
 
+      <br>
 
-      <div ng-show="tag" dropdown>
-        <h3>Tag</h3>
-        <button class="mics-btn" dropdown-toggle type="button">▼</button>
-        <ul class="dropdown-menu" role="menu">
-          <li>
-            <a class="mics-btn-clipboard" data-clipboard-text="{{tag}}" role="menuitem" tabindex="-1" ng-click="(template)">Copy to clipboard</a>
-          </li>
-        </ul>
+      <h3>Event Rules</h3>
+      <div class="mics-table-background">
+        <div class="mics-table-inline right-spaced">
+          <div class="row">
+            <div class="form-group col-md-8">
+              <input class="form-control" type="text" ng-model="filteredRule" placeholder="Search">
+            </div>
+            <div class='col-md-1'>
+              <div class="dropdown" dropdown>
+                <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Rule</button>
+                <ul class="dropdown-menu" role="menu">
+                  <li>
+                    <a role="menuItem" tabindex="-1" ng-click="newRule('USER_ACCOUNT_ID_CREATION')">User Account Setup</a>
+                  </li>
+                  <li><a role="menuItem" tabindex="-1" ng-click="newRule('CATALOG_AUTO_MATCH')">Catalog Auto Match</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <table class="mics-table mics-clickable-table js-auto-hide-actions table-hover">
+                <thead>
+                <tr>
+                  <th class="first-column">Event Rule Type</th>
+                  <th class="second-column">Summary</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="rule in filteredEventRules() | offset : (rulesCurrentPage - 1) * rulesPerPage | limitTo: rulesPerPage" ng-click="showDetails(rule)">
+                  <td class="first-column">{{ruleTypes[rule.type]}}</td>
+                  <td class="second-column">{{getSummary(rule)}}</td>
+                </tr>
+                <tr ng-show="ruleCreationMode">
+                  <td class="first-column">{{ruleTypes[tmpRule.type]}}</td>
+                  <td class="second-column">{{getSummary(tmpRule)}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="mics-table-inline fixed">
+          <div class="row">
+            <div class="col-xs-12">
+              <h3 class="selected-title ">{{ruleTypes[selectedRule.type]}}</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div ng-show="selectedRule.type == 'CATALOG_AUTO_MATCH'" class="col-xs-12">
+              <div class="selected-editing">
+                <label for="autoMatchType"><strong>Auto match type</strong>
+                  <span class="badge site" uib-popover="The auto match type" popover-trigger="mouseenter" popover-placement="right">?</span>
+                </label>
+                <div ng-show="ruleEditMode">
+                  <select required="required" class="form-control" ng-model="tmpRule.auto_match_type" ng-options="key as value for (key, value) in autoMatchTypes" id="autoMatchType"></select>
+                </div>
+                <div ng-show="!ruleEditMode">{{autoMatchTypes[selectedRule.auto_match_type]}}</div>
+              </div>
+            </div>
+
+            <div ng-show="selectedRule.type === 'USER_ACCOUNT_ID_CREATION'" class="col-xs-12">
+              <div class="selected-editing">
+                <label for="userAccountIdProperty"><strong>Property</strong>
+                  <span class="badge site" uib-popover="$email" popover-trigger="mouseenter" popover-placement="right">?</span>
+                </label>
+                <div ng-show="ruleEditMode">
+                  <input class="form-control input-md" ng-model="tmpRule.property_source" type="text" id="userAccountIdProperty">
+                </div>
+                <div ng-show="!ruleEditMode">{{shortenString(selectedRule.property_source, 50)}}</div>
+                <br>
+                <label label-for="hash"><strong>Transformation Function</strong>
+                  <span class="badge site" uib-popover="A transformation function" popover-trigger="mouseenter" popover-placement="right">?</span>
+                </label>
+                <div ng-show="ruleEditMode">
+                  <select class="form-control" ng-model="tmpRule.hash_function" ng-options="hash for hash in hashFunctions" id="hash"></select>
+                </div>
+                <div ng-show="!ruleEditMode">{{selectedRule.hash_function}}</div>
+                <br>
+                <label><input ng-disabled="!ruleEditMode" type="checkbox" ng-model="tmpRule.remove_source"> Remove property after transformation</label>
+                <br>
+                <label><input ng-disabled="!ruleEditMode" type="checkbox" ng-model="tmpRule.to_lower_case"> Lower case before transform</label>
+              </div>
+            </div>
+          </div>
+          <div ng-show="selectedRule" class="row selected-action-buttons">
+            <div class="col-xs-12">
+              <button ng-show="!ruleEditMode" class="mics-btn mics-btn-continue pull-right" ng-click="editRule()">Edit</button>
+              <button ng-show="!ruleEditMode" class="mics-btn mics-btn-cancel pull-right" ng-click="removeRule(selectedRule)">Remove</button>
+              <button ng-show="ruleEditMode" ng-disabled="selectedRule.type === 'USER_ACCOUNT_ID_CREATION' && !tmpRule.property_source.length" class="mics-btn mics-btn-finish pull-right" ng-click="confirmRuleEdit()">Done</button>
+              <button ng-show="ruleEditMode" class="mics-btn mics-btn-cancel pull-right" ng-click="cancelRuleEdit()">Cancel</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="mcs-actions-group">

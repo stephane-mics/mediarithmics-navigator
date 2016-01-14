@@ -6,7 +6,6 @@ define(['./module'], function (module) {
     function ($scope, $state, $log, Session) {
       $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.datamartId = Session.getCurrentDatamartId();
-      console.log("DATAMRT ID: ", $scope.datamartId);
 
       if ($state.current.data && $state.current.data.sidebar) {
         $scope.subCategory = $state.current.data.sidebar.selected;
