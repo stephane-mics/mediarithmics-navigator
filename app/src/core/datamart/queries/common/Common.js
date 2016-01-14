@@ -16,8 +16,8 @@ define(['./module'], function (module) {
           {operator:"NOT_EQUAL", label:"is not"},
           {operator:"CONTAINS", label:"contains"},
           {operator:"NOT_CONTAINS", label:"doesn't contain"},
-          {operator:"STARTS_WITH", label:"starts with"},
-          {operator:"NOT_STARTS_WITH", label:"doesn't start with"},
+          {operator:"START_WITH", label:"starts with"},
+          {operator:"NOT_START_WITH", label:"doesn't start with"},
           {operator:"IS_EMPTY", label:"is empty"},
           {operator:"IS_NOT_EMPTY", label:"is not empty"}],
         "INTEGER": [
