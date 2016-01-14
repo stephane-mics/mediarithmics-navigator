@@ -3,26 +3,36 @@ define(['./module'], function (module) {
     'use strict';
 
     module.controller('core/bidOptimizer/ViewAllController', [
-        '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal', '$state', '$stateParams', "core/bidOptimizer/PropertyContainer",
-        function ($scope, Restangular, Session, $location, $uibModal, $state, $stateParams, PropertyContainer) {
+        '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal', '$state', '$stateParams', "core/bidOptimizer/PropertyContainer", "$q",
+        function ($scope, Restangular, Session, $location, $uibModal, $state, $stateParams, PropertyContainer, $q) {
             $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
 
 
             function updateUsedModelId(bidOptimizerId, bidOptimizersUsedModel) {
 
-                Restangular.one('bid_optimizers', bidOptimizerId).all("properties").getList().then(function (properties) {
+              $q.all([
+                Restangular.one('bid_optimizers', bidOptimizerId).all("models").getList(),
+                Restangular.one('bid_optimizers', bidOptimizerId).all("properties").getList()
+              ]).then(function(res) {
+                var models = res[0];
+                var properties = res[1];
 
-                    var latest = properties.filter(function(prop) {
-                        return prop.technical_name === "latest_model_id" && prop.value.value;
-                    })[0];
-                    var overriding = properties.filter(function(prop) {
-                        return prop.technical_name === "overriding_model_id" && prop.value.value;
-                    })[0];
+                var latest = properties.filter(function(prop) {
+                  return prop.technical_name === "latest_model_id" && prop.value.value;
+                })[0];
+                var overriding = properties.filter(function(prop) {
+                  return prop.technical_name === "overriding_model_id" && prop.value.value;
+                })[0];
 
-                    bidOptimizersUsedModel[bidOptimizerId] = (overriding || latest).value.value;
+                var modelId = (overriding || latest).value.value;
+                var modelExists = models.filter(function (model){
+                  return model.id === modelId;
+                })[0];
 
-                });
-
+                if (modelExists) {
+                  bidOptimizersUsedModel[bidOptimizerId] = modelId;
+                }
+              });
 
             }
 
