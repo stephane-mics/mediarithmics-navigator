@@ -57,7 +57,9 @@ define(['./module'], function (module) {
       var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" , USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices"};
       var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" , USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device"};
 
-      return { propertySelectorOperators: propertySelectorOperators , familyLabels: familyLabels, elementLabels:elementLabels};
+      var propertySelectorExpressions = ["NEWEST","OLDEST","COUNT","MAX","MIN","SUM"];
+
+      return { propertySelectorOperators: propertySelectorOperators , familyLabels: familyLabels, elementLabels:elementLabels, propertySelectorExpressions:propertySelectorExpressions};
     }
   );
 

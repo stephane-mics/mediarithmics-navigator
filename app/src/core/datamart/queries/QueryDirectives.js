@@ -6,8 +6,8 @@ define(['./module'], function (module) {
         'Restangular', '$q', 'lodash', 'core/common/auth/Session',
         'core/datamart/queries/common/Common', '$uibModal', "async",
         'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'core/datamart/queries/CriteriaContainer', 'moment', '$rootScope',
-        
-        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope) {
+        'core/datamart/query/QueryService',
+        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope, QueryService) {
 
             return {
                 restrict: 'E',
@@ -34,6 +34,7 @@ define(['./module'], function (module) {
                     fetchPropertySelectors();
 
                     $scope.propertySelectorOperators = Common.propertySelectorOperators;
+                    $scope.propertySelectorExpressions = Common.propertySelectorExpressions;
 
                     var queryContainer = new QueryContainer($scope.datamartId);
 
@@ -118,6 +119,16 @@ define(['./module'], function (module) {
                         });
                     };
 
+                    $scope.addExpressionToSelectedValue = function (dragEl, dropEl, selectedValue) {
+
+                        var drag = element.find('#' + dragEl);
+                        var dragExpression = drag.attr('name');
+
+                        $scope.$apply(function () {
+                            selectedValue.addExpression(dragExpression);
+                        });
+                    };
+
                     $scope.removeSelectedValue = function (queryContainer, selectedValue) {
                         queryContainer.removeSelectedValue(selectedValue);
                         $scope.results = [];
@@ -199,27 +210,34 @@ define(['./module'], function (module) {
                         fetchPropertySelectors();
                     });
 
-                    $rootScope.$on("LVL-DRAG-START", function () {
-                        $scope.$apply(function () {
-                            $scope.onGoingDrag = true;
-                        });
-                    });
-
-                    $rootScope.$on("LVL-DRAG-END", function () {
-                        $scope.$apply(function () {
-                            $scope.onGoingDrag = false;
-                        });
-                    });
-
                     element.bind("dragstart", function (ev) {
                         $scope.$apply(function () {
-                            $scope.currentlyDraggedFamily = ev.target.getAttribute("data-family");
+                            var dragElementDataFamily = ev.target.getAttribute("data-family");
+                            if (dragElementDataFamily === "selector_expression"){
+                                $scope.currentlyDraggedExpression = ev.target.getAttribute("name");
+                                $scope.onGoingDragExpression = true;
+                            } else {
+                                $scope.onGoingDrag = true;
+                                $scope.currentlyDraggedFamily = dragElementDataFamily;
+                            }
                         });
                     });
 
+                    element.bind("dragend", function (ev) {
+                        $scope.$apply(function () {
+                            var dragElementDataFamily = ev.target.getAttribute("data-family");
+                            $scope.onGoingDrag = false;
+                            $scope.onGoingDragExpression = false;
+                            $scope.currentlyDraggedExpression = null;
+                        });
+                    });
 
                     $scope.familyMatchesForDrop = function(family) {
                         return family === $scope.currentlyDraggedFamily;
+                    };
+
+                    $scope.isExpressionApplicable = function(selectedValue) {
+                        return QueryService.isExpressionApplicable(selectedValue, $scope.currentlyDraggedExpression);
                     };
 
                     $scope.addPropertySelector = function (family) {

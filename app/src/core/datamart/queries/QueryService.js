@@ -45,6 +45,10 @@ define(['./module'], function (module) {
           }
       };
 
+      service.isExpressionApplicable = function(selectedValue, expression){
+           return selectedValue.wrapperEvaluationType !== "SCALAR" ;
+      };
+
       return service;
     }
   ]);

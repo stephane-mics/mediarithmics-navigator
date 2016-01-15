@@ -6,6 +6,10 @@ define(['./module'], function (module) {
         'core/datamart/query/QueryService',
         function (Restangular, $q, lodash, Session, async, promiseUtils, $log, Common, QueryService) {
 
+            /**
+             * CONDITION CONTAINER
+             */
+
             var ConditionContainer = function ConditionContainer(value) {
                 if (value) {
                     this.value = value;
@@ -27,6 +31,10 @@ define(['./module'], function (module) {
                 var condition = this.value;
                 return QueryService.getSelectorFamilyName(condition.property_selector_family, condition.property_selector_family_parameter);
             };
+
+            /**
+             * ELEMENT CONTAINER
+             */
 
             var ElementContainer = function ElementContainer(groupContainer, value) {
                 if (value) {
@@ -168,6 +176,10 @@ define(['./module'], function (module) {
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
+
+            /**
+             * GROUP CONTAINER
+             */
 
             var GroupContainer = function GroupContainer(queryContainer, value) {
                 if (value) {
@@ -312,6 +324,10 @@ define(['./module'], function (module) {
                 };
             };
 
+            /**
+             * SELECTED VALUE CONTAINER
+             */
+
             var SelectedValueContainer = function SelectedValueContainer(value) {
                 if (value) {
                     this.value = value;
@@ -321,7 +337,7 @@ define(['./module'], function (module) {
 
             SelectedValueContainer.prototype.getSelectorLabel = function () {
                 var selectorSelection = this.value;
-                return QueryService.getPropertySelectorDisplayName(selectorSelection.selector_name, selectorSelection.selector_parameters, selectorSelection.expression, selectorSelection.label);
+                return QueryService.getPropertySelectorDisplayName(selectorSelection.selector_name, selectorSelection.selector_parameters, null, selectorSelection.label);
             };
 
             SelectedValueContainer.prototype.getFamilyName = function () {
@@ -329,6 +345,16 @@ define(['./module'], function (module) {
                 return QueryService.getSelectorFamilyName(selectorSelection.selector_family, selectorSelection.family_parameters);
             };
 
+            SelectedValueContainer.prototype.addExpression = function (expression) {
+                if (QueryService.isExpressionApplicable(this.value, expression)){
+                    this.value.expression = expression;
+                }
+            };
+
+
+            /**
+             * QUERY CONTAINER
+             */
 
             var QueryContainer = function QueryContainer(datamartId) {
 
@@ -400,6 +426,8 @@ define(['./module'], function (module) {
                     expression: propertySelector.expression,
                     label: propertySelector.label
                 };
+
+                var wrapperEvaluationType = propertySelector.wrapper_evaluation_type;
 
                 var alreadySelected = lodash.find(this.selectedValues, function (selector) {
                     return selector.property_selector_id === propertySelector.id;
