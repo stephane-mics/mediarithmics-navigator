@@ -21,7 +21,7 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.ruleCreationMode = false;
       $scope.ruleTypes = {
         CATALOG_AUTO_MATCH: "Catalog Auto Match",
-        USER_ACCOUNT_ID_CREATION: "User Account Id Creation"
+        USER_ACCOUNT_ID_INSERTION: "User Account Id Creation"
       };
       $scope.autoMatchTypes = {
         CATEGORY: "Category",
@@ -151,9 +151,9 @@ define(['./module', 'jquery'], function (module, $) {
         $scope.ruleEditMode = true;
         if (type === "CATALOG_AUTO_MATCH") {
           $scope.tmpRule = {type: "CATALOG_AUTO_MATCH", auto_match_type: "CATEGORY"};
-        } else if (type === "USER_ACCOUNT_ID_CREATION") {
+        } else if (type === "USER_ACCOUNT_ID_INSERTION") {
           $scope.tmpRule = {
-            type: "USER_ACCOUNT_ID_CREATION",
+            type: "USER_ACCOUNT_ID_INSERTION",
             hash_function: $scope.hashFunctions[0],
             remove_source: 'false',
             to_lower_case: 'false'
@@ -195,7 +195,7 @@ define(['./module', 'jquery'], function (module, $) {
               return "";
             }
             return $scope.autoMatchTypes[rule.auto_match_type];
-          case "USER_ACCOUNT_ID_CREATION":
+          case "USER_ACCOUNT_ID_INSERTION":
             var str = $scope.shortenString(rule.property_source, 25);
             return "Property " + str + " is hashed to " + rule.hash_function;
         }
@@ -233,7 +233,6 @@ define(['./module', 'jquery'], function (module, $) {
           controller: 'core/settings/sites/CreateAliasController',
           size: 'md'
         }).result.then(function (alias) {
-            console.log("ALIAS: ", alias);
             $scope.aliases.push(alias);
           });
       };

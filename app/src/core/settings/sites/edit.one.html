@@ -76,7 +76,7 @@
                 <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Rule</button>
                 <ul class="dropdown-menu" role="menu">
                   <li>
-                    <a role="menuItem" tabindex="-1" ng-click="newRule('USER_ACCOUNT_ID_CREATION')">User Account Setup</a>
+                    <a role="menuItem" tabindex="-1" ng-click="newRule('USER_ACCOUNT_ID_INSERTION')">User Account Setup</a>
                   </li>
                   <li><a role="menuItem" tabindex="-1" ng-click="newRule('CATALOG_AUTO_MATCH')">Catalog Auto Match</a>
                   </li>
@@ -127,7 +127,7 @@
               </div>
             </div>
 
-            <div ng-show="selectedRule.type === 'USER_ACCOUNT_ID_CREATION'" class="col-xs-12">
+            <div ng-show="selectedRule.type === 'USER_ACCOUNT_ID_INSERTION'" class="col-xs-12">
               <div class="selected-editing">
                 <label for="userAccountIdProperty"><strong>Property</strong>
                   <span class="badge site" uib-popover="The name of the property containing the data used to compute the User Account Id" popover-trigger="mouseenter" popover-placement="right">?</span>
@@ -155,7 +155,7 @@
             <div class="col-xs-12">
               <button ng-show="!ruleEditMode" class="mics-btn mics-btn-continue pull-right" ng-click="editRule()">Edit</button>
               <button ng-show="!ruleEditMode" class="mics-btn mics-btn-cancel pull-right" ng-click="removeRule(selectedRule)">Remove</button>
-              <button ng-show="ruleEditMode" ng-disabled="selectedRule.type === 'USER_ACCOUNT_ID_CREATION' && !tmpRule.property_source.length" class="mics-btn mics-btn-finish pull-right" ng-click="confirmRuleEdit()">Done</button>
+              <button ng-show="ruleEditMode" ng-disabled="selectedRule.type === 'USER_ACCOUNT_ID_INSERTION' && !tmpRule.property_source.length" class="mics-btn mics-btn-finish pull-right" ng-click="confirmRuleEdit()">Done</button>
               <button ng-show="ruleEditMode" class="mics-btn mics-btn-cancel pull-right" ng-click="cancelRuleEdit()">Cancel</button>
             </div>
           </div>
