@@ -13,6 +13,7 @@ define(['./module'], function (module) {
 
             $scope.showModelId = $stateParams.modelId;
             $scope.modelIdx = 0;
+            $scope.statsLoading = true;
 
             Restangular.one('bid_optimizers', $scope.bidOptimizerId).get().then(function (bidOptimizer) {
                 $scope.bidOptimizer = bidOptimizer;
@@ -59,7 +60,7 @@ define(['./module'], function (module) {
 
                 $scope.report = res.$categorical_model_report;
                 $scope.modelDate = res.$categorical_model_report.$date;
-
+                $scope.statsLoading =false;
 
             });
 
