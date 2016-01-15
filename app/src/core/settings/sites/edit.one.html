@@ -1,6 +1,6 @@
 <div class="mcs-default-container" ng-controller="core/settings/sites/EditOneController">
 
-  <div class="mcs-default-content">
+  <div class="mcs-default-content site-content">
     <div class="mcs-default-heading">
       <h1 ng-show="!editMode">New Site</h1>
       <h1 ng-show="editMode">Edit Site</h1>
@@ -11,7 +11,7 @@
         <div class="col-xs-3">
           <div mcs-form-group="full">
             <label for="name">Domain Name
-              <span class="badge site" uib-popover="mediarithmics.com" popover-trigger="mouseenter" popover-placement="right">?</span>
+              <span class="badge site" data-html="true" uib-popover-html="'The web domain of the website<br/> (e.g. myshop.com)'" uib-popover-template="" popover-trigger="mouseenter" popover-placement="right">?</span>
             </label>
             <input class="form-control input-md" ng-model="site.name" type="text" id="name">
           </div>
@@ -22,14 +22,16 @@
         <div class="col-xs-3">
           <div mcs-form-group="full">
             <label for="token">Token
-              <span class="badge site" popover="MYTOKEN" popover-trigger="mouseenter" popover-placement="right">?</span>
+              <span class="badge site" popover="A unique random identifier (e.g. ABCD123)" popover-trigger="mouseenter" popover-placement="right">?</span>
             </label>
             <input class="form-control input-md" ng-model="site.token" type="text" id="token">
           </div>
         </div>
       </div>
 
-      <h3>Aliases</h3>
+      <h3 id="aliases">Web Domain Aliases
+        <span class="badge site" uib-popover-html="'A list of alternative web domains<br> to the given website'" popover-trigger="mouseenter" popover-placement="right">?</span>
+      </h3>
 
       <div class="row">
         <div ng-show="aliases.length" class="form-group col-md-2">
@@ -116,7 +118,7 @@
             <div ng-show="selectedRule.type == 'CATALOG_AUTO_MATCH'" class="col-xs-12">
               <div class="selected-editing">
                 <label for="autoMatchType"><strong>Auto match type</strong>
-                  <span class="badge site" uib-popover="The auto match type" popover-trigger="mouseenter" popover-placement="right">?</span>
+                  <span class="badge site" uib-popover="Match urls with products and/or categories urls" popover-trigger="mouseenter" popover-placement="right">?</span>
                 </label>
                 <div ng-show="ruleEditMode">
                   <select required="required" class="form-control" ng-model="tmpRule.auto_match_type" ng-options="key as value for (key, value) in autoMatchTypes" id="autoMatchType"></select>
@@ -128,7 +130,7 @@
             <div ng-show="selectedRule.type === 'USER_ACCOUNT_ID_CREATION'" class="col-xs-12">
               <div class="selected-editing">
                 <label for="userAccountIdProperty"><strong>Property</strong>
-                  <span class="badge site" uib-popover="$email" popover-trigger="mouseenter" popover-placement="right">?</span>
+                  <span class="badge site" uib-popover="The name of the property containing the data used to compute the User Account Id" popover-trigger="mouseenter" popover-placement="right">?</span>
                 </label>
                 <div ng-show="ruleEditMode">
                   <input class="form-control input-md" ng-model="tmpRule.property_source" type="text" id="userAccountIdProperty">
@@ -136,7 +138,7 @@
                 <div ng-show="!ruleEditMode">{{shortenString(selectedRule.property_source, 50)}}</div>
                 <br>
                 <label label-for="hash"><strong>Transformation Function</strong>
-                  <span class="badge site" uib-popover="A transformation function" popover-trigger="mouseenter" popover-placement="right">?</span>
+                  <span class="badge site" uib-popover-html="'The function used to compute<br>the User Account Id'" popover-trigger="mouseenter" popover-placement="right">?</span>
                 </label>
                 <div ng-show="ruleEditMode">
                   <select class="form-control" ng-model="tmpRule.hash_function" ng-options="hash for hash in hashFunctions" id="hash"></select>
@@ -162,7 +164,7 @@
 
       <div class="mcs-actions-group">
         <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
-        <button ng-disabled="!site.name.length" class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
+        <button ng-disabled="!(site.name.length && site.token.length)" class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
       </div>
     </form>
   </div>

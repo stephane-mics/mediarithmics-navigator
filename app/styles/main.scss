@@ -2339,6 +2339,18 @@ input.ng-invalid {
 .badge.site {
   background-color: #ffffff;
   color: $mcs-light-blue;
+  font-size: 12px;
+}
+
+.site-content {
+  .popover {
+    background-color: #FDFECA;
+    font-size: 12px;
+  }
+
+  .popover .arrow:after {
+    border-right-color: #FDFECA;
+  }
 }
 
 .mics-table-inline {
