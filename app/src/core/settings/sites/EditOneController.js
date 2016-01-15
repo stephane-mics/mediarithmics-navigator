@@ -21,7 +21,8 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.ruleCreationMode = false;
       $scope.ruleTypes = {
         CATALOG_AUTO_MATCH: "Catalog Auto Match",
-        USER_ACCOUNT_ID_INSERTION: "User Account Id Creation"
+        USER_ACCOUNT_ID_INSERTION: "User Account Id Creation",
+        PATTERN_MATCHING: "Pattern Matching"
       };
       $scope.autoMatchTypes = {
         CATEGORY: "Category",
@@ -155,14 +156,16 @@ define(['./module', 'jquery'], function (module, $) {
         $scope.ruleCreationMode = true;
         $scope.ruleEditMode = true;
         if (type === "CATALOG_AUTO_MATCH") {
-          $scope.tmpRule = {type: "CATALOG_AUTO_MATCH", auto_match_type: "CATEGORY"};
+          $scope.tmpRule = {type: type, auto_match_type: "CATEGORY"};
         } else if (type === "USER_ACCOUNT_ID_INSERTION") {
           $scope.tmpRule = {
-            type: "USER_ACCOUNT_ID_INSERTION",
+            type: type,
             hash_function: $scope.hashFunctions[0],
             remove_source: 'false',
             to_lower_case: 'false'
           };
+        } else if (type === "PATTERN_MATCHING") {
+          $scope.tmpRule = {type: type, url_pattern: "", event_pattern: {}};
         }
         $scope.selectedRule = $scope.tmpRule;
       };
@@ -194,6 +197,7 @@ define(['./module', 'jquery'], function (module, $) {
         if (rule === undefined) {
           return "";
         }
+        var str = "";
         switch (rule.type) {
           case "CATALOG_AUTO_MATCH":
             if (rule.auto_match_type === undefined) {
@@ -201,8 +205,11 @@ define(['./module', 'jquery'], function (module, $) {
             }
             return $scope.autoMatchTypes[rule.auto_match_type];
           case "USER_ACCOUNT_ID_INSERTION":
-            var str = $scope.shortenString(rule.property_source, 25);
+            str = $scope.shortenString(rule.property_source, 25);
             return "Property " + str + " is hashed to " + rule.hash_function;
+          case "PATTERN_MATCHING":
+            str = $scope.shortenString(rule.url_pattern, 25);
+            return "Matches " + str;
         }
       };
 
