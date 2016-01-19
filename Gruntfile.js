@@ -523,17 +523,6 @@ module.exports = function (grunt) {
         'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
         '});'
       }
-    },
-
-    browserify: {
-      dist: {
-        files: {
-          'build/module.js': ['app/scripts/**/*.js', 'client/scripts/**/*.coffee']
-        },
-        options: {
-          transform: ['coffeeify']
-        }
-      }
     }
   });
 

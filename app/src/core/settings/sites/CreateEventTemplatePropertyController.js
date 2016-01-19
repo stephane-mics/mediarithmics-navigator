@@ -4,9 +4,8 @@ define(['./module'], function (module) {
   module.controller('core/settings/sites/CreateEventTemplatePropertyController', function ($scope, $uibModalInstance, properties) {
     $scope.done = function () {
       if (properties[$scope.key] !== undefined) {
-        return $scope.error = "This property has already been defined. Please use a different key.";
-      }
-      if ($scope.key && $scope.value) {
+        $scope.error = "This property has already been defined. Please use a different key.";
+      } else if ($scope.key && $scope.value) {
         $uibModalInstance.close({key: $scope.key, value: $scope.value});
       }
     };
