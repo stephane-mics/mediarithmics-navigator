@@ -2,9 +2,9 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/settings/sites/EditOneController', [
-    '$scope', '$log', '$location', '$state', '$stateParams', '$uibModal', '$filter', 'Restangular', 'core/common/auth/Session', 'lodash',
+    '$scope', '$log', '$location', '$state', '$stateParams', '$uibModal', '$filter', '$q', 'Restangular', 'core/common/auth/Session', 'lodash',
     'core/common/ErrorService', 'core/common/WarningService',
-    function ($scope, $log, $location, $state, $stateParams, $uibModal, $filter, Restangular, Session, _, ErrorService, WarningService) {
+    function ($scope, $log, $location, $state, $stateParams, $uibModal, $filter, $q, Restangular, Session, _, ErrorService, WarningService) {
       var datamartId = Session.getCurrentDatamartId();
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.rulesPerPage = 20;
@@ -69,38 +69,38 @@ define(['./module', 'jquery'], function (module, $) {
 
       function removeAliases() {
         var finalIds = _.pluck($scope.aliases, 'id');
-        _.forEach($scope.originalAliasesIds, function (id) {
+        return _.map($scope.originalAliasesIds, function (id) {
           if (finalIds.indexOf(id) === -1) {
-            Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/aliases/" + id).remove({organisation_id: organisationId});
+            return Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/aliases/" + id).remove({organisation_id: organisationId});
           }
         });
       }
 
       function addAliases() {
-        _.forEach($scope.aliases, function (elem) {
+        return _.map($scope.aliases, function (elem) {
           if (elem.id === undefined) {
             elem.site_id = $stateParams.siteId;
             elem.organisation_id = organisationId;
-            Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/aliases").post(elem);
+            return Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/aliases").post(elem);
           }
         });
       }
 
       function removeRules() {
         var finalIds = _.pluck($scope.rules, 'id');
-        _.forEach($scope.originalRulesIds, function (id) {
+        return _.forEach($scope.originalRulesIds, function (id) {
           if (finalIds.indexOf(id) === -1) {
-            Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules/" + id).remove({organisation_id: organisationId});
+            return Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules/" + id).remove({organisation_id: organisationId});
           }
         });
       }
 
       function addRules() {
-        _.forEach($scope.rules, function (elem) {
+        return _.map($scope.rules, function (elem) {
           if (elem.id === undefined) {
             elem.site_id = $stateParams.siteId;
             var rule = {organisation_id: organisationId, properties: elem};
-            Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").post(rule);
+            return Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").post(rule);
           }
         });
       }
@@ -114,13 +114,18 @@ define(['./module', 'jquery'], function (module, $) {
       }
 
       function sendSiteEdit() {
-        removeAliases();
-        addAliases();
-        removeRules();
-        addRules();
-        Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId).customPUT($scope.site, undefined, {organisation_id: organisationId}).then(function () {
+        $q.all(_.flatten([
+          removeAliases(),
+          addAliases(),
+          removeRules(),
+          addRules(),
+          Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId).customPUT($scope.site, undefined, {organisation_id: organisationId})
+            .catch(handleSiteError)
+        ])).then(function () {
           $location.path("/" + organisationId + "/settings/sites");
-        }, handleSiteError);
+        }).catch(function (e) {
+          ErrorService.showErrorModal(e);
+        });
       }
 
       /**
@@ -162,7 +167,7 @@ define(['./module', 'jquery'], function (module, $) {
         $scope.selectedRule = $scope.tmpRule;
       };
 
-      $scope.editRule = function() {
+      $scope.editRule = function () {
         $scope.ruleEditMode = true;
         $scope.tmpRule = $.extend({}, $scope.selectedRule);
       };
@@ -175,7 +180,7 @@ define(['./module', 'jquery'], function (module, $) {
         $scope.selectedRule = undefined;
       };
 
-      $scope.shortenString = function(str, length) {
+      $scope.shortenString = function (str, length) {
         if (str === undefined) {
           return "";
         }
@@ -254,7 +259,7 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.done = function () {
         if ($scope.editMode) {
           if ($scope.siteToken !== $scope.site.token) {
-            WarningService.showWarningModal("A site token is already set. Are you sure that you want to override it?").then(sendSiteEdit, function() {
+            WarningService.showWarningModal("A site token is already set. Are you sure that you want to override it?").then(sendSiteEdit, function () {
               $scope.site.token = $scope.siteToken;
             });
           } else {
@@ -269,12 +274,15 @@ define(['./module', 'jquery'], function (module, $) {
               };
               Restangular.all("datamarts/" + datamartId + "/sites/" + site.id + "/event_rules").post(rule);
             });
-            $scope.aliases.forEach(function (alias) {
-              alias.site_id = site.id;
-              alias.organisation_id = organisationId;
-              Restangular.all("datamarts/" + datamartId + "/sites/" + site.id + "/aliases").post(alias);
-            });
-            $location.path("/" + organisationId + "/settings/sites");
+            $q.all(
+              $scope.aliases.map(function (alias) {
+                alias.site_id = site.id;
+                alias.organisation_id = organisationId;
+                return Restangular.all("datamarts/" + datamartId + "/sites/" + site.id + "/aliases").post(alias);
+              })
+            ).then(function () {
+                $location.path("/" + organisationId + "/settings/sites");
+              });
           }, handleSiteError);
         }
       };

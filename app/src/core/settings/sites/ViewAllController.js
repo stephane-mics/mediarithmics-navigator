@@ -13,10 +13,6 @@ define(['./module'], function (module) {
         if (values) {
           Restangular.all("datamarts/" + $scope.datamartId + "/sites").getList({"organisation_id": $scope.organisationId}).then(function(sites) {
             $scope.sites = sites;
-            _.forEach(sites, function(site) {
-              var d = new Date(site.creation_date);
-              site.creation_date = d.toLocaleString();
-            });
           });
         }
       });

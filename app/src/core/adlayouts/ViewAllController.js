@@ -33,10 +33,6 @@ define(['./module', 'jquery'], function (module, $) {
         versions.sort(function (a, b) {
           return a.creation_date < b.creation_date;
         });
-        for (var j = 0; j < versions.length; ++j) {
-          var d = new Date(versions[j].creation_date);
-          versions[j].creation_date = d.toLocaleString();
-        }
         matchAdLayoutVersions(versions);
       }
 
