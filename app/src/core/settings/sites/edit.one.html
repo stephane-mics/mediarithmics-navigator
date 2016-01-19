@@ -77,14 +77,14 @@
                 <ul class="dropdown-menu" role="menu">
                   <li><a role="menuItem" tabindex="0" ng-click="newRule('CATALOG_AUTO_MATCH')">Catalog Auto Match</a></li>
                   <li><a role="menuItem" tabindex="1" ng-click="newRule('USER_ACCOUNT_ID_INSERTION')">User Account Setup</a></li>
-                  <li><a role="menuItem" tabindex="2" ng-click="newRule('PATTERN_MATCHING')">Pattern Matching</a></li>
+                  <li><a role="menuItem" tabindex="2" ng-click="newRule('URL_MATCH')">Pattern Matching</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <table class="mics-table mics-clickable-table js-auto-hide-actions table-hover">
+              <table class="mics-table mics-clickable-table mics-table-event-rule js-auto-hide-actions table-hover">
                 <thead>
                 <tr>
                   <th class="first-column">Event Rule Type</th>
@@ -145,14 +145,14 @@
           </div>
 
           <!--Pattern Matching Content-->
-          <div class="selected-editing" ng-show="selectedRule.type === 'PATTERN_MATCHING'">
+          <div class="selected-editing" ng-show="selectedRule.type === 'URL_MATCH'">
             <label for="patternEventName"><strong>Event Name</strong>
               <span class="badge site" uib-popover="The name of the event" popover-trigger="mouseenter" popover-placement="right">?</span>
             </label>
             <div ng-show="ruleEditMode">
-              <input class="form-control input-md" ng-model="tmpRule.event_pattern.event_name" type="text" id="patternEventName">
+              <input class="form-control input-md" ng-model="tmpRule.event_template.$event_name" type="text" id="patternEventName">
             </div>
-            <div ng-show="!ruleEditMode">{{shortenString(selectedRule.event_pattern.event_name, 50)}}</div>
+            <div ng-show="!ruleEditMode">{{shortenString(selectedRule.event_template.$event_name, 50)}}</div>
             <br>
 
             <div class="url-matching">
@@ -160,20 +160,44 @@
                 <span class="badge site" uib-popover="The matching url pattern" popover-trigger="mouseenter" popover-placement="right">?</span>
               </label>
               <div ng-show="ruleEditMode">
-                <input class="form-control input-md" ng-model="tmpRule.url_pattern" type="text" id="urlPattern">
+                <input class="form-control input-md" ng-model="tmpRule.pattern" type="text" id="urlPattern">
               </div>
-              <div ng-show="!ruleEditMode">{{shortenString(selectedRule.url_pattern, 50)}}</div>
+              <div ng-show="!ruleEditMode">{{shortenString(selectedRule.pattern, 50)}}</div>
               <br>
-              <div class="form-group">
-                <input class="form-control input-md test-input" ng-model="tmpRule.url_pattern" type="text" id="urlTest" placeholder="Test your url here">
-                <button class="mics-btn mics-btn-continue pull-right">Test</button>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12">
+                <table class="mics-table mics-table-auto-match js-auto-hide-actions" ng-class="{'table-hover': ruleEditMode}">
+                  <thead>
+                  <tr>
+                    <th class="first-column">Key</th>
+                    <th class="second-column">Value</th>
+                    <th class="actions">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr ng-repeat="(key, value) in tmpRuleProperties">
+                    <td class="first-column">{{key}}</td>
+                    <td class="second-column">{{value}}</td>
+                    <td ng-show="ruleEditMode" class="actions">
+                      <a class="mics-btn mics-btn-delete" ng-click="removeEventTemplateProperty(key)">Remove</a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
           <div ng-show="selectedRule" class="selected-action-buttons">
             <button ng-show="!ruleEditMode" class="mics-btn mics-btn-continue pull-right" ng-click="editRule()">Edit</button>
             <button ng-show="!ruleEditMode" class="mics-btn mics-btn-cancel pull-right" ng-click="removeRule(selectedRule)">Remove</button>
-            <button ng-show="ruleEditMode" ng-disabled="selectedRule.type === 'USER_ACCOUNT_ID_INSERTION' && !tmpRule.property_source.length" class="mics-btn mics-btn-finish pull-right" ng-click="confirmRuleEdit()">Done</button>
+            <button ng-show="ruleEditMode && selectedRule.type === 'URL_MATCH'" class="mics-btn mics-btn-add pull-left" ng-click="newEventTemplateProperty()">New Property</button>
+            <button ng-show="ruleEditMode"
+                    ng-disabled="selectedRule.type === 'USER_ACCOUNT_ID_INSERTION' && !tmpRule.property_source.length ||
+                    selectedRule.type === 'URL_MATCH' && !tmpRule.event_template.event_name.length && !tmpRule.pattern.length"
+                    class="mics-btn mics-btn-finish pull-right" ng-click="confirmRuleEdit()">Done
+            </button>
             <button ng-show="ruleEditMode" class="mics-btn mics-btn-cancel pull-right" ng-click="cancelRuleEdit()">Cancel</button>
           </div>
         </div>

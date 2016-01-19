@@ -523,10 +523,21 @@ module.exports = function (grunt) {
         'return angular.module("{{{name}}}", [{{{dependencies}}}]);' +
         '});'
       }
+    },
+
+    browserify: {
+      dist: {
+        files: {
+          'build/module.js': ['app/scripts/**/*.js', 'client/scripts/**/*.coffee']
+        },
+        options: {
+          transform: ['coffeeify']
+        }
+      }
     }
   });
 
-  grunt.registerTask('versionFile', function() {
+  grunt.registerTask('versionFile', function () {
     var path = require("path");
     grunt.file.write(path.join(grunt.config('yeoman.dist'), "version.txt"), version);
   });

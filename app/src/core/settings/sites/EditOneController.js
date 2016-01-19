@@ -15,6 +15,7 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.site = {datamart_id: datamartId, organisation_id: organisationId};
       $scope.aliases = [];
       $scope.rules = [];
+      $scope.eventTemplate = [];
       $scope.originalAliasesIds = [];
       $scope.originalRulesIds = [];
       $scope.ruleEditMode = false;
@@ -22,7 +23,7 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.ruleTypes = {
         CATALOG_AUTO_MATCH: "Catalog Auto Match",
         USER_ACCOUNT_ID_INSERTION: "User Account Id Creation",
-        PATTERN_MATCHING: "Pattern Matching"
+        URL_MATCH: "Url Match"
       };
       $scope.autoMatchTypes = {
         CATEGORY: "Category",
@@ -52,7 +53,12 @@ define(['./module', 'jquery'], function (module, $) {
             }
           });
           Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").getList({organisation_id: organisationId}).then(function (rules) {
-            $scope.originalRulesIds = _.pluck(rules, 'id');
+            _.forEach(rules, function(rule) {
+              $scope.originalRulesIds.push(rule.id);
+              if (rule.type === 'URL_MATCH') {
+                rule.event_template = JSON.parse(rule.event_template);
+              }
+            });
             $scope.rules = rules;
             $scope.selectedRule = undefined;
           });
@@ -100,6 +106,9 @@ define(['./module', 'jquery'], function (module, $) {
         return _.map($scope.rules, function (elem) {
           if (elem.id === undefined) {
             elem.site_id = $stateParams.siteId;
+            if (elem.event_template !== undefined) {
+              elem.event_template = JSON.stringify(elem.event_template);
+            }
             var rule = {organisation_id: organisationId, properties: elem};
             return Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").post(rule);
           }
@@ -149,7 +158,8 @@ define(['./module', 'jquery'], function (module, $) {
 
       $scope.showDetails = function (rule) {
         $scope.selectedRule = rule;
-        $scope.tmpRule = $.extend({}, rule);
+        $scope.tmpRule = $.extend(true, {}, rule);
+        $scope.tmpRuleProperties = $scope.tmpRule.event_template.$properties;
       };
 
       $scope.newRule = function (type) {
@@ -164,15 +174,16 @@ define(['./module', 'jquery'], function (module, $) {
             remove_source: 'false',
             to_lower_case: 'false'
           };
-        } else if (type === "PATTERN_MATCHING") {
-          $scope.tmpRule = {type: type, url_pattern: "", event_pattern: {}};
+        } else if (type === "URL_MATCH") {
+          $scope.tmpRule = {type: type, event_template: {$event_name: "", $properties: {}}, pattern: ""};
         }
         $scope.selectedRule = $scope.tmpRule;
       };
 
       $scope.editRule = function () {
         $scope.ruleEditMode = true;
-        $scope.tmpRule = $.extend({}, $scope.selectedRule);
+        $scope.tmpRule = $.extend(true, {}, $scope.selectedRule);
+        $scope.tmpRuleProperties = $scope.tmpRule.event_template.$properties;
       };
 
       $scope.removeRule = function (rule) {
@@ -207,19 +218,19 @@ define(['./module', 'jquery'], function (module, $) {
           case "USER_ACCOUNT_ID_INSERTION":
             str = $scope.shortenString(rule.property_source, 25);
             return "Property " + str + " is hashed to " + rule.hash_function;
-          case "PATTERN_MATCHING":
-            str = $scope.shortenString(rule.url_pattern, 25);
+          case "URL_MATCH":
+            str = $scope.shortenString(rule.pattern, 25);
             return "Matches " + str;
         }
       };
-
 
       $scope.cancelRuleEdit = function () {
         if ($scope.ruleCreationMode) {
           $scope.tmpRule = undefined;
           $scope.selectedRule = undefined;
         } else {
-          $scope.tmpRule = $.extend({}, $scope.selectedRule);
+          $scope.tmpRule = $.extend(true, {}, $scope.selectedRule);
+          $scope.tmpRuleProperties = $scope.tmpRule.event_template.$properties;
         }
         $scope.ruleCreationMode = false;
         $scope.ruleEditMode = false;
@@ -231,16 +242,40 @@ define(['./module', 'jquery'], function (module, $) {
           $scope.rules.push($scope.tmpRule);
         }
         $scope.ruleEditMode = false;
-        $scope.selectedRule = $.extend($scope.selectedRule, $scope.tmpRule);
+        $scope.selectedRule = $.extend(true, $scope.selectedRule, $scope.tmpRule);
       };
 
+
+      // Auto Match Rule
+      $scope.newEventTemplateProperty = function () {
+        $uibModal.open({
+          templateUrl: 'src/core/settings/sites/create.event-template-property.html',
+          backdrop: 'static',
+          controller: 'core/settings/sites/CreateEventTemplatePropertyController',
+          size: 'md',
+          resolve: {
+            properties: function() {
+              return $scope.tmpRule.event_template.$properties;
+            }
+          }
+        }).result.then(function (prop) {
+            if ($scope.tmpRule.event_template.$properties[prop.key] !== undefined) {
+              WarningService.showWarningModal("This property has already been defined. ")
+            } else {
+              $scope.tmpRule.event_template.$properties[prop.key] = prop.value;
+            }
+          });
+      };
+
+      $scope.removeEventTemplateProperty = function (key) {
+        delete $scope.tmpRule.event_template.$properties[key];
+      };
 
       // -------------- ALIASES ------------------
 
       $scope.newAlias = function () {
         $uibModal.open({
           templateUrl: 'src/core/settings/sites/create.alias.html',
-          scope: $scope,
           backdrop: 'static',
           controller: 'core/settings/sites/CreateAliasController',
           size: 'md'
@@ -275,6 +310,9 @@ define(['./module', 'jquery'], function (module, $) {
         } else {
           Restangular.all("datamarts/" + datamartId + "/sites").post($scope.site).then(function (site) {
             $scope.rules.forEach(function (ruleInfo) {
+              if (ruleInfo.event_template !== undefined) {
+                ruleInfo.event_template = JSON.stringify($scope.tmpRule.event_template);
+              }
               var rule = {
                 organisation_id: organisationId,
                 properties: ruleInfo

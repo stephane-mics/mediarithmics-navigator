@@ -2379,7 +2379,7 @@ input.ng-invalid {
       min-width: 415px;
     }
 
-    .table {
+    .mics-table-event-rule {
       margin-bottom: 0;
 
       tbody {
@@ -2404,16 +2404,39 @@ input.ng-invalid {
       height: 260px;
     }
 
-    .selected-title {
-      margin-top: 5px;
-      margin-bottom: 15px;
-      margin-left: 0;
+  .mics-table-auto-match {
+    tbody {
+      overflow-y: auto;
+      height: 70px;
+      position: absolute;
     }
 
-    .selected-action-buttons {
-      .mics-btn {
-        margin-left: 8px;
-      }
+    .first-column {
+      width: 200px;
+    }
+
+    .second-column {
+      width: 200px;
+    }
+  }
+
+  .selected-editing {
+    padding-left: 15px;
+    padding-bottom: 15px;
+    height: 260px;
+  }
+
+  .selected-title {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    margin-left: 0;
+  }
+
+  .selected-action-buttons {
+    padding-left: 5px;
+
+    .mics-btn {
+      margin-left: 8px;
     }
   }
 
