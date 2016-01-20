@@ -1,7 +1,10 @@
 <div ng-controller="core/datamart/segments/EditAllController" class="mcs-default-container">
   <div class="mcs-default-content">
     <div class="mcs-default-heading">
-      <h1>All Audience Segments</h1>
+      <h1>All Audience Segments<button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
+          <span class="glyphicon glyphicon-refresh"></span>Refresh
+        </button>
+      </h1>
     </div>
     <div class="mics-table-toolbar">
       <div class ="col-md-6">
@@ -22,6 +25,15 @@
 
         </div>
       </div>
+      <!-- Date picker -->
+      <div class="col-md-6">
+        <div class="segment-list-date-controller pull-right">
+          <form class="form-inline pull-right" role="form">
+            <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L" ranges="reportDefaultDateRanges" opens="'left'">
+          </form>
+
+        </div>
+      </div>
     </div>
     <table class="mics-table js-auto-hide-actions" ng-show="segments.length">
       <thead>
@@ -29,6 +41,9 @@
           <th>Name</th>
           <th>Technical Id</th>
           <th>Type</th>
+          <th class="metrics" ng-repeat="metric in audienceSegmentStats.getMetrics()">
+            {{audienceSegmentStats.getMetricName(metric) }}
+          </th>
           <th class="actions">Actions</th>
         </tr>
       </thead>
@@ -37,6 +52,21 @@
         <td>{{segment.name}}</td>
         <td>{{segment.technical_name}}</td>
         <td>{{segment.type}}</td>
+        <td class="metrics " ng-repeat="metricValue in audienceSegmentStats.getRow(segment.id) track by $index">
+                <span ng-if="metricValue.type == 'currency'">
+                  {{metricValue.value | number:2 | currencyWithSymbol:campaign.currency_code}}
+                </span>
+                <span ng-if="metricValue.type == 'percent'">
+                  {{metricValue.value | number}} %
+                </span>
+                <span ng-if="metricValue.type == 'number'">
+                  {{metricValue.value | number}}
+                </span>
+                <span ng-if="!metricValue.type">
+                  -
+                </span>
+          </td>
+
         <td class="actions">
           <a class="mics-btn mics-btn-action" ng-click="editAudienceSegment(segment, $event)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteAudienceSegment(segment, $event)">Delete</a>

@@ -1,13 +1,30 @@
 define(['./module'], function (module) {
 
   'use strict';
+  var updateStatistics = function ($scope, AudienceSegmentAnalyticsReportService) {
+      AudienceSegmentAnalyticsReportService.allAudienceSegments().then(function (report) {
+        $scope.audienceSegmentStats = report;
+      }); 
+  };
 
   module.controller('core/datamart/segments/EditAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
-    function($scope, Restangular, Session, $location, $uibModal) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal', 'core/datamart/segments/report/AudienceSegmentAnalyticsReportService',
+    function($scope, Restangular, Session, $location, $uibModal,AudienceSegmentAnalyticsReportService) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('audience_segments').getList({organisation_id: organisationId}).then(function (segments) {
         $scope.segments = segments;
+      });
+
+      updateStatistics($scope, AudienceSegmentAnalyticsReportService);
+      $scope.refresh = function () {
+        updateStatistics($scope, AudienceSegmentAnalyticsReportService);
+      };
+      $scope.reportDateRange = AudienceSegmentAnalyticsReportService.getDateRange();
+      $scope.reportDefaultDateRanges = AudienceSegmentAnalyticsReportService.getDefaultDateRanges()
+      ;
+
+      $scope.$watch('reportDateRange', function () {
+        updateStatistics($scope, AudienceSegmentAnalyticsReportService);
       });
 
       $scope.createAudienceSegment = function (type) {

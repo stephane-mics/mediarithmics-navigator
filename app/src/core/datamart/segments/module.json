@@ -1,4 +1,5 @@
 {"name": "core/datamart/segments", "dependencies": [
   "restangular",
+  "core/datamart/segments/report",
   "checklist-model"
 ]}
