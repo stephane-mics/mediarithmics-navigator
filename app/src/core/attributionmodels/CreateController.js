@@ -20,8 +20,7 @@ define(['./module'], function (module) {
       };
 
       $scope.availableAttributionModelProcessors = Restangular.all("plugins").getList({
-        plugin_type : "ATTRIBUTION_PROCESSOR",
-        organisation_id : Session.getCurrentWorkspace().organisation_id
+        plugin_type : "ATTRIBUTION_PROCESSOR"
       }).$object;
 
 
