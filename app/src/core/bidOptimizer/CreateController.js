@@ -20,8 +20,7 @@ define(['./module'], function (module) {
       };
 
       $scope.availableBidOptimizerEngines = Restangular.all("plugins").getList({
-        plugin_type : "BID_OPTIMIZATION_ENGINE",
-        organisation_id : Session.getCurrentWorkspace().organisation_id
+        plugin_type : "BID_OPTIMIZATION_ENGINE"
       }).$object;
 
 
