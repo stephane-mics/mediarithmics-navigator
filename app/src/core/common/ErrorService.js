@@ -5,9 +5,7 @@ define(['./module'], function (module) {
     "$uibModal", "$rootScope", "$log",
     function ($uibModal, $rootScope, $log) {
       var service = {};
-
       var errorModal = null;
-
 
       service.showErrorModal = function(options) {
         var scope = $rootScope.$new(true);
@@ -19,7 +17,7 @@ define(['./module'], function (module) {
           $log.error(options.error);
         } else if (options.error && options.error.data) {
           scope.errorId = options.error.data.error_id;
-        } else if (options.error.message) {
+        } else if (options.error && options.error.message) {
           scope.message = options.error.message;
         }
 
@@ -33,6 +31,7 @@ define(['./module'], function (module) {
 
         return errorModal.result;
       };
+
       service.hideErrorModal = function() {
         if(errorModal) {
           errorModal.close();

@@ -101,6 +101,7 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
         $urlRouterProvider.when('/', '/home');
         $urlRouterProvider.when('', '/home');
         $urlRouterProvider.when('/home', '/campaigns/display');
+        $urlRouterProvider.when('/:organisationId/settings', '/:organisationId/settings/useraccount');
 
         $urlRouterProvider.otherwise(function ($injector, $location) {
           var state = $injector.get('$state');

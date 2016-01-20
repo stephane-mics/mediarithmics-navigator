@@ -689,7 +689,6 @@ form.mcs-full-page-form {
   width: 185px;
   max-width: 185px;
   padding-left: 20px;
-  padding-right: 10px;
   float: left;
 
   .mcs-lm-nav {
@@ -1200,7 +1199,7 @@ table.fragment-list-bid-optimizer-engine {
   @extend .col-md-12;
 
   table {
-    @extend .mics-table ;
+    @extend .mics-table;
     @extend .table-hover;
 
     margin-top: 30px;
@@ -2331,4 +2330,76 @@ input.ng-invalid {
 
 .pagination-selector {
   width: 100%;
+}
+
+// --------------------- Settings ------------------------------
+
+.site-content {
+  .popover {
+    background-color: #FDFECA;
+    font-size: 12px;
+  }
+
+  .popover .arrow:after {
+    border-right-color: #FDFECA;
+  }
+
+  .mics-table-background {
+    display: inline-block;
+    background: $mcs-light-grey;
+    padding: 10px;
+    height: 350px;
+  }
+
+  .badge.site {
+    background-color: #ffffff;
+    color: $mcs-light-blue;
+    font-size: 12px;
+  }
+
+  .mics-table-inline {
+    float: left;
+    table-layout: fixed;
+
+    &.fixed {
+      min-width: 415px;
+    }
+
+    .table {
+      margin-bottom: 0;
+
+      tbody {
+        overflow-y: auto;
+        height: 240px;
+        width: 94%;
+        position: absolute;
+      }
+
+      .first-column {
+        width: 200px;
+      }
+
+      .second-column {
+        width: 250px;
+      }
+    }
+
+    .selected-editing {
+      padding-left: 15px;
+      padding-bottom: 15px;
+      height: 260px;
+    }
+
+    .selected-title {
+      margin-top: 5px;
+      margin-bottom: 15px;
+      margin-left: 0;
+    }
+
+    .selected-action-buttons {
+      .mics-btn {
+        margin-left: 8px;
+      }
+    }
+  }
 }

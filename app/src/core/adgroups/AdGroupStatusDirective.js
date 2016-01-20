@@ -35,7 +35,6 @@ define(['./module'], function (module) {
             $scope.pauseAdGroup = function (adGroup) {
               updateAdGroupStatus(adGroup, "PAUSED");
             };
-
           }
         ]
       };
