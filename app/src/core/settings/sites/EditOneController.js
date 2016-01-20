@@ -15,13 +15,15 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.site = {datamart_id: datamartId, organisation_id: organisationId};
       $scope.aliases = [];
       $scope.rules = [];
+      $scope.eventTemplate = [];
       $scope.originalAliasesIds = [];
       $scope.originalRulesIds = [];
       $scope.ruleEditMode = false;
       $scope.ruleCreationMode = false;
       $scope.ruleTypes = {
         CATALOG_AUTO_MATCH: "Catalog Auto Match",
-        USER_ACCOUNT_ID_INSERTION: "User Account Id Creation"
+        USER_ACCOUNT_ID_INSERTION: "User Account Id Creation",
+        URL_MATCH: "Url Match"
       };
       $scope.autoMatchTypes = {
         CATEGORY: "Category",
@@ -51,7 +53,9 @@ define(['./module', 'jquery'], function (module, $) {
             }
           });
           Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").getList({organisation_id: organisationId}).then(function (rules) {
-            $scope.originalRulesIds = _.pluck(rules, 'id');
+            _.forEach(rules, function (rule) {
+              $scope.originalRulesIds.push(rule.id);
+            });
             $scope.rules = rules;
             $scope.selectedRule = undefined;
           });
@@ -95,12 +99,14 @@ define(['./module', 'jquery'], function (module, $) {
         });
       }
 
-      function addRules() {
+      function upsertRules() {
         return _.map($scope.rules, function (elem) {
+          elem.site_id = $stateParams.siteId;
           if (elem.id === undefined) {
-            elem.site_id = $stateParams.siteId;
             var rule = {organisation_id: organisationId, properties: elem};
             return Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").post(rule);
+          } else {
+            return Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules/" + elem.id).customPUT(elem, undefined, {organisation_id: organisationId});
           }
         });
       }
@@ -113,12 +119,23 @@ define(['./module', 'jquery'], function (module, $) {
         }
       }
 
+      function resetRuleEdit() {
+        if ($scope.ruleCreationMode) {
+          $scope.selectedRule = undefined;
+          $scope.tmpRule = undefined;
+          $scope.tmpRuleProperties = undefined;
+        } else {
+          $scope.tmpRule = $.extend(true, {}, $scope.selectedRule);
+          $scope.tmpRuleProperties = $scope.tmpRule.event_template ? $scope.tmpRule.event_template.$properties : undefined;
+        }
+      }
+
       function sendSiteEdit() {
         $q.all(_.flatten([
           removeAliases(),
           addAliases(),
           removeRules(),
-          addRules(),
+          upsertRules(),
           Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId).customPUT($scope.site, undefined, {organisation_id: organisationId})
             .catch(handleSiteError)
         ])).then(function () {
@@ -147,29 +164,36 @@ define(['./module', 'jquery'], function (module, $) {
         // -------------- RULES ------------------
 
       $scope.showDetails = function (rule) {
+        $scope.cancelRuleEdit();
         $scope.selectedRule = rule;
-        $scope.tmpRule = $.extend({}, rule);
+        $scope.tmpRule = $.extend(true, {}, rule);
+        $scope.tmpRuleProperties = $scope.tmpRule.event_template ? $scope.tmpRule.event_template.$properties : undefined;
       };
 
       $scope.newRule = function (type) {
         $scope.ruleCreationMode = true;
         $scope.ruleEditMode = true;
+        resetRuleEdit();
         if (type === "CATALOG_AUTO_MATCH") {
-          $scope.tmpRule = {type: "CATALOG_AUTO_MATCH", auto_match_type: "CATEGORY"};
+          $scope.tmpRule = {type: type, auto_match_type: "CATEGORY"};
         } else if (type === "USER_ACCOUNT_ID_INSERTION") {
           $scope.tmpRule = {
-            type: "USER_ACCOUNT_ID_INSERTION",
+            type: type,
             hash_function: $scope.hashFunctions[0],
             remove_source: 'false',
             to_lower_case: 'false'
           };
+        } else if (type === "URL_MATCH") {
+          $scope.tmpRule = {type: type, event_template: {$event_name: "", $properties: {}}, pattern: ""};
+          $scope.tmpRuleProperties = $scope.tmpRule.event_template.$properties;
         }
         $scope.selectedRule = $scope.tmpRule;
       };
 
       $scope.editRule = function () {
         $scope.ruleEditMode = true;
-        $scope.tmpRule = $.extend({}, $scope.selectedRule);
+        $scope.tmpRule = $.extend(true, {}, $scope.selectedRule);
+        $scope.tmpRuleProperties = $scope.tmpRule.event_template.$properties;
       };
 
       $scope.removeRule = function (rule) {
@@ -194,6 +218,7 @@ define(['./module', 'jquery'], function (module, $) {
         if (rule === undefined) {
           return "";
         }
+        var str = "";
         switch (rule.type) {
           case "CATALOG_AUTO_MATCH":
             if (rule.auto_match_type === undefined) {
@@ -201,19 +226,16 @@ define(['./module', 'jquery'], function (module, $) {
             }
             return $scope.autoMatchTypes[rule.auto_match_type];
           case "USER_ACCOUNT_ID_INSERTION":
-            var str = $scope.shortenString(rule.property_source, 25);
+            str = $scope.shortenString(rule.property_source, 25);
             return "Property " + str + " is hashed to " + rule.hash_function;
+          case "URL_MATCH":
+            str = $scope.shortenString(rule.pattern, 25);
+            return "Matches " + str;
         }
       };
 
-
       $scope.cancelRuleEdit = function () {
-        if ($scope.ruleCreationMode) {
-          $scope.tmpRule = undefined;
-          $scope.selectedRule = undefined;
-        } else {
-          $scope.tmpRule = $.extend({}, $scope.selectedRule);
-        }
+        resetRuleEdit();
         $scope.ruleCreationMode = false;
         $scope.ruleEditMode = false;
       };
@@ -224,16 +246,43 @@ define(['./module', 'jquery'], function (module, $) {
           $scope.rules.push($scope.tmpRule);
         }
         $scope.ruleEditMode = false;
-        $scope.selectedRule = $.extend($scope.selectedRule, $scope.tmpRule);
+        Object.keys($scope.selectedRule).map(function (a) {
+          if (a in $scope.tmpRule) {
+            $scope.selectedRule[a] = $scope.tmpRule[a];
+          }
+        });
       };
 
+      // Auto Match Rule
+      $scope.newEventTemplateProperty = function () {
+        $uibModal.open({
+          templateUrl: 'src/core/settings/sites/create.event-template-property.html',
+          backdrop: 'static',
+          controller: 'core/settings/sites/CreateEventTemplatePropertyController',
+          size: 'md',
+          resolve: {
+            properties: function () {
+              return $scope.tmpRule.event_template.$properties;
+            }
+          }
+        }).result.then(function (prop) {
+            if ($scope.tmpRule.event_template.$properties[prop.key] !== undefined) {
+              WarningService.showWarningModal("This property has already been defined. ");
+            } else {
+              $scope.tmpRule.event_template.$properties[prop.key] = prop.value;
+            }
+          });
+      };
+
+      $scope.removeEventTemplateProperty = function (key) {
+        delete $scope.tmpRule.event_template.$properties[key];
+      };
 
       // -------------- ALIASES ------------------
 
       $scope.newAlias = function () {
         $uibModal.open({
           templateUrl: 'src/core/settings/sites/create.alias.html',
-          scope: $scope,
           backdrop: 'static',
           controller: 'core/settings/sites/CreateAliasController',
           size: 'md'

@@ -2362,7 +2362,7 @@ input.ng-invalid {
     display: inline-block;
     background: $mcs-light-grey;
     padding: 10px;
-    height: 350px;
+    height: 400px;
   }
 
   .badge.site {
@@ -2376,15 +2376,15 @@ input.ng-invalid {
     table-layout: fixed;
 
     &.fixed {
-      min-width: 415px;
+      min-width: 500px;
     }
 
-    .table {
+    .mics-table-event-rule {
       margin-bottom: 0;
 
       tbody {
         overflow-y: auto;
-        height: 240px;
+        height: 290px;
         width: 94%;
         position: absolute;
       }
@@ -2401,7 +2401,33 @@ input.ng-invalid {
     .selected-editing {
       padding-left: 15px;
       padding-bottom: 15px;
-      height: 260px;
+      height: 314px;
+    }
+
+    .mics-table-auto-match {
+      tbody {
+        overflow-y: auto;
+        height: 125px;
+        position: absolute;
+      }
+
+      .first-column {
+        width: 214px;
+      }
+
+      .second-column {
+        width: 200px;
+      }
+
+      .third-column {
+        width: 70px;
+      }
+    }
+
+    .selected-editing {
+      padding-left: 15px;
+      padding-bottom: 15px;
+      height: 314px;
     }
 
     .selected-title {
@@ -2411,9 +2437,16 @@ input.ng-invalid {
     }
 
     .selected-action-buttons {
+      padding-left: 5px;
+
       .mics-btn {
         margin-left: 8px;
       }
+    }
+
+    .test-input {
+      width: 84%;
+      display: inline-block;
     }
   }
 }

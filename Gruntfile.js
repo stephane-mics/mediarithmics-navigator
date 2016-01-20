@@ -526,7 +526,7 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('versionFile', function() {
+  grunt.registerTask('versionFile', function () {
     var path = require("path");
     grunt.file.write(path.join(grunt.config('yeoman.dist'), "version.txt"), version);
   });
