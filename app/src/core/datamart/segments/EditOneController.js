@@ -47,10 +47,21 @@ define(['./module'], function (module) {
       });
 
       $scope.activations = [];
+      $scope.goals = [];
 
-      $scope.$on("mics-audience-segment:activation-added", function (event, params) {
-        if ($scope.activations.indexOf(params.activation) === -1){
-          $scope.activations.push(params.activation);
+      $scope.$on("mics-audience-segment:activation-added", function (event, activation) {
+        if ($scope.activations.indexOf(activation) === -1){
+          $scope.activations.push(activation);
+        }
+      });
+
+      $scope.$on("mics-audience-segment:goal-selected", function (event, selectedGoal) {
+        var existingGoal = !!_.find($scope.goals, function(goal){
+          return goal.id === selectedGoal.id;
+        });
+
+        if (!existingGoal){
+          $scope.goals.push(selectedGoal);
         }
       });
 
@@ -77,6 +88,22 @@ define(['./module'], function (module) {
           controller: 'core/datamart/segments/AddActivationController',
           size: "lg"
         });
+      };
+
+      $scope.addGoal = function () {
+        var newScope = $scope.$new(true);
+        $uibModal.open({
+          templateUrl: 'src/core/datamart/segments/ChooseExistingGoal.html',
+          scope: newScope,
+          backdrop: 'static',
+          controller: 'core/datamart/segments/ChooseExistingGoalController',
+          size: 'lg',
+        });
+      };
+
+      $scope.removeGoal = function (goal) {
+        var i = $scope.goals.indexOf(goal);
+        $scope.goals.splice(i,1);
       };
 
       $scope.removeActivation = function (activation) {
