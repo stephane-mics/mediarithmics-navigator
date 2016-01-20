@@ -65,7 +65,14 @@ define(['./module'], function (module) {
                   deferred.resolve();
                 });
               } else {
-                self.currentWorkspace = self.userProfile.workspaces[self.userProfile.default_workspace];
+                if (self.userProfile.default_workspace in self.userProfile.workspaces) {
+                  self.currentWorkspace = self.userProfile.workspaces[self.userProfile.default_workspace];
+                } else if (self.userProfile.workspaces.length) {
+                  $log.warn("default_workspace", self.userProfile.default_workspace, "is invalid, using the first one");
+                  self.currentWorkspace = self.userProfile.workspaces[0];
+                } else {
+                  $log.error("Can't set self.currentWorkspace, default_workspace =", self.userProfile.default_workspace, "workspaces =", self.userProfile.workspaces);
+                }
                 $log.debug("Use default : ", self.currentWorkspace);
                 self.initialized = true;
                 deferred.resolve();
