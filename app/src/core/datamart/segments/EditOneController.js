@@ -4,8 +4,8 @@ define(['./module'], function (module) {
 
 
   module.controller('core/datamart/segments/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location',
-    function($scope, $log, Restangular, Session, _, $stateParams, $location) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$uibModal',
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, $uibModal) {
       var segmentId = $stateParams.segment_id;
       var type = $stateParams.type;
 
@@ -46,6 +46,44 @@ define(['./module'], function (module) {
         }
       });
 
+      $scope.activations = [];
+
+      $scope.$on("mics-audience-segment:activation-added", function (event, params) {
+        if ($scope.activations.indexOf(params.activation) === -1){
+          $scope.activations.push(params.activation);
+        }
+      });
+
+
+      $scope.addActivation = function () {
+        var newScope = $scope.$new(true);
+        newScope.activation = {};
+        $uibModal.open({
+            templateUrl: 'src/core/datamart/segments/add-activation.html',
+            scope : newScope,
+            backdrop : 'static',
+            controller: 'core/datamart/segments/AddActivationController',
+            size: "lg"
+          });
+      };
+
+      $scope.editActivation = function (activation) {
+        var newScope = $scope.$new(true);
+        newScope.activation = activation;
+        $uibModal.open({
+          templateUrl: 'src/core/datamart/segments/add-activation.html',
+          scope : newScope,
+          backdrop : 'static',
+          controller: 'core/datamart/segments/AddActivationController',
+          size: "lg"
+        });
+      };
+
+      $scope.removeActivation = function (activation) {
+        var i = $scope.activations.indexOf(activation);
+        $scope.activations.splice(i,1);
+      };
+
       $scope.cancel = function () {
         $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments");
       };
@@ -60,4 +98,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-

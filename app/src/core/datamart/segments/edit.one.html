@@ -18,25 +18,66 @@
     </div>
 
     <!-- Name -->
-    <div mcs-form-group="" label-for="audience_segment_name" label-text="Name">
-      <input required class="input-lg" ng-model="segment.name" type="text" id="audience_segment_name">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="audience_segment_name">Name</label>
+            <input required class="form-control input-lg" ng-model="segment.name" type="text" id="audience_segment_name">
+          </div>
+        </div>
+        <div class="col-md-4 col-md-offset-2">
+          <div class="form-group">
+            <label for="audience_segment_type">Type</label>
+            <input class="form-control input-lg" ng-model="segment.type" type="text" id="audience_segment_type" disabled>
+          </div>
+        </div>
+      </div>
     </div>
-
+    <br>
 
     <div ng-if="segment.type == 'USER_QUERY'">
-    <h1>
-      <div class="pull-right">
-        <a class="mics-btn mics-btn-action" ng-click="refreshQuery()">Refresh</a>
+      <div class="mics-block-heading">
+        <span>Query</span>
       </div>
-      <span>Query</span>
-    </h1>
-
-    <br>
-
-
-    <mcs-query-tool datamart-id="datamartId" autoload="true" query-id="segment.query_id"></mcs-query-tool>
-    <br>
+          <!-- <a class="mics-btn mics-btn-action" ng-click="refreshQuery()">Refresh</a> -->
+      <br>
+      <mcs-query-tool datamart-id="datamartId" autoload="true" query-id="segment.query_id"></mcs-query-tool>
+      <br>
     </div>
+
+
+    <div class="mics-block-heading">
+      <span>External programmatic activation</span>
+      <div class="btn-group">
+        <a class="mics-btn mics-btn-add" ng-click="addActivation()">Add an activation</a>
+      </div>
+    </div>
+    <table class="mics-table" ng-show="activations.length">
+      <thead>
+      <tr>
+        <th>Host</th>
+        <th>User Account Id</th>
+        <th>Segment Id</th>
+        <th>Comment</th>
+        <th class="actions">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="activation in activations">
+        <td>{{activation.host}}</td>
+        <td>{{activation.user_account_id}}</td>
+        <td>{{activation.segment_id}}</td>
+        <td>{{activation.comment}}</td>
+        <td class="actions">
+          <a class="mics-btn mics-btn-action" ng-click="editActivation(activation)">Edit</a>
+          <a class="mics-btn mics-btn-delete" ng-click="removeActivation(activation)">Remove</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <br>
 
     <div class="panel-group" id="accordion">
       <div class="panel panel-default">
@@ -65,4 +106,3 @@
     </div>
   </form>
 </div>
-
