@@ -113,12 +113,12 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
           return tableHeaders;
         };
 
-        ReportService.getPerformance = function (resource, metrics, filters, sort, limit) {
+        ReportService.getPerformance = function (resource, dimensions, metrics, filters, sort, limit) {
           return resource.get({
             organisation_id: Session.getCurrentWorkspace().organisation_id,
             start_date: startDate().format('YYYY-MM-D'),
             end_date: endDate().format('YYYY-MM-D'),
-            dimension: "",
+            dimension: dimensions,
             metrics: metrics,
             filters: filters,
             sort: sort,
@@ -127,7 +127,14 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
         };
 
         ReportService.buildPerformanceReport = function (resource, metrics, filters, sort, limit) {
-          return this.getPerformance(resource, metrics, filters, sort, limit)
+          return this.getPerformance(resource, "", metrics, filters, sort, limit)
+            .$promise.then(function (response) {
+              return new ReportWrapper(response.data.report_view, tableHeaders);
+            });
+        };
+
+	ReportService.buildPerformanceDimensionReport = function (resource, dimensions, metrics, filters, sort, limit) {
+          return this.getPerformance(resource, dimensions, metrics, filters, sort, limit)
             .$promise.then(function (response) {
               return new ReportWrapper(response.data.report_view, tableHeaders);
             });
@@ -164,6 +171,17 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
           var cpa = hasCpa ? ",cpa" : "";
           return this.buildPerformanceReport(
             mediaResource,
+            "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
+            "campaign_id==" + campaignId,
+            sort,
+            limit
+          );
+        };
+	ReportService.segmentPerformance = function (campaignId, hasCpa, sort, limit) {
+          var cpa = hasCpa ? ",cpa" : "";
+          return this.buildPerformanceDimensionReport(
+            displayCampaignResource,
+	    "audience_segment_id",
             "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa,
             "campaign_id==" + campaignId,
             sort,

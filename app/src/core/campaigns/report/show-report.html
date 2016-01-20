@@ -227,6 +227,34 @@
               </tbody>
             </table>
           </tab>
+          <!--Sites Tab-->
+          <tab heading="Audience Segment" ng-show="segmentPerformance">
+          <table class="mics-table">
+              <thead>
+              <tr>
+                <th >
+                  Name
+                </th>
+                <th  class="metrics" ng-repeat="metric in segmentPerformance.getMetrics()">
+                  {{ segmentPerformance.getMetricName(metric) }} 
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="row in segmentPerformance.getObjectRows()" ng-show="row.audience_segment_id != 0">
+                <td>{{row.audience_segment_id}}</td>
+                <td class="metrics" ng-repeat="info in  segmentPerformance.getMetricsInfos()">
+                  <span ng-if="info.type == 'currency' && row[info.metric] != undefined">
+                    {{row[info.metric]  | number:2 | currencyWithSymbol:campaign.currency_code}}
+                  </span>
+                  <span ng-if="info.type == 'percent' && row[info.metric] != undefined">{{row[info.metric] | number}} %</span>
+                  <span ng-if="info.type == 'number' && row[info.metric] != undefined">{{row[info.metric] | number}}</span>
+                  <span ng-if="!info.type || row[info.metric] == undefined"> -  </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </tab>
         </tabset>
       </div>
     </div>

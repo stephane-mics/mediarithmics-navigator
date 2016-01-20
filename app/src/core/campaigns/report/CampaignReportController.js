@@ -38,6 +38,12 @@ define(['./module', 'lodash'], function (module, _) {
     CampaignAnalyticsReportService.adPerformance(campaignId, $scope.hasCpa).then(function (data) {
       $scope.adPerformance = data;
     });
+ 
+    CampaignAnalyticsReportService.segmentPerformance(campaignId, $scope.hasCpa).then(function (data) {
+      if(data.getRows().length > 1) {
+        $scope.segmentPerformance = data;
+      }
+    });
 
     // For unspeakable reasons (and hopefully soon-to-be-fixed ones) this triggers a huuuuge boost.
     // I'll work on these, please continue my combat if I fall.
