@@ -20,7 +20,7 @@ define(['./module', 'lodash'], function (module, _) {
   };
 
   var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts, Restangular) {
-    CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
+    CampaignAnalyticsReportService.setDateRange($scope.date.reportDateRange);
     if (CampaignAnalyticsReportService.dateRangeIsToday()) {
       $scope.timeFilter = $scope.timeFilters[1];
     }
@@ -72,11 +72,10 @@ define(['./module', 'lodash'], function (module, _) {
    */
   module.controller('core/campaigns/report/CampaignReportController', [
     '$scope', '$location', '$uibModal', '$log', '$stateParams', 'Restangular', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService',
-    'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session', 'core/common/files/ExportService', 'core/campaigns/goals/GoalsService',
-    function ($scope, $location, $uibModal, $log, $stateParams, Restangular, ChartsService, DisplayCampaignService,
-              CampaignAnalyticsReportService, CampaignPluginService, Session, ExportService, GoalsService) {
+    'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session', 'core/common/files/ExportService', 'core/campaigns/goals/GoalsService', 'd3', 'moment', '$interval',
+    function ($scope, $location, $uibModal, $log, $stateParams, Restangular, ChartsService, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, Session, ExportService, GoalsService, d3, moment, $interval) {
       // Chart
-      $scope.reportDateRange = CampaignAnalyticsReportService.getDateRange();
+      $scope.date = {reportDateRange: CampaignAnalyticsReportService.getDateRange()};
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
       $scope.timeFilters = ['Daily', 'Hourly']; // Time filters order is important
       $scope.timeFilter = $scope.timeFilters[0];
@@ -177,7 +176,7 @@ define(['./module', 'lodash'], function (module, _) {
         return [
           ["Organisation:", Session.getOrganisationName($scope.campaign.organisation_id)],
           ["Campaign: ", $scope.campaign.name],
-          ["From " + $scope.reportDateRange.startDate.format("DD-MM-YYYY"), "To " + $scope.reportDateRange.endDate.format("DD-MM-YYYY")],
+          ["From " + $scope.date.reportDateRange.startDate.format("DD-MM-YYYY"), "To " + $scope.date.reportDateRange.endDate.format("DD-MM-YYYY")],
           [],
           [metricsType],
           metricsHeaders
@@ -222,6 +221,7 @@ define(['./module', 'lodash'], function (module, _) {
           var bVal = (b || "").toString();
           return rawCompare(aVal, bVal); // lexicographic order
         }
+
         function rawCompare(a, b) {
           if (a === b) {
             return 0;
@@ -231,6 +231,7 @@ define(['./module', 'lodash'], function (module, _) {
             return 1;
           }
         }
+
         var getInfoValue = function (ad, orderBy) {
           if (!ad.info) {
             return undefined;
@@ -422,7 +423,7 @@ define(['./module', 'lodash'], function (module, _) {
             return adGroup;
           };
 
-          $scope.adGroups = campaign.ad_groups.map(function(ad_group) {
+          $scope.adGroups = campaign.ad_groups.map(function (ad_group) {
             var adGroupInfo = [ad_group.id].concat(adGroupPerformance.getRow(ad_group.id));
             return addAdGroupInfo(ad_group, adGroupInfo);
           });
@@ -446,7 +447,7 @@ define(['./module', 'lodash'], function (module, _) {
       /**
        * Stats
        */
-      $scope.$watchGroup(['reportDateRange', 'hasCpa'], function (values) {
+      $scope.$watchGroup(['date.reportDateRange', 'hasCpa'], function (values) {
         if (angular.isDefined(values[0]) && angular.isDefined(values[1])) {
           $scope.timeFilter = $scope.timeFilters[0];
           updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts, Restangular);
@@ -532,6 +533,145 @@ define(['./module', 'lodash'], function (module, _) {
         }
         return "/" + Session.getCurrentWorkspace().organisation_id + "/creatives/" + type + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
       };
+
+
+      //TODO fix live statistics
+/*
+      *//**
+       * Bid sent, bid win and bid lost charts
+       *//*
+
+      $scope.options = {
+        chart: {
+          type: 'stackedAreaChart',
+          height: 250,
+//                    width:400,
+          margin: {
+            top: 20,
+            right: 30,
+            bottom: 40,
+            left: 55
+          },
+          x: function (d) {
+            return d.x;
+          },
+          y: function (d) {
+            return d.y;
+          },
+          useInteractiveGuideline: true,
+          duration: 500,
+          showControls: false,
+          xAxis: {
+            tickFormat: function (d) {
+
+              if (typeof d === "string") {
+                return d;
+              }
+              return d3.time.format('%X')(new Date(d));
+            }
+          },
+          yAxis: {
+            tickFormat: function (d) {
+              return d3.format('.01f')(d);
+            }
+          },
+
+          legendPosition: 'right'
+        }
+      };
+
+      $scope.optionBidWin = angular.copy($scope.options);
+      $scope.optionBidWin.chart.duration = 0;
+
+      var bidWinData = { values: [], key: 'Bid Win', color: '#00AC67'};
+      var bidLostData = { values: [], key: 'Bid Lost', color: '#FE5858' };
+
+      $scope.dataBidWin = [bidWinData, bidLostData];
+
+      $scope.refreshGraph = {refreshInterval: 1,
+        refreshDataTab: false,
+        refreshIntervals: [1, 2, 5, 10]};
+      var x = moment();
+
+      var myFunction = function () {
+
+        setTimeout(myFunction, $scope.refreshGraph.refreshInterval * 1000);
+
+        if (!$scope.refreshGraph.refreshDataTab) {
+          return;
+        }
+
+        var bidSent = Math.random() * 1000;
+        var bidWin = bidSent * 0.1 + Math.random() * 100;
+        var bidLost = bidSent - bidWin;
+
+        bidLostData.values.push({ x: x.unix() * 1000, y: bidLost});
+        bidWinData.values.push({ x: x.unix() * 1000, y: bidWin});
+
+        $scope.dataBidWin = [bidWinData, bidLostData];
+        if ($scope.dataBidWin[0].values.length > 10) {
+          $scope.dataBidWin[0].values.shift();
+          $scope.dataBidWin[1].values.shift();
+        }
+        x.add($scope.refreshGraph.refreshInterval, 'seconds');
+
+
+        //live report
+
+        CampaignAnalyticsReportService.livePerformance($stateParams.campaign_id, $scope.refreshGraph.refreshInterval).then(function (data) {
+          $scope.livePerformance = data;
+        });
+
+        $scope.$evalAsync(); // update both chart
+      };
+
+      myFunction();
+
+
+      $scope.optionsBidPrice = {
+        chart: {
+          type: 'lineChart',
+          height: 250,
+          margin: {
+            top: 20,
+            right: 30,
+            bottom: 40,
+            left: 55
+          },
+          x: function (d) {
+            return d.x;
+          },
+          y: function (d) {
+            return d.y;
+          },
+          useInteractiveGuideline: true,
+          duration: 500,
+          xAxis: {
+            tickFormat: function (d) {
+              return d3.time.format('%X')(new Date(d));
+
+            }
+          },
+          yAxis: {
+            tickFormat: function (d) {
+              return d3.format('.01f')(d);
+            }
+          },
+
+          legendPosition: 'right'
+        }
+      };
+      $scope.optionBidWin.chart.duration = 0;
+      $scope.optionsBidPrice.chart.duration = 0;
+
+      $scope.dataBidPrice = $scope.dataBidWin;
+
+      $scope.selectedDisplayNetwork = 1;
+
+
+      */
+
+
     }
   ]);
 });

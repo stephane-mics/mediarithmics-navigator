@@ -1,4 +1,4 @@
-<div class="mcs-default-container bid-optimizer-report"
+<div class="mcs-default-container mics-report"
      ng-controller="core/bidOptimizer/reports/BidOptimizerReportsController" xmlns="http://www.w3.org/1999/html">
     <div class="report mcs-default-content">
 
@@ -21,7 +21,7 @@
                     <img src="./images/ajax-loader.gif" class="ajax-loader">
                 </div>
                 <div ng-show="!statsLoading">
-                    <div class="modelId">
+                    <div class="report-header">
                         <h3>
                             Model id : <span>{{showModelId}}</span>
                             Date : <span>{{modelDate | date:'MM/dd/yyyy'}}</span>

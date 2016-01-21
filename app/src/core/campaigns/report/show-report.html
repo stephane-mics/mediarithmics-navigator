@@ -7,7 +7,9 @@
           <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign)">Edit Campaign</a>
         </div>
         <span>{{campaign.name}}</span>
-        <div mics-campaign-status="campaign"></div>&nbsp;
+
+        <div mics-campaign-status="campaign"></div>
+        &nbsp;
         <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
           <span class="glyphicon glyphicon-refresh"></span>
           Refresh
@@ -15,27 +17,39 @@
       </h2>
     </div>
 
+    <!--
     <div class="chart-controller">
       <div class="report-type-controller">
         <ul class="nav nav-pills">
-          <li class="active"><a>Overview</a></li>
-          <!-- <li class=""><a href="#">Intraday</a></li> -->
-          <!-- <li><a href="#">Trading Reports</a></li> -->
+          <li class="active" ng-click="tabOverviewSelected=true"><a>Overview</a></li>
+          <li class="" ng-click="tabOverviewSelected=false"><a>Live</a></li>
+          &lt;!&ndash; <li><a href="#">Trading Reports</a></li> &ndash;&gt;
         </ul>
       </div>
     </div>
+    -->
+
+    <uib-tabset>
+    <uib-tab>
+    <uib-tab-heading>
+      Overview
+    </uib-tab-heading>
+
+
     <div class="report-toolbar">
       <div class="date-export-toolbar">
         <div class="report-date-controller">
           <!-- date picker https://github.com/sagivf/ng-bs-daterangepicker -->
           <form class="form-inline pull-right" role="form">
-            <input type="daterange" ng-model="reportDateRange" class="form-control range" format="L"
+            <input type="daterange" ng-model="date.reportDateRange" class="form-control range" format="L"
                    ranges="reportDefaultDateRanges" opens="'left'">
           </form>
           <div class="dropdown pull-right" dropdown>
-            <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">Export <span class="caret"></span></button>
+            <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">Export <span
+                    class="caret"></span></button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="Choose Export Format">
-              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">Excel (.xlsx)</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">Excel (.xlsx)</a>
+              </li>
               <!--<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('csv')">CSV</a></li>-->
             </ul>
           </div>
@@ -258,5 +272,68 @@
         </tabset>
       </div>
     </div>
+
+    </uib-tab>
+
+
+    <!--TODO show this tab once live stats fixed -->
+<!--
+
+    <uib-tab active="refreshGraph.refreshDataTab">
+
+      <uib-tab-heading>
+        Live
+      </uib-tab-heading>
+      <div class="col-xs-12 breakdown-area">
+        <div>
+          <div class="col-xs-12 report-toolbar">
+            <form class="" role="form">
+
+
+              <div class="form-group pull-right left-spaced not-bottom-spaced">
+                <label for="bidFrequency">Refresh interval</label>
+                <select id="bidFrequency" class="form-control" ng-model="refreshGraph.refreshInterval"
+                        ng-options="frequency for frequency in  refreshGraph.refreshIntervals">
+
+                </select>
+              </div>
+
+              <div class="form-group pull-right left-spaced not-bottom-spaced">
+                <label for="displayNetwork">Display Network</label>
+                <select id="displayNetwork" class="form-control" ng-model="selectedDisplayNetwork"
+                        ng-options="displayNetwork for displayNetwork in refreshGraph.refreshIntervals">
+
+                </select>
+              </div>
+
+
+            </form>
+
+
+          </div>
+
+          <div class="col-xs-12">
+            <div class="col-xs-5">
+
+              <nvd3 options="optionBidWin" data="dataBidWin"></nvd3>
+
+            </div>
+
+            <div class="col-xs-5">
+
+              <nvd3 options="optionsBidPrice" data="dataBidPrice"></nvd3>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </uib-tab>
+
+-->
+    </uib-tabset>
+
+
   </div>
 </div>

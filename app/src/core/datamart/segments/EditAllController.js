@@ -4,12 +4,12 @@ define(['./module'], function (module) {
   var updateStatistics = function ($scope, AudienceSegmentAnalyticsReportService) {
       AudienceSegmentAnalyticsReportService.allAudienceSegments().then(function (report) {
         $scope.audienceSegmentStats = report;
-      }); 
+      });
   };
 
   module.controller('core/datamart/segments/EditAllController', [
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal', 'core/datamart/segments/report/AudienceSegmentAnalyticsReportService',
-    function($scope, Restangular, Session, $location, $uibModal,AudienceSegmentAnalyticsReportService) {
+    function ($scope, Restangular, Session, $location, $uibModal, AudienceSegmentAnalyticsReportService) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('audience_segments').getList({organisation_id: organisationId}).then(function (segments) {
         $scope.segments = segments;
@@ -20,15 +20,29 @@ define(['./module'], function (module) {
         updateStatistics($scope, AudienceSegmentAnalyticsReportService);
       };
       $scope.reportDateRange = AudienceSegmentAnalyticsReportService.getDateRange();
-      $scope.reportDefaultDateRanges = AudienceSegmentAnalyticsReportService.getDefaultDateRanges()
-      ;
+      $scope.reportDefaultDateRanges = AudienceSegmentAnalyticsReportService.getDefaultDateRanges();
 
-      $scope.$watch('reportDateRange', function () {
+      $scope.$watch('reportDateRange', function (newRange) {
+        if (!newRange) {
+          return;
+        }
+
+        AudienceSegmentAnalyticsReportService.setDateRange($scope.reportDateRange);
+
         updateStatistics($scope, AudienceSegmentAnalyticsReportService);
       });
 
       $scope.createAudienceSegment = function (type) {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments/" + type);
+        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments/" + type);
+      };
+
+      $scope.detailsAudienceSegment = function (segment, $event) {
+        if ($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+        }
+
+        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments/" + segment.type + "/" + segment.id + "/report");
       };
 
       $scope.editAudienceSegment = function (segment, $event) {
