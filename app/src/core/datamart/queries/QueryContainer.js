@@ -105,7 +105,7 @@ define(['./module'], function (module) {
                     });
 
                     if (conditions.length > 0){
-                        self.family = conditions[0].getFamilyName();
+                        self.family = self.conditions[0].getFamilyName();
                     }
 
                     return self.conditions;
@@ -202,16 +202,13 @@ define(['./module'], function (module) {
             GroupContainer.prototype.loadElements = function () {
                 var self = this;
                 return this.value.all('elements').getList().then(function (elements) {
-                    return lodash.map(elements, function(element){
+                    return $q.all(lodash.map(elements, function(element){
                         var elementContainer = new ElementContainer(self,element);
-                        var conditionsP = elementContainer.loadConditions();
                         self.elementContainers.push(elementContainer);
-
-                        return $q.all(conditionsP).then(function () {
-                            return self;
-                        });
-                    });
-
+                        return elementContainer.loadConditions();
+                    }));
+                }).then(function () {
+                    return self;
                 });
             };
 

@@ -1,0 +1,7 @@
+{
+  "name": "core/settings/sites",
+  "dependencies": [
+    "core/common",
+    "restangular"
+  ]
+}

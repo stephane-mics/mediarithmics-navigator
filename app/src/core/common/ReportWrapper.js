@@ -1,7 +1,12 @@
 define(['lodash'], function (_) {
   'use strict';
 
-  return function ReportWrapper(report, tableHeaders) {
+  return function ReportWrapper(report, _tableHeaders) {
+    var tableHeaders = _tableHeaders;
+    
+    for(var prop in _tableHeaders) {
+      tableHeaders[prop].metric = prop;
+    }
     //TODO send metadata in report
     
     var isMetrics = function (e) {
@@ -152,6 +157,20 @@ define(['lodash'], function (_) {
         return tableHeaders[input].name;
       }
     };
+
+    this.getMetricInfos = function (input) {
+      if (angular.isDefined(tableHeaders[input])) {
+        return tableHeaders[input];
+      }
+    };
+
+       // Return the list of the report metrics (excluding the dimensions)
+    this.getMetricsInfos = function () {
+      return _.map(this.getMetrics(),this.getMetricInfos);
+    };
+
+
+    
 
     this.getMetricType = function (index) {
       return tableHeaders[this.getMetrics()[index]].type;

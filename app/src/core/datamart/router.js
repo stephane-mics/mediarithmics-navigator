@@ -72,7 +72,7 @@ define(['./module'], function (module) {
           url:'/{organisation_id}/datamart/segments/:type',
           templateUrl: 'src/core/datamart/segments/edit.one.html',
           data: { navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html' }
-        })     
+        })      
         .state('datamart/users', {
           url: '/:organisation_id/datamart/users',
           templateUrl: 'src/core/datamart/users/view.all.html',
@@ -103,26 +103,6 @@ define(['./module'], function (module) {
             }
           }
         })
-        /*state('datamart/users/my_timeline', {
-          url: '/:organisation_id/datamart/users/:userId?live&debug',
-          templateUrl: 'src/core/datamart/users/view.one.html',
-          data: {
-            sidebar: {
-              templateUrl : 'src/core/datamart/datamart-sidebar.html',
-              selected: 'search'
-            }
-          }
-        })*/
-        /*.state('datamart/users/upid/:upid/live', {
-          url: '/:organisation_id/datamart/users/upid/:upid?live&debug',
-          templateUrl: 'src/core/datamart/users/view.one.html',
-          data: {
-            sidebar: {
-              templateUrl : 'src/core/datamart/datamart-sidebar.html',
-              selected: 'search'
-            }
-          }
-        })*/
         .state('datamart/queries', {
           url: '/:organisation_id/datamart/queries',
           templateUrl: 'src/core/datamart/queries/index.html',

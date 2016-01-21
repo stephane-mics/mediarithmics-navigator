@@ -22,10 +22,6 @@ define(['./module', 'jquery'], function (module, $) {
         versions.sort(function (a, b) {
           return a.creation_date < b.creation_date;
         });
-        for (var j = 0; j < versions.length; ++j) {
-          var d = new Date(versions[j].creation_date);
-          versions[j].creation_date = d.toLocaleString();
-        }
         if (versions[0]) {
           $.grep($scope.stylesheets, function (e) {
             if (e.id === versions[0].style_sheet_id) {

@@ -193,9 +193,9 @@ define(['./module'], function (module) {
                         reload();
                     }
 
-                    $scope.$on("mics-query-tool:refresh", function (event, params) {
+                    $scope.refreshQuery = function () {
                         reload();
-                    });
+                    };
 
                     $scope.$on("mics-query-tool:save", function (event, params) {
                         queryContainer.save().then(function success (){
