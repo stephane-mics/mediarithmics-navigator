@@ -82,7 +82,7 @@ $navbar-inverse-link-color: $body-bg;
     border-color: $background;
   }
 
-  .dropdown.open & {
+  .uib-dropdown.open & {
     background-color: $background;
     border-color: $background;
   }
@@ -116,11 +116,11 @@ $navbar-inverse-link-color: $body-bg;
   }
 ;
 
-  li.dropdown.open {
+  li.uib-dropdown.open {
     background: white;
   }
 
-  li.dropdown.open > img {
+  li.uib-dropdown.open > img {
     -webkit-filter: invert(1);
     filter: invert(1);
   }
@@ -563,7 +563,7 @@ form.mcs-full-page-form {
   min-height: 300px;
 }
 
-[dropdown-toggle].mics-btn-add {
+[uib-dropdown-toggle].mics-btn-add {
   & + ul.dropdown-menu {
     padding: 0;
 
@@ -745,7 +745,7 @@ form.mcs-full-page-form {
     @extend .mcs-default-content;
     .campaign-list-heading {
       @extend .mcs-default-heading;
-      .dropdown {
+      .uib-dropdown {
         display: inline-block;
       }
     }
@@ -873,7 +873,7 @@ form.mcs-full-page-form {
   .report {
     .report-heading {
       @extend .mcs-default-heading;
-      .dropdown-export {
+      .uib-dropdown-export {
         display: inline-block;
       }
       h2 {
@@ -1899,7 +1899,7 @@ a.category-item {
 
   .agent-filter-box {
     margin-top: 0 !important;
-    > .dropdown-menu {
+    > .uib-dropdown-menu {
       box-shadow: 1px 2px 1px #999999;
     }
   }
@@ -1909,7 +1909,7 @@ a.category-item {
   margin-top: 30px;
   color: $dark-blue;
 
-  > .dropdown-menu {
+  > .uib-dropdown-menu {
     min-width: 180px;
     padding-bottom: 0;
     border-color: $mcs-light-grey;

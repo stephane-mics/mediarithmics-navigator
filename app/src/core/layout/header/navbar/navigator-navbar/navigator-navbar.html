@@ -29,9 +29,9 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown" dropdown>
+        <li class="dropdown" uib-dropdown>
           <a ng-hide="workspaces.length > 1" href="#" class="mcs-workspace-label">{{currentOrganisation}}</a>
-          <a ng-show="workspaces.length > 1" href="#" class="mcs-workspace-label" dropdown-toggle>{{currentOrganisation}}
+          <a ng-show="workspaces.length > 1" href="#" class="mcs-workspace-label" uib-dropdown-toggle>{{currentOrganisation}}
             <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li ng-repeat="workspace in workspaces" ng-if="workspaces.length > 1 && workspace.organisationId != currentOrganisationId">
@@ -39,8 +39,8 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown" dropdown>
-          <img dropdown-toggle src="./images/user.svg">
+        <li class="dropdown" uib-dropdown>
+          <img uib-dropdown-toggle src="./images/user.svg">
           <ul class="dropdown-menu">
             <li><p>{{user.email}}</p></li>
             <li><a href="#/{{organisationId}}/settings">Account & Settings</a></li>

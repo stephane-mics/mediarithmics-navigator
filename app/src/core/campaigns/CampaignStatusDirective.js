@@ -8,11 +8,19 @@ define(['./module'], function (module) {
         replace: true,
         templateUrl: "src/core/campaigns/campaignStatusTemplate.html",
         scope: {
-          "campaign": "=micsCampaignStatus"
+          "campaign": "=micsCampaignStatus",
+          "event": "=?"
+        },
+        link: function(scope, elems, attrs) {
+          if (scope.event) {
+            scope.event.preventDefault();
+            scope.event.stopPropagation();
+          }
         },
         controller: [
           "$scope", "Restangular", "core/common/ErrorService",
           function ($scope, Restangular, errorService) {
+
 
             var updateCampaignStatus = function (campaign, status) {
               Restangular.one("display_campaigns", campaign.id).customPUT({
