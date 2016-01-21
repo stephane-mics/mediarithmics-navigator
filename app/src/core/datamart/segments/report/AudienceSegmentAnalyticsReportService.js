@@ -77,8 +77,8 @@ var tableHeaders = {
                       ReportService.allAudienceSegments = function () {
                        return this.buildReport(
                          audienceSegmentsResource,
-                         "",
-                         "user_points,user_accounts,emails,user_point_additions",
+                         "audience_segment_id",
+                         "user_points,user_accounts,emails,desktop_devices,user_point_additions,user_point_deletions",
                          ""
                        );
                      }; 
