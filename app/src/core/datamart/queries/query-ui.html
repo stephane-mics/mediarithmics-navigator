@@ -163,24 +163,43 @@
                     <tab heading="Selected values">
                         <div class="query-tab">
                             <div class="panel panel-default">
-                            <div class="panel-body" ng-class="{'ongoing-drag-decorate':onGoingDrag}">
-                                <div x-lvl-drop-target='true'
-                                     x-on-drop='addSelectedValue(dragEl, dropEl , queryContainer)'>
-                                    <div ng-repeat="selectedValue in queryContainer.selectedValues">
-                                        <div class="col-md-12">
-                                            {{selectedValue.getFamilyName()}} : {{selectedValue.getSelectorLabel()}}
-                                            <div class="pull-right">
+                                <div class="panel-heading">
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="btn-group" role="group" ng-repeat="expression in propertySelectorExpressions">
+                                            <a x-lvl-draggable='true' data-family="selector_expression" class="btn btn-info btn-xs" name="{{expression}}">{{expression}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                <div class="row selected-value" ng-class="{'ongoing-drag-expression-decorate':onGoingDragExpression}" ng-repeat="selectedValue in queryContainer.selectedValues">
+                                            <div class="col-md-2 expression">
+                                                <span class="expression-drop-zone" ng-class="{'drop-allowed': isExpressionApplicable(selectedValue),'drop-forbidden': !isExpressionApplicable(selectedValue)}" x-lvl-drop-target='true' x-on-drop='addExpressionToSelectedValue(dragEl, dropEl, selectedValue)'>
+                                                    <a class="btn btn-default btn-xs" ng-show="selectedValue.value.expression">{{selectedValue.value.expression}}</a>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <strong>{{selectedValue.getFamilyName()}}</strong> : {{selectedValue.getSelectorLabel()}}
+                                            </div>
+                                            <div class="col-md-5">
+                                                <form class="form-inline">
+                                                    <div class="form-group">
+                                                        <label for="asInput">as</label>
+                                                        <input type="text" class="form-control" id="asInput" ng-model="selectedValue.value.alias">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-1">
                                                 <button type="button" class="btn btn-default btn-xs" aria-label="remove"
-                                                        ng-click="removeSelectedValue(queryContainer,selectedValue)">
+                                                ng-click="removeSelectedValue(queryContainer,selectedValue)">
                                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                                 </button>
                                             </div>
-                                        </div>
                                     </div>
-                                    <div class="col-md-12 droppable-zone"></div>
+                                    <div ng-class="{'ongoing-drag-decorate':onGoingDrag}" x-lvl-drop-target='true' x-on-drop='addSelectedValue(dragEl, dropEl , queryContainer)'>
+                                        <div class="col-md-12 droppable-zone"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </tab>
                     <tab heading="Results" select="resultsTabSelect()" deselect="resultsTabDeselect()">
