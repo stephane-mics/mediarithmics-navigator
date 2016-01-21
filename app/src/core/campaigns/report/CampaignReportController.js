@@ -19,7 +19,7 @@ define(['./module', 'lodash'], function (module, _) {
     }
   };
 
-  var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts, Restangular, organisationId) {
+  var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts, Restangular) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
     if (CampaignAnalyticsReportService.dateRangeIsToday()) {
       $scope.timeFilter = $scope.timeFilters[1];
