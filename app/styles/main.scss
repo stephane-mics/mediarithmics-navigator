@@ -2387,6 +2387,16 @@ input.ng-invalid {
   .total-user {
     color: grey;
   }
+
+  .stats {
+    float: left;
+    margin-top: 15px;
+  }
+
+  .btn-lg {
+    float: left;
+    font-size: 28px;
+  }
 }
 
 .refresh-stats {
