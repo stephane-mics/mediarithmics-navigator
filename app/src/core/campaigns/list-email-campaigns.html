@@ -33,7 +33,7 @@
     </div>
 
     <div class="campaign-list-area" ng-show="emailCampaigns.length">
-      <table class="campaign-list-table js-auto-hide-actions">
+      <table class="campaign-list-table table-hover clickableRow js-auto-hide-actions">
         <thead>
         <tr>
           <th class="status">Status</th>
@@ -45,7 +45,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="campaign in emailCampaigns | offset: (currentPageEmailCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
+        <tr  ng-click="showCampaign(campaign, $event)" ng-repeat="campaign in emailCampaigns | offset: (currentPageEmailCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
           <td>
             <div mics-campaign-status="campaign"></div>
           </td>

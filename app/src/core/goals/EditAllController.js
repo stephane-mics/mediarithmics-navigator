@@ -1,8 +1,5 @@
 define(['./module'], function (module) {
-
   'use strict';
-
-  
 
   module.controller('core/goals/EditAllController', [
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
@@ -23,6 +20,10 @@ define(['./module'], function (module) {
         }
 
         $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/goals/"+ goal.id);
+      };
+
+      $scope.showGoalReport = function(goal) {
+        $location.path("/" + goal.organisation_id + "/goals/" + goal.id + "/report");
       };
 
       $scope.deleteGoal = function (goal, $event) {
