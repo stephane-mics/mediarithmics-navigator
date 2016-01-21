@@ -19,7 +19,7 @@ define(['./module', 'lodash'], function (module, _) {
     }
   };
 
-  var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts) {
+  var updateStatistics = function ($scope, campaignId, CampaignAnalyticsReportService, ChartsService, charts, Restangular, organisationId) {
     CampaignAnalyticsReportService.setDateRange($scope.reportDateRange);
     if (CampaignAnalyticsReportService.dateRangeIsToday()) {
       $scope.timeFilter = $scope.timeFilters[1];
@@ -41,7 +41,16 @@ define(['./module', 'lodash'], function (module, _) {
  
     CampaignAnalyticsReportService.segmentPerformance(campaignId, $scope.hasCpa).then(function (data) {
       if(data.getRows().length > 1) {
+              Restangular.all('audience_segments').getList({organisation_id: $scope.campaign.organisation_id}).then(function (segments) {
+
+        $scope.segmentNames = {};
+        for(var i = 0; i< segments.length; i++) {
+          $scope.segmentNames[segments[i].id] = segments[i].name;
+        }
         $scope.segmentPerformance = data;
+      });
+
+
       }
     });
 
@@ -440,12 +449,12 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.$watchGroup(['reportDateRange', 'hasCpa'], function (values) {
         if (angular.isDefined(values[0]) && angular.isDefined(values[1])) {
           $scope.timeFilter = $scope.timeFilters[0];
-          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
+          updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts, Restangular);
         }
       });
 
       $scope.refresh = function () {
-        updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts);
+        updateStatistics($scope, $stateParams.campaign_id, CampaignAnalyticsReportService, ChartsService, $scope.charts, Restangular);
       };
 
       /**
@@ -459,7 +468,8 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.dateRangeIsToday = function () {
         return CampaignAnalyticsReportService.dateRangeIsToday();
       };
-
+      
+      
       $scope.chooseCharts = function () {
         var modalInstance = $uibModal.open({
           templateUrl: 'src/core/campaigns/report/ChooseCharts.html',

@@ -242,7 +242,7 @@
               </thead>
               <tbody>
               <tr ng-repeat="row in segmentPerformance.getObjectRows()" ng-show="row.audience_segment_id != 0">
-                <td>{{row.audience_segment_id}}</td>
+                <td>{{segmentNames[row.audience_segment_id]}}</td>
                 <td class="metrics" ng-repeat="info in  segmentPerformance.getMetricsInfos()">
                   <span ng-if="info.type == 'currency' && row[info.metric] != undefined">
                     {{row[info.metric]  | number:2 | currencyWithSymbol:campaign.currency_code}}
