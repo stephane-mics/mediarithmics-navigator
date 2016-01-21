@@ -191,7 +191,7 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
 
         ReportService.kpi = function (campaignId, hasCpa) {
           var cpa = hasCpa ? ",cpa" : "";
-          return this.getPerformance(displayCampaignResource, "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa, "campaign_id==" + campaignId)
+          return this.getPerformance(displayCampaignResource,"", "impressions,clicks,cpm,ctr,cpc,impressions_cost" + cpa, "campaign_id==" + campaignId)
             .$promise.then(function (response) {
               var report = response.data.report_view;
               var firstLine = report.rows[0] || [];
