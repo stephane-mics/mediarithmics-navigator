@@ -129,7 +129,7 @@
             <div ng-show="ruleEditMode">
               <input class="form-control input-md" ng-model="tmpRule.property_source" type="text" id="userAccountIdProperty">
             </div>
-            <div ng-show="!ruleEditMode">{{shortenString(selectedRule.property_source, 50)}}</div>
+            <div ng-show="!ruleEditMode">{{shortenString(selectedRule.property_source, 70)}}</div>
             <br>
             <label label-for="hash"><strong>Transformation Function</strong>
               <span class="badge site" uib-popover-html="'The function used to compute<br>the User Account Id'" popover-trigger="mouseenter" popover-placement="right">?</span>
@@ -153,7 +153,7 @@
               <div ng-show="ruleEditMode">
                 <input class="form-control input-md" ng-model="tmpRule.pattern" type="text" id="urlPattern">
               </div>
-              <div ng-show="!ruleEditMode">{{shortenString(selectedRule.pattern, 50)}}</div>
+              <div ng-show="!ruleEditMode">{{shortenString(selectedRule.pattern, 70)}}</div>
               <br>
             </div>
 
@@ -163,7 +163,7 @@
             <div ng-show="ruleEditMode">
               <input class="form-control input-md" ng-model="tmpRule.event_template.$event_name" type="text" id="patternEventName">
             </div>
-            <div ng-show="!ruleEditMode">{{shortenString(selectedRule.event_template.$event_name, 50)}}</div>
+            <div ng-show="!ruleEditMode">{{shortenString(selectedRule.event_template.$event_name, 70)}}</div>
             <br>
 
 

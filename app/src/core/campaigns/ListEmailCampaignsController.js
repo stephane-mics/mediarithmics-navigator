@@ -135,6 +135,13 @@ define(['./module'], function (module) {
         });
         return false;
       };
+
+      $scope.stopPropagation = function(event) {
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      };
     }
   ]);
 

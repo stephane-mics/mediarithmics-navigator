@@ -28,7 +28,7 @@
       </thead>
       <tbody>
       <tr ng-click="editScenario(scenario, $event)" ng-repeat="scenario in scenarios">
-        <td><div mics-scenario-status="scenario"></div></td>
+        <td><div ng-click="stopPropagation($event)" mics-scenario-status="scenario"></div></td>
         <td>{{scenario.name}}</td>
         <td>{{scenario.technical_name}}</td>
         <td>{{scenario.type}}</td>
