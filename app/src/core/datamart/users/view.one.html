@@ -1,13 +1,9 @@
 <div ng-controller="core/datamart/users/ViewOneController" class="mcs-default-container">
 <div class="mcs-default-content user-overview">
 
-<div class="vertically-spaced clearfix">
-    <div class="col-md-8 col-xs-8" ng-show='error'>
-        <div class="alert alert-danger" role="alert">{{error}}</div>
-    </div>
-    <!-- Account details -->
+<div class="mcs-default-content">
 
-    <div>
+    <div class="mcs-default-heading">
         <h2>
             User Overview
         </h2>
@@ -67,7 +63,7 @@
                 <div>
                     <div>
                         <h3>User Account Id : </h3>
-                        <span> email: {{userAccountId.email}}</span>
+                        <span> {{userAccountId.type}}: {{userAccountId.user_account_id}}</span>
                     </div>
                     <br/>
 
@@ -84,17 +80,17 @@
                                 <div>
                                     <ul>
                                         <li>
-                                            email : <span>{{email.email}}</span>
+                                            email : <span>{{email.email_address}}</span>
                                         </li>
                                         <li>
-                                            hash : <span>{{email.hash}}</span>
+                                            hash : <span>{{email.email_hash}}</span>
                                         </li>
                                         <li>
                                             creation date :
-                                            <span>{{email.creationDate | date:'MM/dd/yyyy'}}</span>
+                                            <span>{{email.creation_date | date:'MM/dd/yyyy'}}</span>
                                         </li>
                                         <li>
-                                            last activity : <span>{{email.last_activity}}</span>
+                                            last activity : <span>{{email.last_activity_ts}}</span>
                                         </li>
 
                                         <li>
@@ -103,8 +99,7 @@
                                                 <h4>providers :</h4>
                                                 <ul>
                                                     <li ng-repeat="provider in email.providers">
-                                                        first party expiration date: {{provider.expirationDate |
-                                                        date:'MM/dd/yyyy'}}
+                                                        first party expiration date: {{provider.expiration_ts | date:'MM/dd/yyyy'}}
                                                     </li>
                                                 </ul>
 
@@ -120,13 +115,15 @@
 
 
                     </div>
+                  <br/>
+
                 </div>
                 <div>
                     <h3><span>Devices  </span></h3>
 
                     <div ng-repeat="device in devices">
                         <div class="device-icon">
-                                    <span ng-switch on="device.device">
+                                    <span ng-switch on="device.device.form_factor">
 
                                     <img ng-switch-when="PC" src="images/datamart/device_pc.svg" height="24" width="24">
                                     <img ng-switch-when="SMARTPHONE" src="images/datamart/device_phone.svg" height="24"
@@ -139,26 +136,25 @@
                         <div class="device-content">
 
                             <ul>
-                                <li>
+                                <li ng-hide="!device.device.form_factor && !device.device.os_family">
                                     <h4>
-                                        <span> {{device.device}}-{{device.systemName}}</span>
+                                        <span> {{device.device.form_factor}}-{{device.device.os_family}}</span>
                                     </h4>
                                 </li>
                                 <li>
-                                    <span>{{device.navigator}}</span>
+                                    <span>{{device.device.browser_family}}</span>
                                 </li>
                                 <li>
-                                    <span>Last Seen : </span>
-                                    <span>{{device.lastSeen}}</span>
+                                    <span ng-hide = "!device.last_activity_ts">Last Seen : </span>
+                                    <span>{{device.last_activity_ts | date:'MM/dd/yyyy'}}</span>
                                 </li>
-                                <li>
+                                <li ng-hide="device.technical_mappings.length == 0">
                                     Mappings :
                                 </li>
                                 <li>
                                     <ul>
-                                        <li ng-repeat="mapping in device.mappings">
-                                            <span>{{mapping.name}} :</span>
-                                            <span>{{mapping.value}} :</span>
+                                        <li ng-repeat="mapping in device.technical_mappings">
+                                            <span>{{mapping.user_agent_id}} :</span>
                                         </li>
                                     </ul>
                                 </li>
@@ -171,27 +167,31 @@
 
         </uib-tab>
         <uib-tab heading="Audience Segments">
-            <div>
-                <div ng-repeat="audienceSegment in audienceSegments" class="col-xs-12 segment">
+          <div ng-show="segments.length == 0">
+              <br/>
+              <code class="ng-binding"> No audience segments for this user. </code>
+          </div>
+          <div ng-hide="segments.length == 0">
+                <div ng-repeat="segment in segments" class="col-xs-12 segment">
                     <h3><span>Name : {{audienceSegment.name}}</span></h3>
                     <br/>
 
                     <div class="col-xs-4">
                         <dl>
+                          <dd>
+                            <span>Type : {{audienceSegment[segment.segment_id].type}}</span>
+                          </dd>
                             <dd>
-                                <span>Type : {{audienceSegment.type}}</span>
+                                <span>Creation date : {{segment.creation_ts | date:'MM/dd/yyyy'}}</span>
                             </dd>
                             <dd>
-                                <span>Creation date : {{audienceSegment.creationDate}}</span>
-                            </dd>
-                            <dd>
-                                <span>Expiration date : {{audienceSegment.default_expiration_time}}</span>
+                                <span>Expiration date : {{segment.expiration_ts | date:'MM/dd/yyyy'}}</span>
                             </dd>
                         </dl>
                     </div>
                     <div class="col-xs-4">
                         <h5>Data bag:</h5>
-                        <pre class="col-xs-10">{{audienceSegment.dataBag}}</pre>
+                        <pre class="col-xs-10">{{segment.data_bag}}</pre>
                     </div>
                 </div>
             </div>

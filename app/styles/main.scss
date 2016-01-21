@@ -1359,22 +1359,24 @@ table.fragment-list-bid-optimizer-engine {
 
   }
 
-}
+  .data-set {
+    margin: 30px;
 
-.data-set {
-  margin: 30px;
-
-  tbody {
-    td {
-      @include use-bold-font();
+    tbody {
+      td {
+        @include use-bold-font();
+      }
     }
-  }
-  .mics-table {
-    margin-top: 20px;
-    margin-left: 15px;
+    .mics-table {
+      margin-top: 20px;
+      margin-left: 15px;
+    }
+
   }
 
+
 }
+
 
 .bid-optimizer-model-selection {
   z-index: 10000;

@@ -25,11 +25,10 @@ define(['./module', 'moment-duration-format'], function (module) {
       });
 
 
-      $scope.audienceSegments = [];
+      $scope.audienceSegments = {};
       function fetchAudienceSegment(segmentId){
-        //TODO make segmentId
-        Restangular.one('audience_segments', 1062).get().then(function (audienceSegment) {
-          $scope.audienceSegments.push(audienceSegment);
+        Restangular.one('audience_segments', segmentId).get().then(function (audienceSegment) {
+          $scope.audienceSegments[segmentId] = audienceSegment;
          });
       }
 
@@ -38,26 +37,11 @@ define(['./module', 'moment-duration-format'], function (module) {
 
         $scope.segments = segments;
 
-        fetchAudienceSegment(1);
         for (var segmentIdx = 0; segmentIdx < $scope.segments.length; segmentIdx++) {
           fetchAudienceSegment($scope.segments[segmentIdx].segment_id);
         }
 
       });
-
-      $scope.userAccountId = {email: "email@gmail.com"};
-      $scope.emails = [
-        {email: "email1@gmail.com", hash: "skljdnflsdjkfn", creationDate: moment(), last_activity: "lsdnflslkdjf", providers: {firstParty: {expirationDate: moment()}}},
-        {email: "email2@gmail.com", hash: "sldgfnjlsdfnji", creationDate: moment(), last_activity: ";sdfgjkopsdlfgjk", providers: {firstParty: {expirationDate: moment()}}},
-      ];
-      $scope.devices = [
-        {device: "TABLET", systemName: "WINDOWS", navigator: "CHROME", lastSeen: moment(),
-          mappings: [
-            {name: "dmpivitrack.com", value: "lskdnjld"},
-            {name: "twengo.com", value: "lskdnjld"}
-          ]}
-      ];
-
 
 
       /**
@@ -65,7 +49,23 @@ define(['./module', 'moment-duration-format'], function (module) {
        */
       $scope.userEndpoint.one('user_identifiers', $stateParams.userPointId).getList().then(function (userIdentifiers) {
 
-//        console.log(userIdentifiers);
+        $scope.userIdentifiers = userIdentifiers;
+         $scope.userAccountId = lodash.find($scope.userIdentifiers,function(userIdentifier){
+           return userIdentifier.type  === 'USER_ACCOUNT';
+        });
+
+
+        $scope.userPoint = lodash.find($scope.userIdentifiers,function(userIdentifier){
+          return userIdentifier.type  === 'USER_POINT';
+        });
+
+        $scope.emails = lodash.find($scope.userIdentifiers,function(userIdentifier){
+          return userIdentifier.type  === 'USER_EMAIL';
+        });
+
+        $scope.devices = lodash.filter($scope.userIdentifiers,function(userIdentifier){
+          return userIdentifier.type  === 'USER_AGENT';
+        });
 
       });
 
