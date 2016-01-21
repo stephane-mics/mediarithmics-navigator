@@ -535,9 +535,11 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
 
-      /**
+      //TODO fix live statistics
+/*
+      *//**
        * Bid sent, bid win and bid lost charts
-       */
+       *//*
 
       $scope.options = {
         chart: {
@@ -630,7 +632,6 @@ define(['./module', 'lodash'], function (module, _) {
         chart: {
           type: 'lineChart',
           height: 250,
-//                    width:400,
           margin: {
             top: 20,
             right: 30,
@@ -664,6 +665,11 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.optionsBidPrice.chart.duration = 0;
 
       $scope.dataBidPrice = $scope.dataBidWin;
+
+      $scope.selectedDisplayNetwork = 1;
+
+
+      */
 
 
     }

@@ -24,21 +24,25 @@ define(['./module', 'moment-duration-format'], function (module) {
         $scope.timelines = timelines;
       });
 
-      /*$scope.userEndpoint.one('user_segments', $stateParams.userPointId).getList().then(function (segments) {
+
+      $scope.audienceSegments = [];
+      function fetchAudienceSegment(segmentId){
+        //TODO make segmentId
+        Restangular.one('audience_segments', 1062).get().then(function (audienceSegment) {
+          $scope.audienceSegments.push(audienceSegment);
+         });
+      }
 
 
-       Restangular.one('audience_segments', 1062).get().then(function (s) {
+      $scope.userEndpoint.one('user_segments', $stateParams.userPointId).getList().then(function (segments) {
 
-       console.log(s);
-       });
+        $scope.segments = segments;
 
-       });*/
+        fetchAudienceSegment(1);
+        for (var segmentIdx = 0; segmentIdx < $scope.segments.length; segmentIdx++) {
+          fetchAudienceSegment($scope.segments[segmentIdx].segment_id);
+        }
 
-      Restangular.one('audience_segments', 1062).get().then(function (userSegments) {
-
-        console.log(userSegments);
-
-        $scope.audienceSegments = [userSegments];
       });
 
       $scope.userAccountId = {email: "email@gmail.com"};
@@ -53,6 +57,20 @@ define(['./module', 'moment-duration-format'], function (module) {
             {name: "twengo.com", value: "lskdnjld"}
           ]}
       ];
+
+
+
+      /**
+       * User Identifiers
+       */
+      $scope.userEndpoint.one('user_identifiers', $stateParams.userPointId).getList().then(function (userIdentifiers) {
+
+//        console.log(userIdentifiers);
+
+      });
+
+
+
 
       /*
        TODO: actually,the loadMoreActions function just hides the load more button one the timeline view,because
