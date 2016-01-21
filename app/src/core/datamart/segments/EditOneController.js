@@ -22,12 +22,12 @@ define(['./module'], function (module) {
         });
       }
 
-      $scope.$on("mics-query-tool:save-complete", function (event, params) {
+      var saveSegment = function(queryId){
         var promise = null;
         if(segmentId) {
           promise = $scope.segment.put();
         } else {
-          $scope.segment.query_id = params.queryId;
+          $scope.segment.query_id = queryId;
           promise = Restangular.all('audience_segments').post($scope.segment, {organisation_id: Session.getCurrentWorkspace().organisation_id});
         }
         promise.then(function success(){
@@ -37,7 +37,12 @@ define(['./module'], function (module) {
           $scope.error = 'There was an error while saving segment';
           $log.info("failure");
         });
+      };
+
+      $scope.$on("mics-query-tool:save-complete", function (event, params) {
+        saveSegment(params.queryId);
       });
+
       $scope.$on("mics-query-tool:save-error", function (event, params) {
         if (params.reason.data && params.reason.data.error_id){
           $scope.error = 'There was an error while saving query, errorId: ' + params.reason.data.error_id;
@@ -73,8 +78,7 @@ define(['./module'], function (module) {
             templateUrl: 'src/core/datamart/segments/add-activation.html',
             scope : newScope,
             backdrop : 'static',
-            controller: 'core/datamart/segments/AddActivationController',
-            size: "lg"
+            controller: 'core/datamart/segments/AddActivationController'
           });
       };
 
@@ -116,7 +120,11 @@ define(['./module'], function (module) {
       };
 
       $scope.next = function () {
-        $scope.$broadcast("mics-query-tool:save");
+        if (type === 'USER_QUERY'){
+          $scope.$broadcast("mics-query-tool:save");
+        } else {
+          saveSegment();
+        }
       };
 
       $scope.refreshQuery = function () {

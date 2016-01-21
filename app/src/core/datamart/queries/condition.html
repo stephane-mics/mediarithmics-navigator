@@ -4,7 +4,7 @@
 </div>
 <div class="col-md-4">
     <select class="form-control input-sm" ng-model="condition.value.operator" ng-change="initConditionValue(condition)">
-        <option ng-repeat="propertyOperator in operators" ng-selected="{{condition.operator == propertyOperator.operator}}" value="{{propertyOperator.operator}}">{{propertyOperator.label}}</option>
+        <option ng-repeat="propertyOperator in operators" ng-selected="{{condition.value.operator == propertyOperator.operator}}" value="{{propertyOperator.operator}}">{{propertyOperator.label}}</option>
     </select>
 </div>
 <div class="col-md-4">

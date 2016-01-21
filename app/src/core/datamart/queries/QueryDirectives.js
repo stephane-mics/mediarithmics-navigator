@@ -6,7 +6,7 @@ define(['./module'], function (module) {
         'Restangular', '$q', 'lodash', 'core/common/auth/Session',
         'core/datamart/queries/common/Common', '$uibModal', "async",
         'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'core/datamart/queries/CriteriaContainer', 'moment', '$rootScope',
-        
+
         function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope) {
 
             return {
@@ -182,9 +182,9 @@ define(['./module'], function (module) {
                         reload();
                     }
 
-                    $scope.$on("mics-query-tool:refresh", function (event, params) {
+                    $scope.refreshQuery = function () {
                         reload();
-                    });
+                    };
 
                     $scope.$on("mics-query-tool:save", function (event, params) {
                         queryContainer.save().then(function success (){

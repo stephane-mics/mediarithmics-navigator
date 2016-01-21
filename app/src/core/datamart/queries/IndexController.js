@@ -23,10 +23,6 @@ define(['./module'], function (module) {
                 $scope.$broadcast("mics-new-segment-popup:query-save-error",params);
             });
 
-            $scope.refreshQuery = function () {
-                $scope.$broadcast("mics-query-tool:refresh");
-            };
-
             $scope.newSegment = function () {
                 var newScope = $scope.$new(true);
                 newScope.segment = {};
