@@ -20,7 +20,7 @@ define(['./module'], function (module) {
       $scope.reportDefaultDateRanges = AudienceSegmentAnalyticsReportService.getDefaultDateRanges();
 
       $scope.segmentId = $stateParams.segment_id;
-      var metricsBreakDown = ['user_points', 'user_accounts', 'emails', 'desktop_devices'];
+      var metricsBreakDown = ['user_points', 'user_accounts', 'emails', 'desktop_cookie_ids'];
       var metricsAdditionsDeletions = ['user_point_deletions', 'user_point_additions'];
 
       $scope.$watch('reportDateRange', function (newVal) {

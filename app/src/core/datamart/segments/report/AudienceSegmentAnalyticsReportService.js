@@ -8,9 +8,9 @@ define(['./module', 'lodash', 'core/common/ReportWrapper'], function (module, _,
     "user_points": {name: "# of users", type: "number"},
     "user_accounts": {name: "# of accounts", type: "number"},
     "emails": {name: "# of emails", type: "number"},
-    "mobile_device_cookies": {name: "# of mapped mobiles (cookie)", type: "number"},
-    "mobile_device_ad_ids": {name: "# of mapped mobiles (ad id)", type: "number"},
-    "desktop_devices": {name: "# of mapped desktop", type: "number"},
+    "mobile_cookies_ids": {name: "# of mapped mobiles (cookie)", type: "number"},
+    "mobile_ad_ids": {name: "# of mapped mobiles (ad id)", type: "number"},
+    "desktop_cookie_id": {name: "# of mapped desktop", type: "number"},
     "user_point_deletions": {name: "users deletions", type: "number"},
     "user_point_additions": {name: "users additions", type: "number"}
   };
@@ -78,7 +78,7 @@ define(['./module', 'lodash', 'core/common/ReportWrapper'], function (module, _,
                        return this.buildReport(
                          audienceSegmentsResource,
                          "audience_segment_id",
-                         "user_points,user_accounts,emails,desktop_devices,user_point_additions,user_point_deletions",
+                         "user_points,user_accounts,emails,desktop_cookie_id,user_point_additions,user_point_deletions",
                          ""
                        );
                      };
