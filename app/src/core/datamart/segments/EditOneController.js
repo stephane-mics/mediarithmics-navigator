@@ -4,26 +4,50 @@ define(['./module'], function (module) {
 
 
   module.controller('core/datamart/segments/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$uibModal',
-    function($scope, $log, Restangular, Session, _, $stateParams, $location, $uibModal) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$uibModal','moment',
+    function($scope, $log, Restangular, Session, _, $stateParams, $location, $uibModal, moment) {
       var segmentId = $stateParams.segment_id;
       var type = $stateParams.type;
 
       $scope.isCreationMode = !segmentId;
       $scope.datamartId = Session.getCurrentDatamartId();
 
+      // $scope.segmentLifetime
+      // $scope.segmentLifetimeNumber
+      // $scope.segmentLifetimeUnit
+
       if (!segmentId) {
+        $scope.segmentLifetime = "never";
         $scope.segment = {
-          type : type
+          type : type,
+          evaluation_mode: 'PERIODIC',
+          evaluation_period: 30,
+          evaluation_period_unit: 'DAY'
         };
       } else {
         Restangular.one('audience_segments', segmentId).get().then(function (segment) {
           $scope.segment = segment;
+
+          if (segment.default_lifetime){
+            $scope.segmentLifetime = "expire";
+            $scope.segmentLifetimeNumber = moment.duration(segment.default_lifetime, 'minutes').asDays();
+            $scope.segmentLifetimeUnit = 'days';
+          } else {
+            $scope.segmentLifetime = "never";
+          }
         });
       }
 
       var saveSegment = function(queryId){
         var promise = null;
+
+        //compute default_lifetime
+        if ($scope.segmentLifetime === 'never'){
+          $scope.segment.default_lifetime = null;
+        } else {
+          $scope.segment.default_lifetime = moment.duration($scope.segmentLifetimeNumber,$scope.segmentLifetimeUnit).asMinutes();
+        }
+
         if(segmentId) {
           promise = $scope.segment.put();
         } else {

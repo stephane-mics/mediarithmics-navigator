@@ -54,8 +54,8 @@ define(['./module'], function (module) {
           {operator:"NOT_EQUAL", label:"not"}]
       };
 
-      var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" , USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices"};
-      var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" , USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device"};
+      var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" , USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices", USER_SEGMENTS:"Segments"};
+      var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" , USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device", USER_SEGMENTS:"Segment"};
 
       var propertySelectorExpressions = ["NEWEST","OLDEST","COUNT","MAX","MIN","SUM"];
 
