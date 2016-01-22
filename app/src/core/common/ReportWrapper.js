@@ -14,7 +14,7 @@ define(['lodash'], function (_) {
     };
 
     var notMetrics = function (e) {
-      return (/name|id|day|site/).test(e) || !(/cookie/).test(e);
+      return (/name|id|day|site/).test(e) && !(/cookie/).test(e);
     };
 
 
