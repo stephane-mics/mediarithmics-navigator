@@ -1702,6 +1702,10 @@ a.category-item {
     @extend .label-success;
     float: right;
   }
+
+  .user-activity-title {
+    margin-top: 0
+  }
 }
 
 .datamart-timeline > li .datamart-timeline-content .datamart-timeline-content-header {
