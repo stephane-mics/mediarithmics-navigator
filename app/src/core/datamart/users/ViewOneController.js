@@ -17,13 +17,22 @@ define(['./module', 'moment-duration-format'], function (module) {
       $scope.activities = [];
       $scope.userEndpoint = Restangular.one('datamarts', $scope.datamartId);
 
-      $scope.userEndpoint.one('user_profiles', $stateParams.userPointId).get().then(function (user) {
-        $scope.user = Restangular.stripRestangular(user);
-      });
-      $scope.userEndpoint.customGETLIST('user_timelines/' + $stateParams.userPointId + '/user_activities', {live: $stateParams.live === "true"}).then(function (timelines) {
-        $scope.timelines = timelines;
-      });
+      if ($stateParams.property) {
+        $scope.userEndpoint.customGET('user_profiles/' + $stateParams.property + '=' + $stateParams.value).then(function (user) {
+          $scope.user = Restangular.stripRestangular(user);
+        });
 
+        $scope.userEndpoint.customGETLIST('user_timelines/' + $stateParams.property + '=' + $stateParams.value + '/user_activities', {live: $stateParams.live === "true"}).then(function (timelines) {
+          $scope.timelines = timelines;
+        });
+      } else {
+        $scope.userEndpoint.one('user_profiles', $stateParams.userPointId).get().then(function (user) {
+          $scope.user = Restangular.stripRestangular(user);
+        });
+        $scope.userEndpoint.customGETLIST('user_timelines/' + $stateParams.userPointId + '/user_activities', {live: $stateParams.live === "true"}).then(function (timelines) {
+          $scope.timelines = timelines;
+        });
+      }
 
       $scope.audienceSegments = {};
       function fetchAudienceSegment(segmentId){
@@ -32,7 +41,16 @@ define(['./module', 'moment-duration-format'], function (module) {
          });
       }
 
+      if ($stateParams.property) {
+        $scope.userEndpoint.customGET('user_segments/' + $stateParams.property + '=' + $stateParams.value).then(function (segments) {
+          $scope.segments = segments;
 
+          for (var segmentIdx = 0; segmentIdx < $scope.segments.length; segmentIdx++) {
+            fetchAudienceSegment($scope.segments[segmentIdx].segment_id);
+          }
+        });
+
+      } else {
       $scope.userEndpoint.one('user_segments', $stateParams.userPointId).getList().then(function (segments) {
 
         $scope.segments = segments;
@@ -42,16 +60,42 @@ define(['./module', 'moment-duration-format'], function (module) {
         }
 
       });
+      }
+
 
 
       /**
        * User Identifiers
        */
+
+      if ($stateParams.property) {
+        $scope.userEndpoint.customGET('user_identifiers/' + $stateParams.property + '=' + $stateParams.value).then(function (userIdentifiers) {
+
+          $scope.userIdentifiers = userIdentifiers;
+          $scope.userAccountId = lodash.find($scope.userIdentifiers,function(userIdentifier){
+            return userIdentifier.type  === 'USER_ACCOUNT';
+          });
+
+
+          $scope.userPoint = lodash.find($scope.userIdentifiers,function(userIdentifier){
+            return userIdentifier.type  === 'USER_POINT';
+          });
+
+          $scope.emails = lodash.find($scope.userIdentifiers,function(userIdentifier){
+            return userIdentifier.type  === 'USER_EMAIL';
+          });
+
+          $scope.devices = lodash.filter($scope.userIdentifiers,function(userIdentifier){
+            return userIdentifier.type  === 'USER_AGENT';
+          });
+        });
+
+      } else {
       $scope.userEndpoint.one('user_identifiers', $stateParams.userPointId).getList().then(function (userIdentifiers) {
 
         $scope.userIdentifiers = userIdentifiers;
-         $scope.userAccountId = lodash.find($scope.userIdentifiers,function(userIdentifier){
-           return userIdentifier.type  === 'USER_ACCOUNT';
+        $scope.userAccountId = lodash.find($scope.userIdentifiers,function(userIdentifier){
+          return userIdentifier.type  === 'USER_ACCOUNT';
         });
 
 
@@ -68,6 +112,9 @@ define(['./module', 'moment-duration-format'], function (module) {
         });
 
       });
+      }
+
+
 
 
 
