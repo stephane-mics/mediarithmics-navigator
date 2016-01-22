@@ -101,7 +101,7 @@ define(['./module'], function (module) {
           scope: newScope,
           backdrop: 'static',
           controller: 'core/datamart/segments/ChooseExistingGoalController',
-          size: 'lg',
+          size: 'lg'
         });
       };
 

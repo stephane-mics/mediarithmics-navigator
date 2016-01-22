@@ -10,7 +10,7 @@ define(['./module', 'lodash', 'core/common/ReportWrapper'], function (module, _,
     "emails": {name: "# of emails", type: "number"},
     "mobile_cookies_ids": {name: "# of mapped mobiles (cookie)", type: "number"},
     "mobile_ad_ids": {name: "# of mapped mobiles (ad id)", type: "number"},
-    "desktop_cookie_id": {name: "# of mapped desktop", type: "number"},
+    "desktop_cookie_ids": {name: "# of mapped desktop", type: "number"},
     "user_point_deletions": {name: "users deletions", type: "number"},
     "user_point_additions": {name: "users additions", type: "number"}
   };
@@ -78,7 +78,7 @@ define(['./module', 'lodash', 'core/common/ReportWrapper'], function (module, _,
                        return this.buildReport(
                          audienceSegmentsResource,
                          "audience_segment_id",
-                         "user_points,user_accounts,emails,desktop_cookie_id,user_point_additions,user_point_deletions",
+                         "user_points,user_accounts,emails,desktop_cookie_ids,user_point_additions,user_point_deletions",
                          ""
                        );
                      };
@@ -236,8 +236,8 @@ define(['./module', 'lodash', 'core/common/ReportWrapper'], function (module, _,
                          var metricsIndex = [];
                          var rows = [];
                          for (var i = 0; i < metrics.length; i++) {
+                           rows.push([]);
                            metricsIndex[metrics[i]] = report.getMetricIndex(metrics[i]);
-                           rows[i] = [];
                          }
 
                          var dateIter = startDate();

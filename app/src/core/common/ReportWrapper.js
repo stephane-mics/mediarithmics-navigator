@@ -10,11 +10,11 @@ define(['lodash'], function (_) {
     //TODO send metadata in report
     
     var isMetrics = function (e) {
-      return !(/name|id|day|site/).test(e);
+      return !(/name|id|day|site/).test(e) || (/cookie/).test(e);
     };
 
     var notMetrics = function (e) {
-      return (/name|id|day|site/).test(e);
+      return (/name|id|day|site/).test(e) || !(/cookie/).test(e);
     };
 
 

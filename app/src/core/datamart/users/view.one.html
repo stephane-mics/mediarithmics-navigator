@@ -173,13 +173,13 @@
           </div>
           <div ng-hide="segments.length == 0">
                 <div ng-repeat="segment in segments" class="col-xs-12 segment">
-                    <h3><span>Name : {{audienceSegment.name}}</span></h3>
+                    <h3><span>Name : {{audienceSegments[segment.segment_id].name }}</span></h3>
                     <br/>
 
                     <div class="col-xs-4">
                         <dl>
                           <dd>
-                            <span>Type : {{audienceSegment[segment.segment_id].type}}</span>
+                            <span>Type : {{audienceSegments[segment.segment_id].type}}</span>
                           </dd>
                             <dd>
                                 <span>Creation date : {{segment.creation_ts | date:'MM/dd/yyyy'}}</span>
