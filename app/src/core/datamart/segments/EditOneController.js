@@ -12,18 +12,21 @@ define(['./module'], function (module) {
       $scope.isCreationMode = !segmentId;
       $scope.datamartId = Session.getCurrentDatamartId();
 
-      // $scope.segmentLifetime
-      // $scope.segmentLifetimeNumber
-      // $scope.segmentLifetimeUnit
-
       if (!segmentId) {
         $scope.segmentLifetime = "never";
-        $scope.segment = {
-          type : type,
-          evaluation_mode: 'PERIODIC',
-          evaluation_period: 30,
-          evaluation_period_unit: 'DAY'
-        };
+        if (type === 'USER_QUERY'){
+          $scope.segment = {
+            type : type,
+            evaluation_mode: 'PERIODIC',
+            evaluation_period: 30,
+            evaluation_period_unit: 'DAY'
+          };
+        } else {
+          $scope.segment = {
+            type : type,
+          };  
+        }
+
       } else {
         Restangular.one('audience_segments', segmentId).get().then(function (segment) {
           $scope.segment = segment;
