@@ -19,8 +19,8 @@
             <!--&lt;!&ndash; content -->
             <div class="datamart-timeline-content">
                 <div class="datamart-timeline-content-header">
-                    <h2>{{ timelineEvent.$type }}<span ng-if="timelineEvent.$session_status == 'SESSION_SNAPSHOT'" class="live-event-header">Live</span>
-                    </h2>
+                    <h3 class="user-activity-title">{{ typePrettyFormat(timelineEvent.$type) }}<span ng-if="timelineEvent.$session_status == 'SESSION_SNAPSHOT'" class="live-event-header">Live</span>
+                    </h3>
                     <div ng-if="timelineEvent.$type == 'SITE_VISIT'" >Duration: {{ toHumanReadableDuration(timelineEvent.$session_duration) }}</div>
                      <div ng-if='debug == "true"'>
                          User account : {{timelineEvent.$user_account_id  }}<br />
