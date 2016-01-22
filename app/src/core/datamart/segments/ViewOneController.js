@@ -23,6 +23,19 @@ define(['./module'], function (module) {
       var metricsBreakDown = ['user_points', 'user_accounts', 'emails', 'desktop_cookie_ids'];
       var metricsAdditionsDeletions = ['user_point_deletions', 'user_point_additions'];
 
+      var legendPrettyPrint = function(legend){
+        switch(legend){
+          case "user_points" : return "User points";
+          case "user_accounts" : return "User accounts";
+          case "emails" : return "Emails";
+          case "desktop_cookie_ids" : return "Desktop cookie ids";
+          case "user_point_deletions" : return "User point deletions";
+          case "user_point_additions" : return "User point additions";
+
+        }
+
+      };
+
       $scope.$watch('reportDateRange', function (newVal) {
         if (!newVal) {
           return;
@@ -36,6 +49,9 @@ define(['./module'], function (module) {
         AudienceSegmentAnalyticsReportService.dailyPerformanceMetrics($scope.segmentId, metricsBreakDown).then(function (report) {
           $scope.breakDownData = [];
           for (var metricIdx = 0; metricIdx < metricsBreakDown.length; metricIdx++) {
+
+            //quick fix to remove underscore in legend
+            report[metricIdx].key = legendPrettyPrint(report[metricIdx].key);
             $scope.breakDownData.push(report[metricIdx]);
 
           }
@@ -47,6 +63,7 @@ define(['./module'], function (module) {
         AudienceSegmentAnalyticsReportService.dailyPerformanceMetrics($scope.segmentId, metricsAdditionsDeletions).then(function (report) {
           $scope.dataCreationSuppression = [];
           for (var metricIdx = 0; metricIdx < metricsAdditionsDeletions.length; metricIdx++) {
+              report[metricIdx].key = legendPrettyPrint(report[metricIdx].key);
             if (metricsAdditionsDeletions[metricIdx] === 'user_point_deletions') {
 
               for (var i = 0; i < report[metricIdx].values.length; i++) {
