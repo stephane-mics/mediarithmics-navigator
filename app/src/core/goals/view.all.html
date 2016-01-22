@@ -4,7 +4,7 @@
       <h1>All goals</h1>
     </div>
     <div class="mics-table-toolbar">
-      <div class ="col-md-6">
+      <div class="col-md-6">
         <div class="dropdown" dropdown>
           <button class="mics-btn mics-btn-add" type="button" ng-click="createGoal()">
             New goal
@@ -12,21 +12,19 @@
           </button>
 
 
-
         </div>
       </div>
     </div>
-    <table class="mics-table js-auto-hide-actions" ng-show="goals.length">
+    <table class="mics-table table-hover clickableRow js-auto-hide-actions" ng-show="goals.length">
       <thead>
-        <tr>
-          <th>Name</th>
-          <th class="actions">Actions</th>
-        </tr>
+      <tr>
+        <th>Name</th>
+        <th class="actions">Actions</th>
+      </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="goal in goals">
-
-          <td><a ng-href="#/{{goal.organisation_id}}/goals/{{goal.id}}/report">{{goal.name}}</a></td>
+      <tr ng-click="showGoalReport(goal)" ng-repeat="goal in goals">
+        <td><a>{{goal.name}}</a></td>
         <td class="actions">
           <a class="mics-btn mics-btn-action" ng-click="editGoal(goal, $event)">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteGoal(goal, $event)">Delete</a>

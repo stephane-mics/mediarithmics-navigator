@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <table class="mics-table js-auto-hide-actions" ng-show="segments.length">
+    <table class="mics-table table-hover clickableRow js-auto-hide-actions" ng-show="segments.length">
       <thead>
         <tr>
           <th>Name</th>
@@ -51,7 +51,7 @@
         </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="segment in segments">
+      <tr ng-click="editAudienceSegment(segment, $event)" ng-repeat="segment in segments">
         <td>{{segment.name}}</td>
         <td>{{segment.technical_name}}</td>
         <td>{{segment.type}}</td>

@@ -41,7 +41,7 @@
     </div>
 
     <div class="campaign-list-area" ng-show="displayCampaigns.length">
-      <table class="campaign-list-table js-auto-hide-actions">
+      <table class="campaign-list-table table-hover clickableRow js-auto-hide-actions">
         <thead>
         <tr>
           <th class="status">Status</th>
@@ -54,11 +54,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="campaign in displayCampaigns | offset: (currentPageDisplayCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
+        <tr ng-click="showCampaign(campaign)" ng-repeat="campaign in displayCampaigns | offset: (currentPageDisplayCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
           <td>
-            <div mics-campaign-status="campaign"></div>
+            <div ng-click="stopPropagation($event)" mics-campaign-status="campaign"></div>
           </td>
-          <td><a href="#{{getCampaignDashboardUrl(campaign)}}">{{campaign.name}}</a></td>
+          <td><a>{{campaign.name}}</a></td>
           <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
           <td class="metrics " ng-repeat="metricValue in displayCampaignsStatistics.getRow(campaign.id) track by $index">
                 <span ng-if="metricValue.type == 'currency'">
