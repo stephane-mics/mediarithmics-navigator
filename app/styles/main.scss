@@ -2359,7 +2359,7 @@ input.ng-invalid {
 
 .ongoing-drag-expression-decorate {
 
-  .expression-drop-zone {  
+  .expression-drop-zone {
     display: inline-block;
     height: 30px;
     width: 100%;
@@ -2603,5 +2603,12 @@ input.ng-invalid {
       width: 84%;
       display: inline-block;
     }
+  }
+}
+
+.segment-form{
+
+  .form-inline > * {
+    margin:5px 3px;
   }
 }

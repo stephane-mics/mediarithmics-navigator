@@ -4,7 +4,7 @@
       {{currentOrganisation}}
     </div>
   </div>
-  <form ng-submit="next()" class="mcs-default-edit-content mcs-full-page-form">
+  <form ng-submit="next()" class="mcs-default-edit-content mcs-full-page-form segment-form">
 
     <div class="mcs-default-heading">
       <h1 ng-if="isCreationMode">Create Audience Segment</h1>
@@ -19,7 +19,7 @@
 
     <!-- Name -->
     <div class="row">
-      <div class="col-md-12">
+
         <div class="col-md-6">
           <div class="form-group">
             <label for="audience_segment_name">Name</label>
@@ -32,8 +32,47 @@
             <input class="form-control input-lg" ng-model="segment.type" type="text" id="audience_segment_type" disabled>
           </div>
         </div>
+
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Default lifetime</h3>
+          </div>
+          <div class="panel-body">
+              <div class="form-inline">
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="lifetimeRadios" id="optionsRadios1" value="never" ng-model="segmentLifetime">
+                    Never ending
+                  </label>
+                </div>
+              </div>
+              <div class="form-inline">
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="lifetimeRadios" id="optionsRadios2" value="expire" ng-model="segmentLifetime">
+                    Expires in
+                  </label>
+                </div>
+                  <input type="number" class="form-control input-sm" id="exampleInputEmail3" style="width: 100px;" ng-model="segmentLifetimeNumber">
+                  <select class="form-control input-sm" ng-model="segmentLifetimeUnit">
+                    <option value="hours">Hour</option>
+                    <option value="days">Day</option>
+                    <option value="weeks">Week</option>
+                    <option value="months">Month</option>
+                  </select>
+              </div>
+
+          </div>
+        </div>
       </div>
     </div>
+
+
     <br>
 
     <div ng-if="segment.type == 'USER_QUERY'">
@@ -43,6 +82,53 @@
           <!-- <a class="mics-btn mics-btn-action" ng-click="refreshQuery()">Refresh</a> -->
       <br>
       <mcs-query-tool datamart-id="datamartId" autoload="true" query-id="segment.query_id"></mcs-query-tool>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Evaluation frequency</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-inline">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="freqRadios" id="optionsRadios1" value="LIVE" ng-model="segment.evaluation_mode">
+                      Live
+                    </label>
+                  </div>
+                </div>
+                <div class="form-inline">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="freqRadios" id="optionsRadios2" value="PERIODIC" ng-model="segment.evaluation_mode">
+                      Periodic every
+                    </label>
+                  </div>
+                    <input type="number" class="form-control input-sm" id="exampleInputEmail3" style="width: 100px;" ng-model="segment.evaluation_period">
+                    <select class="form-control input-sm" ng-model="segment.evaluation_period_unit">
+                      <option value="HOUR">Hour</option>
+                      <option value="DAY">Day</option>
+                      <option value="WEEK">Week</option>
+                      <option value="MONTH">Month</option>
+                    </select>
+                </div>
+                <div class="form-inline">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="freqRadios" id="optionsRadios2" value="ON_DEMAND" ng-model="segment.evaluation_mode">
+                      On demand
+                    </label>
+                  </div>
+                  <a class="mics-btn mics-btn-action btn-xs" ng-click="refreshSegment()"><span class="glyphicon glyphicon-refresh"></span> Refresh audience segment</a>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+
       <br>
     </div>
 
