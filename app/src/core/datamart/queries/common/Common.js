@@ -57,7 +57,14 @@ define(['./module'], function (module) {
       var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" , USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices", USER_SEGMENTS:"Segments"};
       var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" , USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device", USER_SEGMENTS:"Segment"};
 
-      var propertySelectorExpressions = ["NEWEST","OLDEST","COUNT","MAX","MIN","SUM"];
+      var propertySelectorExpressions = [
+        {name:"MAX", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
+        {name:"MIN", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
+        {name:"SUM", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
+        {name:"AVERAGE", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
+        {name:"OLDEST", applicableSelectorType:["INTEGER","DOUBLE","LONG","STRING","DATE","BOOLEAN"], applicableEvaluationType:["ARRAY","TABLE"]},
+        {name:"NEWEST", applicableSelectorType:["INTEGER","DOUBLE","LONG","STRING","DATE","BOOLEAN"], applicableEvaluationType:["ARRAY","TABLE"]}
+      ];
 
       return { propertySelectorOperators: propertySelectorOperators , familyLabels: familyLabels, elementLabels:elementLabels, propertySelectorExpressions:propertySelectorExpressions};
     }

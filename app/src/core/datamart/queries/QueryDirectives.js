@@ -122,7 +122,11 @@ define(['./module'], function (module) {
                     $scope.addExpressionToSelectedValue = function (dragEl, dropEl, selectedValue) {
 
                         var drag = element.find('#' + dragEl);
-                        var dragExpression = drag.attr('name');
+
+                        var expressionName = drag.attr('name');
+                        var dragExpression = lodash.find(Common.propertySelectorExpressions, function(element){
+                          return element.name === expressionName;
+                        });                        
 
                         $scope.$apply(function () {
                             selectedValue.addExpression(dragExpression);
@@ -211,16 +215,19 @@ define(['./module'], function (module) {
                     });
 
                     element.bind("dragstart", function (ev) {
-                        $scope.$apply(function () {
-                            var dragElementDataFamily = ev.target.getAttribute("data-family");
-                            if (dragElementDataFamily === "selector_expression"){
-                                $scope.currentlyDraggedExpression = ev.target.getAttribute("name");
-                                $scope.onGoingDragExpression = true;
-                            } else {
-                                $scope.onGoingDrag = true;
-                                $scope.currentlyDraggedFamily = dragElementDataFamily;
-                            }
-                        });
+                      $scope.$apply(function () {
+                        var dragElementDataFamily = ev.target.getAttribute("data-family");
+                        if (dragElementDataFamily === "selector_expression"){
+                          var expressionName = ev.target.getAttribute("name");
+                          $scope.currentlyDraggedExpression = lodash.find(Common.propertySelectorExpressions, function(element){
+                            return element.name === expressionName;
+                          });
+                          $scope.onGoingDragExpression = true;
+                        } else {
+                          $scope.onGoingDrag = true;
+                          $scope.currentlyDraggedFamily = dragElementDataFamily;
+                        }
+                      });
                     });
 
                     element.bind("dragend", function (ev) {
