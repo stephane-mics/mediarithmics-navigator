@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <table class="mics-table table-hover clickableRow js-auto-hide-actions" ng-show="goals.length">
+    <table class="mics-table table-hover js-auto-hide-actions" ng-show="goals.length">
       <thead>
       <tr>
         <th>Name</th>
@@ -23,10 +23,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-click="showGoalReport(goal)" ng-repeat="goal in goals">
-        <td><a>{{goal.name}}</a></td>
+      <tr ng-repeat="goal in goals">
+        <td class="clickable-box"><a ng-href="#{{getGoalReportUrl(goal)}}">{{goal.name}}</a></td>
         <td class="actions">
-          <a class="mics-btn mics-btn-action" ng-click="editGoal(goal, $event)">Edit</a>
+          <a class="mics-btn mics-btn-action" ng-href="#{{getGoalReportUrl(goal)}}">Edit</a>
           <a class="mics-btn mics-btn-delete" ng-click="deleteGoal(goal, $event)">Delete</a>
         </td>
       </tr>

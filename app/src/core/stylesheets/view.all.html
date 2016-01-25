@@ -43,7 +43,7 @@
                 <tbody>
                 <tr ng-repeat="version in stylesheet.versions">
                   <td>{{version.version_id}}</td>
-                  <td>{{version.creation_date}}</td>
+                  <td>{{version.creation_date | date}}</td>
                   <td>{{version.status}}</td>
                   <td class="mics-sub-table-actions ">
                     <a ng-show="version.status === 'DRAFT'" ng-click="publish(version, $event)" class="mics-btn mics-btn-finish">Publish</a>

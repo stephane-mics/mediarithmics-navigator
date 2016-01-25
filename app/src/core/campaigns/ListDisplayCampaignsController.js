@@ -16,7 +16,8 @@ define(['./module'], function (module) {
   module.controller('core/campaigns/ListDisplayCampaignsController', [
     '$scope', '$location', '$uibModal', '$log', 'Restangular', 'd3', 'moment', 'core/campaigns/DisplayCampaignService', 'core/common/auth/Session',
     'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/files/ExportService',
-    function ($scope, $location, $uibModal, $log, Restangular, d3, moment, DisplayCampaignService, Session, CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
+    function ($scope, $location, $uibModal, $log, Restangular, d3, moment, DisplayCampaignService, Session,
+              CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
       var currentWorkspace = Session.getCurrentWorkspace();
 
       $scope.currentPageDisplayCampaign = 1;
@@ -118,15 +119,6 @@ define(['./module'], function (module) {
         $location.path('/' + currentWorkspace.organisation_id + '/campaigns/select-campaign-template');
       };
 
-      $scope.showCampaign = function (campaign, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
-
-        $location.path($scope.getCampaignDashboardUrl(campaign));
-      };
-
       $scope.editCampaign = function (campaign, $event) {
         if ($event) {
           $event.preventDefault();
@@ -154,13 +146,6 @@ define(['./module'], function (module) {
           controller: 'core/campaigns/DeleteController'
         });
         return false;
-      };
-
-      $scope.stopPropagation = function(event) {
-        if (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
       };
     }
   ]);

@@ -4,23 +4,18 @@ define(['./module'], function (module) {
 
   module.controller('core/scenarios/EditAllController', [
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
-    function($scope, Restangular, Session, $location, $uibModal) {
+    function ($scope, Restangular, Session, $location, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       Restangular.all('scenarios').getList({organisation_id: organisationId}).then(function (scenarios) {
         $scope.scenarios = scenarios;
       });
 
       $scope.createScenario = function (type) {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios/");
+        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios/");
       };
 
-      $scope.editScenario = function (scenario, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
-
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios/"+ scenario.id);
+      $scope.getEditScenarioUrl = function (scenario) {
+        return '/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios/" + scenario.id;
       };
 
       $scope.deleteScenario = function (scenario, $event) {
@@ -33,19 +28,12 @@ define(['./module'], function (module) {
         newScope.scenario = scenario;
         $uibModal.open({
           templateUrl: 'src/core/scenarios/delete.html',
-          scope : newScope,
-          backdrop : 'static',
+          scope: newScope,
+          backdrop: 'static',
           controller: 'core/scenarios/DeleteController'
         });
 
         return false;
-      };
-
-      $scope.stopPropagation = function(event) {
-        if (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
       };
     }
   ]);

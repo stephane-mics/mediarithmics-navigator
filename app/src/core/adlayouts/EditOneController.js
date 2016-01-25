@@ -119,7 +119,9 @@ define(['./module', 'jquery'], function (module, $) {
       });
 
       $scope.$on("plupload:uploaded", function () {
-        $location.path('/' + organisationId + "/library/adlayouts");
+        $scope.$apply(function () {
+          $location.path('/' + organisationId + "/library/adlayouts");
+        });
       });
 
       $scope.removeSelectedFiles = function () {

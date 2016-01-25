@@ -98,15 +98,6 @@ define(['./module'], function (module) {
         $location.path('/' + currentWorkspace.organisation_id + '/campaigns/select-campaign-template');
       };
 
-      $scope.showCampaign = function (campaign, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
-
-        $location.path($scope.getCampaignDashboardUrl(campaign));
-      };
-
       $scope.editCampaign = function (campaign, $event) {
         if ($event) {
           $event.preventDefault();
@@ -134,13 +125,6 @@ define(['./module'], function (module) {
           controller: 'core/campaigns/DeleteController'
         });
         return false;
-      };
-
-      $scope.stopPropagation = function(event) {
-        if (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
       };
     }
   ]);
