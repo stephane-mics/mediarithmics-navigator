@@ -456,7 +456,6 @@ define(['d3', 'nv.d3'], function (d3, ignore) {
           }
 
           interactiveLayer.tooltip
-            .position({left: pointXLocation + margin.left, top: e.mouseY + margin.top})
             .chartContainer(that.parentNode)
             .enabled(tooltips)
             .valueFormatter(function (d, i) {
