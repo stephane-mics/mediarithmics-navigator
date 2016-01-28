@@ -1899,7 +1899,7 @@ a.category-item {
 
   .agent-filter-box {
     margin-top: 0 !important;
-    > .uib-dropdown-menu {
+    > .dropdown-menu {
       box-shadow: 1px 2px 1px #999999;
     }
   }
@@ -1909,7 +1909,7 @@ a.category-item {
   margin-top: 30px;
   color: $dark-blue;
 
-  > .uib-dropdown-menu {
+  > .dropdown-menu {
     min-width: 180px;
     padding-bottom: 0;
     border-color: $mcs-light-grey;

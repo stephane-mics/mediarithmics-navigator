@@ -8,14 +8,7 @@ define(['./module'], function (module) {
         replace: true,
         templateUrl: "src/core/campaigns/campaignStatusTemplate.html",
         scope: {
-          "campaign": "=micsCampaignStatus",
-          "event": "=?"
-        },
-        link: function(scope, elems, attrs) {
-          if (scope.event) {
-            scope.event.preventDefault();
-            scope.event.stopPropagation();
-          }
+          "campaign": "=micsCampaignStatus"
         },
         controller: [
           "$scope", "Restangular", "core/common/ErrorService",
