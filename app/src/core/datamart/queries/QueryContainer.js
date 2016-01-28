@@ -343,8 +343,8 @@ define(['./module'], function (module) {
             };
 
             SelectedValueContainer.prototype.addExpression = function (expression) {
-                if (QueryService.isExpressionApplicable(this.value, expression)){
-                    this.value.expression = expression;
+                if (QueryService.isExpressionApplicable(this, expression)){
+                    this.value.expression = expression.name;
                 }
             };
 
@@ -424,13 +424,14 @@ define(['./module'], function (module) {
                     label: propertySelector.label
                 };
 
-                var wrapperEvaluationType = propertySelector.wrapper_evaluation_type;
+                var selectedValueContainer = new SelectedValueContainer(selectedValue);
+                selectedValueContainer.wrapperEvaluationType = propertySelector.wrapper_evaluation_type;
 
                 var alreadySelected = lodash.find(this.selectedValues, function (selector) {
                     return selector.property_selector_id === propertySelector.id;
                 });
                 if (!alreadySelected){
-                    this.selectedValues.push(new SelectedValueContainer(selectedValue));
+                    this.selectedValues.push(selectedValueContainer);
                 }
             };
 
