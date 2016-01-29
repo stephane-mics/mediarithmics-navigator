@@ -47,7 +47,12 @@
   <!-- The xlsx lib checks if jszip exists before anything. AGAIN we need jszip and then xlsx after minification.-->
   <script src="bower_components/js-xlsx/jszip.js"></script>
   <!-- endbuild -->
-  <script>var require = {paths: {'core/configuration': '../conf/app-configuration'}};</script>
+  <script>
+  var require = {
+    waitSeconds: 60,
+    paths: {'core/configuration': '../conf/app-configuration'}
+  };
+  </script>
   <script src="conf/plugins-configuration.js"></script>
   <script data-main="main.js" src="bower_components/requirejs/require.js"></script>
   <script>
