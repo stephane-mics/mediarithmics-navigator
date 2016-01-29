@@ -1,4 +1,5 @@
 require.config({
+    waitSeconds: 30, // seconds
     baseUrl: "/src",
     paths: {
         "jquery": "../bower_components/jquery/jquery",
