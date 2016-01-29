@@ -31,6 +31,7 @@ require.config({
         "async": "../bower_components/async/lib/async",
         "moxie": "../bower_components/plupload/js/moxie",
         "plupload": "../bower_components/plupload/js/plupload.dev",
+        "tracekit": "../bower_components/tracekit/tracekit",
 
 
         // Angular JS modules
@@ -78,6 +79,7 @@ require.config({
         'ui.router.extras': ['angular', 'ui.router'],
         'ngload': ['angularAMD'],
         'js-xlsx': ['angular', 'file-saver'],
+        'tracekit': {exports: 'TraceKit'},
         // Navigator configuration
         'core/configuration': ['angular'],
         'lvlUuid': ['angular'],

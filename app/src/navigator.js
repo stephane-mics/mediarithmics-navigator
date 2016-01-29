@@ -1,5 +1,5 @@
-define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'clipboard'],
-  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment, Clipboard) {
+define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload', 'd3', 'moment', 'clipboard', 'tracekit'],
+  function (navigator, angularAMD, lodash, async, jquery, plupload, d3, moment, Clipboard, TraceKit) {
     "use strict";
 
     navigator.factory('lodash', [
@@ -35,6 +35,12 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
     navigator.factory('moment', [
       function () {
         return moment;
+      }
+    ]);
+
+    navigator.factory('tracekit', [
+      function () {
+        return TraceKit;
       }
     ]);
 

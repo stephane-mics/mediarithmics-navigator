@@ -2,11 +2,13 @@ define(['app-setup', 'angularAMD'],
   function (app, angularAMD) {
     'use strict';
 
-    app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants",
-      function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants) {
+    app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants", "core/common/ErrorReporting",
+      function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants, ErrorReporting) {
         var defaults = _.partialRight(_.assign, function (a, b) {
           return typeof a === 'undefined' ? b : a;
         });
+
+        ErrorReporting.setup();
 
         function updateWorkspaces() {
           $rootScope.currentOrganisation = Session.getCurrentWorkspace().organisation_name;
