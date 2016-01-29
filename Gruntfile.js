@@ -317,6 +317,7 @@ module.exports = function (grunt) {
     requirejs: {
       dist: {
         options: {
+          waitSeconds: 0,
           baseUrl: "app/src",
           mainConfigFile: "app/main.js",
           name: "navigator",
