@@ -23,6 +23,7 @@ define([
   'angular-nvd3',
   'bootstrap-tokenfield',
   'core/configuration',
+  'core/common/index',
   'core/adblock/index',
   'core/adlayouts/index',
   'core/assets/index',
