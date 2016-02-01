@@ -2,6 +2,7 @@
   "name": "core/settings/sites",
   "dependencies": [
     "core/common",
+    "core/settings/eventrules",
     "restangular"
   ]
 }
