@@ -54,19 +54,35 @@ define(['./module'], function (module) {
           {operator:"NOT_EQUAL", label:"not"}]
       };
 
-      var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" , USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices", USER_SEGMENTS:"Segments", USER_EMAILS:"Emails"};
-      var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" , USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device", USER_SEGMENTS:"Segment", USER_EMAILS:"Email"};
+      var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" , USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices", USER_SEGMENTS:"Segments", USER_EMAILS:"Emails", USER_TOUCHES:"Touches"};
+      var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" , USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device", USER_SEGMENTS:"Segment", USER_EMAILS:"Email", USER_TOUCHES:"Touch"};
 
       var propertySelectorExpressions = [
         {name:"MAX", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
         {name:"MIN", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
         {name:"SUM", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
         {name:"AVERAGE", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
+        {name:"COUNT", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
         {name:"OLDEST", applicableSelectorType:["INTEGER","DOUBLE","LONG","STRING","DATE","BOOLEAN"], applicableEvaluationType:["ARRAY","TABLE"]},
         {name:"NEWEST", applicableSelectorType:["INTEGER","DOUBLE","LONG","STRING","DATE","BOOLEAN"], applicableEvaluationType:["ARRAY","TABLE"]}
       ];
 
-      return { propertySelectorOperators: propertySelectorOperators , familyLabels: familyLabels, elementLabels:elementLabels, propertySelectorExpressions:propertySelectorExpressions};
+      var familyWithIndex = ["USER_VISITS","USER_EVENTS","USER_EMAILS","USER_CONVERSIONS"];
+
+      var indexOptions = [
+        {id:"0", index:-1, operator:"", label:"Any,s"},
+        {id:"1", index:0, operator:"EQUAL", label:"In the last"},
+        {id:"2", index:1, operator:"EQUAL", label:"In the next to last"},
+        {id:"3", index:1, operator:"LTE", label:"Among the last 2,s"},
+        {id:"4", index:2, operator:"LTE", label:"Among the last 3,s"}
+      ];
+
+      return { propertySelectorOperators: propertySelectorOperators,
+        familyLabels: familyLabels,
+        elementLabels:elementLabels,
+        propertySelectorExpressions:propertySelectorExpressions,
+        indexOptions: indexOptions,
+        familyWithIndex: familyWithIndex};
     }
   );
 

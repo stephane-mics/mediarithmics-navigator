@@ -3,8 +3,17 @@ define(['./module'], function (module) {
 
     module.factory("core/datamart/queries/QueryContainer", [
         'Restangular', '$q', 'lodash', 'core/common/auth/Session', "async", 'core/common/promiseUtils', '$log', 'core/datamart/queries/common/Common',
-        'core/datamart/query/QueryService',
-        function (Restangular, $q, lodash, Session, async, promiseUtils, $log, Common, QueryService) {
+        'core/datamart/query/QueryService', 'core/datamart/common/PropertySelectorService',
+        function (Restangular, $q, lodash, Session, async, promiseUtils, $log, Common, QueryService, PropertySelectorService) {
+
+          function copyContainerValue(container){
+            if (container.id){
+              //comming from a restangular callback
+              return Restangular.copy(container.value);
+            } else {
+              return angular.copy(container.value);
+            }
+          }
 
             /**
              * CONDITION CONTAINER
@@ -15,6 +24,11 @@ define(['./module'], function (module) {
                     this.value = value;
                     this.id = value.id;
                 }
+            };
+
+            //KEEP THIS METHOD UPDATED IF YOU ADD FIELDS IN CONDITIONCONTAINER
+            ConditionContainer.prototype.copy = function () {
+              return new ConditionContainer(copyContainerValue(this));
             };
 
             ConditionContainer.prototype.getSelectorLabel = function () {
@@ -32,6 +46,14 @@ define(['./module'], function (module) {
                 return QueryService.getSelectorFamilyName(condition.property_selector_family, condition.property_selector_family_parameter);
             };
 
+            ConditionContainer.prototype.getOperatorLabel = function(){
+              var condition = this.value;
+              var found = lodash.find(Common.propertySelectorOperators[this.getSelectorValueType()], function (element){
+                return element.operator === condition.operator;
+              });
+              return found.label;
+            };
+
             /**
              * ELEMENT CONTAINER
              */
@@ -42,12 +64,43 @@ define(['./module'], function (module) {
                     this.id = value.id;
                 }
 
+                this.selectorsFamily = "";
+                this.familyParameter = "";
                 this.family = "";
+
+                this.indexOptions = "";
+                this.selectedIndexOptionId = "0";
+                this.selectedIndexOptionLabel = "";
 
                 this.groupContainer = groupContainer;
 
                 this.conditions = [];
                 this.removedConditions = [];
+            };
+
+            //KEEP THIS METHOD UPDATED IF YOU ADD FIELDS IN ELEMENTCONTAINER
+            ElementContainer.prototype.copy = function (groupContainer) {
+              var elementContainerCopy = new ElementContainer(groupContainer, copyContainerValue(this));
+              elementContainerCopy.conditions = this.conditions.map(function(condition){
+                return condition.copy();
+              });
+              elementContainerCopy.removedConditions = this.removedConditions.map(function(condition){
+                return condition.copy();
+              });
+              elementContainerCopy.selectorsFamily = this.selectorsFamily;
+              elementContainerCopy.familyParameter = this.familyParameter;
+              elementContainerCopy.family = this.family;
+              elementContainerCopy.indexOptions = this.indexOptions;
+              elementContainerCopy.selectedIndexOptionId = this.selectedIndexOptionId;
+              elementContainerCopy.selectedIndexOptionLabel = this.selectedIndexOptionLabel;
+              return elementContainerCopy;
+            };
+
+            ElementContainer.prototype.hasIndexSelector = function () {
+              var self = this;
+              return Common.familyWithIndex.find( function(e){
+                return e === self.selectorsFamily;
+              });
             };
 
             ElementContainer.prototype.getLabel = function () {
@@ -60,6 +113,13 @@ define(['./module'], function (module) {
 
             ElementContainer.prototype.allowedSelector = function(propertySelector){
                 return this.family === QueryService.getSelectorFamilyName(propertySelector.selector_family, propertySelector.family_parameters);
+            };
+
+            ElementContainer.prototype.hasIndexSelector = function () {
+              var self = this;
+              return Common.familyWithIndex.find( function(e){
+                  return e === self.selectorsFamily;
+              });
             };
 
             ElementContainer.prototype.createCondition = function (propertySelector) {
@@ -106,6 +166,24 @@ define(['./module'], function (module) {
 
                     if (conditions.length > 0){
                         self.family = self.conditions[0].getFamilyName();
+                        self.selectorsFamily = self.conditions[0].value.property_selector_family;
+                        self.familyParameter = self.conditions[0].value.property_selector_family_parameter;
+                        self.indexOptions = QueryService.getIndexOptions(self.selectorsFamily, self.familyParameter);
+                        self.selectedIndexOptionLabel = self.indexOptions[0].label;
+
+                        //init selectedIndexOptionId
+                        var existingIndexCondition = lodash.find(self.conditions, function(condition){
+                          return condition.value.property_selector_name === "INDEX";
+                        });
+                        if (existingIndexCondition){
+                          var foundOption = lodash.find(self.indexOptions, function(option){
+                            return option.index === existingIndexCondition.value.value && option.operator === existingIndexCondition.value.operator;
+                          });
+                          if (foundOption){
+                            self.selectedIndexOptionId = foundOption.id;
+                            self.selectedIndexOptionLabel = foundOption.label;
+                          }
+                        }
                     }
 
                     return self.conditions;
@@ -140,6 +218,39 @@ define(['./module'], function (module) {
                 pList = pList.concat(pAddConditionTasks);
 
                 return pList;
+            };
+
+            ElementContainer.prototype.changeIndexSelector = function (){
+              var self = this;
+
+              var selectedIndexOption = lodash.find(this.indexOptions, function(option){
+                return option.id === self.selectedIndexOptionId;
+              });
+              this.selectedIndexOptionLabel = selectedIndexOption.label;
+
+              var existingIndexCondition = lodash.find(this.conditions, function(condition){
+                return condition.value.property_selector_name === "INDEX";
+              });
+              if (existingIndexCondition){
+                this.removeCondition(existingIndexCondition);
+              }
+
+              if (selectedIndexOption.id !== 0){
+                PropertySelectorService.findIndexPropertySelector(this.selectorsFamily).then(function(indexSelector){
+                  var indexCondition = {
+                      property_selector_family: self.selectorsFamily,
+                      property_selector_id: indexSelector.id,
+                      property_selector_family_parameter: self.familyParameter,
+                      property_selector_name: "INDEX",
+                      property_selector_value_type: "INTEGER",
+                      operator: selectedIndexOption.operator,
+                      value:selectedIndexOption.index
+                  };
+
+                  self.conditions.push(new ConditionContainer(indexCondition));
+                });
+
+              }
             };
 
             ElementContainer.updateConditionTask = function (condition) {
@@ -195,6 +306,18 @@ define(['./module'], function (module) {
                 this.removedElementContainers = [];
             };
 
+            //KEEP THIS METHOD UPDATED IF YOU ADD FIELDS IN GROUPCONTAINER
+            GroupContainer.prototype.copy = function(queryContainer) {
+              var groupContainerCopy = new GroupContainer(queryContainer, copyContainerValue(this));
+              groupContainerCopy.elementContainers = this.elementContainers.map(function(elementContainer){
+                return elementContainer.copy(groupContainerCopy);
+              });
+              groupContainerCopy.removedElementContainers = this.removedElementContainers.map(function(elementContainer){
+                return elementContainer.copy(groupContainerCopy);
+              });
+              return groupContainerCopy;
+            };
+
             GroupContainer.prototype.toggleExclude = function () {
                 this.value.excluded = !this.value.excluded;
             };
@@ -235,9 +358,14 @@ define(['./module'], function (module) {
 
                 var elementContainer = new ElementContainer(this);
                 elementContainer.family = QueryService.getSelectorFamilyName(propertySelector.selector_family, propertySelector.family_parameters);
+                elementContainer.selectorsFamily = propertySelector.selector_family;
+                elementContainer.familyParameter = propertySelector.family_parameters;
+                elementContainer.indexOptions = QueryService.getIndexOptions(elementContainer.selectorsFamily, elementContainer.familyParameter);
+                elementContainer.selectedIndexOptionLabel = elementContainer.indexOptions[0].label;
                 elementContainer.conditions.push(new ConditionContainer(condition));
 
                 this.elementContainers.push(elementContainer);
+
             };
 
             GroupContainer.prototype.saveTasks = function () {
@@ -348,25 +476,62 @@ define(['./module'], function (module) {
                 }
             };
 
-
             /**
              * QUERY CONTAINER
              */
 
-            var QueryContainer = function QueryContainer(datamartId) {
+            var QueryContainer = function QueryContainer(datamartId, queryId) {
 
-                this.datamartId = datamartId;
+              if (!datamartId){
+                throw "Missing datamart";
+              }
 
-                this.selectedValues = [];
-                this.removedSelectedValues = [];
+              this.datamartId = datamartId;
 
-                this.groupContainers = [];
-                this.removedGroupContainers = [];
+              //will hold restangular query object
+              this.value = {};
+
+              if (queryId){
+                this.id = queryId;
+              }
+
+              this.selectedValues = [];
+              this.removedSelectedValues = [];
+
+              this.groupContainers = [];
+              this.removedGroupContainers = [];
             };
 
-            QueryContainer.prototype.load = function (queryId) {
+            //KEEP THIS METHOD UPDATED IF YOU ADD FIELDS IN QUERYCONTAINER
+            QueryContainer.prototype.copy = function () {
+              var queryContainerCopy = new QueryContainer(this.datamartId, this.id);
 
-                var queryEndpoint = Restangular.one('datamarts', this.datamartId).one('queries', queryId);
+              queryContainerCopy.value = copyContainerValue(this);
+
+              queryContainerCopy.selectedValues = this.selectedValues.map(function(selectedValue){
+                return new SelectedValueContainer(copyContainerValue(selectedValue));
+              });
+              queryContainerCopy.removedSelectedValues = this.removedSelectedValues.map(function(selectedValue){
+                return new SelectedValueContainer(copyContainerValue(selectedValue));
+              });
+
+              queryContainerCopy.groupContainers = this.groupContainers.map(function(groupContainer){
+                return groupContainer.copy(queryContainerCopy);
+              });
+              queryContainerCopy.removedGroupContainers = this.removedGroupContainers.map(function(groupContainer){
+                return groupContainer.copy(queryContainerCopy);
+              });
+
+              return queryContainerCopy;
+            };
+
+            QueryContainer.prototype.hasConditions = function () {
+              return (this.groupContainers.length > 0 && this.groupContainers.every(function(group){ return (group.elementContainers.length > 0);}));
+            };
+
+            QueryContainer.prototype.load = function () {
+              if (this.id){
+                var queryEndpoint = Restangular.one('datamarts', this.datamartId).one('queries', this.id);
 
                 var pQuery = queryEndpoint.get();
                 var pGroups = queryEndpoint.all('groups').getList();
@@ -374,8 +539,6 @@ define(['./module'], function (module) {
                 var self = this;
 
                 return $q.all([pQuery, pGroups, pSelectedValues]).then(function (result) {
-
-                    self.id = queryId;
                     self.value = result[0];
 
                     self.groupContainers = lodash.sortBy(result[1], function (group) {
@@ -393,10 +556,17 @@ define(['./module'], function (module) {
                     });
 
                     return $q.all(elementsP).then(function () {
-                        return self;
+                      $log.info("QueryId " + self.id + " successfully loaded.");
+                      return self;
                     });
 
                 });
+              } else {
+                $log.warn("No queryId defined, nothing to load.");
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+              }
             };
 
             QueryContainer.prototype.addGroupContainer = function () {
@@ -421,14 +591,14 @@ define(['./module'], function (module) {
                     value_type: propertySelector.value_type,
                     property_selector_id: propertySelector.id,
                     expression: propertySelector.expression,
-                    label: propertySelector.label
+                    label: propertySelector.label,
+                    wrapper_evaluation_type: propertySelector.wrapper_evaluation_type
                 };
 
                 var selectedValueContainer = new SelectedValueContainer(selectedValue);
-                selectedValueContainer.wrapperEvaluationType = propertySelector.wrapper_evaluation_type;
 
                 var alreadySelected = lodash.find(this.selectedValues, function (selector) {
-                    return selector.property_selector_id === propertySelector.id;
+                    return selector.value.property_selector_id === propertySelector.id;
                 });
                 if (!alreadySelected){
                     this.selectedValues.push(selectedValueContainer);
@@ -436,13 +606,15 @@ define(['./module'], function (module) {
             };
 
             QueryContainer.prototype.removeSelectedValue = function (selectedValue) {
+              if (selectedValue.id){
                 this.removedSelectedValues.push(selectedValue);
+              }
 
-                var i = this.selectedValues.indexOf(selectedValue);
-                this.selectedValues.splice(i, 1);
+              var i = this.selectedValues.indexOf(selectedValue);
+              this.selectedValues.splice(i, 1);
             };
 
-            QueryContainer.prototype.save = function () {
+            QueryContainer.prototype.saveOrUpdate = function () {
                 var self = this;
                 if (!self.id){
                     return Restangular.one('datamarts', self.datamartId).all('queries').post().then(function(query) {
@@ -486,8 +658,16 @@ define(['./module'], function (module) {
                     return !selectedValue.id;
                 });
 
+                var updatePropertySelectors = lodash.filter(this.selectedValues, function (selectedValue) {
+                    return selectedValue.id;
+                });
+
                 var pAddPropertySelectorTasks = lodash.map(addPropertySelectors, function (selectedValue) {
                     return QueryContainer.addPropertySelectorTask(self, selectedValue);
+                });
+
+                var pUpdatePropertySelectorTasks = lodash.map(updatePropertySelectors, function (selectedValue) {
+                    return QueryContainer.updatePropertySelectorTask(selectedValue);
                 });
 
                 var pDeletePropertySelectorTasks = lodash.map(this.removedSelectedValues, function (selectedValue) {
@@ -504,6 +684,7 @@ define(['./module'], function (module) {
                 pList = pList.concat(pGroupTasks);
                 pList = pList.concat(pAddPropertySelectorTasks);
                 pList = pList.concat(pDeletePropertySelectorTasks);
+                pList = pList.concat(pUpdatePropertySelectorTasks);
 
                 async.series(pList, function (err, res) {
                     if (err) {
@@ -549,6 +730,15 @@ define(['./module'], function (module) {
                     promiseUtils.bindPromiseCallback(promise, callback);
                 };
             };
+
+            QueryContainer.updatePropertySelectorTask = function (selectedValueContainer) {
+                return function (callback) {
+                    $log.info("update selected value : ", selectedValueContainer.id);
+                    var promise = selectedValueContainer.value.put();
+                    promiseUtils.bindPromiseCallback(promise, callback);
+                };
+            };
+
 
             QueryContainer.addPropertySelectorTask = function (queryContainer, propertySelector) {
                 return function (callback) {

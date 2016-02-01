@@ -78,15 +78,17 @@
     <div ng-if="segment.type == 'USER_QUERY'">
       <div class="mics-block-heading">
         <span>Query</span>
+        <div class="btn-group">
+          <a class="mics-btn mics-btn-edit" ng-click="editQuery()">Edit query</a>
+        </div>
       </div>
-          <!-- <a class="mics-btn mics-btn-action" ng-click="refreshQuery()">Refresh</a> -->
-      <br>
-      <mcs-query-tool datamart-id="datamartId" autoload="true" query-id="segment.query_id"></mcs-query-tool>
 
       <br>
+      <div ng-include="'src/core/datamart/queries/query-readonly-view.html'"></div>
 
       <div class="row">
         <div class="col-md-6">
+          <br>
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Evaluation frequency</h3>
