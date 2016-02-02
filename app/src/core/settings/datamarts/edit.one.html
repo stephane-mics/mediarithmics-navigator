@@ -1,6 +1,6 @@
 <div class="mcs-default-container" ng-controller="core/settings/datamarts/EditOneController">
 
-  <div class="mcs-default-content site-content">
+  <div class="mcs-default-content settings-content">
     <div class="mcs-default-heading">
       <h1 ng-show="!editMode">New Datamart</h1>
       <h1 ng-show="editMode">Edit Datamart</h1>
@@ -12,7 +12,7 @@
         <div class="col-xs-3">
           <div mcs-form-group="full">
             <label for="token">Token
-              <span class="badge site" popover="A unique random identifier (e.g. ABCD123)" popover-trigger="mouseenter" popover-placement="right">?</span>
+              <span class="badge" uib-popover="A unique random identifier (e.g. ABCD123)" popover-trigger="mouseenter" popover-placement="right">?</span>
             </label>
             <input class="form-control input-md" ng-model="datamart.token" type="text" id="token">
           </div>

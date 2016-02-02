@@ -85,7 +85,7 @@ define(['./module', 'jquery'], function(module, $) {
         }
       }
 
-      function sendSiteEdit() {
+      function sendDatamartEdit() {
         $q.all(_.flatten([
           removeRules(),
           upsertRules(),
@@ -110,25 +110,28 @@ define(['./module', 'jquery'], function(module, $) {
       $scope.done = function() {
         if ($scope.editMode) {
           if ($scope.datamartToken !== $scope.datamart.token) {
-            WarningService.showWarningModal("A site token is already set. Are you sure that you want to override it?").then(sendSiteEdit, function() {
+            WarningService.showWarningModal("A datamart token is already set. Are you sure that you want to override it?").then(sendDatamartEdit, function() {
               $scope.datamart.token = $scope.datamartToken;
             });
           } else {
-            sendSiteEdit();
+            sendDatamartEdit();
           }
         } else {
           Restangular.all("datamarts/" + datamartId).post($scope.datamart).then(function(datamart) {
-            $scope.rules.forEach(function(ruleInfo) {
+            var r = $scope.rules.map(function(ruleInfo) {
               var rule = {
                 organisation_id: organisationId,
                 properties: ruleInfo
               };
-              Restangular.all("datamarts/" + datamartId + "/event_rules").post(rule);
+              return Restangular.all("datamarts/" + datamartId + "/event_rules").post(rule);
             });
 
-            $location.path("/" + organisationId + "/settings/datamarts");
+            return $q.all(r);
 
-          }, handleDatamartError);
+          }, handleDatamartError)
+          .then(function () {
+            $location.path("/" + organisationId + "/settings/datamarts");
+          });
         }
       };
     }

@@ -2511,7 +2511,7 @@ input.ng-invalid {
 
 // --------------------- Settings ------------------------------
 
-.site-content {
+.settings-content {
   .popover {
     background-color: #FDFECA;
     font-size: 12px;
@@ -2528,7 +2528,7 @@ input.ng-invalid {
     height: 400px;
   }
 
-  .badge.site {
+  span.badge {
     background-color: #ffffff;
     color: $mcs-light-blue;
     font-size: 12px;

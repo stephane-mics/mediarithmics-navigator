@@ -17,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="datamart in datamarts| offset : (currentPageCreative - 1) * itemsPerPage | limitTo: itemsPerPage">
+    <tr ng-repeat="datamart in datamarts| offset : (currentPage - 1) * itemsPerPage | limitTo: itemsPerPage">
       <td>{{datamart.id}}</td>
       <td>{{datamart.token}}</td>
       <td>{{datamart.creation_date | date}}</td>

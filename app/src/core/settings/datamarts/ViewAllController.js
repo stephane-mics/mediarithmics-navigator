@@ -7,7 +7,7 @@ define(['./module'], function (module) {
       $scope.datamartId = Session.getCurrentDatamartId();
       $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.itemsPerPage = 20;
-      $scope.currentPageCreative = 0;
+      $scope.currentPage = 0;
 
       Restangular.all("datamarts").getList({"organisation_id": $scope.organisationId, "allow_administrator": "true"}).then(function(datamarts) {
 
