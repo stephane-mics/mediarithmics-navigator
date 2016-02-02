@@ -108,6 +108,9 @@ define(['./module'], function (module) {
       };
 
       service.getCurrentDatamartId = function () {
+        if (!service.hasDatamart()) {
+          return null;
+        }
         var datamarts = service.getCurrentWorkspace().datamarts;
         if (datamarts.length) {
           return datamarts[0].datamart_id;
@@ -115,7 +118,7 @@ define(['./module'], function (module) {
       };
 
       service.hasDatamart = function () {
-        return service.getCurrentWorkspace().datamarts.length > 0;
+        return service.getCurrentWorkspace() && service.getCurrentWorkspace().datamarts.length > 0;
       };
 
       service.updateWorkspace = function (organisationId) {

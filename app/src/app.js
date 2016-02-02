@@ -1,6 +1,8 @@
-define(['app-setup', 'angularAMD'],
-  function (app, angularAMD) {
+define(['app-setup', 'angularAMD', 'jquery'],
+  function (app, angularAMD, jQuery) {
     'use strict';
+
+    jQuery("#mics_loading").remove();
 
     app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants", "core/common/ErrorReporting",
       function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants, ErrorReporting) {

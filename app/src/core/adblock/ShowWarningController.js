@@ -22,7 +22,7 @@ define(['./module'], function (module) {
           }
 
           if(currentVersion && currentVersion !== newVersion) {
-            $scope.messages.push("A new version of Mediarithmics Navigator is available, you should reload this page.");
+            $scope.messages.push("A new version of the application is available, you should reload this page.");
           }
 
           currentVersion = newVersion;
