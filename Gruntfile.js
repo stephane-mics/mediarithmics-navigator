@@ -63,7 +63,7 @@ module.exports = function (grunt) {
           archive: 'navigator.zip'
         },
         expand: true,
-        src: ['**/*'],
+        src: ['**/*', '.tmp/**/*'],
         dest: './',
         cwd: 'dist',
         pretty: true
@@ -389,6 +389,12 @@ module.exports = function (grunt) {
             cwd: '.tmp/images',
             dest: '<%= yeoman.dist %>/images',
             src: ['generated/*']
+          },
+          {
+            expand: true,
+            cwd: '.tmp',
+            dest: '<%= yeoman.dist %>/.tmp',
+            src: ['concat/**/*'] // add the "source" files used by uglify to generate the source map
           },
           {
             expand: true,
