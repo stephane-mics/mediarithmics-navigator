@@ -6,8 +6,8 @@
 
     <div class="mics-table-toolbar">
       <div class="col-md-4">
-        <div dropdown>
-          <button class="mics-btn mics-btn-add" dropdown-toggle type="button">New Creative</button>
+        <div uib-dropdown>
+          <button class="mics-btn mics-btn-add" uib-dropdown-toggle type="button">New Creative</button>
           <ul class="dropdown-menu" role="menu">
             <li role="presentation" ng-repeat="template in creativeTemplates">
               <a role="menuitem" tabindex="-1" ng-click="create(template)">

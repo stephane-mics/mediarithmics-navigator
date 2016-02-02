@@ -44,9 +44,8 @@
             <input type="daterange" ng-model="date.reportDateRange" class="form-control range" format="L"
                    ranges="reportDefaultDateRanges" opens="'left'">
           </form>
-          <div class="dropdown pull-right" dropdown>
-            <button class="btn btn-default dropdown-toggle" dropdown-toggle type="button">Export <span
-                    class="caret"></span></button>
+          <div class="dropdown pull-right" uib-dropdown>
+            <button class="btn btn-default dropdown-toggle" uib-dropdown-toggle type="button">Export <span class="caret"></span></button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="Choose Export Format">
               <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">Excel (.xlsx)</a>
               </li>
@@ -116,10 +115,10 @@
 
     <div class="breakdown-area">
       <div class="panel-body">
-        <tabset class="breakdown">
+        <uib-tabset class="breakdown">
 
           <!--Ads Tab-->
-          <tab heading="Ads">
+          <uib-tab heading="Ads">
             <table class="mics-table">
               <thead>
               <tr>
@@ -171,10 +170,10 @@
               </tr>
               </tbody>
             </table>
-          </tab>
+          </uib-tab>
 
           <!--AdGroups Tab -->
-          <tab heading="Ad groups">
+          <uib-tab heading="Ad groups">
             <table class="mics-table">
               <thead>
               <tr>
@@ -209,10 +208,10 @@
               </tr>
               </tbody>
             </table>
-          </tab>
+          </uib-tab>
 
           <!--Sites Tab-->
-          <tab heading="Top Sites">
+          <uib-tab heading="Top Sites">
             <table class="mics-table">
               <thead>
               <tr>
@@ -240,9 +239,9 @@
               </tr>
               </tbody>
             </table>
-          </tab>
+          </uib-tab>
           <!--Sites Tab-->
-          <tab heading="Audience Segment" ng-show="segmentPerformance">
+          <uib-tab heading="Audience Segment" ng-show="segmentPerformance">
           <table class="mics-table">
               <thead>
               <tr>
@@ -268,8 +267,8 @@
               </tr>
               </tbody>
             </table>
-          </tab>
-        </tabset>
+          </uib-tab>
+        </uib-tabset>
       </div>
     </div>
 

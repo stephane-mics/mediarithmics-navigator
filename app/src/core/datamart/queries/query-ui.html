@@ -92,8 +92,8 @@
           <div class="pull-right">
             <a class="mics-btn mics-btn-action" ng-click="refreshQuery()"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>
           </div>
-          <tabset>
-            <tab heading="Query conditions">
+          <uib-tabset>
+            <uib-tab heading="Query conditions">
               <div class="query-tab">
                 <div ng-repeat="(i,groupContainer) in queryContainer.groupContainers">
                   <div ng-class="{'panel panel-success':!groupContainer.value.excluded, 'panel panel-danger':groupContainer.value.excluded}">
@@ -163,8 +163,8 @@
                 </div>
                 <button class="btn btn-default" ng-click="addGroup(queryContainer, $event)">Add a group of conditions</button>
               </div>
-            </tab>
-            <tab heading="Selected values">
+            </uib-tab>
+            <uib-tab heading="Selected values">
               <div class="query-tab">
                 <div class="panel panel-default">
                   <div class="panel-heading">
@@ -205,8 +205,8 @@
                   </div>
                 </div>
               </div>
-            </tab>
-            <tab heading="Results" select="resultsTabSelect()" deselect="resultsTabDeselect()">
+            </uib-tab>
+            <uib-tab heading="Results" select="resultsTabSelect()" deselect="resultsTabDeselect()">
               <div class="query-tab">
                 <div ng-show="resultsLoading" class="loading">
                   <img src="./images/ajax-loader.gif" class="ajax-loader">
@@ -242,8 +242,8 @@
                   </tbody>
                 </table>
               </div>
-            </tab>
-          </tabset>
+            </uib-tab>
+          </uib-tabset>
         </div>
       </div>
     </div>

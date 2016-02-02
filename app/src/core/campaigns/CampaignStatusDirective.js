@@ -14,6 +14,7 @@ define(['./module'], function (module) {
           "$scope", "Restangular", "core/common/ErrorService",
           function ($scope, Restangular, errorService) {
 
+
             var updateCampaignStatus = function (campaign, status) {
               Restangular.one("display_campaigns", campaign.id).customPUT({
                 status: status,
