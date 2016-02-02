@@ -115,7 +115,7 @@ var require = {
   // This warning is for developers : if a plugin can't load a dependency, I don't really want to throw an `alert`...
   requirejs.onError = function (err) {
     // If (err.requireType === 'scripterror')
-    console.error("the scripts " + err.requireModules + " couldn't be loaded. Do you have an ad blocker ?");
+    console.error("the scripts " + err.requireModules + " couldn't be loaded. Do you have an ad blocker ?", err);
 
     var progressElt = document.getElementById("mics_loading_progress");
     var errorElt = document.getElementById("mics_loading_error");
