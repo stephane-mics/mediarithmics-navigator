@@ -67,10 +67,48 @@
       <mcs-event-rules rules="rules"></mcs-event-rules>
 
 
+      <br>
+      <br>
+
+      <div class="row-fluid">
+          <div class="form-inline">
+              <span class="h3 ">Visit Analyser</span>
+              <span class="badge site right-spaced" data-html="true" uib-popover-html="'The visit analyser user for the domain'" uib-popover-template="" popover-trigger="mouseenter" popover-placement="right">?</span>
+               <div ng-include="'src/core/visitanalysers/choose-visit-analyser.html'" class="form-group"></div>
+          </div>
+          <br>
+
+          <table class="mics-table js-auto-hide-actions">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Visit Analyser Processor</th>
+              <th>Provider</th>
+              <th class="actions">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr fetch-plugin-properties-from-version="visitAnalyser.visit_analyzer_plugin_id as visitAnalyserProperties">
+              <td>{{visitAnalyser.name}}</td>
+              <td>{{visitAnalyserProperties['name'].value}}</td>
+              <td>{{visitAnalyserProperties['provider'].value}}</td>
+              <td class="actions">
+                <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/visitanalysers/{{visitAnalyser.id}}">Edit</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+      </div>
+
+
+
       <div class="mcs-actions-group">
         <button class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</button>
         <button ng-disabled="!(site.name.length && site.token.length)" class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
       </div>
+
+
     </form>
   </div>
 </div>
