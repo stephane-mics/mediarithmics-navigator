@@ -33,7 +33,7 @@
     </div>
 
     <div class="campaign-list-area" ng-show="emailCampaigns.length">
-      <table class="campaign-list-table table-hover clickableRow js-auto-hide-actions">
+      <table class="campaign-list-table table-hover js-auto-hide-actions">
         <thead>
         <tr>
           <th class="status">Status</th>
@@ -45,14 +45,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-click="showCampaign(campaign, $event)" ng-repeat="campaign in emailCampaigns | offset: (currentPageEmailCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
-          <td>
-            <div ng-click="stopPropagation($event)" mics-campaign-status="campaign"></div>
+        <tr ng-repeat="campaign in emailCampaigns | offset: (currentPageEmailCampaign - 1)*itemsPerPage | limitTo: itemsPerPage">
+          <td><div mics-campaign-status="campaign"></div></td>
+          <td class="clickable-box"><a class="clickable-box" ng-href="#{{getCampaignDashboardUrl(campaign)}}">{{campaign.name}}</a></td>
+          <td class="clickable-box" ng-if="administrator">
+            <a class="clickable-box" ng-href="#{{getCampaignDashboardUrl(campaign)}}">{{organisationName(campaign.organisation_id)}}</a>
           </td>
-          <td>{{campaign.name}}</td>
-          <td ng-if="administrator">{{organisationName(campaign.organisation_id)}}</td>
           <td class="actions">
-            <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign, $event)">Edit</a>
+            <a class="mics-btn mics-btn-action" ng-href="#{{getCampaignDashboardUrl(campaign)}}">Edit</a>
             <a class="mics-btn mics-btn-delete" ng-click="deleteCampaign(campaign, $event)">Delete</a>
           </td>
         </tr>
