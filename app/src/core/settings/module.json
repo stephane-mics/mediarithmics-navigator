@@ -4,6 +4,7 @@
     "core/common",
     "restangular",
     "core/settings/sites",
-    "core/settings/useraccount"
+    "core/settings/useraccount",
+    "core/settings/datamarts"
   ]
 }

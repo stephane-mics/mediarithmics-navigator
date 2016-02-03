@@ -1,5 +1,5 @@
 {
-  "name": "core/settings/sites",
+  "name": "core/settings/datamarts",
   "dependencies": [
     "core/common",
     "core/settings/eventrules",
