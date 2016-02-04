@@ -8,7 +8,9 @@ require.config({
         "jqCookie": "../bower_components/jquery-cookie/jquery.cookie",
         "moment": "../bower_components/momentjs/moment",
         "moment-duration-format": "../bower_components/moment-duration-format/lib/moment-duration-format",
-        "jsplumb": "../bower_components/jsplumb/dist/js/dom.jsPlumb-1.7.2",
+        "jsplumb": "../bower_components/jsplumb/dist/js/jsPlumb-2.0.6",
+        "joint": "../bower_components/joint/dist/joint",
+        "backbone": "../bower_components/backbone/backbone-min",
 
         "lodash": "../bower_components/lodash/lodash.min",
 
@@ -17,6 +19,7 @@ require.config({
         "doubleLineChart": "nvd3-templates/doubleLineChart",
 
         "angular-nvd3": "../bower_components/angular-nvd3/dist/angular-nvd3",
+        "contenteditable": "../bower_components/angular-contenteditable/angular-contenteditable",
 
         "bootstrap": "../bower_components/bootstrap/dist/js/bootstrap",
         "jqDaterangepicker": "../bower_components/bootstrap-daterangepicker/daterangepicker",
@@ -52,6 +55,11 @@ require.config({
         "lvlUuid": "../bower_components/lvlDragDrop/script/lvl-uuid",
         "bootstrap-tokenfield": "../bower_components/bootstrap-tokenfield/dist/bootstrap-tokenfield"
     },
+    map:{
+      '*': {
+        'underscore': 'lodash'
+      }
+    },
     shim: {
         'angular': {deps: ['jquery'], exports: 'angular'},
         'nvd3': {exports: 'nv'},
@@ -62,6 +70,7 @@ require.config({
         'ngAnimate': ['angular'],
         'ngResource': ['angular'],
         'ui.bootstrap': ['angular'],
+        'contenteditable': ['angular'],
         'ngSanitize': ['angular'],
         'ngRoute': ['angular'],
         'checklist-model': ['angular'],
