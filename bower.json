@@ -39,7 +39,7 @@
     "moment-duration-format": "~1.3.0",
     "bootstrap-tokenfield": "0.12.1",
     "lvlDragDrop": "*",
-    "clipboard": "1.5.5",
+    "clipboard": "~1.5.7",
     "angular-nvd3": "~1.0.5",
     "tracekit": "^0.3.1"
   },
