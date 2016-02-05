@@ -93,23 +93,28 @@ define(['./module', 'moment-duration-format'], function (module) {
       } else {
       $scope.userEndpoint.one('user_identifiers', $stateParams.userPointId).getList().then(function (userIdentifiers) {
 
+
         $scope.userIdentifiers = userIdentifiers;
-        $scope.userAccountId = lodash.find($scope.userIdentifiers,function(userIdentifier){
+
+
+        //$scope.userIdentifiers = userIdentifiers;
+        $scope.userAccountId = lodash.find(userIdentifiers ,function(userIdentifier){
           return userIdentifier.type  === 'USER_ACCOUNT';
         });
 
-
-        $scope.userPoint = lodash.find($scope.userIdentifiers,function(userIdentifier){
+        $scope.userPoint = lodash.find(userIdentifiers ,function(userIdentifier){
           return userIdentifier.type  === 'USER_POINT';
         });
 
-        $scope.emails = lodash.find($scope.userIdentifiers,function(userIdentifier){
+        $scope.emails = lodash.filter(userIdentifiers, function(userIdentifier){
           return userIdentifier.type  === 'USER_EMAIL';
         });
 
-        $scope.devices = lodash.filter($scope.userIdentifiers,function(userIdentifier){
+        $scope.devices = lodash.filter(userIdentifiers ,function(userIdentifier){
           return userIdentifier.type  === 'USER_AGENT';
         });
+
+
 
       });
       }

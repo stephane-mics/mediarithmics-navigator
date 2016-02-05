@@ -62,13 +62,13 @@
             <div class="identifiers">
                 <div>
                     <div>
-                        <h3>User Account Id : </h3>
-                        <span ng-hide="!userAccountId"> {{userAccountId.user_account_id}}</span>
+                        <h4>User Account Id</h4>
+                        <span ng-hide="!userAccountId">{{userAccountId.user_account_id}}</span>
                     </div>
                     <br/>
 
                     <div>
-                        <h3><span>Email Adresses  </span></h3>
+                        <h4>Email Addresses</h4>
                         <br/>
 
                         <div>
@@ -80,23 +80,23 @@
                                 <div>
                                     <ul>
                                         <li>
-                                            email : <span>{{email.email_address}}</span>
+                                            address: <span>{{email.email_address}}</span>
                                         </li>
                                         <li>
-                                            hash : <span>{{email.email_hash}}</span>
+                                            hash: <span>{{email.email_hash}}</span>
                                         </li>
                                         <li>
-                                            creation date :
+                                            creation date:
                                             <span>{{email.creation_date | date:'MM/dd/yyyy'}}</span>
                                         </li>
                                         <li>
-                                            last activity : <span>{{email.last_activity_ts}}</span>
+                                            last activity: <span>{{email.last_activity_ts}}</span>
                                         </li>
 
                                         <li>
                                             <div>
 
-                                                <h4>providers :</h4>
+                                                providers:
                                                 <ul>
                                                     <li ng-repeat="provider in email.providers">
                                                         first party expiration date: {{provider.expiration_ts | date:'MM/dd/yyyy'}}
@@ -119,7 +119,7 @@
 
                 </div>
                 <div>
-                    <h3><span>Devices  </span></h3>
+                    <h4>Devices</h4>
 
                     <div ng-repeat="device in devices">
                         <div class="device-icon">
@@ -169,7 +169,7 @@
         <uib-tab heading="Audience Segments">
           <div ng-show="segments.length == 0">
               <br/>
-              <code class="ng-binding"> No audience segments for this user. </code>
+              <span class="ng-binding">No audience segment associated to this user.</span>
           </div>
           <div ng-hide="segments.length == 0">
                 <div ng-repeat="segment in segments" class="col-xs-12 segment">
