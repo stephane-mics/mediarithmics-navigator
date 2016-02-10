@@ -68,34 +68,31 @@
 
 
       <br>
-      <br>
 
       <div class="row-fluid">
           <div class="form-inline">
-              <span class="h3 ">Visit Analyser</span>
-              <span class="badge site right-spaced" data-html="true" uib-popover-html="'The visit analyser user for the domain'" uib-popover-template="" popover-trigger="mouseenter" popover-placement="right">?</span>
+            <h3>
+              Visit Analyser
+              <span class="badge site" data-html="true" uib-popover-html="'The visit analyser user for the domain'" uib-popover-template="" popover-trigger="mouseenter" popover-placement="right">?</span>
                <div ng-include="'src/core/visitanalysers/choose-visit-analyser.html'" class="form-group"></div>
+            </h3>
           </div>
           <br>
 
-          <table class="mics-table js-auto-hide-actions">
+          <table class="mics-table js-auto-hide-actions" ng-hide="!visitAnalyser">
             <thead>
             <tr>
               <th>Name</th>
               <th>Visit Analyser Processor</th>
               <th>Provider</th>
-              <th class="actions">Actions</th>
-            </tr>
+              </tr>
             </thead>
             <tbody>
             <tr fetch-plugin-properties-from-version="visitAnalyser.visit_analyzer_plugin_id as visitAnalyserProperties">
               <td>{{visitAnalyser.name}}</td>
               <td>{{visitAnalyserProperties['name'].value}}</td>
               <td>{{visitAnalyserProperties['provider'].value}}</td>
-              <td class="actions">
-                <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/visitanalysers/{{visitAnalyser.id}}">Edit</a>
-              </td>
-            </tr>
+              </tr>
             </tbody>
           </table>
 
