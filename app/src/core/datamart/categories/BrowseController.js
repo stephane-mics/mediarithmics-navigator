@@ -37,7 +37,7 @@ define(['./module'], function (module) {
           });
         };
 
-        Restangular.one('datamarts', $scope.datamartId).one('catalogs', $stateParams.catalogId).one('categories', $stateParams.categoryId).get().then(function (result){
+        Restangular.one('datamarts', $scope.datamartId).one('deprecated/catalogs', $stateParams.catalogId).one('categories', $stateParams.categoryId).get().then(function (result){
           $scope.currentCategory = result;
           $scope.refreshCategories();
           $scope.refreshDatasheets();
@@ -50,7 +50,7 @@ define(['./module'], function (module) {
 
         $scope.refreshCategories = function (offset, limit) {
           // get all categories by query
-          Restangular.one('datamarts', $scope.datamartId).one('catalogs', $stateParams.catalogId).all('categories').getList({ offset: offset, limit: limit }).then(function (result){
+          Restangular.one('datamarts', $scope.datamartId).one('deprecated/catalogs', $stateParams.catalogId).all('categories').getList({ offset: offset, limit: limit }).then(function (result){
             $scope.categories = result;
           });
         };
