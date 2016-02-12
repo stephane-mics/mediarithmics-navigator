@@ -30,6 +30,7 @@ define(['angular'], function () {
       'core/queries',
       'core/goals',
       'core/attributionmodels',
+      'core/visitanalysers',
       'core/datamart',
       'core/login',
       'core/password',

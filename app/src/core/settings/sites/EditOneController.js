@@ -7,6 +7,7 @@ define(['./module', 'jquery'], function (module, $) {
     function ($scope, $log, $location, $state, $stateParams, $uibModal, $filter, $q, Restangular, Session, _, ErrorService, WarningService) {
       var datamartId = Session.getCurrentDatamartId();
       var organisationId = Session.getCurrentWorkspace().organisation_id;
+      $scope.organisationId  = organisationId;
       $scope.aliasesPerPage = 20;
       $scope.aliasesCurrentPage = 0;
       $scope.editMode = false;
@@ -27,6 +28,14 @@ define(['./module', 'jquery'], function (module, $) {
             if (site.token !== null) {
               $scope.siteToken = site.token;
             }
+
+          //visit analyser
+          if(site.visit_analyzer_model_id !== null){
+            Restangular.one('visit_analyzer_models', site.visit_analyzer_model_id).get().then(function(visitAnalyser) {
+            $scope.visitAnalyser = visitAnalyser;
+            });
+          }
+
           });
           Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId + "/event_rules").getList({organisation_id: organisationId}).then(function (rules) {
             _.forEach(rules, function (rule) {
@@ -179,6 +188,20 @@ define(['./module', 'jquery'], function (module, $) {
           }, handleSiteError);
         }
       };
+
+
+      // ---------------- VISIT ANALYSER ----------------
+      $scope.$on("mics-visit-analyser:selected", function (event, params) {
+        if (params.visitAnalyser === null) {
+          $scope.visitAnalyser  = undefined;
+          $scope.site.visit_analyzer_model_id = null;
+        } else {
+          $scope.visitAnalyser = params.visitAnalyser;
+          $scope.site.visit_analyzer_model_id = params.visitAnalyser.id;
+        }
+      });
+
+
     }
   ]);
 });

@@ -278,12 +278,33 @@ define(['./module'], function (module) {
         link: function (scope, element, attrs) {
 
           scope.$watch("property", function () {
-//            console.log(scope.property);
           });
         }
       };
     }
   ]);
 
+
+// boolean property
+  module.directive('mcsBooleanProperty', [
+    function () {
+      return {
+        restrict: 'E',
+        scope: {
+          labelText: '@',
+          labelFor: '@',
+          property: '=',
+          ngDisabled: '='
+        },
+        templateUrl: '/src/core/common/properties/boolean-property.html',
+        link: function (scope, element, attrs) {
+          scope.options =[{value: true},{value:false}];
+          scope.$watch("property", function () {
+
+          });
+        }
+      };
+    }
+  ]);
 
 });
