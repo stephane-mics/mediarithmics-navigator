@@ -67,7 +67,7 @@ define(['./module'], function (module) {
         {name:"NEWEST", applicableSelectorType:["INTEGER","DOUBLE","LONG","STRING","DATE","BOOLEAN"], applicableEvaluationType:["ARRAY","TABLE"]}
       ];
 
-      var familyWithIndex = ["USER_VISITS","USER_EVENTS","USER_EMAILS","USER_CONVERSIONS"];
+      var familyWithIndex = ["USER_VISITS","USER_EVENTS","USER_EMAILS","USER_CONVERSIONS", "USER_TOUCHES"];
 
       var indexOptions = [
         {id:"0", index:-1, operator:"", label:"Any,s"},
