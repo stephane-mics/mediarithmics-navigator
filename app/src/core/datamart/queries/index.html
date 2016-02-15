@@ -1,13 +1,13 @@
 <div class="mcs-default-container " ng-controller="core/datamart/queries/IndexController">
     <div class="mcs-default-content">
         <div class="mcs-default-heading">
-            <h2>                
+            <h2>
                 <span>Audience Segment Query</span>
                 <button class="mics-btn mics-btn-add" ng-click="newSegment()">Save a new segment</button>
             </h2>
         </div>
 
-        <mcs-query-tool datamart-id="datamartId" autoload="true"></mcs-query-tool>
+        <mcs-query-tool query-container="queryContainer" statistics-enabled="true" selected-values-enabled="true"></mcs-query-tool>
 
     </div>
 </div>

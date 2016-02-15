@@ -304,6 +304,23 @@ label {
   }
 }
 
+.mics-block-heading-2 {
+  margin: 18px 0px 18px 0px;
+
+  .form-group {
+    margin-bottom: 0; /* that's ok, we add our own padding */
+  }
+
+  > div {
+    float: left;
+  }
+
+  > span {
+    font-size: ceil(($font-size-base * 1.5));
+    margin-left: 10px;
+  }
+}
+
 .mics-default-block {
   padding: 15px;
   border: 1px solid $mcs-light-grey;
@@ -2339,8 +2356,18 @@ input.ng-invalid {
 
 // -------------------- Draggable element : used for query ui ----------------------------
 
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+
 .selected-value {
-  line-height: 30px;
+  padding-bottom: 10px;
+}
+
+.selector-panel {
+  max-height: 250px;
+  overflow: auto;
 }
 
 .expression {
@@ -2418,6 +2445,46 @@ input.ng-invalid {
 
 .query-tab {
   margin-top: 15px;
+
+  .btn-expression-info {
+    font-size: 11px;
+    border: 1px solid transparent;
+    color: $btn-info-color;
+    background-color: $btn-info-bg;
+    border-color: $btn-info-border;
+    padding: 3px 5px;
+  }
+
+  .btn-expression-default {
+    font-size: 11px;
+    border: 1px solid transparent;
+    color: $btn-default-color;
+    background-color: $btn-default-bg;
+    border-color: $btn-default-border;
+    padding: 3px 5px;
+    margin-right: 10px;
+  }
+}
+
+.edit-query-popin {
+
+  .modal-dialog {
+    width: 1100px;
+  }
+
+  .query-tab {
+    max-height: 600px;
+    overflow: auto;
+  }
+}
+
+.index_selector {
+  width: 160px;
+  background-color: #f5f5f5;
+  border: none;
+  box-shadow: none;
+  padding: 0px 0px;
+  height: 17px;
 }
 
 .results-tab {
@@ -2428,6 +2495,16 @@ input.ng-invalid {
 
 .query-tab {
   margin-top: 15px;
+}
+
+.conditions-readonly-display {
+  span {
+    padding-left: 20px;
+  }
+
+  div {
+    display: inline-block;;
+  }
 }
 
 .query-toolbox {
@@ -2627,4 +2704,10 @@ input.ng-invalid {
   width: 100%;
   top: 50%;
   position: absolute;
+}
+
+.help-badge {
+  background-color: #ffffff;
+  color: $mcs-light-blue;
+  font-size: 12px !important;
 }

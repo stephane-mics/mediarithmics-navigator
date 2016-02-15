@@ -1,10 +1,6 @@
 define(['./module'], function (module) {
   'use strict';
 
-  /**
-  * DISPLAY CAMPAIGN SERVICE
-  */
-  /* define the Authentication service */
   module.factory('core/datamart/query/QueryService', [
     '$q', 'lodash', 'Restangular', '$log', 'core/common/auth/Session', 'core/datamart/queries/common/Common',
     function ($q, _, Restangular, $log, Session, Common) {
@@ -17,7 +13,7 @@ define(['./module'], function (module) {
           name = selectorParameter;
         }
         if (selectorExpression){
-          name = name + "_" + selectorExpression.toLowerCase();
+          name = name;
         }
         if (selectorLabel){
           name = selectorLabel;
@@ -47,7 +43,21 @@ define(['./module'], function (module) {
 
       service.isExpressionApplicable = function(selectedValue, expression){
         return (expression && expression.applicableSelectorType.indexOf(selectedValue.value.value_type) !== -1 &&
-            expression.applicableEvaluationType.indexOf(selectedValue.wrapperEvaluationType) !== -1);
+            expression.applicableEvaluationType.indexOf(selectedValue.value.wrapper_evaluation_type) !== -1);
+      };
+
+      service.getIndexOptions = function(family, familyParameter){
+        var self = this;
+        var elementLabel = "";
+        if (Common.elementLabels[family]){
+          elementLabel = Common.elementLabels[family];
+        } else {
+          elementLabel = familyParameter;
+        }
+        var options = Common.indexOptions.map(function(option){
+          return {id:option.id, index:option.index, operator:option.operator, label:option.label.split(',')[0] + ' ' + elementLabel.toLowerCase() + (option.label.split(',')[1] ? option.label.split(',')[1] : "")};
+        });
+        return options;
       };
 
       return service;

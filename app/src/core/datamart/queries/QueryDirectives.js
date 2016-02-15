@@ -6,27 +6,34 @@ define(['./module'], function (module) {
         'Restangular', '$q', 'lodash', 'core/common/auth/Session',
         'core/datamart/queries/common/Common', '$uibModal', "async",
         'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'core/datamart/queries/CriteriaContainer', 'moment', '$rootScope',
-        'core/datamart/query/QueryService',
-        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope, QueryService) {
+        'core/datamart/query/QueryService', 'core/datamart/common/PropertySelectorService',
+        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope, QueryService, PropertySelectorService) {
 
             return {
                 restrict: 'E',
                 scope: {
                     // same as '=condition'
-                    queryId: '=',
-                    autoload: '=',
-                    datamartId: '='
+                    queryContainer: '=',
+                    statisticsEnabled: '=',
+                    selectedValuesEnabled: '='
                 },
                 link: function ($scope, element, attr) {
-                    //dataTransfer hack : The jQuery event object does not have a dataTransfer property... true, but one can try:
-                    angular.element.event.props.push('dataTransfer');
+
+                    var queryContainer = $scope.queryContainer;
+                    if (!queryContainer){
+                      $scope.error = "Cannot load query-tool instance";
+                      throw "Missing queryContainer";
+                    }
 
                     var organisationId = Session.getCurrentWorkspace().organisation_id;
 
-                    $scope.statistics = {total: 0, hasEmail: 0, hasCookie: 0};
+                    //dataTransfer hack : The jQuery event object does not have a dataTransfer property... true, but one can try:
+                    angular.element.event.props.push('dataTransfer');
+
+                    $scope.statistics = {total: 0, hasUserAccountId: 0, hasEmail: 0, hasCookie: 0};
 
                     var fetchPropertySelectors = function () {
-                        Restangular.one('datamarts', $scope.datamartId).all('property_selectors').getList().then(function (result) {
+                        PropertySelectorService.getPropertySelectors().then(function (result) {
                             $scope.criteriaContainer = CriteriaContainer.loadPropertySelectors(result);
                         });
                     };
@@ -36,24 +43,51 @@ define(['./module'], function (module) {
                     $scope.propertySelectorOperators = Common.propertySelectorOperators;
                     $scope.propertySelectorExpressions = Common.propertySelectorExpressions;
 
-                    var queryContainer = new QueryContainer($scope.datamartId);
+                    var resultsTabSelected = false;
 
-                    $scope.$watch('queryId', function () {
-                        if ($scope.queryId){
-                            queryContainer.load($scope.queryId).then(function success(){
-                                if ($scope.autoload){
-                                    reload();
-                                }
-                                $log.info("queryId " + $scope.queryId + " successfully loaded");
-                            }, function error(reason){
-                                $scope.error = "Cannot load query";
+                    var reload = function () {
+                        $scope.statsLoading = true;
+                        var jsonQuery = queryContainer.prepareJsonQuery();
+                        Restangular.one('datamarts', queryContainer.datamartId).customPOST(jsonQuery, 'query_executions').then(function (result) {
+                            $scope.statistics.total = result.total;
+                            $scope.statistics.hasEmail = result.total_with_email;
+                            $scope.statistics.hasUserAccountId = result.total_with_user_account_id;
+                            $scope.statistics.hasCookie = result.total_with_cookie;
+                            $scope.statistics.executionTimeInMs = result.execution_time_in_ms;
+                            $scope.statsError = null;
+                            $scope.statsLoading = false;
+                        }, function () {
+                            $scope.statistics.total = 0;
+                            $scope.statistics.hasEmail = 0;
+                            $scope.statistics.hasUserAccountId = 0;
+                            $scope.statistics.hasCookie = 0;
+                            $scope.statistics.executionTimeInMs = 0;
+                            $scope.statsError = "There was an error executing query";
+                            $scope.statsLoading = false;
+                        });
+
+                        $scope.results = [];
+                        $scope.resultsError = null;
+
+                        if (resultsTabSelected && $scope.statistics.total !== 0 && $scope.queryContainer.selectedValues.length !== 0) {
+                            $scope.resultsLoading = true;
+                            Restangular.one('datamarts', queryContainer.datamartId).customPOST(jsonQuery, 'query_executions/result_preview').then(function (results) {
+                                $scope.results = results;
+                                $scope.resultsLoading = false;
+                                $scope.resultsError = null;
+
+                                $scope.families = Object.keys(results.metadata).sort();
+
+                                $scope.selectedColumns = lodash.flatten(lodash.map($scope.families, function(family) {
+                                    return results.metadata[family];
+                                }));
+
+                            }, function () {
+                                $scope.resultsLoading = false;
+                                $scope.resultsError = "There was an error retrieving results";
                             });
-                        } else {
-                            queryContainer.addGroupContainer();
                         }
-                    });
-
-                    $scope.queryContainer = queryContainer;
+                    };
 
                     $scope.goToTimeline = function (userPointId) {
                         return "/#/" + organisationId + "/datamart/users/" + userPointId;
@@ -126,7 +160,7 @@ define(['./module'], function (module) {
                         var expressionName = drag.attr('name');
                         var dragExpression = lodash.find(Common.propertySelectorExpressions, function(element){
                           return element.name === expressionName;
-                        });                        
+                        });
 
                         $scope.$apply(function () {
                             selectedValue.addExpression(dragExpression);
@@ -138,8 +172,6 @@ define(['./module'], function (module) {
                         $scope.results = [];
                     };
 
-                    var resultsTabSelected = false;
-
                     $scope.resultsTabSelect = function(){
                         resultsTabSelected = true;
                         reload();
@@ -149,66 +181,13 @@ define(['./module'], function (module) {
                         resultsTabSelected = false;
                     };
 
-                    var reload = function () {
-                        $scope.statsLoading = true;
-                        var jsonQuery = queryContainer.prepareJsonQuery();
-                        Restangular.one('datamarts', $scope.datamartId).customPOST(jsonQuery, 'query_executions').then(function (result) {
-                            $scope.statistics.total = result.total;
-                            $scope.statistics.hasEmail = result.total_with_email;
-                            $scope.statistics.hasUserAccountId = result.total_with_user_account_id;
-                            $scope.statistics.hasCookie = result.total_with_cookie;
-                            $scope.statistics.executionTimeInMs = result.execution_time_in_ms;
-                            $scope.statsError = null;
-                            $scope.statsLoading = false;
-                        }, function () {
-                            $scope.statistics.total = 0;
-                            $scope.statistics.hasEmail = 0;
-                            $scope.statistics.hasUserAccountId = 0;
-                            $scope.statistics.hasCookie = 0;
-                            $scope.statistics.executionTimeInMs = 0;
-                            $scope.statsError = "There was an error executing query";
-                            $scope.statsLoading = false;
-                        });
-
-                        $scope.results = [];
-                        $scope.resultsError = null;
-
-                        if (resultsTabSelected && $scope.statistics.total !== 0 && $scope.queryContainer.selectedValues.length !== 0) {
-                            $scope.resultsLoading = true;
-                            Restangular.one('datamarts', $scope.datamartId).customPOST(jsonQuery, 'query_executions/result_preview').then(function (results) {
-                                $scope.results = results;
-                                $scope.resultsLoading = false;
-                                $scope.resultsError = null;
-
-                                $scope.families = Object.keys(results.metadata).sort();
-
-                                $scope.selectedColumns = lodash.flatten(lodash.map($scope.families, function(family) {
-                                    return results.metadata[family];
-                                }));
-
-                            }, function () {
-                                $scope.resultsLoading = false;
-                                $scope.resultsError = "There was an error retrieving results";
-                            });
-                        }
-                    };
-
-                    if ($scope.autoload && !$scope.queryId){
+                    if ($scope.statisticsEnabled){
                         reload();
                     }
 
                     $scope.refreshQuery = function () {
                         reload();
                     };
-
-                    $scope.$on("mics-query-tool:save", function (event, params) {
-                        queryContainer.save().then(function success (){
-                            $scope.$emit("mics-query-tool:save-complete", {queryId: queryContainer.id});
-                        }, function failure(reason){
-                            $scope.$emit("mics-query-tool:save-error", {reason: reason});
-                        });
-
-                    });
 
                     $scope.$on("mics-datamart-query:addProperty", function (event, params) {
                         fetchPropertySelectors();
@@ -250,7 +229,7 @@ define(['./module'], function (module) {
                     $scope.addPropertySelector = function (family) {
                         var newScope = $scope.$new(true);
                         newScope.propertySelector = {
-                            datamart_id: $scope.datamartId,
+                            datamart_id: queryContainer.datamartId,
                             selector_family: family,
                             selector_name: 'CUSTOM_PROPERTY'
                         };
@@ -280,6 +259,8 @@ define(['./module'], function (module) {
                         }
                     };
 
+                    $scope.indexOptions = Common.indexOptions;                  
+
                 },
                 templateUrl: function (elem, attr) {
                     return 'src/core/datamart/queries/query-ui.html';
@@ -300,8 +281,6 @@ define(['./module'], function (module) {
                 $scope.initConditionValue = function (condition){
                   if (condition.value.operator === "BETWEEN" && condition.value.property_selector_value_type === "DATE"){
                       condition.value.value = {from:"", to:""};
-                  } else {
-                      condition.value.value = "";
                   }
 
                 };

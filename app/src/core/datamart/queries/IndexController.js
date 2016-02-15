@@ -9,23 +9,13 @@ define(['./module'], function (module) {
 
         function ($scope, $stateParams, Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, moment, $rootScope, $location) {
 
-            $scope.datamartId = Session.getCurrentDatamartId();
-
-            $scope.$on("mics-new-segment-popup:save-query", function (event, params) {
-                $scope.$broadcast("mics-query-tool:save");
-            });
-
-            $scope.$on("mics-query-tool:save-complete", function (event, params) {
-                $scope.$broadcast("mics-new-segment-popup:query-save-complete",params);
-            });
-
-            $scope.$on("mics-query-tool:save-error", function (event, params) {
-                $scope.$broadcast("mics-new-segment-popup:query-save-error",params);
-            });
+            var queryContainer = new QueryContainer(Session.getCurrentDatamartId());
+            $scope.queryContainer = queryContainer;            
 
             $scope.newSegment = function () {
                 var newScope = $scope.$new(true);
                 newScope.segment = {};
+                newScope.queryContainer = queryContainer;
                 $uibModal.open({
                     templateUrl: 'src/core/datamart/queries/new-segment.html',
                     scope: newScope,
