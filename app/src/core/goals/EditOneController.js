@@ -6,8 +6,8 @@ define(['./module'], function (module) {
 
   module.controller('core/goals/EditOneController', [
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state','$uibModal',
-    'core/datamart/queries/QueryContainer', '$q', 'core/common/promiseUtils', 'async',
-    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state,$uibModal,QueryContainer, $q, promiseUtils, async) {
+    'core/datamart/queries/QueryContainer', '$q', 'core/common/promiseUtils', 'async', 'core/common/WaitingService',
+    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state,$uibModal,QueryContainer, $q, promiseUtils, async, WaitingService) {
       var goalId = $stateParams.goal_id;
       var triggerDeletionTask = false;
       var datamartId = Session.getCurrentDatamartId();
@@ -241,8 +241,10 @@ define(['./module'], function (module) {
             return $q.resolve();
           }
         }).then(function success() {
+            WaitingService.hideWaitingModal();
             $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/goals");
         }, function error(reason){
+          WaitingService.hideWaitingModal();
           if (reason.data && reason.data.error_id){
             $scope.error = "An error occured while saving goal , errorId: " + reason.data.error_id;
           } else {
@@ -251,12 +253,9 @@ define(['./module'], function (module) {
         });
       }
 
-      $scope.done = function ($event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
+      $scope.done = function () {
 
+        WaitingService.showWaitingModal();
         if ($scope.queryContainer){
           $scope.queryContainer.saveOrUpdate().then(function sucess(updateQueryContainer){
             if (!$scope.goal.new_query_id){
@@ -264,6 +263,7 @@ define(['./module'], function (module) {
             }
             saveOrUpdateGoal();
           }, function error(reason){
+            WaitingService.hideWaitingModal();
             if (reason.data && reason.data.error_id){
               $scope.error = "An error occured while saving query , errorId: " + reason.data.error_id;
             } else {

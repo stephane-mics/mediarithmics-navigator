@@ -4,7 +4,7 @@ define(['./module'], function (module) {
   module.controller('core/goals/ChooseExistingGoalController', [
     '$scope', '$uibModalInstance', '$document', '$log', 'goals', 'Restangular',
     function ($scope, $uibModalInstance, $document, $log, goals, Restangular) {
-      $scope.availableGoals = Restangular.all('goals').getList({'organisation_id': $scope.campaign.organisation_id}).$object;
+      $scope.availableGoals = Restangular.all('goals').getList({'organisation_id': $scope.campaign.organisation_id, archived: false}).$object;
       $scope.selectedGoals = goals.slice() || [];
 
       $scope.done = function () {
@@ -17,5 +17,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-
-
