@@ -5,7 +5,13 @@ define(['./module'], function (module) {
     '$scope', '$uibModalInstance', '$location', '$state', '$stateParams', "core/common/ErrorService",
     function($scope, $uibModalInstance, $location, $state, $stateParams, errorService) {
 
-      $scope.done = function() {
+      $scope.done = function($event) {
+        if ($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+        }
+
+
         $scope.goal.remove().then(function (){
           $uibModalInstance.close();
 
@@ -30,6 +36,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-
-
-

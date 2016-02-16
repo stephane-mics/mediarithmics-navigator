@@ -38,8 +38,8 @@ define(['./module'], function (module) {
         });
       };
 
-      service.findIndexPropertySelector = function(family){
-        return this.findPropertySelector(family, "INDEX");
+      service.findIndexPropertySelector = function(family, familyParameter){
+        return this.findPropertySelector(family, "INDEX", familyParameter);
       };
 
       return service;

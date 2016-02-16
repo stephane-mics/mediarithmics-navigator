@@ -236,7 +236,7 @@ define(['./module'], function (module) {
               }
 
               if (selectedIndexOption.id !== 0){
-                PropertySelectorService.findIndexPropertySelector(this.selectorsFamily).then(function(indexSelector){
+                PropertySelectorService.findIndexPropertySelector(this.selectorsFamily, this.familyParameter).then(function(indexSelector){
                   var indexCondition = {
                       property_selector_family: self.selectorsFamily,
                       property_selector_id: indexSelector.id,

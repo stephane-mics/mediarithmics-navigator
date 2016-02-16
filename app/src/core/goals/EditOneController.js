@@ -14,6 +14,8 @@ define(['./module'], function (module) {
       var queryId = -1;
       var deletedAttributionModels = [];
 
+      $scope.attributionModels = [];
+
       var AttributionModelContainer = function AttributionModelContainer(value) {
         this.selectedAsDefault = "false";
 
@@ -86,7 +88,7 @@ define(['./module'], function (module) {
           }
 
           $scope.attributionModels.push(new AttributionModelContainer(selectedAttributionModel));
-        }      
+        }
       });
 
       $scope.addAttributionModel = function (type) {
@@ -249,7 +251,11 @@ define(['./module'], function (module) {
         });
       }
 
-      $scope.done = function () {
+      $scope.done = function ($event) {
+        if ($event) {
+          $event.preventDefault();
+          $event.stopPropagation();
+        }
 
         if ($scope.queryContainer){
           $scope.queryContainer.saveOrUpdate().then(function sucess(updateQueryContainer){
