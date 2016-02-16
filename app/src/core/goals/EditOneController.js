@@ -6,13 +6,15 @@ define(['./module'], function (module) {
 
   module.controller('core/goals/EditOneController', [
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state','$uibModal',
-    'core/datamart/queries/QueryContainer', '$q', 'core/common/promiseUtils', 'async',
-    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state,$uibModal,QueryContainer, $q, promiseUtils, async) {
+    'core/datamart/queries/QueryContainer', '$q', 'core/common/promiseUtils', 'async', 'core/common/WaitingService',
+    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state,$uibModal,QueryContainer, $q, promiseUtils, async, WaitingService) {
       var goalId = $stateParams.goal_id;
       var triggerDeletionTask = false;
       var datamartId = Session.getCurrentDatamartId();
       var queryId = -1;
       var deletedAttributionModels = [];
+
+      $scope.attributionModels = [];
 
       var AttributionModelContainer = function AttributionModelContainer(value) {
         this.selectedAsDefault = "false";
@@ -86,7 +88,7 @@ define(['./module'], function (module) {
           }
 
           $scope.attributionModels.push(new AttributionModelContainer(selectedAttributionModel));
-        }      
+        }
       });
 
       $scope.addAttributionModel = function (type) {
@@ -238,35 +240,38 @@ define(['./module'], function (module) {
           } else {
             return $q.resolve();
           }
+        });
+
+        return promise;
+      }
+
+      $scope.done = function () {
+        var promise;
+        WaitingService.showWaitingModal();
+        if ($scope.queryContainer){
+          promise = $scope.queryContainer.saveOrUpdate().then(function sucess(updateQueryContainer){
+            if (!$scope.goal.new_query_id){
+              $scope.goal.new_query_id = updateQueryContainer.id;
+            }
+            return $q.resolve();
+          });
+        } else {
+          promise = $q.resolve();
+        }
+
+        promise.then(function (){
+          return saveOrUpdateGoal();
         }).then(function success() {
-            $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/goals");
+          WaitingService.hideWaitingModal();
+          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/goals");
         }, function error(reason){
+          WaitingService.hideWaitingModal();
           if (reason.data && reason.data.error_id){
             $scope.error = "An error occured while saving goal , errorId: " + reason.data.error_id;
           } else {
             $scope.error = "An error occured while saving goal";
           }
         });
-      }
-
-      $scope.done = function () {
-
-        if ($scope.queryContainer){
-          $scope.queryContainer.saveOrUpdate().then(function sucess(updateQueryContainer){
-            if (!$scope.goal.new_query_id){
-              $scope.goal.new_query_id = updateQueryContainer.id;
-            }
-            saveOrUpdateGoal();
-          }, function error(reason){
-            if (reason.data && reason.data.error_id){
-              $scope.error = "An error occured while saving query , errorId: " + reason.data.error_id;
-            } else {
-              $scope.error = "An error occured while saving query";
-            }
-          });
-        } else {
-          saveOrUpdateGoal();
-        }
 
       };
 

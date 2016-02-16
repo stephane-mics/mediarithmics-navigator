@@ -1,12 +1,13 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/goals/DeleteController', [
+  module.controller('core/goals/ArchiveController', [
     '$scope', '$uibModalInstance', '$location', '$state', '$stateParams', "core/common/ErrorService",
     function($scope, $uibModalInstance, $location, $state, $stateParams, errorService) {
 
       $scope.done = function() {
-        $scope.goal.remove().then(function (){
+        $scope.goal.archived = true;
+        $scope.goal.put().then(function (){
           $uibModalInstance.close();
 
           // $state.reload();
@@ -30,6 +31,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-
-
-

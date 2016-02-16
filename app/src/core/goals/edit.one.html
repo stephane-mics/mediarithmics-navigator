@@ -4,7 +4,7 @@
       {{currentOrganisation}}
     </div>
   </div>
-  <form ng-submit="next()" class="mcs-default-edit-content mcs-full-page-form">
+  <form onsubmit="done()" class="mcs-default-edit-content mcs-full-page-form">
 
     <div class="mcs-default-heading">
       <h1>Goal</h1>
@@ -139,7 +139,7 @@
 
     <div class="mcs-actions-group">
       <a class="mics-btn mics-btn-cancel" ng-click="cancel()">Cancel</a>
-      <button class="mics-btn mics-btn-finish" ng-click="done()">Done</button>
+      <a class="mics-btn mics-btn-finish" ng-click="done()">Done</a>
     </div>
   </form>
 </div>

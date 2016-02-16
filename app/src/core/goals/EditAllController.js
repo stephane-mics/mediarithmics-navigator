@@ -5,7 +5,7 @@ define(['./module'], function (module) {
     '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$uibModal',
     function($scope, Restangular, Session, $location, $uibModal) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
-      Restangular.all('goals').getList({organisation_id: organisationId}).then(function (goals) {
+      Restangular.all('goals').getList({organisation_id: organisationId, archived: false}).then(function (goals) {
         $scope.goals = goals;
       });
 
@@ -13,12 +13,7 @@ define(['./module'], function (module) {
         $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/goals/");
       };
 
-      $scope.editGoal = function (goal, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
-
+      $scope.editGoal = function (goal) {
         $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/goals/"+ goal.id);
       };
 
@@ -26,19 +21,14 @@ define(['./module'], function (module) {
         return "/" + goal.organisation_id + "/goals/" + goal.id + "/report";
       };
 
-      $scope.deleteGoal = function (goal, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
-
+      $scope.archiveGoal = function (goal) {
         var newScope = $scope.$new(true);
         newScope.goal = goal;
         $uibModal.open({
-          templateUrl: 'src/core/goals/delete.html',
+          templateUrl: 'src/core/goals/archive.html',
           scope : newScope,
           backdrop : 'static',
-          controller: 'core/goals/DeleteController'
+          controller: 'core/goals/ArchiveController'
         });
 
         return false;
@@ -47,5 +37,3 @@ define(['./module'], function (module) {
   ]);
 
 });
-
-

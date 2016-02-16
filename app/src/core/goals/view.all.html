@@ -26,8 +26,8 @@
       <tr ng-repeat="goal in goals">
         <td class="clickable-box"><a ng-href="#{{getGoalReportUrl(goal)}}">{{goal.name}}</a></td>
         <td class="actions">
-          <a class="mics-btn mics-btn-action" ng-click="editGoal(goal, $event)">Edit</a>
-          <a class="mics-btn mics-btn-delete" ng-click="deleteGoal(goal, $event)">Delete</a>
+          <a class="mics-btn mics-btn-action" ng-click="editGoal(goal)">Edit</a>
+          <a class="mics-btn mics-btn-delete" ng-click="archiveGoal(goal)">Archive</a>
         </td>
       </tr>
       </tbody>
