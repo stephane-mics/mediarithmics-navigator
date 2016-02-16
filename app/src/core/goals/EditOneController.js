@@ -220,7 +220,7 @@ define(['./module'], function (module) {
           promise = $q.resolve($scope.goal);
         }
 
-        promise.then(function (goal){
+        return promise.then(function (goal){
           $scope.goal = goal;
           var deferred = $q.defer();
           var attributionP = deferred.promise;
@@ -241,8 +241,6 @@ define(['./module'], function (module) {
             return $q.resolve();
           }
         });
-
-        return promise;
       }
 
       $scope.done = function () {
