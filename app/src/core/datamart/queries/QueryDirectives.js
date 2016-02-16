@@ -259,7 +259,7 @@ define(['./module'], function (module) {
                         }
                     };
 
-                    $scope.indexOptions = Common.indexOptions;                  
+                    $scope.indexOptions = Common.indexOptions;
 
                 },
                 templateUrl: function (elem, attr) {
@@ -279,8 +279,12 @@ define(['./module'], function (module) {
                 $scope.operators = Common.propertySelectorOperators[$scope.condition.getSelectorValueType()];
 
                 $scope.initConditionValue = function (condition){
-                  if (condition.value.operator === "BETWEEN" && condition.value.property_selector_value_type === "DATE"){
+                  if (condition.value.property_selector_value_type === "DATE"){
+                    if (condition.value.operator === "BETWEEN"){
                       condition.value.value = {from:"", to:""};
+                    } else {
+                      condition.value.value = "";
+                    }
                   }
 
                 };
