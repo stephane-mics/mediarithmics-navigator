@@ -18,6 +18,27 @@
                     </div>
                 </div>
             </div>
+            <div ng-switch-when="TEXT">
+                <div ng-show="condition.value.operator != 'IS_EMPTY' && condition.value.operator != 'IS_NOT_EMPTY'">
+                    <div class="col-md-12">
+                        <input type="search" class="form-control" ng-model="condition.value.value">
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-when="LIST_OF_STRING">
+                <div ng-show="condition.value.operator != 'IS_EMPTY' && condition.value.operator != 'IS_NOT_EMPTY'">
+                    <div class="col-md-12">
+                        <input type="search" class="form-control" ng-model="condition.value.value">
+                    </div>
+                </div>
+            </div>
+            <div ng-switch-when="LIST_OF_TEXT">
+                <div ng-show="condition.value.operator != 'IS_EMPTY' && condition.value.operator != 'IS_NOT_EMPTY'">
+                    <div class="col-md-12">
+                        <input type="search" class="form-control" ng-model="condition.value.value">
+                    </div>
+                </div>
+            </div>
             <div ng-switch-when="INTEGER">
                 <div class="col-md-12">
                     <input type="search" class="form-control" ng-model="condition.value.value">

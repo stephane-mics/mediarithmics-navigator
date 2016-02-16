@@ -177,7 +177,7 @@ define(['./module'], function (module) {
                         });
                         if (existingIndexCondition){
                           var foundOption = lodash.find(self.indexOptions, function(option){
-                            return option.index === existingIndexCondition.value.value && option.operator === existingIndexCondition.value.operator;
+                            return option.index === parseInt(existingIndexCondition.value.value) && option.operator === existingIndexCondition.value.operator;
                           });
                           if (foundOption){
                             self.selectedIndexOptionId = foundOption.id;
