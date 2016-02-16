@@ -240,9 +240,30 @@ define(['./module'], function (module) {
           } else {
             return $q.resolve();
           }
+        });
+
+        return promise;
+      }
+
+      $scope.done = function () {
+        var promise;
+        WaitingService.showWaitingModal();
+        if ($scope.queryContainer){
+          promise = $scope.queryContainer.saveOrUpdate().then(function sucess(updateQueryContainer){
+            if (!$scope.goal.new_query_id){
+              $scope.goal.new_query_id = updateQueryContainer.id;
+            }
+            return $q.resolve();
+          });
+        } else {
+          promise = $q.resolve();
+        }
+
+        promise.then(function (){
+          return saveOrUpdateGoal();
         }).then(function success() {
-            WaitingService.hideWaitingModal();
-            $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/goals");
+          WaitingService.hideWaitingModal();
+          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/goals");
         }, function error(reason){
           WaitingService.hideWaitingModal();
           if (reason.data && reason.data.error_id){
@@ -251,28 +272,6 @@ define(['./module'], function (module) {
             $scope.error = "An error occured while saving goal";
           }
         });
-      }
-
-      $scope.done = function () {
-
-        WaitingService.showWaitingModal();
-        if ($scope.queryContainer){
-          $scope.queryContainer.saveOrUpdate().then(function sucess(updateQueryContainer){
-            if (!$scope.goal.new_query_id){
-              $scope.goal.new_query_id = updateQueryContainer.id;
-            }
-            saveOrUpdateGoal();
-          }, function error(reason){
-            WaitingService.hideWaitingModal();
-            if (reason.data && reason.data.error_id){
-              $scope.error = "An error occured while saving query , errorId: " + reason.data.error_id;
-            } else {
-              $scope.error = "An error occured while saving query";
-            }
-          });
-        } else {
-          saveOrUpdateGoal();
-        }
 
       };
 
