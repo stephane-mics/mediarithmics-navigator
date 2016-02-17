@@ -37,6 +37,7 @@ define(['./module'], function (module) {
           waitingService.hideWaitingModal();
           $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/exports/" + exportId);
         }, function error(response){
+          waitingService.hideWaitingModal();
           ErrorService.showErrorModal({
             error: response
           });
