@@ -2,8 +2,18 @@
     <div class="mcs-default-content">
         <div class="mcs-default-heading">
             <h2>
-                <span>Audience Segment Query</span>
-                <button class="mics-btn mics-btn-add" ng-click="newSegment()">Save a new segment</button>
+              <span>Audience Segment Query</span>
+              <div uib-dropdown>
+                <button class="mics-btn mics-btn-add" type="button" uib-dropdown-toggle>
+                  Save as...
+                </button>
+
+                <ul uib-dropdown-menu role="menu" aria-labelledby="save as">
+                  <li role="menuitem"><a ng-click="newSegment()">a new segment</a></li>
+                  <li role="menuitem"><a ng-click="newQueryExport()">a new query export</a></li>
+                </ul>
+
+              </div>
             </h2>
         </div>
 

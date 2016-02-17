@@ -2698,6 +2698,9 @@ input.ng-invalid {
   }
 }
 
+.mcs-export-content {
+  @extend .mcs-default-content;
+}
 
 #mics_loading {
   text-align: center;

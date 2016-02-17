@@ -2,12 +2,14 @@ define(['./module','moment-duration-format', 'moment'], function (module, moment
   'use strict';
 
   module.filter('humanDuration', function () {
-    return function (input) {
+    return function (input, durationUnit) {
       if (typeof input === "undefined") {
         return "";
       }
 
-      return moment.duration(input,'seconds').format("d[d] h[h] m[m] s[s]");
+      durationUnit = durationUnit || 'seconds';
+
+      return moment.duration(input, durationUnit).format("d[d] h[h] m[m] s[s]");
     };
   });
 
