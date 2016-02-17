@@ -27,6 +27,7 @@ define([
   'core/adblock/index',
   'core/adlayouts/index',
   'core/assets/index',
+  'core/exports/index',
   'core/bidOptimizer/index',
   'core/attributionmodels/index',
   'core/visitanalysers/index',

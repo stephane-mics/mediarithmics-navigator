@@ -453,4 +453,19 @@ define(['./module'], function (module) {
         };
     }]);
 
+    module.directive('mcsQueryReadOnlyView', [
+      function () {
+
+        return {
+            restrict: 'E',
+            scope: {
+                queryContainer: '='
+            },
+            templateUrl: 'src/core/datamart/queries/query-readonly-view.html',
+            link:function(scope, elem, attr){
+              scope.selectedValuesEnabled = true;
+            }
+        };
+    }]);
+
 });

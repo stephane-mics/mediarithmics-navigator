@@ -24,6 +24,28 @@ define(['./module'], function (module) {
                 });
             };
 
+            $scope.newQueryExport = function () {
+                var newScope = $scope.$new(true);
+                newScope.queryContainer = queryContainer;
+                var modal = $uibModal.open({
+                    templateUrl: 'src/core/datamart/queries/new-query-export.html',
+                    scope: newScope,
+                    backdrop: 'static',
+                    controller: 'core/datamart/queries/NewQueryExportController'
+                });
+
+                modal.result.then(function (result) {
+                  var newScope = $scope.$new(true);
+                  newScope.queryExportId = result.queryExportId;
+                  var modal = $uibModal.open({
+                    templateUrl: 'src/core/datamart/queries/query-export-created.html',
+                    scope: newScope,
+                    backdrop: 'static',
+                    controller: 'core/datamart/queries/QueryExportCreatedController'
+                  });
+                });
+            };
+
         }
     ]);
 

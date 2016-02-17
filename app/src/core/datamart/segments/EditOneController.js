@@ -23,7 +23,6 @@ define(['./module'], function (module) {
           };
           var queryContainer = new QueryContainer(Session.getCurrentDatamartId());
           $scope.queryContainer = queryContainer;
-          $scope.selectedValuesEnabled = true;
         } else {
           $scope.segment = {
             type : type,
@@ -38,7 +37,6 @@ define(['./module'], function (module) {
             var queryContainer = new QueryContainer(Session.getCurrentDatamartId(), segment.query_id);
             queryContainer.load().then(function sucess(loadedQueryContainer){
               $scope.queryContainer = loadedQueryContainer;
-              $scope.selectedValuesEnabled = true;
             });
 
           }

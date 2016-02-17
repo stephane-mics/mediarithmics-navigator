@@ -1079,10 +1079,9 @@ form.mcs-full-page-form {
   }
 }
 
-.campaign-report {
-  @extend .report;
+div.mics-page-main-tabs {
 
-  .report > div > ul.nav {
+  & > ul.nav {
     padding: 8px 0;
     border-top: 1px solid $dark-blue;
     border-bottom: 1px solid $dark-blue;
@@ -1103,7 +1102,10 @@ form.mcs-full-page-form {
       background-color: $dark-blue;
     }
   }
+}
 
+.campaign-report {
+  @extend .report;
 }
 
 .segment-list-date-controller {
@@ -1345,27 +1347,6 @@ table.fragment-list-bid-optimizer-engine {
       margin-right: 10px;
     }
 
-  }
-  .report > div > ul.nav {
-    padding: 8px 0;
-    border-top: 1px solid $dark-blue;
-    border-bottom: 1px solid $dark-blue;
-
-    margin-bottom: 15px;
-
-    li {
-      @include use-bold-font();
-      font-size: ceil(($font-size-base * 1.5));
-      a {
-        padding: 4px 15px;
-        color: $dark-blue;
-      }
-    }
-    li.active a {
-      border: none;
-      color: $dark-blue-not;
-      background-color: $dark-blue;
-    }
   }
 
   .breakdown > ul.nav {
@@ -2698,6 +2679,9 @@ input.ng-invalid {
   }
 }
 
+.mcs-export-content {
+  @extend .mcs-default-content;
+}
 
 #mics_loading {
   text-align: center;
