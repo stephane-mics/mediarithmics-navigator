@@ -10,6 +10,19 @@ define(['./module'], function (module) {
                 this.families = [];
             };
 
+            var FamilyContainer = function (familyName, propertySelectorContainers) {
+                this.id = familyName.replace(/\s/g, '_');
+                this.name = familyName;
+                this.selectors = propertySelectorContainers;
+            };
+
+            var PropertySelectorContainer = function (value) {
+                this.value = value;
+                this.id = value.id;
+                this.label = QueryService.getPropertySelectorDisplayName(value.selector_name, value.selector_parameters, value.expression, value.label);
+                this.familyName = QueryService.getSelectorFamilyName(value.selector_family, value.family_parameters);
+            };
+
             CriteriaContainer.prototype.filter = function(str) {
                 //TODO filter selectors by label
             };
@@ -48,20 +61,6 @@ define(['./module'], function (module) {
 
                 return criteriaContainer;
             };
-
-            var FamilyContainer = function (familyName, propertySelectorContainers) {
-                this.id = familyName.replace(/\s/g, '_');
-                this.name = familyName;
-                this.selectors = propertySelectorContainers;
-            };
-
-            var PropertySelectorContainer = function (value) {
-                this.value = value;
-                this.id = value.id;
-                this.label = QueryService.getPropertySelectorDisplayName(value.selector_name, value.selector_parameters, value.expression, value.label);
-                this.familyName = QueryService.getSelectorFamilyName(value.selector_family, value.family_parameters);
-            };
-
             return CriteriaContainer;
 
         }
