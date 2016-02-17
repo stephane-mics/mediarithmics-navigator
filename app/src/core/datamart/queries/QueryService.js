@@ -8,9 +8,13 @@ define(['./module'], function (module) {
       var service = {};
 
       service.getPropertySelectorDisplayName = function(selectorName, selectorParameter, selectorExpression, selectorLabel) {
-        var name = selectorName;
-        if (selectorName === 'CUSTOM_PROPERTY' || selectorName === 'CUSTOM_EVENT'){
-          name = selectorParameter;
+        var name = selectorName;        
+        if (selectorParameter){
+          if (selectorParameter.startsWith("[")){
+            name = JSON.parse(selectorParameter).join(".");
+          } else {
+            name = selectorParameter;
+          }
         }
         if (selectorExpression){
           name = name;
