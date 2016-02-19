@@ -1,7 +1,6 @@
 {"name": "core/scenarios", "dependencies": [
   "restangular",
   "core/campaigns/expert",
-  "core/queries",
   "checklist-model",
   "contenteditable"
 ]}
