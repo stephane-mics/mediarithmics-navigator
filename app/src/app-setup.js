@@ -13,7 +13,6 @@ define([
   'ngAnimate',
   'ngTable',
   'ngBootstrap',
-  'jsplumb',
   'ui',
   'ui.router',
   'ui.router.extras',

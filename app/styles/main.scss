@@ -2811,6 +2811,7 @@ input.ng-invalid {
     .html-element {
         position:absolute;
         font-weight: bold;
+        word-wrap: break-word;
         font-size: 12px;
         text-align: center;
         z-index: 10;

@@ -289,33 +289,9 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
     return def;
   });
 
-  /**
-   * JS PLUMB ENDPOINT
-   */
-  module.directive('jsJointEndpoint', function ($log) {
-    var def = {
-      restrict: 'E',
-      require: '^jsJointCanvas',
-      scope: {
-        settings: '=settings'
-      },
-      link: function (scope, element, attrs, jsJointCanvas) {
-        var instance = jsJointCanvas.scope.jsPlumbInstance;
-        var options = {
-          anchor: attrs.anchor,
-          uuid: attrs.uuid
-        };
-        $log.debug('Rigging up endpoint');
-        $(element).addClass('_jsJoint_endpoint');
-        $(element).addClass('endpoint_' + attrs.anchor);
-        instance.addEndpoint(element, scope.settings, options);
-      }
-    };
-    return def;
-  });
 
   /**
-   * JS PLUMB CONNECTION
+   * CONNECTION
    */
   module.directive('jsJointConnection', function ($timeout, $log) {
     var def = {

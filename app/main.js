@@ -8,7 +8,6 @@ require.config({
         "jqCookie": "../bower_components/jquery-cookie/jquery.cookie",
         "moment": "../bower_components/momentjs/moment",
         "moment-duration-format": "../bower_components/moment-duration-format/lib/moment-duration-format",
-        "jsplumb": "../bower_components/jsplumb/dist/js/jsPlumb-2.0.6",
         "joint": "../bower_components/joint/dist/joint",
         "backbone": "../bower_components/backbone/backbone-min",
 

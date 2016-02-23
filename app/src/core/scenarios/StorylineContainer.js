@@ -135,30 +135,39 @@ define(['./module', 'lodash'], function (module, _) {
         this.saveWithNewScenario = function (newScenario) {
           this.scenario = newScenario;
           var self = this;
-          this.storyline = newScenario.one("storyline").get().then(function (storyline) {
+          return newScenario.one("storyline").get().then(function (storyline) {
             self.storyline = storyline;
             _.forEach(self.nodes, function (node){ node.scenario = newScenario;});
             _.forEach(self.edges, function (edge){ edge.scenario = newScenario;});
-            self.save();
+            return self.save();
           });
 
         };
 
         this.save = function save() {
-          var deferred = $q.defer();
           var self = this;
-          self.saveNodes(self.nodes, "save").then(function () {
-            self.saveNodes(self.edges, "save").then(function() {
-              self.saveNodes(self.removedEdges, "delete").then(function() {
-                self.saveNodes(self.removedNodes, "delete").then(function() {
-                  deferred.resolve(self);
-                });
-              } );
-            });
+  //        return self.saveNodes(self.nodes, "save").then(function () {
+  //          return self.saveNodes(self.edges, "save").then(function() {
+  //            return self.saveNodes(self.removedEdges, "delete").then(function() {
+  //              return self.saveNodes(self.removedNodes, "delete").then(function() {
+  //                return self;
+  //              });
+  //            } );
+  //          });
 
-          });
+  //        });
 
-          return deferred.promise;
+          return self.saveNodes(self.nodes, "save")
+.then(function () {
+  return self.saveNodes(self.edges, "save");
+}).then(function () {
+  return self.saveNodes(self.removedEdges, "delete");
+}).then(function () {
+  return self.saveNodes(self.removedNodes, "delete");
+}).then(function () {
+  return self;
+});
+
         };
 
 
