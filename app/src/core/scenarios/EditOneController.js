@@ -164,9 +164,9 @@ define(['./module', 'lodash'], function (module, _) {
         promise.then(function success(campaignContainer) {
           $log.info("success");
           if(!$scope.graph.scenarioId) {
-            $scope.graph.saveWithNewScenario(campaignContainer);
+            return $scope.graph.saveWithNewScenario(campaignContainer);
           }else {
-            $scope.graph.save();
+            return $scope.graph.save();
           }
 
           
