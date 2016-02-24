@@ -1,7 +1,7 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.controller('core/goals/EditQueryController', [
+  module.controller('core/queries/EditQueryController', [
     '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/DisplayCampaignService', "Restangular", 'core/common/auth/Session',
     function($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
 

@@ -1,18 +1,44 @@
-define(['./module'], function (module) {
+define(['./module', 'lodash'], function (module, _) {
 
   'use strict';
 
+  module.controller('core/scenarios/EditOneController/NodeController', ["$scope",'$log', '$uibModal','core/datamart/queries/QueryContainer', 'core/common/auth/Session',function($scope,$log, $uibModal, QueryContainer,Session) {
+    var datamartId = Session.getCurrentDatamartId();
+    var nodeCtrl = this;
+    $log.info($scope.node);
+
+    this.editTrigger = function () {
+      var newScope = $scope.$new(true);
+      newScope.queryContainer = $scope.node.queryContainer.copy();
+        newScope.enableSelectedValues = true;
+      $uibModal.open({
+        templateUrl: 'src/core/queries/edit-query.html',
+        scope : newScope,
+        backdrop : 'static',
+        controller: 'core/queries/EditQueryController',
+        windowClass: 'edit-query-popin'
+      }).result.then(function ok(queryContainerUpdate){
+        $scope.node.updateQueryContainer(queryContainerUpdate);
+      }, function cancel(){
+        $log.debug("Edit Query model dismissed");
+      });
+    };
+
+
+
+  }]);
+
+
+
 
   module.controller('core/scenarios/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state', 'core/campaigns/DisplayCampaignService', '$uibModal',
-    function ($scope, $log, Restangular, Session, _, $stateParams, $location, $state, DisplayCampaignService, $uibModal) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', '$stateParams', '$location', '$state', 'core/campaigns/DisplayCampaignService', '$uibModal', 'core/common/promiseUtils','$q',  'async', 'core/scenarios/StorylineContainer',
+    function ($scope, $log, Restangular, Session,  $stateParams, $location, $state, DisplayCampaignService, $uibModal, promiseUtils,$q, async, StorylineContainer) {
 
-      function retrieveCampaignForNode($scope, node) {
-        Restangular.one("campaigns", node.campaign_id).get().then(function (campaign) {
-          $scope.campaigns[node.id] = campaign;
-          $log.debug($scope.campaigns);
-        });
-      }
+
+
+
+
 
       var scenarioId = $stateParams.scenario_id;
       $scope.campaigns = {};
@@ -20,28 +46,18 @@ define(['./module'], function (module) {
 
       if (!scenarioId) {
         $scope.scenario = {};
+        $scope.graph = new StorylineContainer(null);
       } else {
         Restangular.one('scenarios', scenarioId).get().then(function (scenario) {
-          $scope.scenario = scenario;
+        $scope.graph = new StorylineContainer(scenario);
+        $scope.scenario = scenario;
         });
         Restangular.one('scenarios', scenarioId).all("inputs").getList().then(function (campaigns) {
           $scope.inputs = campaigns;
         });
-        Restangular.one('scenarios', scenarioId).one("workflow").get().then(function (workflow) {
-          $scope.workflow = workflow;
-          $scope.begin_node_id = workflow.begin_node_id;
-          workflow.all("nodes").getList().then(function (nodes) {
-            $scope.nodes = nodes;
-            for (var i = 0; i < nodes.length; i++) {
-              retrieveCampaignForNode($scope, nodes[i]);
-            }
-          });
-        });
-      }
+             }
 
-      $scope.getCampaign = function (campaignId) {
-        return $scope.campaigns[campaignId];
-      };
+
       $scope.goToCampaign = function (campaign) {
         switch (campaign.type) {
           case "DISPLAY":
@@ -53,12 +69,8 @@ define(['./module'], function (module) {
         }
       };
 
-      $scope.deleteNode = function (id) {
-        $scope.workflow.one("nodes", id).remove().then(function (r) {
-          $state.transitionTo($state.current, $stateParams, {
-            reload: true, inherit: true, notify: true
-          });
-        });
+       $scope.deleteNode = function (node) {
+        $scope.graph.deleteNode(node);
       };
 
       $scope.addInput = function (type) {
@@ -67,11 +79,19 @@ define(['./module'], function (module) {
         });
       };
 
+      $scope.onConnection = function (link, handler, from, to) {
+        $log.log("connection of ", handler, "from", from, "to", to);
+        $scope.graph.addEdge(from, handler, to);
+
+      };
+      $scope.onDeconnect = function (link, edge) {
+        $log.log("deconnection of ", link, "edge", edge);
+        $scope.graph.removeEdge(edge);
+
+      };
+
       $scope.deleteInput = function (input) {
         input.remove({"scenario_id": scenarioId}).then(function (r) {
-          $state.transitionTo($state.current, $stateParams, {
-            reload: true, inherit: true, notify: true
-          });
         });
       };
 
@@ -84,15 +104,15 @@ define(['./module'], function (module) {
       };
 
       $scope.saveBeginNode = function (beginNode) {
-        Restangular.one('scenarios', scenarioId).one("workflow").post("begin", beginNode).then(function (r, error) {
+        Restangular.one('scenarios', scenarioId).one("storyline").post("begin", beginNode).then(function (r, error) {
 
-          $state.transitionTo($state.current, $stateParams, {
-            reload: true, inherit: true, notify: true
-          });
         });
       };
 
       $scope.addCampaign = function (type) {
+        if(type === 'TRIGGER') {
+          $scope.graph.addNode({"type":"QUERY_INPUT","x":0,"y":0,"query_id":null});
+        }
         if (type === 'DISPLAY') {
           $uibModal.open({
             templateUrl: 'src/core/scenarios/QuickCreateCampaign.html',
@@ -112,6 +132,7 @@ define(['./module'], function (module) {
           });
         }
         if (type === 'LIBRARY') {
+          $scope.selectSubCampaign = true;
           $uibModal.open({
             templateUrl: 'src/core/campaigns/ChooseExistingCampaign.html',
             scope: $scope,
@@ -121,16 +142,19 @@ define(['./module'], function (module) {
           });
         }
       };
-      $scope.$on("mics-campaign:selected", function (event, campaign) {
-        Restangular.one('scenarios', scenarioId).one("workflow").all('nodes').post({campaign_id: campaign.id}).then(function () {
-          $state.transitionTo($state.current, $stateParams, {
-            reload: true, inherit: true, notify: true
-          });
-        });
+      $scope.$on("mics-campaign:selected", function (event, campaign, subCampaign) {
+          $log.log("adding a campaign node", arguments);
+          if(subCampaign) {
+            $scope.graph.addNode({campaign_id: campaign.id, type:campaign.type + "_CAMPAIGN", ad_group_id: subCampaign.id});
+          } else {
+            $scope.graph.addNode({campaign_id: campaign.id, type:campaign.type + "_CAMPAIGN"});
+          }
+          $log.log("new graph : ", $scope.graph);
       });
       $scope.next = function () {
         var promise = null;
         if (scenarioId) {
+
           promise = $scope.scenario.put();
         } else {
           $log.debug("Create a scenario");
@@ -139,7 +163,14 @@ define(['./module'], function (module) {
         }
         promise.then(function success(campaignContainer) {
           $log.info("success");
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
+          if(!$scope.graph.scenarioId) {
+            return $scope.graph.saveWithNewScenario(campaignContainer);
+          }else {
+            return $scope.graph.save();
+          }
+
+          
+//          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
         }, function failure() {
           $log.info("failure");
         });

@@ -3,7 +3,6 @@ define(['./module'], function (module) {
   'use strict';
 
 
-
   module.controller('core/goals/EditOneController', [
     '$scope', '$log', 'Restangular', 'core/common/auth/Session', 'lodash', '$stateParams', '$location', '$state','$uibModal',
     'core/datamart/queries/QueryContainer', '$q', 'core/common/promiseUtils', 'async', 'core/common/WaitingService',
@@ -139,12 +138,13 @@ define(['./module'], function (module) {
 
       $scope.addTrigger = function () {
         var newScope = $scope.$new(true);
+        newScope.enableSelectedValues = false;
         newScope.queryContainer = new QueryContainer(datamartId);
         $uibModal.open({
-          templateUrl: 'src/core/goals/edit-query.html',
+          templateUrl: 'src/core/queries/edit-query.html',
           scope : newScope,
           backdrop : 'static',
-          controller: 'core/goals/EditQueryController',
+          controller: 'core/queries/EditQueryController',
           windowClass: 'edit-query-popin'
         }).result.then(function ok(queryContainerUpdate){
           $scope.queryContainer = queryContainerUpdate;
@@ -156,11 +156,12 @@ define(['./module'], function (module) {
       $scope.editTrigger = function (queryId) {
         var newScope = $scope.$new(true);
         newScope.queryContainer = $scope.queryContainer.copy();
+        newScope.enableSelectedValues = false;
         $uibModal.open({
-          templateUrl: 'src/core/goals/edit-query.html',
+          templateUrl: 'src/core/queries/edit-query.html',
           scope : newScope,
           backdrop : 'static',
-          controller: 'core/goals/EditQueryController',
+          controller: 'core/queries/EditQueryController',
           windowClass: 'edit-query-popin'
         }).result.then(function ok(queryContainerUpdate){
           $scope.queryContainer = queryContainerUpdate;

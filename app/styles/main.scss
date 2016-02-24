@@ -2695,3 +2695,128 @@ input.ng-invalid {
   color: $mcs-light-blue;
   font-size: 12px !important;
 }
+//-------------------- JsJoint
+.mcs-scenario {
+    @extend .mcs-default-container;
+
+
+    $link-color: #4B4F6A;
+
+    .paper {
+        position: relative;
+
+        display: inline-block;
+        background: transparent;
+        overflow: hidden;
+    }
+    .paper svg {
+        background: transparent;
+    }
+
+    .devs {
+        text {
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .body {
+            fill: transparent;
+            stroke: #31d0c6;
+            stroke-width: 6px;
+            z-index: 10;
+        }
+
+        .label {
+            //        fill: #31d0c6;
+            font-size: 16px;
+        }
+
+        .port-body {
+            stroke: #ffffff;
+            stroke-width: 3px;
+            fill: $link-color;
+            &:hover {
+                opacity: 1;
+                fill: $mcs-light-blue;
+            }
+            &.available-magnet {
+                opacity: 1;
+                fill: $mcs-light-blue;
+            }
+        }
+        
+
+        .port-label {
+            //        fill: #7c68fc;
+            font-size: 10px;
+        }
+
+        &.Atomic .body {
+            stroke: #feb663;
+        }
+
+        &.QueryInput .body {
+            stroke: $mcs-orange;
+            rx: 10px;
+            ry: 10px; 
+        }
+
+        &.DisplayCampaign .body {
+            stroke: $mcs-green;
+        }
+
+        &.Atomic .label {
+            fill: #feb663;
+        }
+    }
+    .available-cell rect {
+        }
+
+    /* links */
+
+    .link .connection   {
+        stroke: $link-color;
+        stroke-width: 4px;
+    }
+    .marker-target  {
+        stroke: $link-color;
+        fill: $link-color;
+        stroke-width: 4px;
+
+    }
+    .link .marker-arrowhead, .link .marker-vertex {
+        fill: #31D0C6;
+    }
+    .link .marker-arrowhead:hover {
+        fill: #F39C12;    
+    }
+
+    .link-tools .tool-remove circle {
+        fill: #fe854f;
+    }
+
+    /* highlighting */
+
+    .devs.highlighted-parent .body {
+        stroke: #fe854f;
+        transition: stroke 1s;
+    }
+
+    .devs.highlighted-parent .label {
+        fill: #fe854f;
+        transition: fill 1s;
+        text-decoration: underline;
+    }
+
+    .html-element {
+        position:absolute;
+        font-weight: bold;
+        word-wrap: break-word;
+        font-size: 12px;
+        text-align: center;
+        z-index: 10;
+        .actions {
+
+        }
+    }
+}

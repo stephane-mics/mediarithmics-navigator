@@ -25,13 +25,6 @@ define(['./module'], function (module) {
                 endpoint: "Dot",
                 paintStyle: {strokeStyle: "#00AB67", fillStyle: "transparent", radius: 7, lineWidth: 3 },
                 isSource: true,
-                connector: ["StateMachine", {
-                    stub: [30, 30],
-                    gap: 20,
-                    cornerRadius: 0,
-                    curviness: 0,
-                    alwaysRespectStubs: true
-                }],
                 connectorStyle: {
                     lineWidth: 1,
                     strokeStyle: "#61B7CF",
@@ -76,8 +69,8 @@ define(['./module'], function (module) {
                                 "uuid": "target-" + node.id
                             }
                             ],
-                            "x": 0,
-                            "y": (i + 1) * 100
+                            "x": (i +1) *300,
+                            "y": 0
                         });
 
 
@@ -118,8 +111,8 @@ define(['./module'], function (module) {
                         }
                     ],
                     "sources": [],
-                    "x": 0,
-                    "y": 300
+                    "x": 600,
+                    "y": 0
                 }
             ];
 
