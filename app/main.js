@@ -12,6 +12,7 @@ require.config({
         "backbone": "../bower_components/backbone/backbone-min",
 
         "lodash": "../bower_components/lodash/lodash.min",
+        "underscore": "../bower_components/underscore/underscore-min",
 
         "d3": "../bower_components/d3/d3",
         "nv.d3": "../bower_components/nvd3/build/nv.d3",
@@ -53,11 +54,6 @@ require.config({
         "lvl.directives.dragdrop": "../bower_components/lvlDragDrop/script/lvl-drag-drop",
         "lvlUuid": "../bower_components/lvlDragDrop/script/lvl-uuid",
         "bootstrap-tokenfield": "../bower_components/bootstrap-tokenfield/dist/bootstrap-tokenfield"
-    },
-    map:{
-      '*': {
-        'underscore': 'lodash'
-      }
     },
     shim: {
         'angular': {deps: ['jquery'], exports: 'angular'},
