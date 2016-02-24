@@ -184,7 +184,7 @@ define(['./module', 'lodash'], function (module, _) {
             return value.save();
           } else {
             var self = this;
-            return this.scenario.one("storyline").all('edges').post({source_id: this.source.id, handler: null, target_id: this.target.id}).then(function (result) {self.value = result;});
+            return this.scenario.one("storyline").all('edges').post({source_id: this.source.id, handler: this.handler, target_id: this.target.id}).then(function (result) {self.value = result;});
           }
         };
         this.remove = function() {
