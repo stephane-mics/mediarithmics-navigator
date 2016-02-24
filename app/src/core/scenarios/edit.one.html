@@ -47,7 +47,7 @@
                     <div ng-repeat="node in graph.nodes">
                         <js-joint-node node="node.value" >
                             <span ng-show="node.type != 'QUERY_INPUT'">
-                                {{node.campaign.name}} &gt; {{node.adGroup.name}}
+				    {{node.campaign.name}} <span ng-if="node.adGroup"> &gt; {{node.adGroup.name}} </span>
                                 
                             </span>
                             <div ng-if="node.type === 'QUERY_INPUT'" ng-controller="core/scenarios/EditOneController/NodeController as nodeCtrl">

@@ -222,6 +222,11 @@ define(['./module', 'lodash'], function (module, _) {
             });
           });
         }
+	if(node.type === "EMAIL_CAMPAIGN") {
+          Restangular.one("campaigns", self.value.campaign_id).get().then(function (campaign) {
+            self.campaign = campaign;
+          });
+        }
 
         this.saveNode = function () {
            if(this.value.save) {
