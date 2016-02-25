@@ -75,7 +75,7 @@ define(['./module'], function (module) {
           $scope.error = 'There was an error while saving segment';
           $log.info("failure");
         });
-      };      
+      };
 
       $scope.activations = [];
       $scope.goals = [];
@@ -110,11 +110,12 @@ define(['./module'], function (module) {
       $scope.editQuery = function () {
         var newScope = $scope.$new(true);
         newScope.queryContainer = $scope.queryContainer.copy();
+        newScope.enableSelectedValues = true;
         $uibModal.open({
-          templateUrl: 'src/core/datamart/segments/edit-query.html',
+          templateUrl: 'src/core/datamart/queries/edit-query.html',
           scope : newScope,
           backdrop : 'static',
-          controller: 'core/datamart/segments/EditQueryController',
+          controller: 'core/datamart/queries/EditQueryController',
           windowClass: 'edit-query-popin'
         }).result.then(function ok(queryContainerUpdate){
           $scope.queryContainer = queryContainerUpdate;
