@@ -47,9 +47,9 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
 
   function createNode(node) {
     var ins = ["in"];
-    var outs = ["out"]
+    var outs = ["OUT"];
     if(node.type !== 'QUERY_INPUT') {
-      outs = ["out", "visit"];
+      outs = ["ON_GOAL", "ON_VISIT"];
     } 
     var element = new joint.shapes.devs.AngularAtomic({
       position: { x: node.x , y: node.y  },
@@ -66,7 +66,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
   
   function createLink(edge, source, sourcePort, target) {
     var element = new joint.shapes.devs.Link({
-      source: {id: source.id, selector: source.getPortSelector('out')},
+      source: {id: source.id, selector: source.getPortSelector(sourcePort)},
       target: {id: target.id, selector: target.getPortSelector('in')},
       router: { name: 'manhattan' },
       connector: { name: 'rounded' },
