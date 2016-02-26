@@ -32,8 +32,8 @@ define(['./module', 'lodash'], function (module, _) {
 
 
   module.controller('core/scenarios/EditOneController', [
-    '$scope', '$log', 'Restangular', 'core/common/auth/Session', '$stateParams', '$location', '$state', 'core/campaigns/DisplayCampaignService', '$uibModal', 'core/common/promiseUtils','$q',  'async', 'core/scenarios/StorylineContainer',
-    function ($scope, $log, Restangular, Session,  $stateParams, $location, $state, DisplayCampaignService, $uibModal, promiseUtils,$q, async, StorylineContainer) {
+    '$scope', '$log', 'Restangular', 'core/common/auth/Session', '$stateParams', '$location', '$state', 'core/campaigns/DisplayCampaignService', '$uibModal', 'core/common/promiseUtils','$q',  'async', 'core/scenarios/StorylineContainer',"core/common/WaitingService", 'core/common/ErrorService',
+    function ($scope, $log, Restangular, Session,  $stateParams, $location, $state, DisplayCampaignService, $uibModal, promiseUtils,$q, async, StorylineContainer,waitingService, ErrorService) {
 
 
 
@@ -152,6 +152,7 @@ define(['./module', 'lodash'], function (module, _) {
           $log.log("new graph : ", $scope.graph);
       });
       $scope.next = function () {
+        waitingService.showWaitingModal();
         var promise = null;
         if (scenarioId) {
 
@@ -170,9 +171,16 @@ define(['./module', 'lodash'], function (module, _) {
           }
 
           
-//          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
         }, function failure() {
           $log.info("failure");
+        }).then(function ok() {
+          waitingService.hideWaitingModal();        
+          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
+        }, function error(response){
+          waitingService.hideWaitingModal();
+          ErrorService.showErrorModal({
+            error: response
+          });
         });
       };
       $scope.cancel = function () {

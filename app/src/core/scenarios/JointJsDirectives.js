@@ -47,14 +47,15 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
 
   function createNode(node) {
     var ins = ["in"];
-    if(node.type === 'QUERY_INPUT') {
-      ins = [];
+    var outs = ["OUT"];
+    if(node.type !== 'QUERY_INPUT') {
+      outs = ["ON_GOAL", "ON_VISIT"];
     } 
     var element = new joint.shapes.devs.AngularAtomic({
       position: { x: node.x , y: node.y  },
       type: "devs."+_.capitalize(_.camelCase(node.type)),
       inPorts: ins,
-      outPorts: ["out"]
+      outPorts: outs
 
     });
     element.prop('ngObject', node);
@@ -65,7 +66,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
   
   function createLink(edge, source, sourcePort, target) {
     var element = new joint.shapes.devs.Link({
-      source: {id: source.id, selector: source.getPortSelector('out')},
+      source: {id: source.id, selector: source.getPortSelector(sourcePort)},
       target: {id: target.id, selector: target.getPortSelector('in')},
       router: { name: 'manhattan' },
       connector: { name: 'rounded' },
@@ -157,7 +158,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
                var successors = graph.getSuccessors(sourceId, false);
 
                if(!_(successors).includes(targetId)) {
-                 var c = createLink(edge,sourceId, null, targetId);
+                 var c = createLink(edge,sourceId, edge.handler, targetId);
                  $log.log("adding edge : ", edge);
                  c.addTo(graph).reparent();
                  return c;
@@ -204,7 +205,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
             var source = sourceCell.get("ngObject");
             var target = targetCell.get("ngObject");
 
-            scope.onConnection(link,null, source, target);
+            scope.onConnection(link,sourcePort, source, target);
             scope.$apply();
           }
           if(targetId === undefined) {
