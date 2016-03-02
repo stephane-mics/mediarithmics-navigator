@@ -16,7 +16,7 @@
 
                 <div class="form-group pull-left right-spaced not-bottom-spaced">
                   <label for="catalogSelect">Catalog</label>
-                  <select id="catalogSelect" class="form-control" ng-model="catalog" ng-options="m.$catalog_id for m in catalogs" ng-change="changeCatalog()">
+                  <select id="catalogSelect" class="form-control" ng-model="catalog" ng-options="m.$catalog_id for ag in catalogs" ng-model="selectedAdGroup">
                     <option value="">Select a catalog</option>
                   </select>
                 </div>

@@ -29,8 +29,8 @@
                             <a class="mics-btn mics-btn-action" ng-click="selectModel()">Select Model</a>
                         </h3>
                     </div>
-                    <div class="breakdown-area">
-                    <div class="panel-body">
+                     <div class="breakdown-area">
+                     <div class="panel-body" ng-if="report.$model_type == 'CATEGORICAL_MODEL'">
                         <uib-tabset class="breakdown">
                             <uib-tab heading="Roc">
                                 <div class="active chart-area ">
@@ -54,7 +54,10 @@
                         </uib-tabset>
 
                     </div>
-
+                    <div class="panel-body" ng-if="report.$model_type == 'DYNAMIC_ALLOCATION'">
+                        <mcs-bid-optimizer-dynamic-allocation-report
+                                report="report"></mcs-bid-optimizer-dynamic-allocation-report>
+                    </div>
                 </div>
                 </div>
             </uib-tab>
