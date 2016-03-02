@@ -70,8 +70,14 @@ define(['./module'], function (module) {
           {operator:"NOT_EQUAL", label:"not"}]
       };
 
-      var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" , USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices", USER_SEGMENTS:"Segments", USER_EMAILS:"Emails", USER_TOUCHES:"Touches"};
-      var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" , USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device", USER_SEGMENTS:"Segment", USER_EMAILS:"Email", USER_TOUCHES:"Touch"};
+      var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" ,
+                           USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices",
+                           USER_SEGMENTS:"Segments", USER_EMAILS:"Emails",
+                           USER_TOUCHES:"Touches", USER_EMAIL_ADDRESSES:"Email Addresses"};
+      var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" ,
+                            USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device",
+                            USER_SEGMENTS:"Segment", USER_EMAILS:"Email",
+                            USER_TOUCHES:"Touch", USER_EMAIL_ADDRESSES:"Email Address"};
 
       var propertySelectorExpressions = [
         {name:"MAX", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},
