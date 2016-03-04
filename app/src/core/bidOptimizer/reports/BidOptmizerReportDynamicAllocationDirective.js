@@ -24,8 +24,7 @@ define(['./module'], function(module) {
           };
 
           var formatMedia = function(scope, row) {
-            var val = scope.$eval("row." + this.field);
-            return scope.mediaValue(val);
+            return scope.mediaValue(row[this.field]);
           };
 
           /*
@@ -168,9 +167,8 @@ define(['./module'], function(module) {
             if (newVal) {
 
               scope.report = newVal;
-              var i = -1;
-              scope.ad_groups = scope.report.$allocation_tables.map(function(all_table) {
-                i = i + 1;
+
+              scope.ad_groups = scope.report.$allocation_tables.map(function(all_table,i) {
                 return {
                   id: i,
                   adGroupId: all_table.$ad_group_id,

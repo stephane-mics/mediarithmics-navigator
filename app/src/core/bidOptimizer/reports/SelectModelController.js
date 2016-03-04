@@ -11,27 +11,14 @@ define(['./module'], function (module) {
 
             Restangular.one('bid_optimizers', $scope.bidOptimizerId).all("properties").getList().then(function (properties) {
 
-                var bidOptimizerType = properties.filter(function(prop) {
-                  return prop.technical_name === "name" && prop.value.value;
-                })[0].value.value;
-                var modelId = null;
-                if (bidOptimizerType  ===  "Click Prediction (DTLR)"){
-                  var latest = properties.filter(function(prop) {
+                var latest = properties.filter(function(prop) {
                     return prop.technical_name === "latest_model_id" && prop.value.value;
-                  })[0];
-                  var overriding = properties.filter(function(prop) {
+                })[0];
+                var overriding = properties.filter(function(prop) {
                     return prop.technical_name === "overriding_model_id" && prop.value.value;
-                  })[0];
+                })[0];
 
-                  modelId = (overriding || latest).value.value;
-                }else{
-                   modelId = properties.filter(function(prop) {
-                   return prop.technical_name === "allocation_index" && prop.value.value;
-                  })[0].value.value;
-
-                }
-
-                $scope.currentModel = modelId;
+                $scope.currentModel = (overriding || latest).value.value;
 
             });
 
