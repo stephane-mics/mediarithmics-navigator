@@ -20,7 +20,7 @@
         <th class="actions">Actions</th>
       </tr>
       </thead>
-      <tbody data-ng-repeat="adLayout in adLayouts">
+      <tbody data-ng-repeat="adLayout in adLayouts | offset: (currentPage - 1) * itemsPerPage | limitTo: itemsPerPage">
       <tr data-target="#demo{{$index}}" data-toggle="collapse" class="accordion-toggle clickableRow" title="Click to collapse/expand this ad layout versions">
         <td>{{adLayout.name}}</td>
         <td>{{adLayout.format}}</td>
@@ -66,5 +66,6 @@
       </tr>
       </tbody>
     </table>
+    <uib-pagination total-items="adLayouts.length" ng-model="currentPage" items-per-page="itemsPerPage"></uib-pagination>
   </div>
 </div>
