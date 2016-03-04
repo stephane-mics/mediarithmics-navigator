@@ -9,8 +9,8 @@ define(['./module', 'jquery'], function (module, $) {
       $scope.adLayouts = [];
       $scope.adRenderers = [];
       $scope.adLayoutRendererVersions = [];
-      $scope.maxElements = 10;
-      $scope.page = 0;
+      $scope.itemsPerPage = 10;
+      $scope.currentPage = 1;
 
       // Get list of ad renderers
       Restangular.all("plugins").getList({plugin_type: "DISPLAY_AD_RENDERER"}).then(function (renderers) {
@@ -45,7 +45,7 @@ define(['./module', 'jquery'], function (module, $) {
       function getAdLayouts() {
         $scope.adLayouts = [];
         Restangular.all("ad_layouts").getList({organisation_id: organisationId}).then(function (adLayouts) {
-          for (var i = $scope.page; i < adLayouts.length && i < $scope.maxElements; ++i) {
+          for (var i = 0; i < adLayouts.length; ++i) {
             var adLayout = adLayouts[i];
             $scope.adLayouts.push({
               id: adLayout.id,
