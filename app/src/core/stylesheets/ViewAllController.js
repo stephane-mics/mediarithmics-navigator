@@ -2,14 +2,14 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/stylesheets/ViewAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log',
-    function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log', '$filter',
+    function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log, $filter) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.stylesheets = [];
       $scope.adRenderers = [];
-      $scope.maxElements = 10;
-      $scope.page = 0;
+      $scope.currentPage = 1;
+      $scope.itemsPerPage = 10;
 
       // Get list of ad renderers
       Restangular.all("plugins").getList({plugin_type: "STYLE_SHEET"}).then(function (renderers) {
@@ -17,6 +17,10 @@ define(['./module', 'jquery'], function (module, $) {
           $scope.adRenderers[renderers[i].id] = renderers[i].artifact_id;
         }
       });
+
+      $scope.filteredStyleSheets = function () {
+        return $filter('filter')($scope.stylesheets, $scope.stylesheetName);
+      };
 
       function setUpVersions(versions) {
         versions.sort(function (a, b) {
@@ -34,7 +38,7 @@ define(['./module', 'jquery'], function (module, $) {
       function getStyleSheets() {
         $scope.stylesheets = [];
         Restangular.all("style_sheets").getList({organisation_id: organisationId}).then(function (stylesheets) {
-          for (var i = $scope.page; i < stylesheets.length && i < $scope.maxElements; ++i) {
+          for (var i = 0; i < stylesheets.length; ++i) {
             var stylesheet = stylesheets[i];
             $scope.stylesheets.push({
               id: stylesheet.id,
@@ -59,7 +63,7 @@ define(['./module', 'jquery'], function (module, $) {
           event.preventDefault();
           event.stopPropagation();
         }
-    }
+      }
 
       function publish(stylesheetVersion) {
         Restangular.one("style_sheets", stylesheetVersion.style_sheet_id).one("versions", stylesheetVersion.id).customPUT({status: "PUBLISHED"}, undefined, {organisation_id: organisationId}).then(function () {
