@@ -1,4 +1,0 @@
-{"name": "core/queries", "dependencies": [
-  "restangular",
-  "checklist-model"
-]}

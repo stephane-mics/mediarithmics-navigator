@@ -30,7 +30,6 @@ define([
   'core/bidOptimizer/index',
   'core/attributionmodels/index',
   'core/visitanalysers/index',
-  'core/queries/index',
   'core/goals/index',
   'core/scenarios/index',
   'core/keywords/index',

@@ -12,10 +12,10 @@ define(['./module', 'lodash'], function (module, _) {
       newScope.queryContainer = $scope.node.queryContainer.copy();
         newScope.enableSelectedValues = true;
       $uibModal.open({
-        templateUrl: 'src/core/queries/edit-query.html',
+        templateUrl: 'src/core/datamart/queries/edit-query.html',
         scope : newScope,
         backdrop : 'static',
-        controller: 'core/queries/EditQueryController',
+        controller: 'core/datamart/queries/EditQueryController',
         windowClass: 'edit-query-popin'
       }).result.then(function ok(queryContainerUpdate){
         $scope.node.updateQueryContainer(queryContainerUpdate);
@@ -174,7 +174,7 @@ define(['./module', 'lodash'], function (module, _) {
         }, function failure() {
           $log.info("failure");
         }).then(function ok() {
-          waitingService.hideWaitingModal();        
+          waitingService.hideWaitingModal();
           $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
         }, function error(response){
           waitingService.hideWaitingModal();
@@ -189,4 +189,3 @@ define(['./module', 'lodash'], function (module, _) {
     }
   ]);
 });
-

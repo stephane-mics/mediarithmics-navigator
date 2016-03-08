@@ -141,10 +141,10 @@ define(['./module'], function (module) {
         newScope.enableSelectedValues = false;
         newScope.queryContainer = new QueryContainer(datamartId);
         $uibModal.open({
-          templateUrl: 'src/core/queries/edit-query.html',
+          templateUrl: 'src/core/datamart/queries/edit-query.html',
           scope : newScope,
           backdrop : 'static',
-          controller: 'core/queries/EditQueryController',
+          controller: 'core/datamart/queries/EditQueryController',
           windowClass: 'edit-query-popin'
         }).result.then(function ok(queryContainerUpdate){
           $scope.queryContainer = queryContainerUpdate;
@@ -158,10 +158,10 @@ define(['./module'], function (module) {
         newScope.queryContainer = $scope.queryContainer.copy();
         newScope.enableSelectedValues = false;
         $uibModal.open({
-          templateUrl: 'src/core/queries/edit-query.html',
+          templateUrl: 'src/core/datamart/queries/edit-query.html',
           scope : newScope,
           backdrop : 'static',
-          controller: 'core/queries/EditQueryController',
+          controller: 'core/datamart/queries/EditQueryController',
           windowClass: 'edit-query-popin'
         }).result.then(function ok(queryContainerUpdate){
           $scope.queryContainer = queryContainerUpdate;

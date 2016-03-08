@@ -28,7 +28,6 @@ define(['angular'], function () {
       'core/campaigns',
       'core/creatives',
       'core/scenarios',
-      'core/queries',
       'core/goals',
       'core/attributionmodels',
       'core/visitanalysers',
