@@ -2,8 +2,8 @@ define(['./module', 'jquery'], function (module, $) {
   'use strict';
 
   module.controller('core/adlayouts/ViewAllController', [
-    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log',
-    function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log) {
+    '$scope', 'Restangular', 'core/common/auth/Session', '$location', '$state', '$stateParams', '$uibModal', '$log', '$filter',
+    function ($scope, Restangular, Session, $location, $state, $stateParams, $uibModal, $log, $filter) {
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.organisationId = organisationId;
       $scope.adLayouts = [];
@@ -18,6 +18,10 @@ define(['./module', 'jquery'], function (module, $) {
           $scope.adRenderers[renderers[i].id] = renderers[i].artifact_id;
         }
       });
+
+      $scope.filteredAdLayouts = function () {
+        return $filter('filter')($scope.adLayouts, $scope.adLayoutName);
+      };
 
       function matchAdLayoutVersions(versions) {
         if (versions[0]) {
