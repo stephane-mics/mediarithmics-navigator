@@ -20,7 +20,7 @@ define(['./module'], function(module) {
             return media.replace("site:web:", "");
           };
           var interpolatedValue = function(scope, row) {
-            return scope.$eval("row." + this.field);
+            return row[this.field];
           };
 
           var formatMedia = function(scope, row) {
@@ -58,7 +58,7 @@ define(['./module'], function(module) {
             })));
 
             $q.all(uniqueDisplayNetworksIds.map(function(displayId){
-              return Restangular.one("display_networks" , displayId).customGET("", {"organisation_id": scope.organisationId})
+              return Restangular.one("display_networks" , displayId).get({"organisation_id": scope.organisationId})
                  .then(function(d){
                     return d;
                  },
@@ -68,10 +68,6 @@ define(['./module'], function(module) {
                  );
             })).then(function(res){
 
-               scope.uniqueDisplayNetworks =res.map(function(val){
-                 return {id : val.id, title: val.name};
-               });
-
                //used only to filter display networks by name
                scope.uniqueDisplayNetworksIdsFilter = res.map(function(val){
                  return {id : val.name, title: val.name};
@@ -79,8 +75,8 @@ define(['./module'], function(module) {
 
                //to access display network name by id
                scope.uniqueDisplayNetworksObj = {};
-               scope.uniqueDisplayNetworks.map(function(val){
-                 scope.uniqueDisplayNetworksObj[val.id] = val.title;
+               res.map(function(val){
+                 scope.uniqueDisplayNetworksObj[val.id] = val.name;
                });
 
                // adding display network name in allocations and ignored contexts
