@@ -48,7 +48,7 @@ define(['./module'], function (module) {
             });
 
 
-            var modelCall = $resource(configuration.WS_URL + '/bid_optimizers/:bidOptimizerId/models/:modelId/files/technical_name=statistics', {}, {
+            var modelCall = $resource(configuration.WS_URL + '/bid_optimizers/:bidOptimizerId/models/:modelId/files/technical_name=report', {}, {
                     get: {
                         method: 'GET',
                         headers: {'Authorization': AuthenticationService.getAccessToken()}
@@ -58,8 +58,8 @@ define(['./module'], function (module) {
 
             modelCall.get({bidOptimizerId: $scope.bidOptimizerId, modelId: $scope.showModelId}, function (res) {
 
-                $scope.report = res.$categorical_model_report;
-                $scope.modelDate = res.$categorical_model_report.$date;
+                $scope.report = res.$categorical_model_report || res.$dynamic_allocation_model_report;
+                $scope.modelDate = $scope.report.$date;
                 $scope.statsLoading =false;
 
             });

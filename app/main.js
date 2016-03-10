@@ -48,7 +48,7 @@ require.config({
         "ui.router": "../bower_components/angular-ui-router/release/angular-ui-router",
         "ui.router.extras": "../bower_components/ui-router-extras/release/ct-ui-router-extras",
         "ngBootstrap": "../bower_components/ng-bs-daterangepicker/src/ng-bs-daterangepicker",
-        "ngTable": "../bower_components/ng-table/ng-table",
+        "ngTable": "../bower_components/ng-table/dist/ng-table",
         "checklist-model": "../bower_components/checklist-model/checklist-model",
         "ui.bootstrap": "../bower_components/angular-bootstrap/ui-bootstrap-tpls",
         "lvl.directives.dragdrop": "../bower_components/lvlDragDrop/script/lvl-drag-drop",
