@@ -17,17 +17,6 @@
       </h2>
     </div>
 
-    <!--
-    <div class="chart-controller">
-      <div class="report-type-controller">
-        <ul class="nav nav-pills">
-          <li class="active" ng-click="tabOverviewSelected=true"><a>Overview</a></li>
-          <li class="" ng-click="tabOverviewSelected=false"><a>Live</a></li>
-          &lt;!&ndash; <li><a href="#">Trading Reports</a></li> &ndash;&gt;
-        </ul>
-      </div>
-    </div>
-    -->
 
     <uib-tabset class="mics-page-main-tabs">
     <uib-tab>
@@ -275,11 +264,7 @@
     </uib-tab>
 
 
-    <!--TODO show this tab once live stats fixed -->
-<!--
-
     <uib-tab active="refreshGraph.refreshDataTab">
-
       <uib-tab-heading>
         Live
       </uib-tab-heading>
@@ -287,50 +272,29 @@
         <div>
           <div class="col-xs-12 report-toolbar">
             <form class="" role="form">
-
-
-              <div class="form-group pull-right left-spaced not-bottom-spaced">
+              <div class="form-group pull-left">
                 <label for="bidFrequency">Refresh interval</label>
                 <select id="bidFrequency" class="form-control" ng-model="refreshGraph.refreshInterval"
-                        ng-options="frequency for frequency in  refreshGraph.refreshIntervals">
-
+                        ng-options="frequency+' seconds' for frequency in  refreshGraph.refreshIntervals">
                 </select>
               </div>
-
-              <div class="form-group pull-right left-spaced not-bottom-spaced">
-                <label for="displayNetwork">Display Network</label>
-                <select id="displayNetwork" class="form-control" ng-model="selectedDisplayNetwork"
-                        ng-options="displayNetwork for displayNetwork in refreshGraph.refreshIntervals">
-
-                </select>
-              </div>
-
-
             </form>
-
-
           </div>
-
           <div class="col-xs-12">
-            <div class="col-xs-5">
-
-              <nvd3 options="optionBidWin" data="dataBidWin"></nvd3>
-
+            <div class="col-xs-4">
+              <nvd3 options="optionsBidCount" data="dataBidCount"></nvd3>
             </div>
-
-            <div class="col-xs-5">
-
+            <div class="col-xs-4">
+              <nvd3 options="optionsWinRate" data="dataBidWinRate"></nvd3>
+            </div>
+            <div class="col-xs-4">
               <nvd3 options="optionsBidPrice" data="dataBidPrice"></nvd3>
-
             </div>
           </div>
-
         </div>
-
       </div>
     </uib-tab>
 
--->
     </uib-tabset>
 
 
