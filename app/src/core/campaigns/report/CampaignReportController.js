@@ -103,6 +103,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.adGroups = [];
       DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
+        $scope.optionsBidPrice.chart.yDomain = [0,campaign.max_bid_price];
 
         // display the adgroups/ads a first time with the stats (they can take some times)
         $scope.adGroups = sort(campaign.ad_groups);
@@ -627,7 +628,7 @@ define(['./module', 'lodash'], function (module, _) {
           },
           yAxis: {
             tickFormat: function(d) {
-              return d3.format('.02f')(d) + '€';
+              return d3.format('.02f')(d) + ' ' +$scope.campaign.currency_code;
             }
           },
           legendPosition: 'right'
@@ -673,6 +674,14 @@ define(['./module', 'lodash'], function (module, _) {
         refreshIntervals: [2, 5, 10]
       };
 
+      $scope.statsLoading = true;
+
+      var statsAtT1 = null;
+      var time1 = null;
+      var maxBidCount = 1;
+
+      $scope.optionsBidCount.chart.yDomain = [0,maxBidCount];
+
       /*
         function to count delta metrics
       */
@@ -690,16 +699,16 @@ define(['./module', 'lodash'], function (module, _) {
         var winningBidPriceIdx = stats.getHeaderIndex("winning_bid_price");
         var losingBidPriceIdx = stats.getHeaderIndex("losing_bid_price");
 
-        if (typeof $scope.statsAtT1 === 'undefined') {
-          $scope.statsAtT1 = stats;
-          $scope.time1 = unixTime;
+        if (statsAtT1 === null) {
+          statsAtT1 = stats;
+          time1 = unixTime;
 
           return delta;
         } else {
           var rowAtT2 = stats.getRows()[0];
-          var rowAtT1 = $scope.statsAtT1.getRows()[0];
+          var rowAtT1 = statsAtT1.getRows()[0];
 
-          var deltaTSeconds = unixTime - $scope.time1;
+          var deltaTSeconds = unixTime - time1;
 
           var deltaImpressions = (rowAtT2[winningBidCountIdx] - rowAtT1[winningBidCountIdx]) / deltaTSeconds;
           var deltaLosingBidCount = (rowAtT2[losingBidCountIdx] - rowAtT1[losingBidCountIdx]) / deltaTSeconds;
@@ -708,8 +717,8 @@ define(['./module', 'lodash'], function (module, _) {
           delta.winRate = (deltaImpressions + deltaLosingBidCount > 0) ? (deltaImpressions / (deltaImpressions + deltaLosingBidCount)) : 0;
           delta.aveWiningBidPriceCPM = (deltaImpressions > 0) ? ((rowAtT2[winningBidPriceIdx] - rowAtT1[winningBidPriceIdx]) * 1000 / (deltaImpressions * deltaTSeconds)) : 0;
           delta.aveLosingBidPriceCPM = (deltaLosingBidCount > 0) ? ((rowAtT2[losingBidPriceIdx] - rowAtT1[losingBidPriceIdx]) * 1000 / (deltaLosingBidCount * deltaTSeconds)) : 0;
-          $scope.statsAtT1 = stats;
-          $scope.time1 = unixTime;
+          statsAtT1 = stats;
+          time1 = unixTime;
           return delta;
         }
 
@@ -758,12 +767,23 @@ define(['./module', 'lodash'], function (module, _) {
             $scope.dataBidWinRate = [bidWinRateData];
             $scope.dataBidPrice = [aveWinningPriceData, aveLosingPriceData];
 
+            maxBidCount = Math.max(maxBidCount,delta.bidCount);
+
+            $scope.statsLoading = false;
+
             if ($scope.dataBidCount[0].values.length > 15) {
+
+              var bidCountToDrop = $scope.dataBidCount[0].values[0];
               $scope.dataBidCount[0].values.shift();
               $scope.dataBidWinRate[0].values.shift();
               $scope.dataBidPrice[0].values.shift();
               $scope.dataBidPrice[1].values.shift();
+
+              if (maxBidCount === bidCountToDrop.y){
+                maxBidCount = Math.max.apply(null, $scope.dataBidCount[0].values.map(function(e){return e.y ;}));
+              }
             }
+            $scope.optionsBidCount.chart.yDomain = [0,maxBidCount];
 
           }).then(function() {
             $scope.$applyAsync(); // update both chart
