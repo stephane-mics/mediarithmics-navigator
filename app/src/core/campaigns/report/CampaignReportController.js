@@ -678,7 +678,7 @@ define(['./module', 'lodash'], function (module, _) {
 
       var statsAtT1 = null;
       var time1 = null;
-      var maxBidCount = 1;
+      var maxBidCount = 5;
 
       $scope.optionsBidCount.chart.yDomain = [0,maxBidCount];
 
@@ -759,7 +759,7 @@ define(['./module', 'lodash'], function (module, _) {
 
             bidCountData.values.push({
               x: x.unix() * 1000,
-              y: delta.bidCount
+              y: Math.ceil(delta.bidCount)
             });
 
 
