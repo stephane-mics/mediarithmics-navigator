@@ -13,6 +13,8 @@ define(['./module'], function(module) {
           scope.organisationId = Session.getCurrentWorkspace().organisation_id;
 
 
+          scope.campaigns = {};
+
           /*
            functions for formatting cells in the table
           */
@@ -27,6 +29,9 @@ define(['./module'], function(module) {
             return scope.mediaValue(row[this.field]);
           };
 
+          var allocationRatioToPercent = function(scope, row) {
+            return (row.RATIO_TO_SPEND) > 0 ? (row.RATIO_TO_SPEND * 100).toFixed(3) + '%'  : '-';
+          };
           /*
            function to call when selecting an ad group
           */
@@ -125,7 +130,7 @@ define(['./module'], function(module) {
                   title: "Percent Of Daily Budget",
                   show: true,
                   sortable: "'RATIO_TO_SPEND'",
-                  getValue: $interpolate("{{ row.RATIO_TO_SPEND * 100 | number:5}}%")
+                  getValue: allocationRatioToPercent
                 }];
 
                 scope.allocationsTable = new NgTableParams({
@@ -148,6 +153,14 @@ define(['./module'], function(module) {
             });
           };
 
+          var setCampaignGoal = function(campaignId,goalId){
+            Restangular.one("goals", goalId).get({"organisation_id": scope.organisationId}).then(function(goal){
+              _.find(scope.ad_groups, function(adg) {
+                return adg.goalId === goal.id;
+              }).goalName = goal.name;
+          });
+
+          };
           scope.reloadAllocations = function() {
             changeAllocation(scope.selectedAdGroup.id);
           };
@@ -168,7 +181,8 @@ define(['./module'], function(module) {
                 return {
                   id: i,
                   adGroupId: all_table.$ad_group_id,
-                  campaignId: all_table.$campaign_id
+                  campaignId: all_table.$campaign_id,
+                  goalId:all_table.$goal_id
                 };
               });
 
@@ -184,7 +198,6 @@ define(['./module'], function(module) {
                   }).name = result.name;
                 }
 
-                scope.campaigns = {};
                 for (var i = 0; i < res.length; i++) {
 
                   switch (res[i].route) {
@@ -206,6 +219,14 @@ define(['./module'], function(module) {
                 changeAllocation(scope.selectedAdGroup.id);
 
               });
+
+              scope.ad_groups.map(function(adg){
+                if (adg.goalId !== null){
+                  setCampaignGoal(adg.campaignId, adg.goalId);
+                }
+              });
+
+
             }
           }, true);
 
