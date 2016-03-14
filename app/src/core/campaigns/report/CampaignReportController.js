@@ -548,6 +548,7 @@ define(['./module', 'lodash'], function (module, _) {
             bottom: 40,
             left: 55
           },
+          forceY:[0,5],
           x: function(d) {
             return d.x;
           },
@@ -678,9 +679,6 @@ define(['./module', 'lodash'], function (module, _) {
 
       var statsAtT1 = null;
       var time1 = null;
-      var maxBidCount = 5;
-
-      $scope.optionsBidCount.chart.yDomain = [0,maxBidCount];
 
       /*
         function to count delta metrics
@@ -767,23 +765,15 @@ define(['./module', 'lodash'], function (module, _) {
             $scope.dataBidWinRate = [bidWinRateData];
             $scope.dataBidPrice = [aveWinningPriceData, aveLosingPriceData];
 
-            maxBidCount = Math.max(maxBidCount,delta.bidCount);
-
             $scope.statsLoading = false;
 
             if ($scope.dataBidCount[0].values.length > 15) {
 
-              var bidCountToDrop = $scope.dataBidCount[0].values[0];
               $scope.dataBidCount[0].values.shift();
               $scope.dataBidWinRate[0].values.shift();
               $scope.dataBidPrice[0].values.shift();
               $scope.dataBidPrice[1].values.shift();
-
-              if (maxBidCount === bidCountToDrop.y){
-                maxBidCount = Math.max.apply(null, $scope.dataBidCount[0].values.map(function(e){return e.y ;}));
-              }
             }
-            $scope.optionsBidCount.chart.yDomain = [0,maxBidCount];
 
           }).then(function() {
             $scope.$applyAsync(); // update both chart
