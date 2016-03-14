@@ -72,8 +72,8 @@ define(['./module', 'lodash'], function (module, _) {
    */
   module.controller('core/campaigns/report/CampaignReportController', [
     '$scope', '$location', '$uibModal', '$log', '$stateParams', 'Restangular', 'core/campaigns/report/ChartsService', 'core/campaigns/DisplayCampaignService',
-    'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session', 'core/common/files/ExportService', 'core/campaigns/goals/GoalsService', 'd3', 'moment', '$interval',
-    function ($scope, $location, $uibModal, $log, $stateParams, Restangular, ChartsService, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, Session, ExportService, GoalsService, d3, moment, $interval) {
+    'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/auth/Session', 'core/common/files/ExportService', 'core/campaigns/goals/GoalsService', 'd3', 'moment', '$interval', '$q',
+    function ($scope, $location, $uibModal, $log, $stateParams, Restangular, ChartsService, DisplayCampaignService, CampaignAnalyticsReportService, CampaignPluginService, Session, ExportService, GoalsService, d3, moment, $interval, $q) {
       // Chart
       $scope.date = {reportDateRange: CampaignAnalyticsReportService.getDateRange()};
       $scope.reportDefaultDateRanges = CampaignAnalyticsReportService.getDefaultDateRanges();
@@ -103,6 +103,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.adGroups = [];
       DisplayCampaignService.getDeepCampaignView($stateParams.campaign_id).then(function (campaign) {
         $scope.campaign = campaign;
+        $scope.optionsBidPrice.chart.yDomain = [0,campaign.max_bid_price];
 
         // display the adgroups/ads a first time with the stats (they can take some times)
         $scope.adGroups = sort(campaign.ad_groups);
@@ -534,99 +535,74 @@ define(['./module', 'lodash'], function (module, _) {
         return "/" + Session.getCurrentWorkspace().organisation_id + "/creatives/" + type + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
       };
 
-
-      //TODO fix live statistics
-/*
-      *//**
-       * Bid sent, bid win and bid lost charts
-       *//*
-
-      $scope.options = {
+      /*
+       * Bid sent, bid win and bid price charts options
+       */
+      $scope.optionsBidCount = {
         chart: {
-          type: 'stackedAreaChart',
+          type: 'lineChart',
           height: 250,
-//                    width:400,
           margin: {
             top: 20,
             right: 30,
             bottom: 40,
             left: 55
           },
-          x: function (d) {
+          forceY:[0,5],
+          x: function(d) {
             return d.x;
           },
-          y: function (d) {
+          y: function(d) {
             return d.y;
           },
           useInteractiveGuideline: true,
-          duration: 500,
-          showControls: false,
+          duration: 0,
           xAxis: {
-            tickFormat: function (d) {
-
-              if (typeof d === "string") {
-                return d;
-              }
+            tickFormat: function(d) {
               return d3.time.format('%X')(new Date(d));
             }
           },
           yAxis: {
-            tickFormat: function (d) {
-              return d3.format('.01f')(d);
+            tickFormat: function(d) {
+              return d3.format('.0f')(d);
             }
           },
-
           legendPosition: 'right'
         }
       };
 
-      $scope.optionBidWin = angular.copy($scope.options);
-      $scope.optionBidWin.chart.duration = 0;
-
-      var bidWinData = { values: [], key: 'Bid Win', color: '#00AC67'};
-      var bidLostData = { values: [], key: 'Bid Lost', color: '#FE5858' };
-
-      $scope.dataBidWin = [bidWinData, bidLostData];
-
-      $scope.refreshGraph = {refreshInterval: 1,
-        refreshDataTab: false,
-        refreshIntervals: [1, 2, 5, 10]};
-      var x = moment();
-
-      var myFunction = function () {
-
-        setTimeout(myFunction, $scope.refreshGraph.refreshInterval * 1000);
-
-        if (!$scope.refreshGraph.refreshDataTab) {
-          return;
+      $scope.optionsWinRate = {
+        chart: {
+          type: 'lineChart',
+          height: 250,
+          margin: {
+            top: 20,
+            right: 30,
+            bottom: 40,
+            left: 55
+          },
+          yDomain: [0, 1],
+          x: function(d) {
+            return d.x;
+          },
+          y: function(d) {
+            return d.y;
+          },
+          useInteractiveGuideline: true,
+          duration: 0,
+          xAxis: {
+            tickFormat: function(d) {
+              return d3.time.format('%X')(new Date(d));
+            }
+          },
+          yAxis: {
+            tickFormat: function(d) {
+              return d3.format('%')(d);
+            }
+          },
+          legendPosition: 'right'
         }
-
-        var bidSent = Math.random() * 1000;
-        var bidWin = bidSent * 0.1 + Math.random() * 100;
-        var bidLost = bidSent - bidWin;
-
-        bidLostData.values.push({ x: x.unix() * 1000, y: bidLost});
-        bidWinData.values.push({ x: x.unix() * 1000, y: bidWin});
-
-        $scope.dataBidWin = [bidWinData, bidLostData];
-        if ($scope.dataBidWin[0].values.length > 10) {
-          $scope.dataBidWin[0].values.shift();
-          $scope.dataBidWin[1].values.shift();
-        }
-        x.add($scope.refreshGraph.refreshInterval, 'seconds');
-
-
-        //live report
-
-        CampaignAnalyticsReportService.livePerformance($stateParams.campaign_id, $scope.refreshGraph.refreshInterval).then(function (data) {
-          $scope.livePerformance = data;
-        });
-
-        $scope.$evalAsync(); // update both chart
       };
-
-      myFunction();
-
 
       $scope.optionsBidPrice = {
         chart: {
@@ -638,39 +614,179 @@ define(['./module', 'lodash'], function (module, _) {
             bottom: 40,
             left: 55
           },
-          x: function (d) {
+          x: function(d) {
             return d.x;
           },
-          y: function (d) {
+          y: function(d) {
             return d.y;
           },
           useInteractiveGuideline: true,
-          duration: 500,
+          duration: 0,
           xAxis: {
-            tickFormat: function (d) {
+            tickFormat: function(d) {
               return d3.time.format('%X')(new Date(d));
-
             }
           },
           yAxis: {
-            tickFormat: function (d) {
-              return d3.format('.01f')(d);
+            tickFormat: function(d) {
+              return d3.format('.02f')(d) + ' ' +$scope.campaign.currency_code;
             }
           },
-
           legendPosition: 'right'
         }
       };
-      $scope.optionBidWin.chart.duration = 0;
-      $scope.optionsBidPrice.chart.duration = 0;
-
-      $scope.dataBidPrice = $scope.dataBidWin;
-
-      $scope.selectedDisplayNetwork = 1;
 
 
+      /*
+       data of charts
       */
+      var bidCountData = {
+        values: [],
+        key: 'Bid Count/s',
+        color: '#00AC67',
+        area: true
+      };
 
+      var bidWinRateData = {
+        values: [],
+        key: 'Win Rate',
+        color: '#00AC67'
+      };
+
+      var aveWinningPriceData = {
+        values: [],
+        key: 'Average Winning Price',
+        color: '#00AC67'
+      };
+
+      var aveLosingPriceData = {
+        values: [],
+        key: 'Average Losing Price',
+        color: '#FE5858'
+      };
+
+      $scope.dataBidCount = [bidCountData];
+      $scope.dataBidWinRate = [bidWinRateData];
+      $scope.dataBidPrice = [aveWinningPriceData, aveLosingPriceData];
+
+      $scope.refreshGraph = {
+        refreshInterval: 2,
+        refreshDataTab: false,
+        refreshIntervals: [2, 5, 10]
+      };
+
+      $scope.statsLoading = true;
+
+      var statsAtT1 = null;
+      var time1 = null;
+
+      /*
+        function to count delta metrics
+      */
+      var deltaStats = function(stats, unixTime) {
+
+        var delta = {
+          bidCount: 0,
+          winRate: 0,
+          aveWiningBidPriceCPM: 0,
+          aveLosingBidPriceCPM: 0
+        };
+
+        var winningBidCountIdx = stats.getHeaderIndex("impressions");
+        var losingBidCountIdx = stats.getHeaderIndex("losing_bid_count");
+        var winningBidPriceIdx = stats.getHeaderIndex("winning_bid_price");
+        var losingBidPriceIdx = stats.getHeaderIndex("losing_bid_price");
+
+        if (statsAtT1 === null) {
+          statsAtT1 = stats;
+          time1 = unixTime;
+
+          return delta;
+        } else {
+          var rowAtT2 = stats.getRows()[0];
+          var rowAtT1 = statsAtT1.getRows()[0];
+
+          var deltaTSeconds = unixTime - time1;
+
+          var deltaImpressions = (rowAtT2[winningBidCountIdx] - rowAtT1[winningBidCountIdx]) / deltaTSeconds;
+          var deltaLosingBidCount = (rowAtT2[losingBidCountIdx] - rowAtT1[losingBidCountIdx]) / deltaTSeconds;
+
+          delta.bidCount = deltaImpressions + deltaLosingBidCount;
+          delta.winRate = (deltaImpressions + deltaLosingBidCount > 0) ? (deltaImpressions / (deltaImpressions + deltaLosingBidCount)) : 0;
+          delta.aveWiningBidPriceCPM = (deltaImpressions > 0) ? ((rowAtT2[winningBidPriceIdx] - rowAtT1[winningBidPriceIdx]) * 1000 / (deltaImpressions * deltaTSeconds)) : 0;
+          delta.aveLosingBidPriceCPM = (deltaLosingBidCount > 0) ? ((rowAtT2[losingBidPriceIdx] - rowAtT1[losingBidPriceIdx]) * 1000 / (deltaLosingBidCount * deltaTSeconds)) : 0;
+          statsAtT1 = stats;
+          time1 = unixTime;
+          return delta;
+        }
+
+      };
+
+      var refreshTimeoutId = null;
+
+      $scope.$on("$destroy", function () {
+        if (refreshTimeoutId) {
+            clearTimeout(refreshTimeoutId);
+        }
+        $scope.refreshGraph.refreshDataTab = false;
+      });
+
+      var fetchAndUpdateLiveGraph = function() {
+
+        var promise = $q.resolve();
+
+        if ($scope.refreshGraph.refreshDataTab) {
+          var x = moment();
+          promise = CampaignAnalyticsReportService.livePerformance($stateParams.campaign_id, $scope.refreshGraph.refreshInterval).then(function(data) {
+            $scope.livePerformance = data;
+            var delta = deltaStats(data, x.unix());
+
+            bidWinRateData.values.push({
+              x: x.unix() * 1000,
+              y: delta.winRate
+            });
+
+            aveWinningPriceData.values.push({
+              x: x.unix() * 1000,
+              y: delta.aveWiningBidPriceCPM
+            });
+            aveLosingPriceData.values.push({
+              x: x.unix() * 1000,
+              y: delta.aveLosingBidPriceCPM
+            });
+
+            bidCountData.values.push({
+              x: x.unix() * 1000,
+              y: Math.ceil(delta.bidCount)
+            });
+
+
+            $scope.dataBidCount = [bidCountData];
+            $scope.dataBidWinRate = [bidWinRateData];
+            $scope.dataBidPrice = [aveWinningPriceData, aveLosingPriceData];
+
+            $scope.statsLoading = false;
+
+            if ($scope.dataBidCount[0].values.length > 15) {
+
+              $scope.dataBidCount[0].values.shift();
+              $scope.dataBidWinRate[0].values.shift();
+              $scope.dataBidPrice[0].values.shift();
+              $scope.dataBidPrice[1].values.shift();
+            }
+
+          }).then(function() {
+            $scope.$applyAsync(); // update both chart
+          });
+        }
+
+        promise.then(function() {
+          refreshTimeoutId = setTimeout(fetchAndUpdateLiveGraph, $scope.refreshGraph.refreshInterval * 1000);
+        });
+
+      };
+
+      fetchAndUpdateLiveGraph();
 
     }
   ]);

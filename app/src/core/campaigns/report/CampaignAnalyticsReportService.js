@@ -20,7 +20,12 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
     "cpa": {name: "CPA", type: "currency"},
     "delivery_cost": {name: "Delivery Cost", type: "number"},
     "click_count": {name: "Click Count", type: "number"},
-    "view_count": {name: "View Count", type: "number"}
+    "view_count": {name: "View Count", type: "number"},
+    "losing_bid_count": {name: "Losing Bid Count", type: "number"},
+    "winning_bid_price": {name: "Winning Bid Price", type: "currency"},
+    "losing_bid_price": {name: "Losing Bid Price", type: "currency"},
+    "avg_winning_bid_price": {name: "Avg Winning Bid Price", type: "currency"},
+    "avg_losing_bid_price": {name: "Avg Losing Bid Price", type: "currency"}
   };
 
 
@@ -223,7 +228,7 @@ define(['./module', 'lodash','core/common/ReportWrapper'], function (module, _, 
           return this.buildLivePerformanceReport(
             liveResource,
             period,
-            "impressions,clicks,cpm,ctr,cpc",
+            "impressions,clicks,cpm,ctr,cpc,winning_bid_price,losing_bid_price,losing_bid_count,avg_winning_bid_price,avg_losing_bid_price",
               "campaign_id==" + campaignId,
             sort,
             limit
