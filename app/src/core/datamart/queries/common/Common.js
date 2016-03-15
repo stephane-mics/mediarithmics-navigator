@@ -73,11 +73,15 @@ define(['./module'], function (module) {
       var familyLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visits" ,
                            USER_CONVERSIONS:"Conversions", USER_DEVICES:"Devices",
                            USER_SEGMENTS:"Segments", USER_EMAILS:"Emails",
-                           USER_TOUCHES:"Touches", USER_EMAIL_ADDRESSES:"Email Addresses"};
+                           USER_TOUCHES:"Touches", USER_EMAIL_ADDRESSES:"Email Addresses",
+                           "$product_view":"Product views",
+                           "$product_list_view":"Product list views"};
       var elementLabels = { USER_PROFILE:"Profile", USER_VISITS:"Visit" ,
                             USER_CONVERSIONS:"Conversion", USER_DEVICES:"Device",
                             USER_SEGMENTS:"Segment", USER_EMAILS:"Email",
-                            USER_TOUCHES:"Touch", USER_EMAIL_ADDRESSES:"Email Address"};
+                            USER_TOUCHES:"Touch", USER_EMAIL_ADDRESSES:"Email Address",
+                            "$product_view":"Product view",
+                            "$product_list_view":"Product list view"};
 
       var propertySelectorExpressions = [
         {name:"MAX", applicableSelectorType:["INTEGER","DOUBLE","LONG"], applicableEvaluationType:["ARRAY","TABLE"]},

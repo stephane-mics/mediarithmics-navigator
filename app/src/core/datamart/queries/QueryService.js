@@ -8,7 +8,7 @@ define(['./module'], function (module) {
       var service = {};
 
       service.getPropertySelectorDisplayName = function(selectorName, selectorParameter, selectorExpression, selectorLabel) {
-        var name = selectorName;        
+        var name = selectorName;
         if (selectorParameter){
           if (selectorParameter.startsWith("[")){
             name = JSON.parse(selectorParameter).join(".");
@@ -27,7 +27,7 @@ define(['./module'], function (module) {
 
       service.getSelectorFamilyName = function(selectorFamily, familyParameter){
         if (selectorFamily === 'USER_EVENTS'){
-          return familyParameter;
+          return service.getSelectorFamilyName(familyParameter);
         } else if (Common.familyLabels[selectorFamily]) {
           return Common.familyLabels[selectorFamily];
         } else {
@@ -55,6 +55,8 @@ define(['./module'], function (module) {
         var elementLabel = "";
         if (Common.elementLabels[family]){
           elementLabel = Common.elementLabels[family];
+        } else if (Common.elementLabels[familyParameter]){
+          elementLabel = Common.elementLabels[familyParameter];
         } else {
           elementLabel = familyParameter;
         }
