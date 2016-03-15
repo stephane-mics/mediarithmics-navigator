@@ -13,12 +13,12 @@
           <div class="panel-heading">
             <h4 class="panel-title">
               <a data-toggle="collapse" data-parent="#accordion"
-                 data-target="#criteria_{{family.id}}">
+                 data-target="#criteria_{{cleanupId(family.id)}}">
                 {{family.name}}
               </a>
             </h4>
           </div>
-          <div id="criteria_{{family.id}}" class="panel-collapse collapse">
+          <div id="criteria_{{cleanupId(family.id)}}" class="panel-collapse collapse">
             <div class="panel-body selector-panel">
               <div ng-repeat="selector in family.selectors">
                 <div ng-if="selector.value.selector_name !== 'INDEX'" x-lvl-draggable='true' data-family="{{family.name}}">
