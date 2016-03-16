@@ -20,8 +20,8 @@
     <div class="row">
       <!-- Format -->
       <div class="col-md-2">
-        <div mcs-form-group="full" label-for="format" label-text="Compatible Format">
-          <select ng-model="adLayout.format" ng-options="adSize for adSize in adSizes" id="format"></select>
+        <div mcs-form-group="full" label-for="optimal_formats" label-text="Compatible Formats">
+          <input required class="input-lg" ng-model="adLayout.optimal_formats" type="text" id="optimal_formats">
         </div>
       </div>
     </div>

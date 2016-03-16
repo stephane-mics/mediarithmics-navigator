@@ -51,14 +51,7 @@ define(['./module', 'jquery'], function (module, $) {
         Restangular.all("ad_layouts").getList({organisation_id: organisationId}).then(function (adLayouts) {
           for (var i = 0; i < adLayouts.length; ++i) {
             var adLayout = adLayouts[i];
-            $scope.adLayouts.push({
-              id: adLayout.id,
-              name: adLayout.name,
-              format: adLayout.format,
-              renderer_id: adLayout.renderer_id,
-              renderer_version_id: adLayout.renderer_version_id,
-              organisation_id: adLayout.organisation_id
-            });
+            $scope.adLayouts.push(adLayout);
             addAdLayoutRendererVersion(adLayout.id, adLayout.renderer_id, adLayout.renderer_version_id);
             Restangular.one("ad_layouts", adLayout.id).one("versions").get({
               organisation_id: organisationId,
