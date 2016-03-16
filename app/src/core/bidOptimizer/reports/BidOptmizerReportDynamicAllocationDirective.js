@@ -12,9 +12,6 @@ define(['./module'], function(module) {
         link: function link(scope, element, attrs) {
           scope.organisationId = Session.getCurrentWorkspace().organisation_id;
 
-
-          scope.campaigns = {};
-
           /*
            functions for formatting cells in the table
           */
@@ -35,20 +32,23 @@ define(['./module'], function(module) {
           /*
            function to call when selecting an ad group
           */
-          var changeAllocation = function(adGroupId) {
+          var changeAllocation = function(adGroup) {
 
             // the campaign value of the ad group
-            scope.selectedCampaign = scope.campaigns[scope.report.$allocation_tables[adGroupId].$campaign_id];
+            scope.selectedCampaign = adGroup.campaign;
 
+            var allocationTable = _.find(scope.report.$allocation_tables,function(allocationTable){
+              return allocationTable.$ad_group_id === adGroup.id;
+            });
             // values of the allocation table of adGroupId
-            scope.allocationsData = scope.report.$allocation_tables[adGroupId].$allocations.map(function(allocation) {
+            scope.allocationsData = allocationTable.$allocations.map(function(allocation) {
               allocation.$allocation_id.WEIGHTED_CONVERSIONS = allocation.$weighted_conversions;
               allocation.$allocation_id.RATIO_TO_SPEND = allocation.$ratio_to_spend;
               return allocation.$allocation_id;
             });
 
             // values of ignored contexts of adGroupId
-            scope.ignoredContextsData = scope.report.$allocation_tables[adGroupId].$ignored_contexts.map(function(allocation) {
+            scope.ignoredContextsData = allocationTable.$ignored_contexts.map(function(allocation) {
               allocation.$allocation_id.WEIGHTED_CONVERSIONS = allocation.$weighted_conversions;
               allocation.$allocation_id.RATIO_TO_SPEND = allocation.$ratio_to_spend;
               return allocation.$allocation_id;
@@ -153,22 +153,22 @@ define(['./module'], function(module) {
             });
           };
 
-          var setCampaignGoal = function(campaignId,goalId){
+          var setAdGroupGoal = function(goalId,adGroupId){
             Restangular.one("goals", goalId).get({"organisation_id": scope.organisationId}).then(function(goal){
-              _.find(scope.ad_groups, function(adg) {
-                return adg.goalId === goal.id;
-              }).goalName = goal.name;
-          });
-
+               _.find(scope.adGroups, function(adg) {
+                 return adg.id === adGroupId;
+               }).goal = goal;
+            });
           };
+
           scope.reloadAllocations = function() {
             changeAllocation(scope.selectedAdGroup.id);
           };
 
           scope.refreshAdGroups = function() {
             //to select only ad group for the selected campaign
-            scope.adGroupsForCampaign = _.filter(scope.ad_groups, function(o) {
-              return o.campaignId === scope.selectedCampaignId;
+            scope.adGroupsForCampaign = _.filter(scope.adGroups, function(o) {
+              return o.campaign.id === scope.selectedCampaign.id;
             });
           };
 
@@ -177,55 +177,64 @@ define(['./module'], function(module) {
 
               scope.report = newVal;
 
-              scope.ad_groups = scope.report.$allocation_tables.map(function(all_table,i) {
+              //selecting from the report the adGroupId,campaignId and goalId for each allocation table
+              var adGroupsIds = scope.report.$allocation_tables.map(function(all_table,i) {
                 return {
-                  id: i,
                   adGroupId: all_table.$ad_group_id,
                   campaignId: all_table.$campaign_id,
                   goalId:all_table.$goal_id
                 };
               });
 
-              $q.all(_.flatten(scope.ad_groups.map(function(adg) {
-                return [Restangular.one("display_campaigns", adg.campaignId).get(),
-                  Restangular.one("display_campaigns", adg.campaignId).one("ad_groups", adg.adGroupId).get()
-                ];
-              }))).then(function(res) {
+              $q.all(adGroupsIds.map(function(adg) {
+                return Restangular.one("display_campaigns", adg.campaignId).one("ad_groups", adg.adGroupId).get();
+              })).then(function(adGroupsResult) {
 
-                function setAdGroupName(result) {
-                  _.find(scope.ad_groups, function(adg) {
-                    return adg.adGroupId === result.id;
-                  }).name = result.name;
-                }
+                //global container,will be used to contains adgroups+campaigns+goals
+                //each cell contains information about ad group, campaign and the optimized goal
+                scope.adGroups = adGroupsResult;
 
-                for (var i = 0; i < res.length; i++) {
+                $q.all(adGroupsIds.map(function(adg) {
+                  return Restangular.one("display_campaigns", adg.campaignId).get();
+                })).then(function(campaignsResult){
 
-                  switch (res[i].route) {
-                    case "ad_groups":
-                      setAdGroupName(res[i]);
-                      break;
-                    case "display_campaigns":
-                      scope.campaigns[res[i].id] = res[i];
-                      break;
+                  //for selecting a campaign on the front
+                  scope.campaigns = campaignsResult;
 
-                  }
-                }
+                  //adding to each ad group its campaign
+                  campaignsResult.map(function(campaignResult){
 
-                // the fist time, show the first allocation table
-                scope.selectedAdGroup = scope.ad_groups[0];
-                scope.selectedCampaignId = scope.ad_groups[0].campaignId;
+                  //find the id of ad group for
+                  var filteredAdGroupsId =_.filter(adGroupsIds, function(adg) {
+                      return adg.campaignId === campaignResult.id;
+                    }).map(function(filteredAdGroup){
+                      return filteredAdGroup.adGroupId;
+                    });
 
-                scope.refreshAdGroups();
-                changeAllocation(scope.selectedAdGroup.id);
+                    _.filter(scope.adGroups, function(adg) {
+                      return filteredAdGroupsId.indexOf(adg.id) !== -1;
+                    }).map(function(adg){
+                      adg.campaign = campaignResult;
+                    });
+
+                  });
+
+                  //fetch the goal for each ad group
+                  adGroupsIds.map(function(adg){
+                    if (adg.goalId !== null){
+                      setAdGroupGoal(adg.goalId , adg.adGroupId);
+                    }
+                  });
+
+                  // the fist time, show the first allocation table
+                  scope.selectedAdGroup = scope.adGroups[0];
+                  scope.selectedCampaign = scope.selectedAdGroup.campaign;
+
+                  scope.refreshAdGroups();
+                  changeAllocation(scope.selectedAdGroup);
+                });
 
               });
-
-              scope.ad_groups.map(function(adg){
-                if (adg.goalId !== null){
-                  setCampaignGoal(adg.campaignId, adg.goalId);
-                }
-              });
-
 
             }
           }, true);

@@ -15,10 +15,10 @@
                     </select>
                 </div>
             </div>
-            <div class="row col-xs-12" ng-show="selectedAdGroup.goalId">
-                <h3> Optimized Goal : <span>{{selectedAdGroup.goalName}}</span>
+            <div class="row col-xs-12" ng-show="selectedAdGroup.goal">
+                <h3> Optimized Goal : <span>{{selectedAdGroup.goal.name}}</span>
                     <a class="mics-btn mics-btn-action"
-                       href="#/{{organisationId}}/goals/{{selectedAdGroup.goalId}}/report"> Details</a>
+                       href="#/{{organisationId}}/goals/{{selectedAdGroup.goal.id}}/report"> Details</a>
                 </h3>
             </div>
 
