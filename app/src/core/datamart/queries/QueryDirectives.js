@@ -258,6 +258,9 @@ define(['./module'], function (module) {
                             return value;
                         }
                     };
+                    $scope.cleanupId = function (value) {
+                      return value.replace( /(:|\.|\[|\]|,|\$)/g, "\\$1");
+                    };
 
                     $scope.indexOptions = Common.indexOptions;
 
