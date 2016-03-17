@@ -22,7 +22,7 @@ define(['./module'], function (module) {
 
       var browserFamilyLabelsMap = {
         "CHROME":"Chrome",
-        "IE":"Ie",
+        "IE":"IE",
         "FIREFOX":"Firefox",
         "SAFARI":"Safari",
         "OPERA":"Opera",
@@ -41,7 +41,7 @@ define(['./module'], function (module) {
 
       var operatingSystemFamilyLabelsMap = {
         "ANDROID":"Android",
-        "LINUX":"Linus",
+        "LINUX":"Linux",
         "MAC_OS":"Mac OS",
         "WINDOWS":"Windows",
         "IOS":"IOS",
