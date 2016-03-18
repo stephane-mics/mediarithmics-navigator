@@ -96,15 +96,17 @@
                                 <th>Status</th>
                               </tr>
                             </thead>
-                            <tr ng-repeat="provider in email.providers">
-                              <td>{{provider.technical_name}}</td>
-                              <td>{{provider.creation_ts | date:'MM/dd/yyyy h:mm a'}}</td>
-                              <td>{{provider.last_activity_ts | date:'MM/dd/yyyy h:mm a'}}</td>
-                              <td>{{provider.last_modified_ts | date:'MM/dd/yyyy h:mm a'}}</td>
-                              <td>{{provider.expiration_ts | date:'MM/dd/yyyy h:mm a'}}</td>
-                              <td>{{provider.active}}</td>
-                              <td>{{provider.status}}</td>
-                            </tr>
+                            <tbody>
+                              <tr ng-repeat="provider in email.providers">
+                                <td>{{provider.technical_name}}</td>
+                                <td>{{provider.creation_ts | date:'MM/dd/yyyy h:mm a'}}</td>
+                                <td>{{provider.last_activity_ts | date:'MM/dd/yyyy h:mm a'}}</td>
+                                <td>{{provider.last_modified_ts | date:'MM/dd/yyyy h:mm a'}}</td>
+                                <td>{{provider.expiration_ts | date:'MM/dd/yyyy h:mm a'}}</td>
+                                <td>{{provider.active}}</td>
+                                <td>{{provider.status}}</td>
+                              </tr>
+                            </tbody>
                           </table>
                         </li>
                       </ul>
@@ -155,11 +157,13 @@
                                 <th>Last activity date</th>
                               </tr>
                             </thead>
-                            <tr ng-repeat="mapping in device.mappings">
-                              <td>{{mapping.realm_name}}</td>
-                              <td>{{mapping.user_agent_id}}</td>
-                              <td>{{mapping.last_activity_ts | date:'MM/dd/yyyy h:mm a'}}</td>
-                            </tr>
+                            <tbody>
+                              <tr ng-repeat="mapping in device.mappings">
+                                <td>{{mapping.realm_name}}</td>
+                                <td>{{mapping.user_agent_id}}</td>
+                                <td>{{mapping.last_activity_ts | date:'MM/dd/yyyy h:mm a'}}</td>
+                              </tr>
+                            </tbody>
                           </table>
                         </li>
                       </ul>
