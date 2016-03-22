@@ -19,7 +19,9 @@ define(['./module'], function (module) {
           {operator:"START_WITH", label:"starts with"},
           {operator:"NOT_START_WITH", label:"doesn't start with"},
           {operator:"IS_EMPTY", label:"is empty"},
-          {operator:"IS_NOT_EMPTY", label:"is not empty"}],
+          {operator:"IS_NOT_EMPTY", label:"is not empty"},
+          {operator:"MATCH", label:"matches"},
+          {operator:"NOT_MATCH", label:"doesn't match"}],
         "TEXT": [
           {operator:"EQUAL", label:"is"},
           {operator:"NOT_EQUAL", label:"is not"},
