@@ -9,6 +9,8 @@ define(['./module', "autofill-event"], function (module) {
       }
       $scope.user = {email:"", password:""};
 
+      $scope.rememberMe = true;
+
       setTimeout(function() {
         $("#loginEmail,#loginPassword").checkAndTriggerAutoFillEvent();
       } ,200);

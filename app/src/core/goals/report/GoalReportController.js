@@ -206,7 +206,8 @@ define(['./module', 'lodash'], function (module, _) {
         return GoalAnalyticsReportService.dateRangeIsToday();
       };
       $scope.goToCampaign = function (campaign) {
-        switch (campaign.type) {
+        var type = campaign ? campaign.type : "";
+        switch (type) {
           case "DISPLAY":
             return '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaign.id + "/basic";
           default:
