@@ -27,14 +27,7 @@ define(['./module', 'jquery'], function (module, $) {
       function setUpAdLayout(adLayoutId, callback) {
         Restangular.one("ad_layouts", adLayoutId).get({organisation_id: organisationId})
           .then(function (adLayout) {
-            $scope.adLayout = {
-              id: adLayoutId,
-              name: adLayout.name,
-              organisation_id: organisationId,
-              format: adLayout.format.substring(1),
-              renderer_id: adLayout.renderer_id,
-              renderer_version_id: adLayout.renderer_version_id
-            };
+            $scope.adLayout = adLayout;
             $scope.adRendererVersions = [$scope.adLayout.renderer_version_id];
           })
           .then(callback);

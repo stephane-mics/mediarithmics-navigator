@@ -21,7 +21,7 @@ define(['./module', 'jquery'], function (module, $) {
         }
         $scope.adRendererVersions = [renderers[0].current_version_id];
         $.extend($scope.adLayout, {
-          format: "300x250",
+          optimal_formats: "",
           renderer_id: renderers[0].id,
           renderer_version_id: renderers[0].current_version_id
         });
@@ -40,7 +40,6 @@ define(['./module', 'jquery'], function (module, $) {
       });
 
       $scope.saveAndCreateNewVersion = function () {
-        $scope.adLayout.format = "F" + $scope.adLayout.format;
         Restangular.all('ad_layouts').post($scope.adLayout).then(function (adLayout) {
           $location.path("/" + organisationId + "/library/adlayouts/" + adLayout.id + "/new-version");
         }, function (err) {
@@ -49,7 +48,6 @@ define(['./module', 'jquery'], function (module, $) {
       };
 
       $scope.done = function () {
-        $scope.adLayout.format = "F" + $scope.adLayout.format;
         return Restangular.all('ad_layouts').post($scope.adLayout).then(function () {
           $location.path('/' + organisationId + "/library/adlayouts");
         }, function (err) {

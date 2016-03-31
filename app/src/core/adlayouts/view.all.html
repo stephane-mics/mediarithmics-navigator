@@ -20,7 +20,7 @@
       <thead>
       <tr>
         <th>Name</th>
-        <th>Format</th>
+        <th>Optimal Formats</th>
         <th>Renderer</th>
         <th>Renderer Version</th>
         <th class="actions">Actions</th>
@@ -29,7 +29,7 @@
       <tbody data-ng-repeat="adLayout in filteredAdLayouts() | offset: (currentPage - 1) * itemsPerPage | limitTo: itemsPerPage">
       <tr data-target="#demo{{$index}}" data-toggle="collapse" class="accordion-toggle clickableRow" title="Click to collapse/expand this ad layout versions">
         <td>{{adLayout.name}}</td>
-        <td>{{adLayout.format}}</td>
+        <td>{{adLayout.optimal_formats}}</td>
         <td>{{adRenderers[adLayout.renderer_id]}}</td>
         <td>{{adLayoutRendererVersions[adLayout.id]}}</td>
         <td class="actions">
