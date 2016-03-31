@@ -5,6 +5,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
   joint.shapes.devs.AngularAtomicView = joint.shapes.devs.ModelView;
   joint.shapes.devs.QueryInputView = joint.shapes.devs.ModelView;
   joint.shapes.devs.DisplayCampaignView = joint.shapes.devs.ModelView;
+  joint.shapes.devs.AbnNodeView = joint.shapes.devs.ModelView;
   joint.shapes.devs.CoupledView = joint.shapes.devs.ModelView;
 
   joint.shapes.devs.AngularAtomic = joint.shapes.devs.Model.extend({
@@ -43,14 +44,18 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
     }
 
 });
+
   
 
   function createNode(node) {
+    var outs = ["ON_GOAL", "ON_VISIT"];
     var ins = ["in"];
-    var outs = ["OUT"];
-    if(node.type !== 'QUERY_INPUT') {
-      outs = ["ON_GOAL", "ON_VISIT"];
-    } 
+
+    if(node.type === 'QUERY_INPUT') {
+      outs = ["OUT"];
+    } else if(node.type === 'ABN_NODE'){
+      outs = ["OUT"];
+    }
     var element = new joint.shapes.devs.AngularAtomic({
       position: { x: node.x , y: node.y  },
       type: "devs."+_.capitalize(_.camelCase(node.type)),
