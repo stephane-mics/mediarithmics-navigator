@@ -6,7 +6,7 @@ define(['./module'], function (module) {
     function($scope, $uibModalInstance, $document, $log, DisplayCampaignService, Restangular, Session) {
 
       $scope.done = function() {
-        $uibModalInstance.close($scope.queryContainer);
+        $uibModalInstance.close($scope.queryContainer, $scope.evaluationContainer);
       };
 
       $scope.cancel = function() {

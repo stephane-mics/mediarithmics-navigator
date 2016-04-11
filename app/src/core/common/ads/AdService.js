@@ -6,7 +6,8 @@ define(['./module'], function (module) {
     var adTypes = {
       ALL: "ALL",
       DISPLAY_AD: "DISPLAY_AD",
-      VIDEO_AD: "VIDEO_AD"
+      VIDEO_AD: "VIDEO_AD",
+      EMAIL_TEMPLATE: "EMAIL_TEMPLATE"
     };
     var selectedAdType = adTypes.ALL;
 

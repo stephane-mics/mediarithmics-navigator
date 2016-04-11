@@ -3,19 +3,9 @@
     <div class="campaign-list-heading">
       <h1>
         Email Campaigns
-        <div class="dropdown" uib-dropdown>
-          <!--TODO button export disable because not implement yet -->
-          <button class="mics-btn mics-btn-finish btn-xs" uib-dropdown-toggle type="button" disabled>Export</button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="Choose Export Format">
-            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('xlsx')">Excel (.xlsx)</a></li>
-            <!--<li role="presentation"><a role="menuitem" tabindex="-1" ng-click="export('csv')">CSV</a></li>-->
-          </ul>
-        </div>
-        <div class="pull-right">
-          <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
-            <span class="glyphicon glyphicon-refresh"></span>Refresh
-          </button>
-        </div>
+        <button type="button" class="mics-btn mics-btn-action btn-xs" ng-click="refresh()">
+          <span class="glyphicon glyphicon-refresh"></span>Refresh
+        </button>
       </h1>
     </div>
 
@@ -52,7 +42,7 @@
             <a class="clickable-box" ng-href="#{{getCampaignDashboardUrl(campaign)}}">{{organisationName(campaign.organisation_id)}}</a>
           </td>
           <td class="actions">
-            <a class="mics-btn mics-btn-action" ng-href="#{{getCampaignDashboardUrl(campaign)}}">Edit</a>
+            <a class="mics-btn mics-btn-action" ng-click="editCampaign(campaign)">Edit</a>
             <a class="mics-btn mics-btn-delete" ng-click="deleteCampaign(campaign, $event)">Delete</a>
           </td>
         </tr>

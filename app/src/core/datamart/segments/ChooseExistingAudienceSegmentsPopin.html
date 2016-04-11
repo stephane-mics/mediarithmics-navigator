@@ -9,7 +9,7 @@
         <tr>
           <th>&nbsp;</th>
           <th>Segment Name</th>
-          <th>Target or Exclude</th>
+          <th ng-if="segmentSelectionType === 'DISPLAY'">Target or Exclude</th>
         </tr>
       </thead>
       <tbody>
@@ -18,7 +18,7 @@
           <td>
             {{segment.name}}
           </td>
-          <td>
+          <td ng-if="segmentSelectionType === 'DISPLAY'">
             <div mics-exclude-toggle="segment.exclude"></div>
           </td>
         </tr>

@@ -5,18 +5,17 @@ define(['./module'], function (module) {
     "$stateProvider",
     function ($stateProvider) {
       $stateProvider
-        .state('campaigns/email/expert/edit', {
-          url: '/{organisation_id}/campaigns/email/expert/:campaign_id',
-          templateUrl: 'src/core/campaigns/emails/index.html',
+        .state('campaigns/email/edit', {
+          url: '/{organisation_id}/campaigns/email/edit/:campaign_id',
+          templateUrl: 'src/core/campaigns/emails/edit-campaign.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         })
-        .state('campaigns/email/expert/create', {
-          url: '/{organisation_id}/campaigns/email/expert',
-          templateUrl: 'src/core/campaigns/emails/index.html',
+        .state('campaigns/email/create', {
+          url: '/{organisation_id}/campaigns/email/edit',
+          templateUrl: 'src/core/campaigns/emails/edit-campaign.html',
           data: {navbar: 'src/core/layout/header/navbar/empty-navbar/empty-navbar.html'}
         });
     }
   ]);
 
 });
-

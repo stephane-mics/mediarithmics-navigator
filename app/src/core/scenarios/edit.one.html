@@ -28,16 +28,16 @@
                   User activity trigger
               </a></li>
               <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addCampaign('SEGMENT')">
-                  Audience Segement
+                  Audience Segment
               </a></li>
               <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addCampaign('LIBRARY')">
                   Choose From Library
               </a></li>
               <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addCampaign('DISPLAY')">
-                  Create a Display Campaign
+                  New Display Campaign
               </a></li>
               <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="addCampaign('EMAIL')">
-                  Email Campaign
+                  New Email Campaign
               </a></li>
           </ul>
       </div>
@@ -46,9 +46,15 @@
                 <js-joint-canvas on-connection="onConnection" on-deconnect="onDeconnect"  x="pos_x" y="pos_y" zoom="zoomlevel" storyline="graph" class='paper'>
                     <div ng-repeat="node in graph.nodes">
                         <js-joint-node node="node.value" >
-                            <span ng-show="node.type != 'QUERY_INPUT'">
-				    {{node.campaign.name}} <span ng-if="node.adGroup"> &gt; {{node.adGroup.name}} </span>
-                                
+                            <span ng-show="node.type === 'DISPLAY_CAMPAIGN'">
+				                          {{node.campaign.name}} <span ng-if="node.adGroup"> &gt; {{node.adGroup.name}} </span>
+                                  <a class="mics-btn mics-btn-edit btn-xs" ng-href="{{node.campaign_editor_url}}" target="_blank">Edit</a>
+                                  <br />
+                            </span>
+                            <span ng-show="node.type === 'EMAIL_CAMPAIGN'">
+				                          {{node.campaign.name}}
+                                  <a class="mics-btn mics-btn-edit btn-xs" ng-href="{{node.campaign_editor_url}}" target="_blank">Edit</a>
+                                  <br />
                             </span>
                             <div ng-if="node.type === 'QUERY_INPUT'" ng-controller="core/scenarios/EditOneController/NodeController as nodeCtrl">
                                 <span contenteditable="true" ng-model="node.value.name" no-line-breaks="true" >
@@ -65,7 +71,7 @@
 
                 </js-joint-canvas>
             </div>
-           
+
         </div>
 
 
@@ -106,4 +112,3 @@
 
 
 </div>
-

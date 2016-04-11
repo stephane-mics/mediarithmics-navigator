@@ -10,15 +10,36 @@ define(['./module', 'lodash'], function (module, _) {
     this.editTrigger = function () {
       var newScope = $scope.$new(true);
       newScope.queryContainer = $scope.node.queryContainer.copy();
-        newScope.enableSelectedValues = true;
+      newScope.evaluationContainer = {};
+      if (!$scope.node.value.evaluation_mode){
+        newScope.evaluationContainer.evaluation_mode = 'LIVE';
+      } else {
+        newScope.evaluationContainer.evaluation_mode = $scope.node.value.evaluation_mode;
+      }
+      if (!$scope.node.value.evaluation_period){
+        newScope.evaluationContainer.evaluation_period = 30;
+      } else {
+        newScope.evaluationContainer.evaluation_period = $scope.node.value.evaluation_period;
+      }
+      if (!$scope.node.value.evaluation_period_unit){
+        newScope.evaluationContainer.evaluation_period_unit = 'DAY';
+      } else {
+        newScope.evaluationContainer.evaluation_period_unit = $scope.node.value.evaluation_period_unit;
+      }
+
+      newScope.enableSelectedValues = true;
+      newScope.enableEvaluationMode = true;
       $uibModal.open({
         templateUrl: 'src/core/datamart/queries/edit-query.html',
         scope : newScope,
         backdrop : 'static',
         controller: 'core/datamart/queries/EditQueryController',
         windowClass: 'edit-query-popin'
-      }).result.then(function ok(queryContainerUpdate){
+      }).result.then(function ok(queryContainerUpdate, evaluationContainer){
         $scope.node.updateQueryContainer(queryContainerUpdate);
+        $scope.node.value.evaluation_mode = newScope.evaluationContainer.evaluation_mode;
+        $scope.node.value.evaluation_period = newScope.evaluationContainer.evaluation_period;
+        $scope.node.value.evaluation_period_unit = newScope.evaluationContainer.evaluation_period_unit;
       }, function cancel(){
         $log.debug("Edit Query model dismissed");
       });
@@ -132,7 +153,6 @@ define(['./module', 'lodash'], function (module, _) {
           });
         }
         if (type === 'LIBRARY') {
-          $scope.selectSubCampaign = true;
           $uibModal.open({
             templateUrl: 'src/core/campaigns/ChooseExistingCampaign.html',
             scope: $scope,
@@ -170,7 +190,7 @@ define(['./module', 'lodash'], function (module, _) {
             return $scope.graph.save();
           }
 
-          
+
         }, function failure() {
           $log.info("failure");
         }).then(function ok() {

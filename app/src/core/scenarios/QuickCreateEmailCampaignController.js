@@ -2,18 +2,20 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/scenarios/QuickCreateEmailCampaignController', [
-    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/EmailCampaignService', "Restangular", 'core/common/auth/Session', 'core/campaigns/CampaignPluginService',
-    function ($scope, $uibModalInstance, $document, $log, EmailCampaignService, Restangular, Session, CampaignPluginService) {
-      CampaignPluginService.getCampaignEditor("com.mediarithmics.campaign.email", "expert-template").then(function (template) {
-        EmailCampaignService.initCreateCampaign(template).then(function () {
-          $scope.campaign = EmailCampaignService.getCampaignValue();
-        });
+    '$scope', '$uibModalInstance', '$document', '$log', 'core/campaigns/emails/EmailCampaignContainer', "Restangular", 'core/common/auth/Session', 'core/campaigns/CampaignPluginService',
+    function ($scope, $uibModalInstance, $document, $log, EmailCampaignContainer, Restangular, Session, CampaignPluginService) {
+
+      var campaignCtn = null;
+      CampaignPluginService.getCampaignEditor("com.mediarithmics.campaign.email", "default-editor").then(function (template) {
+        campaignCtn = new EmailCampaignContainer(template.editor_version_id);
+        $scope.campaign = campaignCtn.value;
       });
+
       $scope.type = "EMAIL";
 
       $scope.create = function () {
-        EmailCampaignService.save().then(function (campaignContainer) {
-          $scope.$emit("mics-campaign:selected", campaignContainer);
+        campaignCtn.persist().then(function (campaign) {
+          $scope.$emit("mics-campaign:selected", campaign);
           $uibModalInstance.close();
         });
       };
@@ -25,5 +27,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-
-

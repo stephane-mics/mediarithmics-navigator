@@ -3,7 +3,8 @@ define(['./module'], function (module) {
 
   var adRoutes = {
     DISPLAY_AD: "display_ads",
-    VIDEO_AD: "video_ads"
+    VIDEO_AD: "video_ads",
+    EMAIL_TEMPLATE: "email_templates"
   };
 
   /**
@@ -122,8 +123,18 @@ define(['./module'], function (module) {
                 $scope[exposedVar] = creative;
                 if (withRendererProperties) {
                   var adRoute = adRoutes.DISPLAY_AD;
-                  if (creative.type === AdService.getAdTypes().VIDEO_AD) {
-                    adRoute = adRoutes.VIDEO_AD;
+                  switch (creative.type) {
+                    case AdService.getAdTypes().VIDEO_AD:
+                      adRoute = adRoutes.VIDEO_AD;
+                      break;
+                    case AdService.getAdTypes().DISPLAY_AD:
+                      adRoute = adRoutes.DISPLAY_AD;
+                      break;
+                    case AdService.getAdTypes().EMAIL_TEMPLATE:
+                      adRoute = adRoutes.EMAIL_TEMPLATE;
+                      break;
+                    default: break;
+
                   }
                   fetchRendererProperties(Restangular, $q, newValue, adRoute).then(function (result) {
                     $scope[exposedVar + "Properties"] = result;
@@ -153,4 +164,3 @@ define(['./module'], function (module) {
     };
   });
 });
-

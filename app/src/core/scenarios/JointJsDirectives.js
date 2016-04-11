@@ -1,10 +1,11 @@
 define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, joint, $, _, angular) {
   'use strict';
 
-  
+
   joint.shapes.devs.AngularAtomicView = joint.shapes.devs.ModelView;
   joint.shapes.devs.QueryInputView = joint.shapes.devs.ModelView;
   joint.shapes.devs.DisplayCampaignView = joint.shapes.devs.ModelView;
+  joint.shapes.devs.EmailCampaignView = joint.shapes.devs.ModelView;
   joint.shapes.devs.AbnNodeView = joint.shapes.devs.ModelView;
   joint.shapes.devs.CoupledView = joint.shapes.devs.ModelView;
 
@@ -15,13 +16,13 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
         type: 'devs.AngularAtomic',
         size: { width: 200, height: 120 },
         attrs: {
-          
+
             '.body': { 'rx': 0, 'ry': 0 },
             '.label': { text: '' },
             '.inPorts .port circle': {  magnet: 'passive', type: 'input' },
             '.outPorts .port circle': { type: 'output'},
-            '.inPorts .port-label':{ x: -8, y: 15, fill: '#000000', 'text-anchor': 'end', type: 'input' }, 
-            '.outPorts .port-label':{ x: 8, y: 15, fill: '#000000',type: 'output'} 
+            '.inPorts .port-label':{ x: -8, y: 15, fill: '#000000', 'text-anchor': 'end', type: 'input' },
+            '.outPorts .port-label':{ x: 8, y: 15, fill: '#000000',type: 'output'}
         }
 
     }, joint.shapes.devs.Model.prototype.defaults),
@@ -45,7 +46,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
 
 });
 
-  
+
 
   function createNode(node) {
     var outs = ["ON_GOAL", "ON_VISIT"];
@@ -55,6 +56,8 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
       outs = ["OUT"];
     } else if(node.type === 'ABN_NODE'){
       outs = ["OUT"];
+    } else if(node.type === 'EMAIL_CAMPAIGN'){
+      outs = [];
     }
     var element = new joint.shapes.devs.AngularAtomic({
       position: { x: node.x , y: node.y  },
@@ -68,7 +71,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
     return element;
 
   }
-  
+
   function createLink(edge, source, sourcePort, target) {
     var element = new joint.shapes.devs.Link({
       source: {id: source.id, selector: source.getPortSelector(sourcePort)},
@@ -86,13 +89,13 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
     return element;
 
   }
-  
+
   function findById(id) {
     return function(e) {
       return e.get("ngObject").id === id;
     };
   }
-  
+
   module.directive('jsJointCanvas', function ($log, $compile, $interpolate) {
 
    var def = {
@@ -135,7 +138,7 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
            }),
            validateConnection: function(cellViewS, magnetS, cellViewT, magnetT, end, linkView) {
              // Prevent linking from input ports.
-             if (magnetS && magnetS.getAttribute('type') === 'input') { 
+             if (magnetS && magnetS.getAttribute('type') === 'input') {
                return false;
              }
              // Prevent linking from output ports to input ports within one element.
@@ -269,19 +272,19 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
         $log.log("initializing with ", scope.storyline);
 
         var cell = createNode(scope.node);
-        var padding = { top: 10, right: 10, bottom: 10, left: 10 };              
+        var padding = { top: 10, right: 10, bottom: 10, left: 10 };
         updateJointHtmlDiv(cell, element, 8);
-        cell.on('change:position', function() { 
-          var position = cell.get('position'); 
+        cell.on('change:position', function() {
+          var position = cell.get('position');
           updateJointHtmlDiv(cell, element, 8);
           scope.node.y = position.y;
           scope.node.x = position.x;
           jsJointCanvas.scope.paper.fitToContent({padding: padding});
           scope.$apply();
-          
+
         });
         jsJointCanvas.scope.graph.addCells([cell]);
-       
+
         jsJointCanvas.scope.paper.fitToContent({padding: padding});
         element.on('$destroy', function () {
           $log.log("removing ", element);
@@ -308,14 +311,14 @@ define(['./module', 'joint', 'jquery','lodash', 'angular'], function (module, jo
         ngModel: '=ngModel'
       },
       link: function (scope, element, attrs, jsJointCanvas) {
-      
+
 
 
 
 
         var graph = jsJointCanvas.scope.jsJointGraph;
 
-  
+
 
       }
     };

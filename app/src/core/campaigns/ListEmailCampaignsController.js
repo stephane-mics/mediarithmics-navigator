@@ -91,18 +91,15 @@ define(['./module'], function (module) {
       };
 
       $scope.getCampaignDashboardUrl = function (campaign) {
-        return "/" + campaign.organisation_id + "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
+        return '/' + currentWorkspace.organisation_id + '/campaigns/email/edit/' + campaign.id;
+        // return "/" + campaign.organisation_id + "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
       };
 
       $scope.newCampaign = function () {
-        $location.path('/' + currentWorkspace.organisation_id + '/campaigns/select-campaign-template');
+        $location.path('/' + currentWorkspace.organisation_id + '/campaigns/email/edit');
       };
 
-      $scope.editCampaign = function (campaign, $event) {
-        if ($event) {
-          $event.preventDefault();
-          $event.stopPropagation();
-        }
+      $scope.editCampaign = function (campaign) {
 
         CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
           var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);

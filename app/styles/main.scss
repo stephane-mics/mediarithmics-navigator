@@ -538,6 +538,10 @@ form.mcs-full-page-form {
     @include make-sm-column(6);
   }
 
+  .mcs-form-group-large {
+    @include make-sm-column(8);
+  }
+
   .mcs-form-group-full {
     @include make-sm-column(12);
   }
@@ -2744,7 +2748,7 @@ input.ng-invalid {
                 fill: $mcs-light-blue;
             }
         }
-        
+
 
         .port-label {
             //        fill: #7c68fc;
@@ -2758,16 +2762,20 @@ input.ng-invalid {
         &.AbnNode .body {
             stroke: $mcs-light-blue;
             rx: 10px;
-            ry: 10px; 
+            ry: 10px;
         }
 
         &.QueryInput .body {
             stroke: $mcs-orange;
             rx: 10px;
-            ry: 10px; 
+            ry: 10px;
         }
 
         &.DisplayCampaign .body {
+            stroke: $mcs-green;
+        }
+
+        &.EmailCampaign .body {
             stroke: $mcs-green;
         }
 
@@ -2794,7 +2802,7 @@ input.ng-invalid {
         fill: #31D0C6;
     }
     .link .marker-arrowhead:hover {
-        fill: #F39C12;    
+        fill: #F39C12;
     }
 
     .link-tools .tool-remove circle {

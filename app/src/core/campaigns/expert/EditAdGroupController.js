@@ -62,6 +62,19 @@ define(['./module'], function (module) {
         return DisplayCampaignService.getBidOptimizer(adGroupId);
       };
 
+      $scope.selectExistingAudienceSegments = function() {
+        var newScope = $scope.$new(true);
+        newScope.segmentSelectionType = "DISPLAY";
+        // display pop-up
+        $uibModal.open({
+          templateUrl: 'src/core/datamart/segments/ChooseExistingAudienceSegmentsPopin.html',
+          scope : newScope,
+          backdrop : 'static',
+          controller: 'core/datamart/segments/ChooseExistingAudienceSegmentsPopinController',
+          size: "lg"
+        });
+      };
+
       $scope.$on("mics-audience-segment:selected", function (event, params) {
         var existing = _.find(DisplayCampaignService.getAudienceSegments(adGroupId), function (selection) {
           return selection.audience_segment_id === params.audience_segment.id;
@@ -149,4 +162,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-

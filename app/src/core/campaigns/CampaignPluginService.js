@@ -6,38 +6,40 @@ define(['./module'], function (module) {
     '$log', '$q', 'lodash',
     function ($log, $q, _) {
 
-      var campaignTemplates = [{
-        name: "Desktop & Mobile",
-        editor_version_id: "11",
-        group_id: "com.mediarithmics.campaign.display",
-        artifact_id: "default-template",
-        image: "/images/plugins/multi-targeting-small.png",
-        editor: {
-          create_path: "/{organisation_id}/campaigns/display/expert/edit/{id}",
-          edit_path: "/{organisation_id}/campaigns/display/expert/edit/{id}"
+      var campaignTemplates = [
+        {
+          name: "Desktop & Mobile",
+          editor_version_id: "11",
+          group_id: "com.mediarithmics.campaign.display",
+          artifact_id: "default-template",
+          image: "/images/plugins/multi-targeting-small.png",
+          editor: {
+            create_path: "/{organisation_id}/campaigns/display/expert/edit/{id}",
+            edit_path: "/{organisation_id}/campaigns/display/expert/edit/{id}"
+          }
+        },
+        {
+          name: "Simplified Keywords Targeting",
+          editor_version_id: "12",
+          group_id: "com.mediarithmics.campaign.display",
+          artifact_id: "keywords-targeting-template",
+          image: "/images/plugins/keywords-targeting-small.png",
+          editor: {
+            create_path: "/{organisation_id}/campaigns/display/keywords",
+            edit_path: "/{organisation_id}/campaigns/display/keywords/{id}"
+          },
+        },
+        {
+          name: "Email campaign Default Editor",
+          editor_version_id: "17",
+          group_id: "com.mediarithmics.campaign.email",
+          artifact_id: "default-editor",
+          image: "/images/plugins/email-campaign-expert-small.png",
+          editor: {
+            create_path: "/{organisation_id}/campaigns/email/edit",
+            edit_path: "/{organisation_id}/campaigns/email/edit/{id}"
+          }
         }
-      }, {
-        name: "Simplified Keywords Targeting",
-        editor_version_id: "12",
-        group_id: "com.mediarithmics.campaign.display",
-        artifact_id: "keywords-targeting-template",
-        image: "/images/plugins/keywords-targeting-small.png",
-        editor: {
-          create_path: "/{organisation_id}/campaigns/display/keywords",
-          edit_path: "/{organisation_id}/campaigns/display/keywords/{id}"
-        }
-      }
-        /* {
-        name: "Email campaign",
-        editor_version_id: "17",
-        group_id: "com.mediarithmics.campaign.email",
-        artifact_id: "expert-template",
-        image: "/images/plugins/email-campaign-expert-small.png",
-        editor: {
-          create_path: "/{organisation_id}/campaigns/email/expert",
-          edit_path: "/{organisation_id}/campaigns/email/expert/{id}"
-        }
-        */
       ];
 
       function CampaignPluginService() {
@@ -126,4 +128,3 @@ define(['./module'], function (module) {
     }
   ]);
 });
-
