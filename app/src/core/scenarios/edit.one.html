@@ -48,12 +48,12 @@
                         <js-joint-node node="node.value" >
                             <span ng-show="node.type === 'DISPLAY_CAMPAIGN'">
 				                          {{node.campaign.name}} <span ng-if="node.adGroup"> &gt; {{node.adGroup.name}} </span>
-                                  <a class="mics-btn mics-btn-edit btn-xs" ng-href="{{node.campaign_editor_url}}" target="_blank">Edit</a>
+                                  <!-- <a class="mics-btn mics-btn-edit btn-xs" ng-href="{{node.campaign_editor_url}}" target="_blank">Edit</a> -->
                                   <br />
                             </span>
                             <span ng-show="node.type === 'EMAIL_CAMPAIGN'">
 				                          {{node.campaign.name}}
-                                  <a class="mics-btn mics-btn-edit btn-xs" ng-href="{{node.campaign_editor_url}}" target="_blank">Edit</a>
+                                  <!-- <a class="mics-btn mics-btn-edit btn-xs" ng-href="{{node.campaign_editor_url}}" target="_blank">Edit</a> -->
                                   <br />
                             </span>
                             <div ng-if="node.type === 'QUERY_INPUT'" ng-controller="core/scenarios/EditOneController/NodeController as nodeCtrl">
