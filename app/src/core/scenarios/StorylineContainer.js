@@ -1,8 +1,9 @@
 define(['./module', 'lodash'], function (module, _) {
   'use strict';
   module.service('core/scenarios/StorylineContainer', [
-    '$log','Restangular',  'core/common/promiseUtils','$q',  'async', 'core/datamart/queries/QueryContainer', 
-    function ($log,Restangular,  promiseUtils, $q, async,QueryContainer) {
+    '$log','Restangular',  'core/common/promiseUtils','$q',  'async', 'core/datamart/queries/QueryContainer', 'core/common/auth/Session',
+    'core/campaigns/CampaignPluginService',
+    function ($log,Restangular,  promiseUtils, $q, async,QueryContainer, Session, CampaignPluginService) {
       function StorylineContainer(scenario) {
         var self = this;
         if(scenario) {
@@ -210,21 +211,30 @@ define(['./module', 'lodash'], function (module, _) {
           });
         } else {
           if(node.type === "QUERY_INPUT") {
-            this.queryContainer = new QueryContainer(this.scenario.datamart_id);
+            this.queryContainer = new QueryContainer(Session.getCurrentDatamartId());
+            if (!this.value.name){
+              //defaut node name
+              this.value.name = "Query";
+            }
           }
         }
         if(node.type === "DISPLAY_CAMPAIGN") {
           Restangular.one("campaigns", self.value.campaign_id).get().then(function (campaign) {
             self.campaign = campaign;
             Restangular.one("display_campaigns", campaign.id).one('ad_groups', self.value.ad_group_id).get().then(function (adGroup) {
-
               self.adGroup = adGroup;
+            });
+            CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
+              self.campaign_editor_url = '#'+template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
             });
           });
         }
-	if(node.type === "EMAIL_CAMPAIGN") {
+	      if(node.type === "EMAIL_CAMPAIGN") {
           Restangular.one("campaigns", self.value.campaign_id).get().then(function (campaign) {
             self.campaign = campaign;
+            CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
+              self.campaign_editor_url = '#'+template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
+            });
           });
         }
 
@@ -237,10 +247,12 @@ define(['./module', 'lodash'], function (module, _) {
           }
 
         };
+
         this.updateQueryContainer = function(queryContainerUpdate) {
           $log.debug("update queryContainer with ", queryContainerUpdate);
           this.queryContainer = queryContainerUpdate;
         };
+
         this.save = function () {
           if(this.queryContainer) {
             var self = this;
@@ -260,7 +272,7 @@ define(['./module', 'lodash'], function (module, _) {
         this.remove = function() {
           return this.value.remove();
         };
- 
+
       }
 
       return StorylineContainer;

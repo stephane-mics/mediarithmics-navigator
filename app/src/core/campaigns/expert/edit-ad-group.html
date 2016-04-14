@@ -68,7 +68,9 @@
     <!------------------------ Select Audience Segments ------------------------>
     <div class="mcs-form-group">
       <div class="mics-block-heading">
-        <div ng-include="'src/core/datamart/segments/select-audience-segments.html'"></div>
+        <div class="btn-group">
+          <button class="mics-btn mics-btn-add" ng-click="selectExistingAudienceSegments()">Select Existing Audience Segments</button>
+        </div>
         <span>Select audience segments</span>
       </div>
       <table class="fragment-list-user-groups" ng-show="getAudienceSegments(adGroup.id).length">

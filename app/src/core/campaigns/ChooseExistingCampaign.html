@@ -23,8 +23,8 @@
             {{availableCampaign.name}}
           </td>
 
-          <td ng-if='!selectSubCampaign'><a class="mics-btn mics-btn-finish btn-xs" ng-click="choose(availableCampaign)">Choose</a></td>
-          <td ng-if='selectSubCampaign' >
+          <td ng-if="availableCampaign.type === 'EMAIL'"><a class="mics-btn mics-btn-finish btn-xs" ng-click="choose(availableCampaign)">Choose</a></td>
+          <td ng-if="availableCampaign.type === 'DISPLAY'">
               <div ng-repeat="adGroup in adGroupsForCampaign[availableCampaign.id]" ><a class="mics-btn mics-btn-finish btn-xs" ng-click="choose(availableCampaign, adGroup)">Choose {{adGroup.name}}</a> </div>
           </td>
         </tr>
@@ -37,4 +37,3 @@
     </div>
   </form>
 </div>
-
