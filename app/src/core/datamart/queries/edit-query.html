@@ -8,7 +8,7 @@
     <div class="form-inline">
       <div class="radio">
         <label>
-          <input type="radio" name="freqRadios" id="optionsRadios1" value="LIVE" ng-model="evaluationContainer.evaluation_mode">
+          <input type="radio" name="evaluationMode" id="liveMode" value="LIVE" ng-model="evaluationContainer.evaluation_mode">
           Live
         </label>
       </div>
@@ -16,11 +16,11 @@
     <div class="form-inline">
       <div class="radio">
         <label>
-          <input type="radio" name="freqRadios" id="optionsRadios2" value="PERIODIC" ng-model="evaluationContainer.evaluation_mode">
+          <input type="radio" name="evaluationMode" id="periodicMode" value="PERIODIC" ng-model="evaluationContainer.evaluation_mode">
           Periodic every
         </label>
       </div>
-        <input type="number" class="form-control input-sm" id="exampleInputEmail3" style="width: 100px;" ng-model="evaluationContainer.evaluation_period">
+        <input type="number" class="form-control input-sm evaluation_period" ng-model="evaluationContainer.evaluation_period">
         <select class="form-control input-sm" ng-model="evaluationContainer.evaluation_period_unit">
           <option value="MINUTE">Minute</option>
           <option value="HOUR">Hour</option>
