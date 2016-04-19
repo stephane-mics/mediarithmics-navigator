@@ -8,15 +8,16 @@ define(['./module'], function (module) {
       var service = {};
       var propertySelectors;
 
-      service.getPropertySelectors = function() {
+      service.getPropertySelectors = function(forceReload) {
         var deferred = $q.defer();
 
-        if (!propertySelectors){
+        if (!propertySelectors || forceReload) {
           var datamartId = Session.getCurrentDatamartId();
           Restangular.one('datamarts', datamartId).all('property_selectors').getList().then(function (result) {
+            $log.debug("new property selectors : ", result);
             propertySelectors = result;
             deferred.resolve(propertySelectors);
-          }, function error(reason){
+          }, function error(reason) {
             deferred.reject(reason);
           });
         } else {

@@ -8,7 +8,7 @@ define(['./module'], function (module) {
       $scope.done = function() {
         $scope.keywordsList.remove().then(function (){
           $uibModalInstance.close();
-          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/keywordslists");
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/keywordslists");
 
           // $state.reload();
           // see https://github.com/angular-ui/ui-router/issues/582

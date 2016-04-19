@@ -38,10 +38,10 @@ define(['./module'], function (module) {
       $scope.save = function (disabledEdition) {
         this.properties = cleanProperties(this.properties);
         if (disabledEdition) {
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+          $location.path(Session.getWorkspacePrefixUrl() + '/creatives');
         } else {
           DisplayAdService.save().then(function (displayAdContainer) {
-            $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+            $location.path(Session.getWorkspacePrefixUrl() + '/creatives');
           }, function failure(response) {
             errorService.showErrorModal({
               error: response
@@ -69,7 +69,7 @@ define(['./module'], function (module) {
       // back button
       $scope.cancel = function () {
         DisplayAdService.reset();
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+        $location.path(Session.getWorkspacePrefixUrl() + '/creatives');
       };
     }
   ]);

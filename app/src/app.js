@@ -4,8 +4,8 @@ define(['app-setup', 'angularAMD', 'jquery'],
 
     jQuery("#mics_loading").remove();
 
-    app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants", "core/common/ErrorReporting",
-      function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants, ErrorReporting) {
+    app.run(['$rootScope', '$location', '$log', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', "lodash", "core/login/constants", "core/common/ErrorReporting","$state","$stateParams",
+      function ($rootScope, $location, $log, AuthenticationService, Session, _, LoginConstants, ErrorReporting, $state, $stateParams ) {
         var defaults = _.partialRight(_.assign, function (a, b) {
           return typeof a === 'undefined' ? b : a;
         });
@@ -13,26 +13,58 @@ define(['app-setup', 'angularAMD', 'jquery'],
         ErrorReporting.setup();
 
         function updateWorkspaces() {
+          $log.debug("app.js updateWorkspaces !", $state.current, $state.params);
           $rootScope.currentOrganisation = Session.getCurrentWorkspace().organisation_name;
           $rootScope.currentOrganisationId = Session.getCurrentWorkspace().organisation_id;
+          var workspace = Session.getCurrentWorkspace();
+          $rootScope.currentWorkspace =  workspace;
+          $rootScope.currentWorkspaceId = "o" + workspace.organisation_id + "d" + workspace.datamart_id;
+          var toStateParams = _.extend({} , $stateParams);
+          toStateParams.organisation_id = $rootScope.currentWorkspaceId;
+          $log.debug("redirect to new state", toStateParams);
+          if($state.current.name.indexOf("init-session") === -1) {
+            $state.go($state.current, toStateParams, {
+              location: true, notify: true, reload: true
+            });
+          }
         }
 
+
+        if (AuthenticationService.hasAccessToken()) {
+          if (AuthenticationService.hasRefreshToken()) {
+            AuthenticationService.setupTokenRefresher();
+          }
+          if (!Session.isInitialized()) {
+            $log.debug("not initialized");
+            AuthenticationService.pushPendingPath($location.url());
+            $location.path('/init-session');
+          }
+        } else if (AuthenticationService.hasRefreshToken()) {
+          // Keep the current path in memory
+          AuthenticationService.pushPendingPath($location.url());
+          // Redirect to the remember-me page
+          $location.path('/remember-me');
+        } else {
+          AuthenticationService.pushPendingPath($location.url());
+          // Redirect to login
+          $location.path('/login');
+        }
+
+
+
+
         $rootScope.$on(LoginConstants.WORKSPACE_CHANGED, updateWorkspaces);
-        $rootScope.$on(LoginConstants.LOGIN_SUCCESS, updateWorkspaces);
+
+
+
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-          $log.debug("$stateChangeSuccess  toState : ", toState);
-
           var options = defaults(toState, {
             publicUrl: false,
             topbar: true
           });
 
-          if (Session.isInitialized() && Session.getCurrentWorkspace().organisation_id !== toParams.organisation_id) {
-            Session.updateWorkspace(toParams.organisation_id);
-          }
-
-          if (toState.data && toState.data.category){
+          if (toState.data && toState.data.category) {
             $rootScope.category = toState.data.category;
           } else {
             var urlMatch = toState.name.match(/\/?(\w+)\/?/);
@@ -42,29 +74,36 @@ define(['app-setup', 'angularAMD', 'jquery'],
           }
 
           $rootScope.topbar = options.topbar;
-          if (!options.publicUrl) {
 
-            if (AuthenticationService.hasAccessToken()) {
-              if (AuthenticationService.hasRefreshToken()) {
-                AuthenticationService.setupTokenRefresher();
-              }
-              if (!Session.isInitialized()) {
-                AuthenticationService.pushPendingPath($location.url());
-                if (toParams.organisation_id) {
-                  $location.path('/init-session/' + toParams.organisation_id);
+
+        });
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+          $log.debug("$stateChangeStart ", fromState.url, " : ", toState.url);
+          $log.debug("$stateChangeStart ", fromParams, " : ", toParams);
+          if (!AuthenticationService.hasRefreshToken()) {
+            if(toState.url !== 'login') {
+              AuthenticationService.pushPendingPath($location.url());
+            }
+            // Redirect to login
+            $location.path('/login');
+          } else if(toParams.organisation_id !== fromParams.organisation_id && !!toParams.organisation_id) {
+            var workspace = Session.getCurrentWorkspace();
+            if(workspace && ("o" + workspace.organisation_id + "d" + workspace.datamart_id === toParams.organisation_id || workspace.organisation_id === toParams.organisation_id)) {
+              $log.debug("done");
+            } else if(toState.name !== 'logout'){
+              $log.debug("prevent");
+              event.preventDefault();
+              Session.updateWorkspaceFromCurrentWorkspace(toParams.organisation_id).then(function(result) {
+                if(result) {
+                  $state.go(toState, toParams, {
+                    location: true, notify: true, reload: true
+                  });
                 } else {
-                  $location.path('/init-session');
+                  $state.go(toState, toParams, {
+                    location: true, notify: false, reload: false
+                  });
                 }
-              }
-            } else if (AuthenticationService.hasRefreshToken()) {
-              // Keep the current path in memory
-              AuthenticationService.pushPendingPath($location.url());
-              // Redirect to the remember-me page
-              $location.path('/remember-me');
-            } else {
-              AuthenticationService.pushPendingPath($location.url());
-              // Redirect to login
-              $location.path('/login');
+              });
             }
           }
         });

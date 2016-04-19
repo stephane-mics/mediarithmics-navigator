@@ -6,7 +6,7 @@
     <div class="mics-table-toolbar">
       <div class="col-md-6">
         <div class="dropdown" uib-dropdown>
-          <a href="#/{{organisationId}}/library/stylesheets/new" class="mics-btn mics-btn-add">
+          <a href="#/{{currentWorkspaceId}}/library/stylesheets/new" class="mics-btn mics-btn-add">
             New Style Sheet
           </a>
         </div>
@@ -53,7 +53,7 @@
                   <td>{{version.status}}</td>
                   <td class="mics-sub-table-actions ">
                     <a ng-show="version.status === 'DRAFT'" ng-click="publish(version, $event)" class="mics-btn mics-btn-finish">Publish</a>
-                    <a ng-show="version.status === 'DRAFT'" href="#/{{organisationId}}/library/stylesheets/{{version.style_sheet_id}}/version/{{version.id}}" class="mics-btn mics-btn-action">Edit</a>
+                    <a ng-show="version.status === 'DRAFT'" href="#/{{currentWorkspaceId}}/library/stylesheets/{{version.style_sheet_id}}/version/{{version.id}}" class="mics-btn mics-btn-action">Edit</a>
                     <a ng-show="version.status !== 'DRAFT'" ng-click="duplicate(stylesheet, version, $event)" class="mics-btn mics-btn-add">Duplicate</a>
                     <a ng-show="version.status !== 'ARCHIVED'" ng-click="archive(stylesheet, version, $event)" class="mics-btn mics-btn-delete">Archive</a>
                   </td>

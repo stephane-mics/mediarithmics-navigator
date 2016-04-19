@@ -18,6 +18,7 @@ define(['./module'], function (module) {
     'CampaignAnalyticsReportService', 'core/campaigns/CampaignPluginService', 'core/common/files/ExportService',
     function ($scope, $location, $uibModal, $log, Restangular, d3, moment, DisplayCampaignService, Session,
               CampaignAnalyticsReportService, CampaignPluginService, ExportService) {
+      $log.debug("init campaigns");
       var currentWorkspace = Session.getCurrentWorkspace();
 
       $scope.currentPageDisplayCampaign = 1;
@@ -56,9 +57,10 @@ define(['./module'], function (module) {
       // create button
       $scope.create = function (template) {
         var organisationId = Session.getCurrentWorkspace().organisation_id;
+        var datamartId = Session.getCurrentWorkspace().datamart_id;
         DisplayCampaignService.reset();
         DisplayCampaignService.initCreateCampaign(template, organisationId).then(function (campaignId) {
-          var location = template.editor.create_path.replace(/{id}/g, campaignId).replace(/{organisation_id}/, organisationId);
+          var location = template.editor.create_path.replace(/{id}/g, campaignId).replace(/{organisation_id}/, organisationId).replace(/{datamart_id}/, datamartId);
           $log.debug("campaign init , campaign_id = ", campaignId);
           $location.path(location);
         });
@@ -112,11 +114,11 @@ define(['./module'], function (module) {
       };
 
       $scope.getCampaignDashboardUrl = function (campaign) {
-        return "/" + campaign.organisation_id + "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
+        return Session.getWorkspacePrefixUrl() +  "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
       };
 
       $scope.newCampaign = function () {
-        $location.path('/' + currentWorkspace.organisation_id + '/campaigns/select-campaign-template');
+        $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/select-campaign-template');
       };
 
       $scope.editCampaign = function (campaign, $event) {
@@ -126,7 +128,7 @@ define(['./module'], function (module) {
         }
 
         CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
-          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
+          var location = template.editor.getEditPath(campaign);
           $location.path(location);
         });
         return false;

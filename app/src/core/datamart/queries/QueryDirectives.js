@@ -6,8 +6,8 @@ define(['./module'], function (module) {
         'Restangular', '$q', 'lodash', 'core/common/auth/Session',
         'core/datamart/queries/common/Common', '$uibModal', "async",
         'core/common/promiseUtils', '$log', 'core/datamart/queries/QueryContainer', 'core/datamart/queries/CriteriaContainer', 'moment', '$rootScope',
-        'core/datamart/query/QueryService', 'core/datamart/common/PropertySelectorService',
-        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope, QueryService, PropertySelectorService) {
+        'core/datamart/query/QueryService', 'core/datamart/common/PropertySelectorService','core/login/constants',
+        function (Restangular, $q, lodash, Session, Common, $uibModal, async, promiseUtils, $log, QueryContainer, CriteriaContainer, moment, $rootScope, QueryService, PropertySelectorService,LoginConstants) {
 
             return {
                 restrict: 'E',
@@ -32,8 +32,8 @@ define(['./module'], function (module) {
 
                     $scope.statistics = {total: 0, hasUserAccountId: 0, hasEmail: 0, hasCookie: 0};
 
-                    var fetchPropertySelectors = function () {
-                        PropertySelectorService.getPropertySelectors().then(function (result) {
+                    var fetchPropertySelectors = function (forceReload) {
+                        PropertySelectorService.getPropertySelectors(forceReload).then(function (result) {
                             $scope.criteriaContainer = CriteriaContainer.loadPropertySelectors(result);
                         });
                     };
@@ -90,7 +90,7 @@ define(['./module'], function (module) {
                     };
 
                     $scope.goToTimeline = function (userPointId) {
-                        return "/#/" + organisationId + "/datamart/users/" + userPointId;
+                        return "/#" + Session.getWorkspacePrefixUrl() + "/datamart/users/" + userPointId;
                     };
 
                     $scope.addGroup = function (queryContainer, $event) {
@@ -189,8 +189,20 @@ define(['./module'], function (module) {
                         reload();
                     };
 
+
+                    var r = $rootScope.$on(LoginConstants.WORKSPACE_CHANGED, function (event, params) {
+                        $log.info("reload property selectors");
+                        fetchPropertySelectors(true);
+                    });
+
+                    $scope.$on('$destroy', function () {
+                        $log.log("destroy");
+                        r();
+                    });
+
+
                     $scope.$on("mics-datamart-query:addProperty", function (event, params) {
-                        fetchPropertySelectors();
+                        fetchPropertySelectors(true);
                     });
 
                     element.bind("dragstart", function (ev) {

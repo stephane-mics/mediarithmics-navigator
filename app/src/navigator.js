@@ -104,9 +104,8 @@ define(['navigator-setup', 'angularAMD', 'lodash', 'async', 'jquery', 'plupload'
             publicUrl: true
           });
 
-        $urlRouterProvider.when('/', '/home');
-        $urlRouterProvider.when('', '/home');
-        $urlRouterProvider.when('/home', '/campaigns/display');
+//        $urlRouterProvider.when('', '/init-session');
+//        $urlRouterProvider.when('/', '/init-session');
         $urlRouterProvider.when('/:organisationId/settings', '/:organisationId/settings/useraccount');
         $urlRouterProvider.when('/:organisationId', '/:organisationId/campaigns/display');
         $urlRouterProvider.when('/:organisationId/campaigns', '/:organisationId/campaigns/display');

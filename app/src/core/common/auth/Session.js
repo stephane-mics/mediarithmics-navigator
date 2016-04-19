@@ -1,19 +1,54 @@
 define(['./module'], function (module) {
   'use strict';
 
+  function Workspace(workspace, datamart)  {
+    this.workspace = workspace;
+    this.organisation_name = workspace.organisation_name;
+    this.organisation_id = workspace.organisation_id;
+    this.administrator = workspace.administrator;
+    if(datamart) {
+      // TODO : remove the conditional assignement
+      this.datamart_id = datamart.id || datamart.datamart_id;
+      this.datamart_name = datamart.datamart_name;
+    }
+  }
+
+  Workspace.prototype.hasDatamart = function() {
+    return this.workspace.datamarts.length;
+  };
+
   module.factory('core/common/auth/Session', [
-    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants',  'core/configuration', 'core/common/auth/AuthenticationService', 'async',
-    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, coreConfig, AuthenticationService, async) {
+    '$q', '$location', '$log', '$rootScope', 'Restangular', 'core/login/constants',  'core/configuration', 'core/common/auth/AuthenticationService', 'async','lodash',
+    function ($q, $location, $log, $rootScope, Restangular, LoginConstants, coreConfig, AuthenticationService, async, _) {
       var service = {};
       service.initialized = false;
 
       var expirationTimer = null;
+      service.workspaces = [];
 
       service.isInitialized = function () {
         return this.initialized;
       };
 
-      service.init = function (organisationId) {
+      service.parseWorkspaceId = function (workspaceString) {
+        $log.debug("parseWorkspaceId:", workspaceString);
+        var organisationId = null;
+        var datamartId = null;
+        if (workspaceString && workspaceString.match(/^\d+$/)) {
+          organisationId = workspaceString;
+        } else if (workspaceString && workspaceString.match(/^o\d+d[^\d]+/)) {
+          organisationId = workspaceString.match(/o(\d+).*/)[1];
+        } else if (workspaceString) {
+          organisationId = workspaceString.match(/o(\d+)d(\d+)/)[1];
+          datamartId = workspaceString.match(/o(\d+)d(\d+)/)[2];
+        }
+        return {organisation_id: organisationId, datamart_id: datamartId};
+      };
+
+      service.init = function (workspaceString) {
+        var workspaceId = service.parseWorkspaceId(workspaceString);
+        var organisationId = workspaceId.organisation_id;
+        var datamartId = workspaceId.datamart_id;
         var deferred = $q.defer();
         var self = this;
 
@@ -60,16 +95,19 @@ define(['./module'], function (module) {
 
               if (organisationId) {
                 $log.debug("Fetching organisation : ", organisationId);
-                service.updateWorkspace(organisationId).then(function () {
+                service.updateWorkspace(organisationId, datamartId).then(function () {
                   self.initialized = true;
                   deferred.resolve();
                 });
               } else {
+                self.workspaces = self.buildUserProfileWorkspaces();
                 if (self.userProfile.default_workspace in self.userProfile.workspaces) {
-                  self.currentWorkspace = self.userProfile.workspaces[self.userProfile.default_workspace];
+                  $log.debug("use userProfile to create workspaces : ", self.userProfile.workspaces);
+
+                  self.setCurrentWorkspace(service.workspaces[0]);
                 } else if (self.userProfile.workspaces.length) {
                   $log.warn("default_workspace", self.userProfile.default_workspace, "is invalid, using the first one");
-                  self.currentWorkspace = self.userProfile.workspaces[0];
+                  self.setCurrentWorkspace(service.workspaces[0]);
                 } else {
                   $log.error("Can't set self.currentWorkspace, default_workspace =", self.userProfile.default_workspace, "workspaces =", self.userProfile.workspaces);
                 }
@@ -86,6 +124,16 @@ define(['./module'], function (module) {
       service.getUserProfile = function () {
         return this.userProfile;
       };
+      service.setCurrentWorkspace = function (workspace) {
+        if(workspace !== this.currentWorkspace) {
+          $log.debug("change current workspace to ", workspace);
+          this.currentWorkspace = workspace;
+
+          document.title = workspace.organisation_name + " - " + workspace.datamart_name;
+          $log.debug("Set page title to :", document.title);
+          $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
+        }
+      };
 
       service.getCurrentWorkspace = function () {
         return this.currentWorkspace;
@@ -95,55 +143,84 @@ define(['./module'], function (module) {
         return this.getCurrentWorkspace().organisation_name;
       };
 
-      service.getWorkspaces = function () {
+      service.getWorkspaces = function() {
+        return service.workspaces;
+      };
+      service.buildUserProfileWorkspaces = function () {
         var result = [];
         for (var i = 0; i < this.userProfile.workspaces.length; i++) {
-          result.push({
-            idx: i,
-            organisationName: this.userProfile.workspaces[i].organisation_name,
-            organisationId: this.userProfile.workspaces[i].organisation_id
-          });
+          pushWorkspace(result, this.userProfile.workspaces[i]);
         }
+        
         return result;
       };
 
+      function pushWorkspace(result, workspace) {
+        for(var j = 0 ; j < workspace.datamarts.length; j++) {
+          var w = new Workspace(workspace, workspace.datamarts[j]);
+          result.push(w);
+        }
+        if(workspace.datamarts.length === 0) {
+          result.push(new Workspace(workspace));
+        }
+      }
+      
+      service.getWorkspacePrefixUrl = function () {
+        return "/o"+ service.getCurrentWorkspace().organisation_id + "d"+service.getCurrentWorkspace().datamart_id;
+      };
+
       service.getCurrentDatamartId = function () {
-        if (!service.hasDatamart()) {
-          return null;
+        return service.getCurrentWorkspace().datamart_id;
+      };
+
+      service.findWorkspaceByDatamartId = function (datamartId) {
+        if(datamartId) {
+          return _.find(service.workspaces, {"datamart_id": datamartId});
+        } else {
+          $log.debug("no datamart id provided, use first");
+          return service.workspaces[0];
         }
-        var datamarts = service.getCurrentWorkspace().datamarts;
-        if (datamarts.length) {
-          return datamarts[0].datamart_id;
-        }
+
       };
 
       service.hasDatamart = function () {
-        return service.getCurrentWorkspace() && service.getCurrentWorkspace().datamarts.length > 0;
+        return service.getCurrentWorkspace() && service.getCurrentWorkspace().hasDatamart();
+      };
+      service.updateWorkspaceFromCurrentWorkspace = function (workspaceString) {
+        $log.info("updateWorkspaceFromCurrentWorkspace", workspaceString);
+        var workspaceId = service.parseWorkspaceId(workspaceString);
+
+        return service.updateWorkspace(workspaceId.organisation_id, workspaceId.datamart_id);
       };
 
-      service.updateWorkspace = function (organisationId) {
+      service.updateWorkspace = function (organisationId, datamartId) {
+
         if (organisationId) {
-          return service.setWorkspace(organisationId, true);
+          return service.setWorkspace(organisationId, datamartId);
         } else {
-          return service.setWorkspace(service.getCurrentWorkspace().organisation_id, true);
+          return service.setWorkspace(service.getCurrentWorkspace().organisation_id, service.getCurrentWorkspace().datamart_id);
         }
       };
 
-      service.setWorkspace = function (organisationId, noredirect) {
-        $log.debug("setWorkspace: ", organisationId);
+      service.setWorkspace = function (organisationId, datamartId) {
+        $log.debug("setWorkspace: ", organisationId , " - ", datamartId, " current: ", this.currentWorkspace);
         var self = this;
-        if (!self.currentWorkspace || organisationId !== self.currentWorkspace.organisation_id) {
+        if (!self.currentWorkspace || organisationId !== self.currentWorkspace.organisation_id || (datamartId !== self.currentWorkspace.datamart_id && !!datamartId)) {
           var promise = Restangular.one('organisations', organisationId).one('workspace').get();
           promise.then(function (result) {
-            self.currentWorkspace = result;
-            $log.debug("Broadcast workspace change event ", result);
-            $rootScope.$broadcast(LoginConstants.WORKSPACE_CHANGED);
-            if (!noredirect) {
-              $location.path(result.organisation_id + '/campaigns/display');
-            }
+            $log.debug("promise resolved", organisationId , " - ", datamartId);
+            service.workspaces = [];
+            pushWorkspace(service.workspaces, result);
+            $log.debug("update workspaces : ", service.workspaces);
+
+            self.setCurrentWorkspace(service.findWorkspaceByDatamartId(datamartId));
+            return true;
           });
           return promise;
+        } else {
+          return $q.resolve(false);
         }
+
       };
 
       /**

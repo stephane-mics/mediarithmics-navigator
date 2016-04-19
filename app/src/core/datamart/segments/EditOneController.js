@@ -70,7 +70,7 @@ define(['./module'], function (module) {
         }
         promise.then(function success(){
           $log.info("success");
-          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments");
+          $location.path(Session.getWorkspacePrefixUrl() + "/datamart/segments");
         }, function failure(){
           $scope.error = 'There was an error while saving segment';
           $log.info("failure");
@@ -158,7 +158,7 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function () {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments");
+        $location.path(Session.getWorkspacePrefixUrl() + "/datamart/segments");
       };
 
       $scope.next = function () {

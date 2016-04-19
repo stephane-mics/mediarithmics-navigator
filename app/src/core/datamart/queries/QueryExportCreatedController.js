@@ -11,7 +11,7 @@ define(['./module'], function (module) {
         $uibModalInstance.close();
       };
 
-      $scope.exportPageUrl = '/' + Session.getCurrentWorkspace().organisation_id + "/library/exports/" + $scope.queryExportId;
+      $scope.exportPageUrl = Session.getWorkspacePrefixUrl() + "/library/exports/" + $scope.queryExportId;
 
       $scope.stayHere = function () {
         $uibModalInstance.dismiss();

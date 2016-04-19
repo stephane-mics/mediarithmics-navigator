@@ -24,7 +24,7 @@ define(['./module'], function (module) {
       });
 
       $scope.cancel = function () {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/visitanalysers");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/visitanalysers");
       };
 
       $scope.next = function () {
@@ -34,7 +34,7 @@ define(['./module'], function (module) {
         }
         $q.all(promises).then(function success(res){
           $log.info("success");
-          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/visitanalysers");
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/visitanalysers");
         }, function failure(response) {
           $log.info("failure");
           errorService.showErrorModal({

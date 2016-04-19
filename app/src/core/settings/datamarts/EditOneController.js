@@ -5,7 +5,7 @@ define(['./module', 'jquery'], function(module, $) {
     '$scope', '$log', '$location', '$state', '$stateParams', '$uibModal', '$filter', '$q', 'Restangular', 'core/common/auth/Session', 'lodash',
     'core/common/ErrorService', 'core/common/WarningService',
     function($scope, $log, $location, $state, $stateParams, $uibModal, $filter, $q, Restangular, Session, _, ErrorService, WarningService) {
-      var datamartId = Session.getCurrentDatamartId();
+      var datamartId = $stateParams.datamartId;
       var organisationId = Session.getCurrentWorkspace().organisation_id;
       $scope.editMode = true;
       $scope.rules = [];
@@ -94,7 +94,7 @@ define(['./module', 'jquery'], function(module, $) {
           })
           .catch(handleDatamartError)
         ])).then(function() {
-          $location.path("/" + organisationId + "/settings/datamarts");
+          $location.path(Session.getWorkspacePrefixUrl() +  "/settings/datamarts");
         }).catch(function(e) {
           ErrorService.showErrorModal(e);
         });
@@ -104,7 +104,7 @@ define(['./module', 'jquery'], function(module, $) {
       // ---------------- DATAMART ----------------
 
       $scope.cancel = function() {
-        $location.path("/" + organisationId + "/settings/datamarts");
+        $location.path(Session.getWorkspacePrefixUrl() + "/settings/datamarts");
       };
 
       $scope.done = function() {
@@ -130,7 +130,7 @@ define(['./module', 'jquery'], function(module, $) {
 
           }, handleDatamartError)
           .then(function () {
-            $location.path("/" + organisationId + "/settings/datamarts");
+            $location.path(Session.getWorkspacePrefixUrl() +  "/settings/datamarts");
           });
         }
       };

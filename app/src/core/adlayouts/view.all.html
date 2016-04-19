@@ -5,7 +5,7 @@
     </div>
     <div class="mics-table-toolbar">
       <div class="col-md-6">
-        <a href="#/{{organisationId}}/library/adlayouts/new" class="mics-btn mics-btn-add">
+        <a href="#/{{currentWorkspaceId}}/library/adlayouts/new" class="mics-btn mics-btn-add">
           New Ad Layout
         </a>
       </div>
@@ -59,7 +59,7 @@
                   <td>{{version.status}}</td>
                   <td class="mics-sub-table-actions ">
                     <a ng-show="version.status === 'DRAFT'" ng-click="publish(version, $event)" class="mics-btn mics-btn-finish">Publish</a>
-                    <a ng-show="version.status === 'DRAFT'" href="#/{{organisationId}}/library/adlayouts/{{version.ad_layout_id}}/version/{{version.id}}" class="mics-btn mics-btn-action">Edit</a>
+                    <a ng-show="version.status === 'DRAFT'" href="#/{{currentWorkspaceId}}/library/adlayouts/{{version.ad_layout_id}}/version/{{version.id}}" class="mics-btn mics-btn-action">Edit</a>
                     <a ng-show="version.status !== 'DRAFT'" ng-click="duplicate(adLayout, version, $event)" class="mics-btn mics-btn-add">Duplicate</a>
                     <a ng-show="version.status !== 'ARCHIVED'" ng-click="archive(adLayout, version, $event)" class="mics-btn mics-btn-delete">Archive</a>
                   </td>

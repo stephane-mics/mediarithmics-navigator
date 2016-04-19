@@ -8,7 +8,7 @@ define(['./module'], function (module) {
   module.factory('core/campaigns/DisplayCampaignContainer', [
     '$q', 'Restangular', 'core/common/IdGenerator', 'async', 'core/campaigns/AdGroupContainer', '$log', 'core/common/promiseUtils', 'lodash',  'core/campaigns/goals/GoalsService',
     function ($q, Restangular, IdGenerator, async, AdGroupContainer, $log, promiseUtils, _, GoalsService) {
-      var DisplayCampaignContainer = function DisplayCampaignContainer(editorVersionId) {
+      var DisplayCampaignContainer = function DisplayCampaignContainer(editorVersionId, workspace) {
         this.creationMode = true;
         this.adGroups = [];
         this.removedAdGroups = [];
@@ -18,8 +18,10 @@ define(['./module'], function (module) {
         this.removedGoalSelections = [];
         this.locations = [];
         this.removedLocations = [];
+        this.workspace = workspace;
 
-        this.value = {type: "DISPLAY", editor_version_id: editorVersionId};
+        this.value = {type: "DISPLAY", editor_version_id: editorVersionId
+        };//, datamart_id: workspace.datamart_id};
         $log.info("DisplayCampaignContainer", this.value);
       };
 

@@ -1,11 +1,37 @@
 define(['./module'], function (module) {
   'use strict';
 
-  module.factory('core/creatives/CreativePluginService', [
-    '$log', '$q', 'lodash',
-    function ($log, $q, _) {
+  function CreativeEditor(editor, Session) {
+    this.modal_mode = editor.modal_mode;
+    this.modal_template = editor.modal_template;
+    this.modal_controller = editor.modal_controller;
+    this.edit_path = editor.edit_path;
+    this.create_path = editor.create_path;
+    this.Session = Session;
+  }
+  
+  CreativeEditor.prototype.getEditPath = function(creative) {
+    return this.edit_path.replace(/{id}/g, creative.id).replace(/{organisation_id}/, creative.organisation_id).replace(/{datamart_id}/, this.Session.getCurrentWorkspace().datamart_id);
+  };
 
-      var creativeTemplates = [{
+  CreativeEditor.prototype.getCreatePath = function() {
+    return this.create_path.replace(/{id}/g, "").replace(/{organisation_id}/, this.Session.getCurrentWorkspace().organisation_id).replace(/{datamart_id}/, this.Session.getCurrentWorkspace().datamart_id);
+  };
+
+  function CreativeTemplate(template, Session){
+    this.name = template.name;
+    this.editor_group_id = template.editor_group_id;
+    this.editor_artifact_id = template.editor_artifact_id;
+    this.image = template.image;
+    this.editor= new CreativeEditor(template.editor, Session);
+
+  }
+
+  module.factory('core/creatives/CreativePluginService', [
+    '$log', '$q', 'lodash','core/common/auth/Session',
+    function ($log, $q, _, Session) {
+
+      var creativeTemplates = [new CreativeTemplate({
         name: "Banner Quick Upload",
         editor_group_id: "com.mediarithmics.creative.display",
         editor_artifact_id: "basic-editor",
@@ -16,7 +42,7 @@ define(['./module'], function (module) {
           modal_controller: "core/creatives/plugins/display-ad/basic-editor/UploadCreativeController",
           edit_path: "/{organisation_id}/creatives/display-ad/basic-editor/edit/{id}"
         }
-      }, {
+      }, Session), new CreativeTemplate({
         name: "Banner Expert Mode",
         editor_group_id: "com.mediarithmics.creative.display",
         editor_artifact_id: "default-editor",
@@ -25,7 +51,7 @@ define(['./module'], function (module) {
           create_path: "/{organisation_id}/creatives/display-ad/default-editor/create",
           edit_path: "/{organisation_id}/creatives/display-ad/default-editor/edit/{id}"
         }
-      }, {
+      }, Session), new CreativeTemplate({
         name: "Video Mode",
         editor_group_id: "com.mediarithmics.creative.video",
         editor_artifact_id: "default-editor",
@@ -34,9 +60,9 @@ define(['./module'], function (module) {
           create_path: "/{organisation_id}/creatives/video-ad/default-editor/create",
           edit_path: "/{organisation_id}/creatives/video-ad/default-editor/edit/{id}"
         }
-      }
+      }, Session)
         // UNCOMMENT TO ADD THE FACEBOOK AD EDITOR
-        //  , {
+        //  , new CreativeTemplate({
         //  name : "Facebook Expert Mode",
         //  editor_group_id : "com.mediarithmics.creative.display",
         //  editor_artifact_id : "default-editor",
@@ -45,7 +71,7 @@ define(['./module'], function (module) {
         //    create_path : "/{organisation_id}/creatives/display-ad/facebook/create",
         //    edit_path : "/{organisation_id}/creatives/display-ad/default-editor/edit/{id}"
         //  }
-        //}
+        //}, Session)
       ];
 
       function CreativePluginService() {

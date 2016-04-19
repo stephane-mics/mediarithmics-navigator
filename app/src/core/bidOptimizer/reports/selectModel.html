@@ -14,7 +14,7 @@
                             <tr ng-repeat="model in modelsIdDate | offset: (currentPage - 1)*itemsPerPage | limitTo: itemsPerPage">
                                 <td>
                                     <label>
-                                        <a href="#/{{organisationId}}/library/bidOptimizers/{{bidOptimizer.id}}/models/{{model.modelId}}/report">
+                                        <a href="#/{{currentWorkspaceId}}/library/bidOptimizers/{{bidOptimizer.id}}/models/{{model.modelId}}/report">
                                             Model id {{model.modelId}} Date {{model.date | date:'MM/dd/yyyy'}}
                                         <span ng-show="model.modelId==currentModel"> (Current Model)</span></a>
                                     </label>

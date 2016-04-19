@@ -39,16 +39,6 @@ define(['./module'], function (module) {
               selected: 'email_campaigns'
             }
           }
-        })
-        .state('allCampaigns', {
-          url: '/campaigns/display',
-          templateUrl: 'src/core/campaigns/list-display-campaigns.html',
-          data: {
-            sidebar: {
-              templateUrl : 'src/core/campaigns/campaigns-sidebar.html',
-              selected: 'display_campaigns'
-            }
-          }
         });
     }
   ]);

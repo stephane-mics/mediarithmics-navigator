@@ -52,7 +52,7 @@ define(['./module'], function (module) {
         var result = {url: ""};
         var editorPromise = creativePluginService.getEditor(creative.editor_group_id, creative.editor_artifact_id);
         editorPromise.then(function success(editor) {
-          result.url = editor.edit_path.replace(/{id}/g, creative.id).replace(/{organisation_id}/, Session.getCurrentWorkspace().organisation_id);
+          result.url = editor.getEditPath(creative);
         }, function failure() {
           result.url = "/";
         });

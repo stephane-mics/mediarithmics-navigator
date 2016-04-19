@@ -507,7 +507,7 @@ define(['./module', 'lodash'], function (module, _) {
 
       $scope.editCampaign = function (campaign) {
         CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
-          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
+          var location = template.editor.getEditPath(campaign);
           $location.path(location);
         });
       };
@@ -532,7 +532,7 @@ define(['./module', 'lodash'], function (module, _) {
         if (ad.creative_editor_group_id === "com.mediarithmics.creative.video") {
           type = "video-ad";
         }
-        return "/" + Session.getCurrentWorkspace().organisation_id + "/creatives/" + type + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
+        return Session.getWorkspacePrefixUrl() + "/creatives/" + type + "/" + ad.creative_editor_artifact_id + "/edit/" + ad.creative_id;
       };
 
       /*

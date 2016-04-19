@@ -11,11 +11,11 @@ define(['./module'], function (module) {
       });
 
       $scope.createScenario = function (type) {
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios/");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/scenarios/");
       };
 
       $scope.getEditScenarioUrl = function (scenario) {
-        return '/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios/" + scenario.id;
+        return Session.getWorkspacePrefixUrl() + "/library/scenarios/" + scenario.id;
       };
 
       $scope.deleteScenario = function (scenario, $event) {

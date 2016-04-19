@@ -21,7 +21,7 @@ define(['./module'], function (module) {
 
                 Restangular.all('audience_segments').post(segment, {organisation_id: Session.getCurrentWorkspace().organisation_id}).then(function success(){
                     $uibModalInstance.close();
-                    $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments");
+                    $location.path(Session.getWorkspacePrefixUrl() + "/datamart/segments");
                 }, function failure(){
                     $scope.error = "There was an error saving new segment";
                 });
@@ -39,7 +39,7 @@ define(['./module'], function (module) {
 
                 Restangular.all('audience_segments').post(segment, {organisation_id: Session.getCurrentWorkspace().organisation_id}).then(function success(){
                     $uibModalInstance.close();
-                    $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments");
+                    $location.path(Session.getWorkspacePrefixUrl() + "/datamart/segments");
                 }, function failure(reason){
                   if (reason.data && reason.data.error_id){
                     $scope.error = "An error occured while saving segment , errorId: " + reason.data.error_id;

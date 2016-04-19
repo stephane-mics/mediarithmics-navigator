@@ -24,7 +24,7 @@ define(['./module'], function (module) {
       });
 
       $scope.cancel = function () {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/bidOptimizers");
+        $location.path( Session.getWorkspacePrefixUrl()+  "/library/bidOptimizers");
       };
 
       $scope.next = function () {
@@ -34,7 +34,7 @@ define(['./module'], function (module) {
         }
         $q.all(promises).then(function success(res){
           $log.info("success");
-          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/bidOptimizers");
+          $location.path( Session.getWorkspacePrefixUrl()+ "/library/bidOptimizers");
         }, function failure(response) {
           $log.info("failure");
           errorService.showErrorModal({

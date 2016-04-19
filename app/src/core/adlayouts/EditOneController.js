@@ -66,7 +66,7 @@ define(['./module', 'jquery'], function (module, $) {
         if ($scope.selectedFiles.length) {
           $scope.$broadcast("plupload:upload");
         } else {
-          $location.path('/' + organisationId + "/library/adlayouts");
+          $location.path(Session.getWorkspacePrefixUrl()+ "/library/adlayouts");
         }
       }
 
@@ -113,7 +113,7 @@ define(['./module', 'jquery'], function (module, $) {
 
       $scope.$on("plupload:uploaded", function () {
         $scope.$apply(function () {
-          $location.path('/' + organisationId + "/library/adlayouts");
+          $location.path(Session.getWorkspacePrefixUrl()+ "/library/adlayouts");
         });
       });
 
@@ -123,7 +123,7 @@ define(['./module', 'jquery'], function (module, $) {
       };
 
       $scope.cancel = function () {
-        $location.path('/' + organisationId + "/library/adlayouts");
+        $location.path(Session.getWorkspacePrefixUrl()+ "/library/adlayouts");
       };
     }
   ])

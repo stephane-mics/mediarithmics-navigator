@@ -41,7 +41,7 @@ define(['./module'], function (module) {
         waitingService.showWaitingModal();
         promise.then(function success(campaignContainer) {
           waitingService.hideWaitingModal();
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaignContainer.id + "/basic");
+          $location.path(Session.getWorkspacePrefixUrl() + "/campaigns/display/report/" + campaignContainer.id + "/basic");
           DisplayCampaignService.reset();
         }, function failure(response) {
           waitingService.hideWaitingModal();

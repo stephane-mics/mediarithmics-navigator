@@ -12,7 +12,7 @@ define(['./module'], function (module) {
       $scope.datamartId = Session.getCurrentDatamartId();
 
       if (Session.cookies && Session.cookies.mics_vid){
-        $scope.myTimelineHref = "#/"+$stateParams.organisation_id +"/datamart/users/user_agent_id/vec:" + Session.cookies.mics_vid + "?live=true";
+        $scope.myTimelineHref = "#"+ Session.getWorkspacePrefixUrl() + "/datamart/users/user_agent_id/vec:" + Session.cookies.mics_vid + "?live=true";
       }
 
       $scope.searchTerms = {term:""};

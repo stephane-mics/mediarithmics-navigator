@@ -91,18 +91,18 @@ define(['./module'], function (module) {
       };
 
       $scope.getCampaignDashboardUrl = function (campaign) {
-        return '/' + currentWorkspace.organisation_id + '/campaigns/email/edit/' + campaign.id;
+        return Session.getWorkspacePrefixUrl()+ '/campaigns/email/edit/' + campaign.id;
         // return "/" + campaign.organisation_id + "/campaigns/" + campaign.type.toLowerCase() + "/report/" + campaign.id + "/basic";
       };
 
       $scope.newCampaign = function () {
-        $location.path('/' + currentWorkspace.organisation_id + '/campaigns/email/edit');
+        $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/email/edit');
       };
 
       $scope.editCampaign = function (campaign) {
 
         CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
-          var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
+          var location = template.editor.getEditPath(campaign);
           $location.path(location);
         });
         return false;

@@ -209,9 +209,9 @@ define(['./module', 'lodash'], function (module, _) {
         var type = campaign ? campaign.type : "";
         switch (type) {
           case "DISPLAY":
-            return '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaign.id + "/basic";
+            return Session.getWorkspacePrefixUrl() + "/campaigns/display/report/" + campaign.id + "/basic";
           default:
-            return '/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display";
+            return Session.getWorkspacePrefixUrl() + "/campaigns/display";
         }
       };
 

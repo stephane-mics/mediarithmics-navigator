@@ -8,7 +8,7 @@ define(['./module'], function (module) {
       $scope.done = function () {
         $scope.creative.remove().then(function () {
           $uibModalInstance.close();
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/creatives");
+          $location.path(Session.getWorkspacePrefixUrl()+  "/creatives");
         }, function failure(response) {
           $uibModalInstance.close();
           errorService.showErrorModal({

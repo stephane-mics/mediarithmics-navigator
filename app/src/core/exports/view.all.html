@@ -14,14 +14,14 @@
       <tbody>
       <tr ng-repeat="export in exports">
         <td class="clickable-box">
-          <a href="#/{{organisationId}}/library/exports/{{export.id}}">
+          <a href="#/{{currentWorkspaceId}}/library/exports/{{export.id}}">
             {{export.name}}
           </a>
         </td>
         <td>{{export.type}}</td>
         <td class="actions">
-          <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/exports/{{export.id}}">Details</a>
-          <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/exports/{{export.id}}/edit">Edit</a>
+          <a class="mics-btn mics-btn-action" href="#/{{currentWorkspaceId}}/library/exports/{{export.id}}">Details</a>
+          <a class="mics-btn mics-btn-action" href="#/{{currentWorkspaceId}}/library/exports/{{export.id}}/edit">Edit</a>
         </td>
       </tr>
       </tbody>

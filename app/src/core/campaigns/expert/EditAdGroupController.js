@@ -7,14 +7,14 @@ define(['./module'], function (module) {
    */
 
   module.controller('core/campaigns/expert/EditAdGroupController', [
-    '$scope', '$location', '$stateParams', '$uibModal', '$log', 'core/campaigns/DisplayCampaignService', 'core/common/ConstantsService', 'lodash',
-    function($scope, $location, $stateParams, $uibModal, $log, DisplayCampaignService, ConstantsService, _) {
+    '$scope', '$location', '$stateParams', '$uibModal', '$log', 'core/campaigns/DisplayCampaignService', 'core/common/ConstantsService', 'lodash','core/common/auth/Session',
+    function($scope, $location, $stateParams, $uibModal, $log, DisplayCampaignService, ConstantsService, _, Session) {
 
       var adGroupId = $stateParams.ad_group_id;
       var organisationId = $stateParams.organisation_id;
       var campaignId = $stateParams.campaign_id;
       if (!DisplayCampaignService.isInitialized() || DisplayCampaignService.getCampaignId() !== campaignId) {
-        return $location.path("/" + organisationId + "/campaigns/display/expert/edit/" + campaignId);
+        return $location.path(Session.getWorkspacePrefixUrl()+ "/campaigns/display/expert/edit/" + campaignId);
       }
 
       $scope.visibilityValues = ConstantsService.getValues("adgroup_visibility");
@@ -122,7 +122,7 @@ define(['./module'], function (module) {
       $scope.done = function () {
         $log.debug("Editing Ad Group done! :", $scope.adGroup);
         DisplayCampaignService.setAdGroupValue(adGroupId, $scope.adGroup);
-        $location.path('/' + DisplayCampaignService.getCampaignValue().organisation_id + '/campaigns/display/expert/edit/' + DisplayCampaignService.getCampaignId());
+        $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/display/expert/edit/' + DisplayCampaignService.getCampaignId());
       };
 
 
@@ -130,7 +130,7 @@ define(['./module'], function (module) {
       $scope.cancel = function () {
         $log.debug("Reset Ad Group");
         DisplayCampaignService.resetAdGroup(adGroupId);
-        $location.path('/' + DisplayCampaignService.getCampaignValue().organisation_id + '/campaigns/display/expert/edit/' + DisplayCampaignService.getCampaignId());
+        $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/display/expert/edit/' + DisplayCampaignService.getCampaignId());
       };
 
 

@@ -18,11 +18,11 @@ define(['./module'], function (module) {
       });
 
       $scope.edit = function(site) {
-        $location.path("/" + $scope.organisationId + "/settings/sites/edit/" + site.id);
+        $location.path(Session.getWorkspacePrefixUrl() +  "/settings/sites/edit/" + site.id);
       };
 
       $scope.new = function() {
-        $location.path("/" + $scope.organisationId + "/settings/sites/new");
+        $location.path(Session.getWorkspacePrefixUrl() +  "/settings/sites/new");
       };
 
       $scope.archive = function(site) {
