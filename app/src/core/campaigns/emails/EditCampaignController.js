@@ -8,8 +8,8 @@ define(['./module', 'moment'], function (module, moment) {
 
   module.controller('core/campaigns/emails/EditCampaignController', [
     'jquery', '$scope', '$uibModal', '$log', '$location', '$stateParams', 'lodash', 'core/campaigns/CampaignPluginService',
-    'core/common/WaitingService', 'core/common/ErrorService', 'core/campaigns/goals/GoalsService', 'Restangular', 'core/campaigns/emails/EmailCampaignContainer',
-    function (jQuery, $scope, $uibModal, $log, $location, $stateParams, _, CampaignPluginService, WaitingService, ErrorService, GoalsService, Restangular, EmailCampaignContainer) {
+    'core/common/WaitingService', 'core/common/ErrorService', 'core/campaigns/goals/GoalsService', 'Restangular', 'core/campaigns/emails/EmailCampaignContainer','core/common/auth/Session',
+    function (jQuery, $scope, $uibModal, $log, $location, $stateParams, _, CampaignPluginService, WaitingService, ErrorService, GoalsService, Restangular, EmailCampaignContainer, Session) {
 
       var campaignId = $stateParams.campaign_id;
       var campaignCtn = {};
@@ -106,7 +106,7 @@ define(['./module', 'moment'], function (module, moment) {
 
         promise.then(function success(){
           WaitingService.hideWaitingModal();
-          $location.path('/' + $scope.campaignCtn.value.organisation_id + '/campaigns/email');
+          $location.path(Session.getWorkspacePrefixUrl()+  '/campaigns/email');
         }, function failure(reason){
           WaitingService.hideWaitingModal();
           ErrorService.showErrorModal({
@@ -119,7 +119,7 @@ define(['./module', 'moment'], function (module, moment) {
         // if ($scope.campaign && $scope.campaign.id) {
         //   $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/report/' + $scope.campaign.id + '/basic');
         // } else {
-        $location.path('/' + $scope.campaignCtn.value.organisation_id + '/campaigns/email');
+        $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/email');
         // }
       };
 

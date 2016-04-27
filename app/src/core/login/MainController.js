@@ -5,7 +5,7 @@ define(['./module', "autofill-event"], function (module) {
     '$scope', '$location', '$log', '$rootScope', 'jquery', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
     function($scope, $location, $log, $rootScope, $, AuthenticationService, Session, LoginConstants) {
       if (Session.isInitialized()) {
-        $location.path("/campaigns/display");
+        $location.path(Session.getWorkspacePrefixUrl());
       }
       $scope.user = {email:"", password:""};
 
@@ -26,6 +26,9 @@ define(['./module', "autofill-event"], function (module) {
         Session.init().then(function() {
           $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
           var newPath = AuthenticationService.popPendingPath();
+          if(!newPath) {
+            newPath = Session.getWorkspacePrefixUrl();
+          }
           $log.debug("Redirecting to : "+newPath);
           // success : redirect to the pending path
           $location.path(newPath);

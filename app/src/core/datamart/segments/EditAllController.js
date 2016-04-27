@@ -33,7 +33,7 @@ define(['./module'], function (module) {
       });
 
       $scope.createAudienceSegment = function (type) {
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments/" + type);
+        $location.path(Session.getWorkspacePrefixUrl() + "/datamart/segments/" + type);
       };
 
       $scope.detailsAudienceSegment = function (segment, $event) {
@@ -42,7 +42,7 @@ define(['./module'], function (module) {
           $event.stopPropagation();
         }
 
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments/" + segment.type + "/" + segment.id + "/report");
+        $location.path(Session.getWorkspacePrefixUrl() + "/datamart/segments/" + segment.type + "/" + segment.id + "/report");
       };
 
       $scope.editAudienceSegment = function (segment, $event) {
@@ -51,7 +51,7 @@ define(['./module'], function (module) {
           $event.stopPropagation();
         }
 
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/datamart/segments/" + segment.type + "/" + segment.id);
+        $location.path(Session.getWorkspacePrefixUrl() + "/datamart/segments/" + segment.type + "/" + segment.id);
       };
 
       $scope.deleteAudienceSegment = function (segment, $event) {

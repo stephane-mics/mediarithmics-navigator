@@ -146,7 +146,7 @@ define(['./module'], function (module) {
                 }
 
                 CampaignPluginService.getCampaignEditor(campaign.group_id, campaign.artifact_id).then(function (template) {
-                    var location = template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
+                    var location = template.editor.getEditPath(campaign);
                     $location.path(location);
                 });
             };

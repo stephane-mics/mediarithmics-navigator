@@ -1,13 +1,42 @@
 define(['./module'], function (module) {
   'use strict';
 
+  function CampaignEditor(editor, Session) {
+    this.modal_mode = editor.modal_mode;
+    this.modal_template = editor.modal_template;
+    this.modal_controller = editor.modal_controller;
+    this.edit_path = editor.edit_path;
+    this.create_path = editor.create_path;
+    this.Session = Session;
+  }
+
+  CampaignEditor.prototype.getEditPath = function(campaign) {
+    return this.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id).replace(/{datamart_id}/, campaign.datamart_id);
+  };
+
+  CampaignEditor.prototype.getCreatePath = function() {
+    return this.create_path.replace(/{id}/g, "").replace(/{organisation_id}/, this.Session.getCurrentWorkspace().organisation_id).replace(/{datamart_id}/, this.Session.getCurrentWorkspace().datamart_id);
+  };
+
+  function CampaignTemplate(template, Session){
+    this.name = template.name;
+    this.group_id = template.group_id;
+    this.artifact_id = template.artifact_id;
+    this.editor_version_id = template.editor_version_id;
+    this.image = template.image;
+    this.editor = new CampaignEditor(template.editor, Session);
+
+  }
+
+
+
   /* define the Authentication service */
   module.factory('core/campaigns/CampaignPluginService', [
     '$log', '$q', 'lodash',
     function ($log, $q, _) {
 
       var campaignTemplates = [
-        {
+        new CampaignTemplate({
           name: "Desktop & Mobile",
           editor_version_id: "11",
           group_id: "com.mediarithmics.campaign.display",
@@ -17,8 +46,8 @@ define(['./module'], function (module) {
             create_path: "/{organisation_id}/campaigns/display/expert/edit/{id}",
             edit_path: "/{organisation_id}/campaigns/display/expert/edit/{id}"
           }
-        },
-        {
+        }),
+        new CampaignTemplate({
           name: "Simplified Keywords Targeting",
           editor_version_id: "12",
           group_id: "com.mediarithmics.campaign.display",
@@ -28,8 +57,8 @@ define(['./module'], function (module) {
             create_path: "/{organisation_id}/campaigns/display/keywords",
             edit_path: "/{organisation_id}/campaigns/display/keywords/{id}"
           },
-        },
-        {
+        }),
+        new CampaignTemplate({
           name: "Email campaign Default Editor",
           editor_version_id: "17",
           group_id: "com.mediarithmics.campaign.email",
@@ -39,7 +68,7 @@ define(['./module'], function (module) {
             create_path: "/{organisation_id}/campaigns/email/edit",
             edit_path: "/{organisation_id}/campaigns/email/edit/{id}"
           }
-        }
+        })
       ];
 
       function CampaignPluginService() {

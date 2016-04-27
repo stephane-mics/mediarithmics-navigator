@@ -74,10 +74,10 @@ define(['./module'], function (module) {
       $scope.goToCampaign = function (campaign) {
         switch(campaign.type) {
           case "DISPLAY":
-            $location.path( '/' + campaign.organisation_id + "/campaigns/display/report/" + campaign.id + "/basic");
+            $location.path( Session.getWorkspacePrefixUrl() +  "/campaigns/display/report/" + campaign.id + "/basic");
             break;
           default:
-            $location.path("/campaigns/display");
+            $location.path(Session.getWorkspacePrefixUrl() + "/campaigns/display");
             break;
         }
       };
@@ -93,7 +93,7 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function () {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/placementlists");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/placementlists");
       };
 
       $scope.next = function () {
@@ -105,7 +105,7 @@ define(['./module'], function (module) {
         }
         promise.then(function success(campaignContainer){
           $log.info("success");
-          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/placementlists");
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/placementlists");
         }, function failure(){
           $log.info("failure");
         });

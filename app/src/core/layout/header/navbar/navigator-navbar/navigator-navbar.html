@@ -8,34 +8,38 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#/{{organisationId}}/campaigns/display"><img ng-src="{{getBrandLogo()}}"/></a>
+      <a class="navbar-brand" href="#/{{currentWorkspaceId}}/campaigns/display"><img ng-src="{{getBrandLogo()}}"/></a>
     </div>
 
     <div class="navbar-collapse collapse" ng-if="isLogged">
 
       <ul class="nav navbar-nav mcs-main-nav">
         <li ng-show="hasDatamart" ng-class="category == 'datamart' ? 'active' : ''">
-          <a href="#/{{organisationId}}/datamart/segments">Audience</a>
+          <a href="#/{{currentWorkspaceId}}/datamart/segments">Audience</a>
         </li>
         <li ng-show="hasDatamart" ng-class="category == 'catalog' ? 'active' : ''">
-          <a href="#/{{organisationId}}/datamart/categories/">Catalogs</a>
+          <a href="#/{{currentWorkspaceId}}/datamart/categories/">Catalogs</a>
         </li>
-        <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#/{{organisationId}}/campaigns/display">Campaigns</a>
+        <li ng-class="category == 'campaigns' ? 'active' : ''"><a href="#/{{currentWorkspaceId}}/campaigns/display">Campaigns</a>
         </li>
-        <li ng-class="category == 'creatives' ? 'active' : ''"><a href="#/{{organisationId}}/creatives">Creatives</a>
+        <li ng-class="category == 'creatives' ? 'active' : ''"><a href="#/{{currentWorkspaceId}}/creatives">Creatives</a>
         </li>
-        <li ng-class="category == 'library' ? 'active' : ''"><a href="#/{{organisationId}}/library/usergroups">Library</a>
+        <li ng-class="category == 'library' ? 'active' : ''"><a href="#/{{currentWorkspaceId}}/library/usergroups">Library</a>
         </li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown" uib-dropdown>
-          <a ng-hide="workspaces.length > 1" href="#" class="mcs-workspace-label">{{currentOrganisation}}</a>
-          <a ng-show="workspaces.length > 1" href="#" class="mcs-workspace-label" uib-dropdown-toggle>{{currentOrganisation}}
+          <a ng-hide="workspaces.length > 1" href="#" class="mcs-workspace-label">{{currentWorkspace.organisation_name }}</a>
+          <a ng-show="workspaces.length > 1" href="#" class="mcs-workspace-label" uib-dropdown-toggle>{{currentWorkspace.organisation_name}} [{{currentWorkspace.datamart_id}}]
+
             <b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li ng-repeat="workspace in workspaces" ng-if="workspaces.length > 1 && workspace.organisationId != currentOrganisationId">
-              <a ng-click="switchWorkspace(workspace.organisationId)">{{workspace.organisationName}}</a>
+              <li ng-repeat="workspace in workspaces" ng-if="workspaces.length > 1" ng-class="{disabled: workspace == currentWorkspace}">
+              <a ng-if="workspace != currentWorkspace" ng-click="switchWorkspace(workspace)">{{workspace.organisation_name}}[{{workspace.datamart_id}}]
+</a>
+              <a ng-if="workspace == currentWorkspace">{{workspace.organisation_name}}[{{workspace.datamart_id}}]</a>
+
             </li>
           </ul>
         </li>
@@ -43,7 +47,7 @@
           <img uib-dropdown-toggle src="./images/user.svg">
           <ul class="dropdown-menu">
             <li><p>{{user.email}}</p></li>
-            <li><a href="#/{{organisationId}}/settings">Account & Settings</a></li>
+            <li><a href="#/{{currentWorkspaceId}}/settings">Account & Settings</a></li>
             <li class="divider"></li>
             <li><a href="#logout">Log out</a></li>
           </ul>

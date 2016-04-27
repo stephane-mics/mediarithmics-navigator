@@ -16,12 +16,12 @@ define(['./module'], function (module) {
 
 
       $scope.new = function() {
-        $location.path("/" + $scope.organisationId + "/settings/datamarts/new");
+        $location.path(Session.getWorkspacePrefixUrl() +  "/settings/datamarts/new");
       };
 
 
       $scope.edit = function(datamart) {
-        $location.path("/" + $scope.organisationId + "/settings/datamarts/edit/" + datamart.id);
+        $location.path(Session.getWorkspacePrefixUrl() +  "/settings/datamarts/edit/" + datamart.id);
       };
 
     }

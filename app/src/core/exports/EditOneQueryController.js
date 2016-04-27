@@ -26,7 +26,7 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function () {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/exports/" + exportId);
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/exports/" + exportId);
       };
 
       $scope.done = function () {
@@ -35,7 +35,7 @@ define(['./module'], function (module) {
           return $scope['export'].put();
         }).then(function ok() {
           waitingService.hideWaitingModal();
-          $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/exports/" + exportId);
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/exports/" + exportId);
         }, function error(response){
           waitingService.hideWaitingModal();
           ErrorService.showErrorModal({

@@ -41,7 +41,7 @@ define(['./module', 'jquery'], function (module, $) {
 
       $scope.saveAndCreateNewVersion = function () {
         Restangular.all('ad_layouts').post($scope.adLayout).then(function (adLayout) {
-          $location.path("/" + organisationId + "/library/adlayouts/" + adLayout.id + "/new-version");
+          $location.path(Session.getWorkspacePrefixUrl()+ "/library/adlayouts/" + adLayout.id + "/new-version");
         }, function (err) {
           $log.error("Couldn't create ad layout: ", err);
         });
@@ -49,14 +49,14 @@ define(['./module', 'jquery'], function (module, $) {
 
       $scope.done = function () {
         return Restangular.all('ad_layouts').post($scope.adLayout).then(function () {
-          $location.path('/' + organisationId + "/library/adlayouts");
+          $location.path(Session.getWorkspacePrefixUrl()+ "/library/adlayouts");
         }, function (err) {
           $log.error("Couldn't create ad layout: ", err);
         });
       };
 
       $scope.cancel = function () {
-        $location.path('/' + organisationId + "/library/adlayouts");
+        $location.path(Session.getWorkspacePrefixUrl()+  "/library/adlayouts");
       };
     }
   ]);

@@ -113,7 +113,7 @@ define(['./module', 'jquery'], function (module, $) {
           Restangular.all("datamarts/" + datamartId + "/sites/" + $stateParams.siteId).customPUT($scope.site, undefined, {organisation_id: organisationId})
             .catch(handleSiteError)
         ])).then(function () {
-          $location.path("/" + organisationId + "/settings/sites");
+          $location.path(Session.getWorkspacePrefixUrl() + "/settings/sites");
         }).catch(function (e) {
           ErrorService.showErrorModal(e);
         });
@@ -155,7 +155,7 @@ define(['./module', 'jquery'], function (module, $) {
       // ---------------- SITE ----------------
 
       $scope.cancel = function () {
-        $location.path("/" + organisationId + "/settings/sites");
+        $location.path(Session.getWorkspacePrefixUrl() + "/settings/sites");
       };
 
       $scope.done = function () {
@@ -183,7 +183,7 @@ define(['./module', 'jquery'], function (module, $) {
                 return Restangular.all("datamarts/" + datamartId + "/sites/" + site.id + "/aliases").post(alias);
               })
             ).then(function () {
-                $location.path("/" + organisationId + "/settings/sites");
+                $location.path(Session.getWorkspacePrefixUrl() + "/settings/sites");
               });
           }, handleSiteError);
         }

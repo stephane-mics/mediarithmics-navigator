@@ -4,8 +4,7 @@ define(['./module'], function (module) {
   module.controller('SidebarContentController', [
     '$scope', '$state', '$log', 'core/common/auth/Session',
     function ($scope, $state, $log, Session) {
-      $scope.organisationId = Session.getCurrentWorkspace().organisation_id;
-      $scope.datamartId = Session.getCurrentDatamartId();
+      
 
       if ($state.current.data && $state.current.data.sidebar) {
         $scope.subCategory = $state.current.data.sidebar.selected;

@@ -262,7 +262,7 @@ define(['./module'], function (module) {
           return saveOrUpdateGoal();
         }).then(function success() {
           WaitingService.hideWaitingModal();
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/goals");
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/goals");
         }, function error(reason){
           WaitingService.hideWaitingModal();
           if (reason.data && reason.data.error_id){
@@ -275,7 +275,7 @@ define(['./module'], function (module) {
       };
 
       $scope.cancel = function () {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/library/goals");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/goals");
       };
 
     }

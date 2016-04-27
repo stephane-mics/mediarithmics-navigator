@@ -15,11 +15,12 @@ define(['./module'], function (module) {
 
       isLogged();
 
-      $scope.switchWorkspace = function (organisationId) {
-        Session.setWorkspace(organisationId);
+      $scope.switchWorkspace = function (workspace) {
+        Session.setCurrentWorkspace(workspace);
       };
 
       function updateWorkspaces() {
+        $log.debug("updateWorkspaces !");
         $scope.workspaces = Session.getWorkspaces();
         $scope.hasDatamart = Session.hasDatamart();
         $scope.organisationId = Session.getCurrentWorkspace().organisation_id;

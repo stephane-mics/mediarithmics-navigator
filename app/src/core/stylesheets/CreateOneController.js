@@ -12,7 +12,7 @@ define(['./module', 'jquery'], function (module, $) {
 
       $scope.saveAndCreateNewVersion = function () {
         Restangular.all('style_sheets').post($scope.stylesheet).then(function (stylesheet) {
-          $location.path("/" + organisationId + "/library/stylesheets/" + stylesheet.id + "/new-version");
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/stylesheets/" + stylesheet.id + "/new-version");
         }, function (err) {
           $log.error("Couldn't create style sheet: ", err);
         });
@@ -20,14 +20,14 @@ define(['./module', 'jquery'], function (module, $) {
 
       $scope.done = function () {
         return Restangular.all('style_sheets').post($scope.stylesheet).then(function () {
-          $location.path('/' + organisationId + "/library/stylesheets");
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/stylesheets");
         }, function (err) {
           $log.error("Couldn't create style sheet: ", err);
         });
       };
 
       $scope.cancel = function () {
-        $location.path('/' + organisationId + "/library/stylesheets");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/stylesheets");
       };
     }
   ]);

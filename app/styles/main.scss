@@ -119,6 +119,11 @@ $navbar-inverse-link-color: $body-bg;
   li.uib-dropdown.open {
     background: white;
   }
+  .dropdown-menu > .disabled > a {
+    color:#fff !important;
+    cursor: pointer;
+    background-color: $dark-blue;
+  }
 
   li.uib-dropdown.open > img {
     -webkit-filter: invert(1);

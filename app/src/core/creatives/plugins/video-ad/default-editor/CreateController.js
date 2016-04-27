@@ -40,7 +40,7 @@ define(['./module'], function (module) {
         }
 
         createCreative(name).then(function () {
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/creatives");
+          $location.path(Session.getWorkspacePrefixUrl() + "/creatives");
         });
       };
 
@@ -60,13 +60,13 @@ define(['./module'], function (module) {
         $q.all(promises).then(function (results) {
           var editor = results[0];
           var creative = results[1];
-          var url = editor.edit_path.replace(/{id}/g, creative.id).replace(/{organisation_id}/, Session.getCurrentWorkspace().organisation_id);
+          var url = editor.getEditPath(creative);
           $location.path(url);
         });
       };
 
       $scope.cancel = function () {
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/creatives");
+        $location.path(Session.getWorkspacePrefixUrl() + "/creatives");
       };
     }
   ]);

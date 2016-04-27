@@ -8,8 +8,8 @@ define(['./module', 'moment'], function (module, moment) {
 
   module.controller('core/campaigns/expert/EditCampaignController', [
     'jquery', '$scope', '$uibModal', '$log', '$location', '$stateParams', 'lodash', 'core/campaigns/DisplayCampaignService', 'core/campaigns/CampaignPluginService',
-    'core/common/WaitingService', 'core/common/ErrorService', 'core/campaigns/goals/GoalsService',
-    function (jQuery, $scope, $uibModal, $log, $location, $stateParams, _, DisplayCampaignService, CampaignPluginService, WaitingService, ErrorService, GoalsService) {
+    'core/common/WaitingService', 'core/common/ErrorService', 'core/campaigns/goals/GoalsService','core/common/auth/Session',
+    function (jQuery, $scope, $uibModal, $log, $location, $stateParams, _, DisplayCampaignService, CampaignPluginService, WaitingService, ErrorService, GoalsService, Session) {
       var campaignId = $stateParams.campaign_id;
       $scope.goalTypes = GoalsService.getGoalTypesList();
       $scope.isConversionType = GoalsService.isConversionType;
@@ -234,11 +234,11 @@ define(['./module', 'moment'], function (module, moment) {
 
         $scope.newAdGroup = function () {
           var adGroupId = DisplayCampaignService.addAdGroup();
-          $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroupId);
+          $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroupId);
         };
 
         $scope.editAdGroup = function (adGroup) {
-          $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroup.id);
+          $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/display/expert/edit/' + campaignId + '/edit-ad-group/' + adGroup.id);
         };
 
         $scope.removeAdGroup = function (adGroup) {
@@ -264,7 +264,7 @@ define(['./module', 'moment'], function (module, moment) {
           DisplayCampaignService.save().then(function (campaignContainer) {
             WaitingService.hideWaitingModal();
             DisplayCampaignService.reset();
-            $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/report/' + campaignContainer.id + '/basic');
+            $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/display/report/' + campaignContainer.id + '/basic');
           }, function failure(response) {
             WaitingService.hideWaitingModal();
             ErrorService.showErrorModal({
@@ -278,9 +278,9 @@ define(['./module', 'moment'], function (module, moment) {
         $scope.cancel = function () {
           DisplayCampaignService.reset();
           if ($scope.campaign && $scope.campaign.id) {
-            $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display/report/' + $scope.campaign.id + '/basic');
+            $location.path(Session.getWorkspacePrefixUrl()+ '/campaigns/display/report/' + $scope.campaign.id + '/basic');
           } else {
-            $location.path('/' + $scope.campaign.organisation_id + '/campaigns/display');
+            $location.path(Session.getWorkspacePrefixUrl());
           }
         };
       });

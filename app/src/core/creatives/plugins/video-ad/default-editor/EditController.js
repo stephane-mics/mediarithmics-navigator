@@ -28,10 +28,10 @@ define(['./module'], function (module) {
       // Save button
       $scope.save = function (disabledEdition) {
         if (disabledEdition) {
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+          $location.path(Session.getWorkspacePrefixUrl() + '/creatives');
         } else {
           VideoAdService.save().then(function (videoAdContainer) {
-            $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+            $location.path(Session.getWorkspacePrefixUrl() + '/creatives');
           }, function failure(response) {
             errorService.showErrorModal({
               error: response
@@ -58,7 +58,7 @@ define(['./module'], function (module) {
       // back button
       $scope.cancel = function () {
         VideoAdService.reset();
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + '/creatives');
+        $location.path(Session.getWorkspacePrefixUrl() + '/creatives');
       };
     }
   ]);

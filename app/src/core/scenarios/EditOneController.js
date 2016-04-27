@@ -66,7 +66,7 @@ define(['./module', 'lodash'], function (module, _) {
       $scope.isCreationMode = !scenarioId;
 
       if (!scenarioId) {
-        $scope.scenario = {};
+        $scope.scenario = {datamart_id: Session.getCurrentDatamartId()};
         $scope.graph = new StorylineContainer(null);
       } else {
         Restangular.one('scenarios', scenarioId).get().then(function (scenario) {
@@ -76,16 +76,16 @@ define(['./module', 'lodash'], function (module, _) {
         Restangular.one('scenarios', scenarioId).all("inputs").getList().then(function (campaigns) {
           $scope.inputs = campaigns;
         });
-             }
+      }
 
 
       $scope.goToCampaign = function (campaign) {
         switch (campaign.type) {
           case "DISPLAY":
-            $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display/report/" + campaign.id + "/basic");
+            $location.path(Session.getWorkspacePrefixUrl() + "/campaigns/display/report/" + campaign.id + "/basic");
             break;
           default:
-            $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/campaigns/display");
+            $location.path(Session.getWorkspacePrefixUrl() + "/campaigns/display");
             break;
         }
       };
@@ -117,11 +117,11 @@ define(['./module', 'lodash'], function (module, _) {
       };
 
       $scope.editInput = function (input) {
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios/" + scenarioId + "/inputs/" + input.id);
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/scenarios/" + scenarioId + "/inputs/" + input.id);
       };
 
       $scope.cancel = function () {
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/scenarios");
       };
 
       $scope.saveBeginNode = function (beginNode) {
@@ -195,7 +195,7 @@ define(['./module', 'lodash'], function (module, _) {
           $log.info("failure");
         }).then(function ok() {
           waitingService.hideWaitingModal();
-          $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
+          $location.path(Session.getWorkspacePrefixUrl() + "/library/scenarios");
         }, function error(response){
           waitingService.hideWaitingModal();
           ErrorService.showErrorModal({
@@ -204,7 +204,7 @@ define(['./module', 'lodash'], function (module, _) {
         });
       };
       $scope.cancel = function () {
-        $location.path('/' + Session.getCurrentWorkspace().organisation_id + "/library/scenarios");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/scenarios");
       };
     }
   ]);

@@ -20,10 +20,10 @@ define(['./module'], function (module) {
 
           scope.INITIAL_ACTIONS_PER_ACTIVITY = 4;
           scope.itemUrl = function (catalogId, itemId) {
-            return '#/' + scope.organisationId + '/datamart/items/' + catalogId + '/' + itemId;
+            return Session.getWorkspacePrefixUrl() + '/datamart/items/' + catalogId + '/' + itemId;
           };
           scope.catalogUrl = function (catalogId) {
-            return "#/" + scope.organisationId + "/datamart/categories/" + catalogId;
+            return Session.getWorkspacePrefixUrl() + "/datamart/categories/" + catalogId;
           };
 
           // Transforms a duration to human a readable 'X days Y hours Z minutes' format

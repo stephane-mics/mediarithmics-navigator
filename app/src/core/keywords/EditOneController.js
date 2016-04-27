@@ -18,14 +18,14 @@ define(['./module'], function (module) {
       }
 
       $scope.cancel = function () {
-        $location.path( '/' + organisationId + "/library/keywordslists");
+        $location.path( Session.getWorkspacePrefixUrl() + "/library/keywordslists");
       };
 
       $scope.next = function () {
         var promise = $scope.keywordsList.save();
         promise.then(function success(keywordListContainer){
           $log.info("success");
-          $location.path( '/' + organisationId + "/library/keywordslists");
+          $location.path( Session.getWorkspacePrefixUrl() + "/library/keywordslists");
         }, function failure(){
           $log.info("failure");
         });

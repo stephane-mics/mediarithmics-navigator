@@ -2,8 +2,8 @@ define(['./module'], function (module) {
   'use strict';
 
   module.controller('core/campaigns/emails/MainController', [
-    "$scope", 'core/campaigns/EmailCampaignService', '$stateParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', '$location', '$log',
-    function ($scope, EmailCampaignService, $stateParams, CampaignPluginService, _, Restangular, $location, $log) {
+    "$scope", 'core/campaigns/EmailCampaignService', '$stateParams', 'core/campaigns/CampaignPluginService', 'lodash', 'Restangular', '$location', '$log','core/common/auth/Session',
+    function ($scope, EmailCampaignService, $stateParams, CampaignPluginService, _, Restangular, $location, $log, Session) {
       var campaignId = $stateParams.campaign_id;
 
       function initView() {
@@ -24,14 +24,14 @@ define(['./module'], function (module) {
       });
 
       $scope.cancel = function () {
-        $location.path("/");
+        $location.path(Session.getWorkspacePrefixUrl() );
       };
 
       $scope.next = function () {
         EmailCampaignService.save()
           .then(function success(campaignContainer) {
             $log.info("success");
-            $location.path("/campaigns/email");
+            $location.path(Session.getWorkspacePrefixUrl()+ "/campaigns/email");
             EmailCampaignService.reset();
           }, function failure() {
             $log.info("failure");

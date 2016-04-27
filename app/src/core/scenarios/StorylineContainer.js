@@ -225,7 +225,7 @@ define(['./module', 'lodash'], function (module, _) {
               self.adGroup = adGroup;
             });
             CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
-              self.campaign_editor_url = '#'+template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
+              self.campaign_editor_url = '#'+template.editor.getEditPath(campaign);
             });
           });
         }
@@ -233,7 +233,7 @@ define(['./module', 'lodash'], function (module, _) {
           Restangular.one("campaigns", self.value.campaign_id).get().then(function (campaign) {
             self.campaign = campaign;
             CampaignPluginService.getCampaignEditorFromVersionId(campaign.editor_version_id).then(function (template) {
-              self.campaign_editor_url = '#'+template.editor.edit_path.replace(/{id}/g, campaign.id).replace(/{organisation_id}/, campaign.organisation_id);
+              self.campaign_editor_url = '#'+template.editor.getEditPath(campaign);
             });
           });
         }

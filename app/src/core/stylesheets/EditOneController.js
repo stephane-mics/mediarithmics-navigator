@@ -83,7 +83,7 @@ define(['./module', 'jquery'], function (module, $) {
         properties = cleanProperties(properties);
         Restangular.all('style_sheets/' + styleSheetId + '/versions/' + styleSheetVersionId + '/properties')
           .customPUT(properties, undefined, {organisation_id: organisationId}).then(function () {
-            $location.path('/' + organisationId + "/library/stylesheets");
+            $location.path(Session.getWorkspacePrefixUrl() + "/library/stylesheets");
           }, function(response) {
             errorService.showErrorModal({
               error: response
@@ -114,7 +114,7 @@ define(['./module', 'jquery'], function (module, $) {
       };
 
       $scope.cancel = function () {
-        $location.path('/' + organisationId + "/library/stylesheets");
+        $location.path(Session.getWorkspacePrefixUrl() + "/library/stylesheets");
       };
     }
   ])

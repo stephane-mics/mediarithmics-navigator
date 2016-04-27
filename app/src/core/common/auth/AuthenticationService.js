@@ -9,7 +9,7 @@ define(['./module'], function (module) {
       var tokenRefresherTimer = null;
 
       var service = {};
-      service.pendingPath = '/home';
+      service.pendingPath = null;
 
       /* access token */
       service.setAccessToken = function(accessToken, expiresIn) {
@@ -95,17 +95,23 @@ define(['./module'], function (module) {
       };
 
       /* pending path */
-      service.resetPendingPath = function(pendingPath) {
-        this.pendingPath = '/home' ;
+      service.resetPendingPath = function() {
+        this.pendingPath = null;
       };
 
       service.pushPendingPath = function(pendingPath) {
+        $log.debug("Push pending path: ", pendingPath);
         this.pendingPath = pendingPath;
       };
 
+      service.existingPendingPath = function() {
+        return !!this.pendingPath;
+      };
+
       service.popPendingPath = function() {
+        $log.debug("Pop pending path: ", this.pendingPath);
         var result = this.pendingPath;
-        this.pendingPath = '/home';
+        this.pendingPath = null;
         return result;
       };
 
@@ -195,6 +201,7 @@ define(['./module'], function (module) {
        * Logout the user and reset the cookies.
        */
       service.logout = function () {
+        $log.info("logout !");
         service.resetPendingPath();
         service.resetAccessToken();
         service.resetRefreshToken();

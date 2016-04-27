@@ -7,9 +7,9 @@ define(['./module'], function (module) {
 
     function($scope, $location, $stateParams, Restangular, Common, Session, lodash) {
 
-      $scope.catalogBase = '#/' + $stateParams.organisation_id + 'datamart/categories/';
-      $scope.baseUrl = '#/' + $stateParams.organisation_id + '/datamart/categories/' + $stateParams.catalogId;
-      $scope.itemUrl = '#/' + $stateParams.organisation_id + '/datamart/items';
+      $scope.catalogBase = '#' + Session.getWorkspacePrefixUrl() +  'datamart/categories/';
+      $scope.baseUrl = '#'+ Session.getWorkspacePrefixUrl() + '/datamart/categories/' + $stateParams.catalogId;
+      $scope.itemUrl = '#'+ Session.getWorkspacePrefixUrl() + '/datamart/items';
 
       $scope.datamartId = Session.getCurrentDatamartId();
       $scope.categoriesPerPage = 10;
@@ -77,7 +77,7 @@ define(['./module'], function (module) {
           $scope.catalog = lodash.find(catalogs, {"$catalog_id": $stateParams.catalogId});
          } else if (catalogs.length > 0) {
           $scope.catalog = catalogs[0];
-          $location.path('/' + $stateParams.organisation_id + '/datamart/categories/'+$scope.catalog.$catalog_id);
+          $location.path(Session.getWorkspacePrefixUrl() +  '/datamart/categories/'+$scope.catalog.$catalog_id);
          }
 
 //         $scope.refreshCategories(0, $scope.categoriesPerPage);
@@ -86,7 +86,7 @@ define(['./module'], function (module) {
 
       $scope.changeCatalog =  function() {
         if($scope.catalog) {
-          $location.path('/' + $stateParams.organisation_id + '/datamart/categories/'+$scope.catalog.$catalog_id);
+          $location.path(Session.getWorkspacePrefixUrl() + '/datamart/categories/'+$scope.catalog.$catalog_id);
         }
       };
 

@@ -29,8 +29,8 @@
         <td>{{engineProperties['name'].value}}</td>
         <td>{{engineProperties['provider'].value}}</td>
         <td class="actions">
-          <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/bidOptimizers/{{bidOptimizer.id}}/models/{{bidOptimizersUsedModel[bidOptimizer.id]}}/report" ng-show="bidOptimizersUsedModel[bidOptimizer.id]">Details</a>
-          <a class="mics-btn mics-btn-action" href="#/{{organisationId}}/library/bidOptimizers/{{bidOptimizer.id}}">Edit</a>
+          <a class="mics-btn mics-btn-action" href="#/{{currentWorkspaceId}}/library/bidOptimizers/{{bidOptimizer.id}}/models/{{bidOptimizersUsedModel[bidOptimizer.id]}}/report" ng-show="bidOptimizersUsedModel[bidOptimizer.id]">Details</a>
+          <a class="mics-btn mics-btn-action" href="#/{{currentWorkspaceId}}/library/bidOptimizers/{{bidOptimizer.id}}">Edit</a>
         </td>
       </tr>
       </tbody>

@@ -10,15 +10,15 @@ define(['./module'], function (module) {
       });
 
       $scope.createGoal = function (type) {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/goals/");
+        $location.path(Session.getWorkspacePrefixUrl() + "/goals/");
       };
 
       $scope.editGoal = function (goal) {
-        $location.path( '/' + Session.getCurrentWorkspace().organisation_id + "/goals/"+ goal.id);
+        $location.path(Session.getWorkspacePrefixUrl() + "/goals/"+ goal.id);
       };
 
       $scope.getGoalReportUrl = function(goal) {
-        return "/" + goal.organisation_id + "/goals/" + goal.id + "/report";
+        return Session.getWorkspacePrefixUrl() + "/goals/" + goal.id + "/report";
       };
 
       $scope.archiveGoal = function (goal) {

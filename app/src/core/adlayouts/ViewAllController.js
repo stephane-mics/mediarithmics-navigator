@@ -113,7 +113,7 @@ define(['./module', 'jquery'], function (module, $) {
         preventEvent(event);
         draftCheck(adLayout, function (draftExists) {
           if (!draftExists) {
-            $location.path("/" + organisationId + "/library/adlayouts/" + adLayout.id + "/new-version");
+            $location.path(Session.getWorkspacePrefixUrl()+ "/library/adlayouts/" + adLayout.id + "/new-version");
           }
         });
       };
@@ -125,7 +125,7 @@ define(['./module', 'jquery'], function (module, $) {
         preventEvent(event);
         draftCheck(adLayout, function (draftExists) {
           if (!draftExists) {
-            $location.path("/" + organisationId + "/library/adlayouts/" + adLayout.id + "/new-version/" + version.id);
+            $location.path(Session.getWorkspacePrefixUrl()+ "/library/adlayouts/" + adLayout.id + "/new-version/" + version.id);
           }
         });
       };
