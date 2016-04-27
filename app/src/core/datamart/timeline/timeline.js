@@ -2,6 +2,30 @@ define(['./module'], function (module) {
 
   'use strict';
 
+  module.filter('eventKey', [function() {
+
+    function decorateFilter(input) {
+      if(input.indexOf("$") === 0 ){
+        return input.slice(1);
+      } else {
+        return input;
+      }
+    }
+    decorateFilter.$stateful = false;
+
+    return decorateFilter;
+  }]);
+
+  module.directive("mcsTimelineEventKey", [function () {
+    return {
+      restrict: 'E',
+      scope: {
+        key: '=key'
+      },
+      template: '<span ng-if="key.indexOf(\'$\') != 0" class="event-key-custom">{{key}}</span><span  tooltip-placement="left" uib-tooltip="{{key}}"  ng-if="key.indexOf(\'$\') == 0" class="event-key-predefined">{{key | eventKey}}</span>'
+    };
+  }]);
+
   module.directive('mcsTimeline', [
     'Restangular', 'core/datamart/common/Common', 'jquery', 'core/common/auth/Session',
     'lodash', 'moment', function (Restangular, Common, $, Session, lodash, moment) {
@@ -72,7 +96,9 @@ define(['./module'], function (module) {
 
 
           scope.getMapKeys = function (obj, key) {
-            return obj ? Object.keys(obj) : [];
+            return obj ? lodash.filter(Object.keys(obj), function (n) {
+              return n.indexOf("$$") < 0;
+            }) : [];
           };
 
 

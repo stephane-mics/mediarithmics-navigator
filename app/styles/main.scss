@@ -1606,19 +1606,22 @@ form.datamart {
     padding: 15px;
     border-color: $mcs-light-grey;
     color: $dark-blue;
-    overflow: hidden;
     .badge {
       background: $dark-blue;
     }
-    &:hover {
-      background: $mcs-light-blue;
-      border-color: $mcs-light-blue;
-      color: #ffffff;
-      a {
-        color: #ffffff;
-        text-decoration: underline;
-      }
+    .event-key-custom {
+      @extend .label;
+      @extend .label-primary;
+      background-color: lighten( $mcs-light-blue, 50%);
+      color: $dark-blue;
     }
+    .event-key-predefined {
+      @extend .label;
+      @extend .label-info;
+      background-color: lighten( $mcs-light-blue, 40%);
+      color: $dark-blue;
+    }
+
   }
 }
 
