@@ -9,7 +9,7 @@ define(['./module'], function (module) {
     if(datamart) {
       // TODO : remove the conditional assignement
       this.datamart_id = datamart.id || datamart.datamart_id;
-      this.datamart_name = datamart.datamart_name;
+      this.datamart_name = datamart.name;
     }
   }
 
