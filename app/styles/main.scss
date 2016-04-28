@@ -1623,7 +1623,7 @@ form.datamart {
       @extend .label;
       @extend .label-primary;
       background-color: lighten( $mcs-light-blue, 50%);
-      border: dashed 1px lighten( $mcs-light-blue, 20%);
+      border: solid 1px lighten( $mcs-light-blue, 50%);
       color: $dark-blue;
       font-size: 80%;
       font-weight: 500;
