@@ -149,7 +149,7 @@
                                     <mcs-timeline-event-key key="key"></mcs-timeline-event-key>
                                     <ul>
                                         <li ng-repeat="item in event.$properties[key] track by $index">
-                                            <ul>
+                                            <ul class="item-properties">
                                                 <li ng-repeat="itemKey in getMapKeys(item)">
                                                     <span ><mcs-timeline-event-key key="itemKey"></mcs-timeline-event-key> : {{"" + item[itemKey] }}</span>
                                                 </li>

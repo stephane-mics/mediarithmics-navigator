@@ -96,9 +96,9 @@ define(['./module'], function (module) {
 
 
           scope.getMapKeys = function (obj, key) {
-            return obj ? lodash.filter(Object.keys(obj), function (n) {
+            return obj ? lodash(Object.keys(obj)).filter(function (n) {
               return n.indexOf("$$") < 0;
-            }) : [];
+            }).sortBy().value() : [];
           };
 
 

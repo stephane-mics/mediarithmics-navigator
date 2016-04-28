@@ -1609,17 +1609,35 @@ form.datamart {
     .badge {
       background: $dark-blue;
     }
+
+
+    .item-properties {
+      border-bottom: solid 1px;
+      border-left: solid 3px;
+      margin-bottom: 4px;
+      border-color: $mcs-light-grey;
+      padding: 0px 0px 2px 5px;
+    }
+
     .event-key-custom {
       @extend .label;
       @extend .label-primary;
       background-color: lighten( $mcs-light-blue, 50%);
+      border: solid 1px lighten( $mcs-light-blue, 50%);
       color: $dark-blue;
+      font-size: 80%;
+      font-weight: 500;
+      line-height: 2.5;
     }
     .event-key-predefined {
       @extend .label;
       @extend .label-info;
-      background-color: lighten( $mcs-light-blue, 40%);
+      background-color: lighten( $mcs-light-blue, 50%);
+      border: solid 1px lighten( $mcs-light-blue, 20%);
       color: $dark-blue;
+      font-size: 80%;
+      font-weight: 500;
+      line-height: 2.5;
     }
 
   }
