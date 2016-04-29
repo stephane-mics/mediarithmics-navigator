@@ -8,7 +8,22 @@ define(['./module'], function (module) {
         .state('update-password', {
           url: '/update-password',
           templateUrl: 'src/core/password/update-password.html'
-        });
+        })
+        .state('request-password-reset', {
+          url: '/request-password-reset?error',
+          templateUrl: 'src/core/password/request-password-reset.html',
+          publicUrl: true
+        })
+        .state('set-password', {
+              url: '/set-password?email&token',
+              templateUrl: 'src/core/password/set-password.html',
+              publicUrl: true
+        })
+        .state('email-sent', {
+          url: '/email-sent',
+          templateUrl: 'src/core/password/email-sent.html',
+          publicUrl: true
+      });
     }
   ]);
 

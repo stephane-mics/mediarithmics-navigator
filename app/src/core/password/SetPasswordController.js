@@ -2,8 +2,8 @@ define(['./module', "autofill-event"], function (module) {
   'use strict';
 
   module.controller('core/password/SetPasswordController', [
-    '$scope', '$rootScope', '$location', '$stateParams', '$log', 'Restangular', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
-    function ($scope, $rootScope, $location, $stateParams, $log, Restangular, AuthenticationService, Session, LoginConstants) {
+    '$scope', '$rootScope', '$location', '$stateParams', '$state', '$log', 'Restangular', 'core/common/auth/AuthenticationService', 'core/common/auth/Session', 'core/login/constants',
+    function ($scope, $rootScope, $location, $stateParams, $state, $log, Restangular, AuthenticationService, Session, LoginConstants) {
       if (!angular.isDefined($stateParams.token) || !angular.isDefined($stateParams.email)) {
         $log.error("Invalid url arguments. Redirecting to password reset request page.");
         $location.path('request-password-reset');
@@ -13,11 +13,12 @@ define(['./module', "autofill-event"], function (module) {
 
       function initSession() {
         Session.init().then(function () {
-          $rootScope.$broadcast(LoginConstants.LOGIN_SUCCESS);
-          var newPath = AuthenticationService.popPendingPath();
-          $location.path(newPath);
+
+          $state.go('init-session/withoutOrganisation',{
+            location: true, notify: true, reload: true
+          });
         }, function () {
-          $rootScope.$broadcast(LoginConstants.LOGIN_FAILURE);
+
         });
       }
 
