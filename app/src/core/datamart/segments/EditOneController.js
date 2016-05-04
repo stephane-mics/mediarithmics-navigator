@@ -17,6 +17,7 @@ define(['./module'], function (module) {
         if (type === 'USER_QUERY'){
           $scope.segment = {
             type : type,
+            datamart_id: Session.getCurrentDatamartId(),
             evaluation_mode: 'PERIODIC',
             evaluation_period: 30,
             evaluation_period_unit: 'DAY'
@@ -25,6 +26,7 @@ define(['./module'], function (module) {
           $scope.queryContainer = queryContainer;
         } else {
           $scope.segment = {
+            datamart_id: Session.getCurrentDatamartId(),
             type : type,
           };
         }
